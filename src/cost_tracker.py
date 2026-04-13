@@ -9,5 +9,9 @@ class CostTracker:
     events: list[str] = field(default_factory=list)
 
     def record(self, label: str, units: int) -> None:
-        self.total_units += units
-        self.events.append(f'{label}:{units}')
+        # Guard against negative units: recording a negative cost is
+        # nonsensical and would silently corrupt the running total.
+        # Clamp to zero so callers with bad data don't undermine accounting.
+        safe_units = max(0, units)
+        self.total_units += safe_units
+        self.events.append(f'{label}:{safe_units}')
