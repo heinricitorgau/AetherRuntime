@@ -177,6 +177,12 @@ pub fn detect_provider_kind(model: &str) -> ProviderKind {
     if let Some(metadata) = metadata_for_model(model) {
         return metadata.provider;
     }
+    if std::env::var_os("OPENAI_BASE_URL").is_some() {
+        return ProviderKind::OpenAi;
+    }
+    if std::env::var_os("XAI_BASE_URL").is_some() {
+        return ProviderKind::Xai;
+    }
     if anthropic::has_auth_from_env_or_saved().unwrap_or(false) {
         return ProviderKind::Anthropic;
     }
