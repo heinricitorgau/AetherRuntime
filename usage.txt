@@ -1,0 +1,61 @@
+research-claw-code usage
+========================
+
+1. 第一次準備離線 bundle
+
+在有網路的機器上執行：
+
+cd ~/Desktop/research-claw-code
+bash deploy_local.sh
+
+這一步會：
+- 建置 claw CLI
+- 準備 bundled ollama 執行檔
+- 下載並打包模型快取
+- 產生 local_ai/runtime/ 離線執行環境
+
+若想指定模型：
+
+bash local_ai/prepare_bundle.sh codellama
+
+2. 之後離線直接啟動
+
+cd ~/Desktop/research-claw-code
+bash local_ai/run.sh
+
+3. 一次性問句
+
+bash local_ai/run.sh --output-format text prompt "幫我解釋這個 repo"
+
+4. 搬到另一台電腦
+
+把整個 research-claw-code 資料夾連同 local_ai/runtime/ 一起複製過去即可。
+
+5. 注意事項
+
+- 不需要另外安裝 ollama
+- 在 macOS 上不需要另外安裝 Python，launcher 會使用系統自帶的 /usr/bin/python3
+- 目前 bundle 是「相同作業系統 + 相同 CPU 架構」可攜
+- 例：macOS arm64 打包的 bundle，最穩是搬到另一台 macOS arm64 機器
+
+6. 常用環境變數
+
+CLAW_MODEL=llama3.2 bash local_ai/run.sh
+CLAW_OLLAMA_PORT=11435 bash local_ai/run.sh
+
+7. 疑難排解
+
+找不到 bundle：
+bash deploy_local.sh
+
+查看 bundle manifest：
+cat local_ai/runtime/bundle-manifest.txt
+
+查看日誌：
+tail -f /tmp/claw-local-ollama.log
+tail -f /tmp/claw-local-proxy.log
+
+8. 參考文件
+
+README.md
+local_ai/README.md
