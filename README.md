@@ -1,141 +1,205 @@
-# Mini-Agent System
+# research-claw-code
 
-一個以實驗為核心的 repository，用來研究：**最小化 agent loop 是否能在受控條件下改善軟體開發流程。**
+這個 repository 的定位是：
 
-## 使用方式
+**在有網路的電腦上，只用終端機下載與打包執行環境；到了無網路環境，直接啟動 agent 並提問，就能離線作答，而且預設全程用繁體中文回覆。**
 
-這個 repo 目前提供一套「可離線直接跑」的本地 AI 啟動流程。
+它不是雲端服務，也不是一定要現場安裝一堆依賴的開發環境。比較接近一個可搬運的本地 AI bundle。
 
-### 1. 第一次準備離線 bundle
+## 核心使用情境
 
-在有網路的機器上執行：
+### 有網路時
+
+只做一次準備工作：
 
 ```bash
 cd ~/Desktop/research-claw-code
 bash deploy_local.sh
 ```
 
-這一步會：
+Windows PowerShell：
+
+```powershell
+Set-Location ~/Desktop/research-claw-code
+powershell -ExecutionPolicy Bypass -File .\deploy_local.ps1
+```
+
+這一步會在終端機裡完成：
 
 - 建置 `claw` CLI
-- 準備本地 `ollama` 執行檔
-- 下載並打包模型快取
+- 準備 bundled `ollama` 執行檔
+- 下載並打包指定模型
 - 產生 `local_ai/runtime/` 離線執行環境
 
-### 2. 之後離線直接啟動
+### 無網路時
+
+直接啟動：
 
 ```bash
 cd ~/Desktop/research-claw-code
 bash local_ai/run.sh
 ```
 
-一次性問句也可以直接跑：
+直接丟題目：
 
 ```bash
-bash local_ai/run.sh --output-format text prompt "幫我解釋這個 repo"
+bash local_ai/run.sh --output-format text prompt "幫我整理這份會議紀錄"
 ```
 
-### 3. 搬到另一台電腦
+Windows PowerShell：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --output-format text prompt "幫我整理這份會議紀錄"
+```
+
+離線模式下，代理層會預設附加中文 system prompt，因此回覆會以繁體中文為主，適合終端機直接閱讀。
+另外，若你要求「寫程式」但沒有明確指定語言，系統預設會輸出 `C` 語言程式。
+另外，離線模式預設會以 `read-only` 權限啟動，所以它會直接把答案顯示在對話中，不會主動寫入檔案。
+
+## Agent 行為
+
+- 預設用繁體中文回覆
+- 若要求寫程式但未指定語言，預設輸出 `C` 語言程式
+- 預設以 `read-only` 權限啟動，所以會直接輸出答案，不會主動寫檔
+- 若要多行輸入，優先建議用 `/multiline`
+- `Shift+Enter` 與 `Ctrl+J` 有綁定換行，但 `Shift+Enter` 是否真的可用，仍取決於終端機本身
+
+## 專案承諾
+
+- 有網路時，下載與打包流程只需要透過終端機完成
+- 無網路時，不依賴外部 API
+- 不需要另外安裝系統層的 `ollama`
+- 在 macOS 上不需要另外安裝 Python，launcher 會優先使用系統自帶的 `/usr/bin/python3`
+- 在 Windows 上使用 PowerShell 啟動鏈，會優先尋找 `python` / `python3` / `py`
+- 預設以繁體中文回覆
+
+## 快速流程
+
+### 1. 準備離線 bundle
+
+```bash
+cd ~/Desktop/research-claw-code
+bash deploy_local.sh
+```
+
+Windows PowerShell：
+
+```powershell
+Set-Location ~/Desktop/research-claw-code
+powershell -ExecutionPolicy Bypass -File .\deploy_local.ps1
+```
+
+如果想換模型：
+
+```bash
+bash local_ai/prepare_bundle.sh codellama
+```
+
+Windows PowerShell：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\local_ai\prepare_bundle.ps1 codellama
+```
+
+### 2. 搬到目標機器
 
 把整個 `research-claw-code` 資料夾連同 `local_ai/runtime/` 一起複製過去即可。
 
-注意：
+### 3. 離線使用
 
-- 不需要另外安裝 `ollama`
-- 在 macOS 上不需要另外安裝 Python，launcher 會使用系統自帶的 `/usr/bin/python3`
-- 目前 bundle 是「同作業系統、同 CPU 架構」可攜，例如 `macOS arm64 -> macOS arm64`
-
-更完整的部署說明請看 [local_ai/README.md](./local_ai/README.md)。
-
-## 研究問題
-
-> **在保持可控性、可觀測性與可評估性的前提下，最小代理循環究竟能走多遠？**
-
-這不是一個完整產品，也不是一個自治 agent framework。它是一個持續進行中的實驗環境，用來驗證以下問題：
-
-- 一個簡單的 `Task -> Generate -> Evaluate -> Refine` 循環，是否能穩定提升輸出品質
-- evaluation 是否可以作為一級能力，而不是事後補上的檢查
-- human-in-the-loop 的控制模式，是否能和高度自動化共存
-- 當迭代次數增加時，系統是收斂、停滯，還是發散
-
-## 實驗循環
-
-```text
-Task -> Generate -> Evaluate -> Refine -> Repeat
+```bash
+bash local_ai/run.sh
 ```
 
-這個循環的重點不是「一次就做對」，而是每一輪都產生可被評估的輸出、可被記錄的偏差、可作為下一輪輸入的修正資訊。如果沒有 evaluation，這個系統就只是在重複生成。如果沒有 refinement，就無法驗證系統是否在學習任何東西。
+或：
 
-## 實驗假設
+```bash
+bash local_ai/run.sh --output-format text prompt "請用中文解釋這個錯誤訊息"
+```
 
-| 假設 | 驗證方向 |
-|------|---------|
-| 最小 agent loop 可以提升迭代效率 | 比較加入循環前後的修正速度與輸出品質 |
-| evaluation 能降低 silent failure | 追蹤 failure 被發現、分類與修正的比例 |
-| human-in-the-loop 可以保留控制而不顯著拖慢流程 | 觀察人工介入點數量與迭代速度之間的關係 |
-| 輕量模型比複雜 orchestration 更容易定位因果 | 在低複雜度結構下記錄觀察結果與失敗原因 |
+Windows PowerShell：
 
-## 設計選擇
+```powershell
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+```
 
-| 設計決策 | Rationale |
-|---------|-----------|
-| 最小代理抽象 | 複雜 orchestration 會污染實驗變數；模組越多，越難判斷哪個機制真正造成效果 |
-| Task-driven（而不是 session-driven）| 讓每個實驗單位可以獨立評估與重現 |
-| Evaluation-first（而不是 generation-first）| 如果 failure modes 不透明，就很難做出可信的研究結論 |
-| Feedback-based refinement（而不是單純重試 prompt）| 區分「生成失敗」與「評估失敗」，使改進方向更明確 |
-| Observability 優先於功能堆疊 | 可觀察的 failure 比更多功能更能推進研究 |
+進入 agent 後可以直接提問，例如：
 
-## 研究範圍
+```text
+請用中文解釋這個錯誤訊息
+```
 
-這個 repository 目前聚焦於 agent loop 的收斂性、evaluation 設計對 refinement 方向的影響、prompt 結構對可評估性的影響、error handling 與 retry / re-plan 的邊界，以及多輪 feedback 下的行為穩定性。這些問題屬於「受控 AI-assisted development」的研究範圍，而不是通用自治系統開發。
+或：
 
-## Repository 結構
+```text
+請寫一個程式輸出 1
+```
+
+如果你要輸入多行內容，建議這樣用：
+
+```text
+/multiline
+第一行
+第二行
+/submit
+```
+
+Windows 上尤其建議把 `/multiline` 當主要方案；`Shift+Enter` 不保證每個終端都會正確傳遞。
+
+### 4. 用完後清掉下載產物
+
+```bash
+bash cleanup_local.sh
+```
+
+Windows PowerShell：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\cleanup_local.ps1
+```
+
+這個指令會刪除 `local_ai/runtime/`，也就是 `deploy_local.sh` 在 repo 內打包出來的 bundle。
+
+## 目錄角色
 
 ```text
 .
-├── src/        # 核心實驗邏輯與循環實作
-├── tests/      # 驗證、回歸與評估測試
-├── docs/       # 實驗筆記、設計備忘與觀察結果
-└── assets/     # 輔助材料
+├── local_ai/   # 離線 bundle、proxy、啟動腳本
+├── rust/       # claw CLI 主實作
+├── src/        # 早期 Python port / 研究與對照工具
+├── tests/      # Python 端測試與加固驗證
+└── docs/       # 補充研究文件
 ```
 
-## 研究模式執行
+## 常用環境變數
 
 ```bash
-python -m src.main
+CLAW_MODEL=llama3.2 bash local_ai/run.sh
+CLAW_OLLAMA_PORT=11435 bash local_ai/run.sh
+CLAW_PERMISSION_MODE=read-only bash local_ai/run.sh
+CLAW_SYSTEM_PROMPT="請全程使用繁體中文，回答時盡量精簡。" bash local_ai/run.sh
 ```
 
-如果行為與輸出會改變，通常是因為實驗本身仍在演化，而不是單純的使用錯誤。
+Windows PowerShell：
 
-## 目前狀態
+```powershell
+$env:CLAW_MODEL="llama3.2"; powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+$env:CLAW_OLLAMA_PORT="11435"; powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+$env:CLAW_PERMISSION_MODE="read-only"; powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+$env:CLAW_SYSTEM_PROMPT="請全程使用繁體中文，回答時盡量精簡。"; powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+```
 
-| 項目 | 狀態 |
-|------|------|
-| 核心循環 | 早期驗證中 |
-| Evaluation 機制 | 持續調整中 |
-| 任務格式 | 實驗性 |
-| 可觀測性 | 基礎層已建立 |
-| 可重現性 | 持續補強中 |
+## 限制
 
-## 如何閱讀這個專案
+- bundle 目前是「相同作業系統 + 相同 CPU 架構」可攜，例如 `macOS arm64 -> macOS arm64`
+- `prepare_bundle.sh` / `prepare_bundle.ps1` 需要先在有網路的環境執行
+- `local_ai/runtime/` 可能很大，因為模型會一起打包
+- `bash cleanup_local.sh` / `powershell -ExecutionPolicy Bypass -File .\cleanup_local.ps1` 只會刪除 repo 內的 bundle，不會清掉全域模型快取
+- `Shift+Enter` 是否可用會受終端機影響，尤其在 Windows 上不保證穩定；請優先使用 `/multiline`
 
-| 文件 | 說明 |
-|------|------|
-| `README.md` | 正在驗證什麼、核心研究問題 |
-| `PHILOSOPHY.md` | 實驗立場、設計選擇的 rationale、開放問題 |
-| `ROADMAP.md` | 下一階段要驗證什麼、已知問題清單 |
-| `PARITY.md` | 目前 checkpoint 狀態、哪些能力有可驗證證據 |
+## 參考文件
 
-## 已知限制
-
-這個 repository 不是 production-ready system，不宣稱 fully autonomous operation，不代表完整 agent architecture 的最終結論，也不應被解讀成對所有 AI-assisted development workflow 的普遍證明。它的價值在於提供一個可持續 refinement 的實驗場，而不是直接給出結論。
-
-## 開放問題
-
-- 目前的 evaluation 設計是否能區分「模型本身的限制」與「任務描述不夠清楚」這兩種失敗來源？
-- human-in-the-loop 的介入點設計，是否有可能演化成更少、但更精準的形式？
-- 當迭代輪數增加後，refinement 信號是否仍然有效，還是會出現噪音累積的問題？
-
----
-
-作者：Heinnrici
+- [local_ai/README.md](./local_ai/README.md)
+- [USAGE.md](./USAGE.md)
+- [rust/README.md](./rust/README.md)
+- [AGENT_USAGE.txt](./AGENT_USAGE.txt)

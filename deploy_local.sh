@@ -4,5 +4,13 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SECONDS=0
 
-exec bash "$SCRIPT_DIR/local_ai/prepare_bundle.sh" "$@"
+bash "$SCRIPT_DIR/local_ai/prepare_bundle.sh" "$@"
+
+elapsed_seconds=$SECONDS
+hours=$((elapsed_seconds / 3600))
+minutes=$(((elapsed_seconds % 3600) / 60))
+seconds=$((elapsed_seconds % 60))
+
+printf '\n總耗時：%02d:%02d:%02d\n' "$hours" "$minutes" "$seconds"

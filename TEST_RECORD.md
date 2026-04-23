@@ -1,9 +1,9 @@
 # TEST_RECORD — 實驗性加固測試紀錄
 
-**日期：** 2026-04-13
+**日期：** 2026-04-13（v1/v2）、2026-04-15（v3）
 **分支：** `test/experimental-hardening`
 **測試執行器：** Python `unittest`（標準庫，無需外部依賴）
-**總測試數量（本輪結束後）：** 129（原有 22 + 第一輪新增 64 + 第二輪新增 43）— 全數通過 ✅
+**總測試數量（本輪結束後）：** 174（原有 22 + v1 新增 64 + v2 新增 43 + v3 新增 45）— 全數通過 ✅
 
 ---
 
@@ -196,6 +196,133 @@ self.events.append(f'{label}:{safe_units}')
 
 ---
 
+### 第三輪（v3）—— session_store、parity_audit、remote_runtime、query_engine 深層路徑
+
+| # | 假設 | 測試情境 | 預期 | 實際 | 狀態 |
+|---|------|---------|------|------|------|
+| H22-a | `load_session` 對缺少檔案拋出 `FileNotFoundError` 且含 session_id | `load_session('nonexistent')` | `FileNotFoundError` + session_id 在訊息中 | 正確 | ✅ PASS |
+| H22-b | 錯誤訊息提及檔案路徑 | 同上 | 路徑出現於訊息 | 正確 | ✅ PASS |
+| H22-c | **BUG** 損壞 JSON 拋出 `ValueError` 含 session_id | `load_session('bad_json')` | `ValueError` 含 session_id（修復後） | 正確 ✅ | **已修復** |
+| H22-d | **BUG** 欄位缺失拋出 `ValueError` 列出缺少欄位 | `load_session('partial')` | `ValueError` 列出 `messages` | 正確 ✅ | **已修復** |
+| H23-a | `archive_present=False` → markdown 含 "unavailable" | `to_markdown()` | 含不可用說明，不含覆蓋率 | 正確 | ✅ PASS |
+| H23-b | `archive_present=True` → markdown 含覆蓋率數值 | `to_markdown()` with 15/18 | 含 "15/18" | 正確 | ✅ PASS |
+| H23-c | 無缺少目標 → markdown 顯示 "none" | 所有目標均存在 | 含 "none" | 正確 | ✅ PASS |
+| H23-d | 有缺少目標 → markdown 列出名稱 | `missing_root_targets=('foo.py', 'bar.py')` | 名稱出現 | 正確 | ✅ PASS |
+| H23-e | `run_parity_audit()` 不拋出例外 | 呼叫函式 | 回傳 `ParityAuditResult` | 正確 | ✅ PASS |
+| H23-f | 覆蓋率分子 ≤ 分母 | 驗證比例合理性 | 兩個比率均合理 | 正確 | ✅ PASS |
+| H24-a | `run_remote_mode` 回傳 `connected=True` | 呼叫函式 | True | True | ✅ PASS |
+| H24-b | remote mode detail 含 target 字串 | `run_remote_mode('prod-server')` | 含 "prod-server" | 正確 | ✅ PASS |
+| H24-c | SSH mode `mode` 欄位為 'ssh' | `run_ssh_mode(...)` | "ssh" | "ssh" | ✅ PASS |
+| H24-d | SSH mode detail 含 target | `run_ssh_mode('my-host')` | 含 "my-host" | 正確 | ✅ PASS |
+| H24-e | Teleport mode `mode` 欄位為 'teleport' | `run_teleport_mode(...)` | "teleport" | "teleport" | ✅ PASS |
+| H24-f | `as_text()` 含 mode=, connected=, detail= | 直接建立 `RuntimeModeReport` | 三鍵均出現 | 正確 | ✅ PASS |
+| H24-g | `RuntimeModeReport` 為 frozen，不可修改 | 嘗試 `report.mode = 'altered'` | 拋出例外 | 拋出 | ✅ PASS |
+| H24-h | 空 target 字串不拋出例外（Edge） | `run_remote_mode('')` | 回傳有效物件 | 正確 | ✅ PASS |
+| H25-a | **BUG** budget 耗盡後 `mutable_messages` 不再成長 | 持續 submit 後檢查長度 | 長度固定（修復後） | 固定 ✅ | **已修復** |
+| H25-b | budget 超出時 `stop_reason='max_budget_reached'` | `max_budget_tokens=1` | 'max_budget_reached' | 正確 | ✅ PASS |
+| H25-c | budget 未耗盡時正常 append | 送兩則訊息 | `len=2` | 2 | ✅ PASS |
+| H25-d | budget 耗盡後 `transcript_store.entries` 不再成長 | 同 H25-a | 長度固定 | 固定 ✅ | **已修復** |
+| H25-e | budget 耗盡後仍回傳有效 `TurnResult` | 同上 | result 非 None | 正確 | ✅ PASS |
+| H26-a | 訊息超過 `compact_after_turns` 時觸發截斷 | 送 5 則，threshold=3 | `len ≤ 3` | ≤ 3 | ✅ PASS |
+| H26-b | 未超過閾值時不觸發 compaction | 送 3 則，threshold=10 | `len=3` | 3 | ✅ PASS |
+| H26-c | transcript_store 與 messages 同步壓縮 | 送 6 則，threshold=3 | `len(entries) ≤ 3` | ≤ 3 | ✅ PASS |
+| H26-d | compaction 後 `replay_user_messages` 回傳保留部分 | 送 5 則，threshold=2 | `len(replayed) ≤ 2` | ≤ 2 | ✅ PASS |
+| H27-a | persist 後 restore，messages 內容一致 | persist → from_saved_session | 相等 | 相等 | ✅ PASS |
+| H27-b | restore 後 session_id 一致 | 同上 | session_id 相等 | 正確 | ✅ PASS |
+| H27-c | restore 後 token usage 數值一致 | 送訊息後 persist/restore | input/output tokens 相等 | 相等 | ✅ PASS |
+| H27-d | 空 session persist + restore 不拋出 | 無訊息就 persist | 回傳空 messages | 正確 | ✅ PASS |
+| H28-a | `render_summary` 含 session_id | 呼叫 `render_summary()` | session_id 出現 | 出現 | ✅ PASS |
+| H28-b | `render_summary` 顯示 max_turns 值 | `max_turns=5` | 含 '5' | 正確 | ✅ PASS |
+| H28-c | `render_summary` 含 workspace 字樣 | 標準呼叫 | 含 "Python Porting Workspace" | 正確 | ✅ PASS |
+| H28-d | `render_summary` turn count 反映 submit 次數 | 送兩則後 render | 含 '2' | 正確 | ✅ PASS |
+| H29-a | 回歸：Bug 4 — budget 耗盡後 messages 不成長 | 同 H25-a | 長度固定 | 固定 | ✅ PASS |
+| H29-b | 回歸：Bug 5 — 缺少 session 拋出 `FileNotFoundError` | 同 H22-a | `FileNotFoundError` | 正確 | ✅ PASS |
+| H29-c | 回歸：Bug 5 — 損壞 JSON 拋出 `ValueError` | 同 H22-c | `ValueError` | 正確 | ✅ PASS |
+| H29-d | 回歸：Bug 5 — 欄位缺失 `ValueError` 含欄位名 | 同 H22-d | 含 `input_tokens` 或 `output_tokens` | 正確 | ✅ PASS |
+| H30-a | save_session 回傳路徑確實存在 | 儲存後驗證路徑 | `Path.exists()=True` | True | ✅ PASS |
+| H30-b | save/load roundtrip — session_id | 完整回路 | 相等 | 相等 | ✅ PASS |
+| H30-c | save/load roundtrip — messages 類型為 tuple | JSON→list→tuple 轉換 | `isinstance(..., tuple)` | True | ✅ PASS |
+| H30-d | save/load roundtrip — 空 messages | `messages=()` | `()` | `()` | ✅ PASS |
+| H30-e | save/load roundtrip — token counts | `input=999, output=42` | 數值相等 | 相等 | ✅ PASS |
+
+---
+
+## 發現問題清單
+
+### Bug 4 — `QueryEnginePort.submit_message`：`max_budget_reached` 後仍累積訊息
+
+**檔案：** `src/query_engine.py`
+**嚴重程度：** 高
+**類別：** 計費邏輯 / 無限成長
+
+**說明：**
+當 `projected_usage.input_tokens + projected_usage.output_tokens > max_budget_tokens` 時，`stop_reason` 設為 `'max_budget_reached'`，但程式仍繼續執行 `self.mutable_messages.append(prompt)` 和 `self.transcript_store.append(prompt)`。換言之，就算預算已耗盡，每一次 `submit_message` 呼叫都會讓對話串無限成長，最終導致記憶體壓力，並讓呼叫端誤以為 stop_reason 已阻止了進一步處理。
+
+**根本原因：** `stop_reason` 邏輯改寫後，append 操作沒有跟著加上防護條件。
+
+**修復內容：**
+```python
+if stop_reason == 'completed':
+    self.mutable_messages.append(prompt)
+    self.transcript_store.append(prompt)
+    self.permission_denials.extend(denied_tools)
+    self.total_usage = projected_usage
+    self.compact_messages_if_needed()
+else:
+    # Budget exhausted: record denials and usage but do not grow the conversation.
+    self.permission_denials.extend(denied_tools)
+    self.total_usage = projected_usage
+```
+
+---
+
+### Bug 5 — `session_store.load_session`：缺少/損壞/欄位不足時錯誤訊息不具診斷性
+
+**檔案：** `src/session_store.py`
+**嚴重程度：** 中
+**類別：** 錯誤處理 / 可觀測性
+
+**說明：**
+原本的 `load_session` 直接呼叫 `.read_text()` 並存取 `data['session_id']` 等欄位，錯誤情境如下：
+- 檔案不存在 → Python 拋出通用 `FileNotFoundError`，訊息僅含路徑，不含 session_id
+- JSON 損壞 → `json.JSONDecodeError` 直接外漏，無 session 上下文
+- 欄位缺失 → `KeyError`，沒有說明哪個 session 或哪些欄位有問題
+
+這讓 session 復原的錯誤難以追蹤，尤其在多 session 環境下。
+
+**修復內容：**
+```python
+if not session_path.exists():
+    raise FileNotFoundError(
+        f"Session '{session_id}' not found at {session_path}. ..."
+    )
+try:
+    data = json.loads(session_path.read_text())
+except json.JSONDecodeError as exc:
+    raise ValueError(f"Session '{session_id}' has corrupted JSON ...") from exc
+missing = [k for k in ('session_id', 'messages', 'input_tokens', 'output_tokens') if k not in data]
+if missing:
+    raise ValueError(f"Session '{session_id}' is missing required fields: {missing}")
+```
+
+---
+
+## Rust 靜態分析（新增，第三輪）
+
+`cargo` 在測試沙箱中不可用，以下為靜態程式碼分析結論。現有 Rust 測試由 CI（`rust-ci.yml`）驗證。
+
+### 已確認的邊界案例
+
+| 模組 | 發現 | 嚴重程度 | 備註 |
+|------|------|---------|------|
+| `bash_validation.rs` | `extract_first_command` 以空白分割，`"ls; rm -rf /"` 的 `first_command = "ls;"` 不匹配任何封鎖命令 — 分號鏈接的寫入命令可繞過 read-only 檢查 | **高** | 建議：在提取前先以 `;`、`&&`、`\|\|` 分割，對每個子命令分別驗證 |
+| `bash_validation.rs` | `check_destructive` 使用子字串比對（`rm -rf /`），`rm -fr /`、`rm -r -f /` 等參數重排變體不被偵測 | 中 | 建議：正規化 `-rf`/`-fr`/`-r -f` 為標準形式後比對 |
+| `bash_validation.rs` | `validate_read_only` 的 `>` 重導向偵測：`echo "a > b"` 含有 `>` 字符但不是重導向，可能產生誤攔 | 低 | 現有行為較保守（誤攔 > 漏攔），可接受 |
+| `bash_validation.rs` | `validate_paths` 的 `~/` 偵測：`echo "my ~/path"` 中的 `~` 在字串內，但仍觸發 Warn | 低 | 啟發式規則，刻意保守 |
+| `config.rs` | `ProviderFallbackConfig` 無最大長度限制 — 理論上 fallback 鏈可無限長 | 低 | 實務上不影響現有功能 |
+
+---
+
 ## 修復摘要
 
 | 檔案 | 修改內容 | 影響行數 |
@@ -203,19 +330,25 @@ self.events.append(f'{label}:{safe_units}')
 | `src/permissions.py` | 在 `from_iterables` 中過濾空/空白 deny_prefixes | +4（註解 + 過濾運算式） |
 | `src/transcript.py` | 在 `compact(0)` 加入明確的 `clear()` 分支 | +4（註解 + 分支） |
 | `src/cost_tracker.py` | 在 `record()` 中以 `max(0, units)` 截斷負數 | +3（註解 + safe_units） |
+| `src/permissions.py` | 在 `from_iterables` 中過濾空/空白 deny_prefixes | +4（註解 + 過濾運算式） |
+| `src/transcript.py` | 在 `compact(0)` 加入明確的 `clear()` 分支 | +4（註解 + 分支） |
+| `src/cost_tracker.py` | 在 `record()` 中以 `max(0, units)` 截斷負數 | +3（註解 + safe_units） |
+| `src/query_engine.py` | **Bug 4** — submit_message 在 budget 超出時不再 append（+14 行） | 新增條件分支 |
+| `src/session_store.py` | **Bug 5** — load_session 加入檔案存在檢查、JSON 解析保護、欄位驗證（+16 行） | 新增錯誤處理 |
 | `tests/test_experimental_hardening.py` | 64 個新測試（v1），12 個測試類別 | 新增檔案 |
 | `tests/test_experimental_hardening_v2.py` | 43 個新測試（v2），9 個測試類別 | 新增檔案 |
+| `tests/test_experimental_hardening_v3.py` | 45 個新測試（v3），9 個測試類別 | 新增檔案 |
 
 ---
 
 ## 測試執行結果
 
 ```
-Ran 129 tests in 2.182s
+Ran 174 tests in 3.142s
 OK
 ```
 
-所有 129 個測試通過（原有 22 個 + v1 新增 64 個 + v2 新增 43 個）。
+所有 174 個測試通過（原有 22 個 + v1 新增 64 個 + v2 新增 43 個 + v3 新增 45 個）。
 
 ### 新增測試檔案結構
 
@@ -250,6 +383,20 @@ OK
 | `TestQueryDataClasses` | 6 | QueryRequest/QueryResponse 不可變性 |
 | `TestRegressionBug1And2` | 4 | Bug 1 與 Bug 2 回歸驗證 |
 
+**v3 — `tests/test_experimental_hardening_v3.py`（45 個測試）**
+
+| 測試類別 | 測試數 | 覆蓋範圍 |
+|---------|-------|---------|
+| `TestSessionStoreRoundtrip` | 6 | save/load 完整回路、類型保留 |
+| `TestSessionStoreErrorHandling` | 4 | **Bug 5** 缺少/損壞/欄位不足的錯誤處理 |
+| `TestParityAuditMarkdown` | 6 | archive 存在與否、覆蓋率顯示、缺少目標 |
+| `TestRemoteRuntimeReports` | 8 | 三種 mode、as_text 格式、不可變性、Edge case |
+| `TestQueryEngineBudgetExhaustion` | 5 | **Bug 4** max_budget_reached 不再累積訊息 |
+| `TestQueryEngineCompaction` | 4 | compact_after_turns 觸發時機與 transcript 同步 |
+| `TestQueryEngineSessionPersistence` | 4 | persist + from_saved_session 回路 |
+| `TestQueryEngineRenderSummary` | 4 | render_summary 完整性 |
+| `TestRegressionBug4And5` | 4 | Bug 4 與 Bug 5 回歸驗證 |
+
 ---
 
 ## Rust 程式碼庫說明（沙箱無 cargo 環境）
@@ -262,3 +409,5 @@ OK
 - `rust/crates/rusty-claude-cli/tests/` — CLI 旗標預設值、compact 輸出、mock parity harness、輸出格式合約、resume/slash 命令
 
 這些測試由 CI（`rust-ci.yml`）驗證，在具備穩定 Rust 工具鏈的機器上執行 `cargo test --workspace` 應全數通過。
+
+第三輪靜態分析新發現（詳見上方「Rust 靜態分析」段落）：最高優先級項目為 `bash_validation.rs` 的分號鏈接繞過問題，建議在 `extract_first_command` 之前先對命令字串進行 shell operator splitting（`;`、`&&`、`||`、`|`），對每個子命令段落分別驗證。

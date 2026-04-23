@@ -88,11 +88,19 @@ class QueryEnginePort:
         stop_reason = 'completed'
         if projected_usage.input_tokens + projected_usage.output_tokens > self.config.max_budget_tokens:
             stop_reason = 'max_budget_reached'
-        self.mutable_messages.append(prompt)
-        self.transcript_store.append(prompt)
-        self.permission_denials.extend(denied_tools)
-        self.total_usage = projected_usage
-        self.compact_messages_if_needed()
+        # Only append to conversation state if the budget has not been exceeded.
+        # Previously, messages were always appended even after max_budget_reached,
+        # allowing unbounded message accumulation past the intended cost limit.
+        if stop_reason == 'completed':
+            self.mutable_messages.append(prompt)
+            self.transcript_store.append(prompt)
+            self.permission_denials.extend(denied_tools)
+            self.total_usage = projected_usage
+            self.compact_messages_if_needed()
+        else:
+            # Budget exhausted: record denials and usage but do not grow the conversation.
+            self.permission_denials.extend(denied_tools)
+            self.total_usage = projected_usage
         return TurnResult(
             prompt=prompt,
             output=output,

@@ -1964,6 +1964,10 @@ pub fn render_slash_command_help() -> String {
     lines.push("  Tab                  Complete commands, modes, and recent sessions".to_string());
     lines.push("  Ctrl-C               Clear input (or exit on empty prompt)".to_string());
     lines.push("  Shift+Enter/Ctrl+J   Insert a newline".to_string());
+    lines.push(
+        "  /multiline           Reliable multi-line input mode; /submit sends, /cancel aborts"
+            .to_string(),
+    );
 
     lines
         .into_iter()

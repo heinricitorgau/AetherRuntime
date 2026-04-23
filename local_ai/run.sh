@@ -27,9 +27,34 @@ MODEL="${CLAW_MODEL:-llama3.2}"
 PROXY_PORT="${CLAW_PROXY_PORT:-8082}"
 OLLAMA_PORT="${CLAW_OLLAMA_PORT:-11435}"
 OLLAMA_URL="${OLLAMA_URL:-http://127.0.0.1:${OLLAMA_PORT}}"
+PERMISSION_MODE="${CLAW_PERMISSION_MODE:-read-only}"
+SYSTEM_PROMPT="${CLAW_SYSTEM_PROMPT:-你是離線終端機助理。請全程只使用繁體中文回答，不要混用其他語言。不要自己切換語言，也不要詢問是否要改用別的語言。請直接在對話中輸出答案，不要主動建立、修改或輸出成檔案，除非使用者明確要求你這樣做。如果使用者要求寫程式，請直接給正確答案；如果沒有明確指定程式語言，預設輸出 C 語言程式；如果已指定語言，就照指定語言回答。如果題目很簡單，請直接提供最短、正確的 C 程式。若未指定格式，請用清楚、直接、適合終端機閱讀的方式回覆。}"
 
 PROXY_PID=""
 OLLAMA_PID=""
+
+stop_listener_on_port() {
+    local port="$1"
+    local label="$2"
+    local pids=""
+    pids="$(lsof -ti tcp:"$port" -sTCP:LISTEN 2>/dev/null || true)"
+    if [[ -z "$pids" ]]; then
+        return 0
+    fi
+    warn "port ${port} already in use; restarting ${label}"
+    while IFS= read -r pid; do
+        [[ -n "$pid" ]] || continue
+        kill "$pid" 2>/dev/null || true
+    done <<< "$pids"
+    for _ in $(seq 1 10); do
+        if ! lsof -i ":${port}" -sTCP:LISTEN >/dev/null 2>&1; then
+            ok "${label} port ${port} cleared"
+            return 0
+        fi
+        sleep 1
+    done
+    fail "could not free port ${port} for ${label}"
+}
 
 cleanup() {
     printf "\n${BOLD}[claw-local]${RESET} shutting down...\n"
@@ -56,6 +81,7 @@ print_banner() {
 BANNER
     printf "${RESET}\n"
     printf "  model: ${CYAN}%s${RESET}\n" "$MODEL"
+    printf "  perms: ${CYAN}%s${RESET}\n" "$PERMISSION_MODE"
     printf "  proxy: ${CYAN}http://127.0.0.1:%s${RESET}\n" "$PROXY_PORT"
     printf "  ollama: ${CYAN}%s${RESET}\n\n" "$OLLAMA_URL"
 }
@@ -223,32 +249,35 @@ ok "model cached locally: ${MODEL}"
 
 header "proxy"
 
-if lsof -i ":${PROXY_PORT}" -sTCP:LISTEN >/dev/null 2>&1; then
-    warn "port ${PROXY_PORT} already in use; assuming proxy is already running"
-else
-    "$PYTHON_BIN" "$SCRIPT_DIR/proxy.py" \
-        --model "$MODEL" \
-        --port "$PROXY_PORT" \
-        --ollama-url "$OLLAMA_URL" \
-        >/tmp/claw-local-proxy.log 2>&1 &
-    PROXY_PID=$!
-    for i in $(seq 1 10); do
-        if curl -sf "http://127.0.0.1:${PROXY_PORT}/health" >/dev/null 2>&1; then
-            ok "proxy ready in ${i}s"
-            break
-        fi
-        sleep 1
-        if [[ "$i" -eq 10 ]]; then
-            fail "proxy failed to start; check /tmp/claw-local-proxy.log"
-        fi
-    done
-fi
+stop_listener_on_port "$PROXY_PORT" "proxy"
+
+"$PYTHON_BIN" "$SCRIPT_DIR/proxy.py" \
+    --model "$MODEL" \
+    --port "$PROXY_PORT" \
+    --ollama-url "$OLLAMA_URL" \
+    --system-prompt "$SYSTEM_PROMPT" \
+    >/tmp/claw-local-proxy.log 2>&1 &
+PROXY_PID=$!
+for i in $(seq 1 10); do
+    if curl -sf "http://127.0.0.1:${PROXY_PORT}/health" >/dev/null 2>&1; then
+        ok "proxy ready in ${i}s"
+        break
+    fi
+    sleep 1
+    if [[ "$i" -eq 10 ]]; then
+        fail "proxy failed to start; check /tmp/claw-local-proxy.log"
+    fi
+done
 
 header "launch"
 printf "${GREEN}ready${RESET} local AI is up. Press Ctrl+C to exit.\n\n"
 
 export ANTHROPIC_BASE_URL="http://127.0.0.1:${PROXY_PORT}"
 export ANTHROPIC_API_KEY="local-ollama"
+
+if [[ "$#" -eq 0 ]]; then
+    exec "$CLAW_BIN" --model "$MODEL" --permission-mode "$PERMISSION_MODE"
+fi
 
 args=("$@")
 has_model_flag=0
@@ -259,8 +288,21 @@ for arg in "${args[@]}"; do
     fi
 done
 
-if [[ "$has_model_flag" -eq 1 ]]; then
-    exec "$CLAW_BIN" "${args[@]}"
-else
-    exec "$CLAW_BIN" --model "$MODEL" "${args[@]}"
+has_permission_flag=0
+for arg in "${args[@]}"; do
+    if [[ "$arg" == "--permission-mode" || "$arg" == --permission-mode=* ]]; then
+        has_permission_flag=1
+        break
+    fi
+done
+
+final_args=()
+if [[ "$has_model_flag" -eq 0 ]]; then
+    final_args+=(--model "$MODEL")
 fi
+if [[ "$has_permission_flag" -eq 0 ]]; then
+    final_args+=(--permission-mode "$PERMISSION_MODE")
+fi
+final_args+=("${args[@]}")
+
+exec "$CLAW_BIN" "${final_args[@]}"

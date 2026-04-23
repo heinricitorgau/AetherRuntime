@@ -8,13 +8,21 @@ use rustyline::error::ReadlineError;
 use rustyline::highlight::{CmdKind, Highlighter};
 use rustyline::hint::Hinter;
 use rustyline::history::DefaultHistory;
-use rustyline::validate::Validator;
+use rustyline::validate::{ValidationContext, ValidationResult, Validator};
 use rustyline::{
     Cmd, CompletionType, Config, Context, EditMode, Editor, Helper, KeyCode, KeyEvent, Modifiers,
 };
 
+const MULTILINE_CONTINUATION_MARKER: &str = "\\";
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ReadOutcome {
+    Submit(String),
+    Cancel,
+    Exit,
+}
+
+pub enum MultilineReadOutcome {
     Submit(String),
     Cancel,
     Exit,
@@ -95,11 +103,20 @@ impl Highlighter for SlashCommandHelper {
     }
 }
 
-impl Validator for SlashCommandHelper {}
+impl Validator for SlashCommandHelper {
+    fn validate(&self, ctx: &mut ValidationContext) -> rustyline::Result<ValidationResult> {
+        let input = ctx.input();
+        if input.ends_with(MULTILINE_CONTINUATION_MARKER) {
+            return Ok(ValidationResult::Incomplete);
+        }
+        Ok(ValidationResult::Valid(None))
+    }
+}
 impl Helper for SlashCommandHelper {}
 
 pub struct LineEditor {
     prompt: String,
+    continuation_prompt: String,
     editor: Editor<SlashCommandHelper, DefaultHistory>,
 }
 
@@ -118,6 +135,7 @@ impl LineEditor {
 
         Self {
             prompt: prompt.into(),
+            continuation_prompt: "... ".to_string(),
             editor,
         }
     }
@@ -147,7 +165,7 @@ impl LineEditor {
         }
 
         match self.editor.readline(&self.prompt) {
-            Ok(line) => Ok(ReadOutcome::Submit(line)),
+            Ok(line) => Ok(ReadOutcome::Submit(normalize_multiline_submission(line))),
             Err(ReadlineError::Interrupted) => {
                 let has_input = !self.current_line().is_empty();
                 self.finish_interrupted_read()?;
@@ -162,6 +180,44 @@ impl LineEditor {
                 Ok(ReadOutcome::Exit)
             }
             Err(error) => Err(io::Error::other(error)),
+        }
+    }
+
+    pub fn read_multiline_block(&mut self) -> io::Result<MultilineReadOutcome> {
+        if !io::stdin().is_terminal() || !io::stdout().is_terminal() {
+            return self.read_multiline_fallback();
+        }
+
+        let mut lines: Vec<String> = Vec::new();
+        loop {
+            if let Some(helper) = self.editor.helper_mut() {
+                helper.reset_current_line();
+            }
+            match self.editor.readline(&self.continuation_prompt) {
+                Ok(line) => {
+                    let trimmed = line.trim();
+                    if trimmed == "/submit" || trimmed == ".send" {
+                        return Ok(MultilineReadOutcome::Submit(lines.join("\n")));
+                    }
+                    if trimmed == "/cancel" || trimmed == ".cancel" {
+                        return Ok(MultilineReadOutcome::Cancel);
+                    }
+                    lines.push(normalize_multiline_submission(line));
+                }
+                Err(ReadlineError::Interrupted) => {
+                    let has_input = !self.current_line().is_empty() || !lines.is_empty();
+                    self.finish_interrupted_read()?;
+                    if has_input {
+                        return Ok(MultilineReadOutcome::Cancel);
+                    }
+                    return Ok(MultilineReadOutcome::Exit);
+                }
+                Err(ReadlineError::Eof) => {
+                    self.finish_interrupted_read()?;
+                    return Ok(MultilineReadOutcome::Exit);
+                }
+                Err(error) => return Err(io::Error::other(error)),
+            }
         }
     }
 
@@ -195,6 +251,38 @@ impl LineEditor {
         }
         Ok(ReadOutcome::Submit(buffer))
     }
+
+    fn read_multiline_fallback(&self) -> io::Result<MultilineReadOutcome> {
+        let mut stdout = io::stdout();
+        let mut lines: Vec<String> = Vec::new();
+        loop {
+            write!(stdout, "{}", self.continuation_prompt)?;
+            stdout.flush()?;
+
+            let mut buffer = String::new();
+            let bytes_read = io::stdin().read_line(&mut buffer)?;
+            if bytes_read == 0 {
+                return Ok(MultilineReadOutcome::Exit);
+            }
+
+            while matches!(buffer.chars().last(), Some('\n' | '\r')) {
+                buffer.pop();
+            }
+
+            let trimmed = buffer.trim();
+            if trimmed == "/submit" || trimmed == ".send" {
+                return Ok(MultilineReadOutcome::Submit(lines.join("\n")));
+            }
+            if trimmed == "/cancel" || trimmed == ".cancel" {
+                return Ok(MultilineReadOutcome::Cancel);
+            }
+            lines.push(buffer);
+        }
+    }
+}
+
+fn normalize_multiline_submission(line: String) -> String {
+    line.replace("\\\n", "\n")
 }
 
 fn slash_command_prefix(line: &str, pos: usize) -> Option<&str> {
@@ -221,7 +309,9 @@ fn normalize_completions(completions: Vec<String>) -> Vec<String> {
 
 #[cfg(test)]
 mod tests {
-    use super::{slash_command_prefix, LineEditor, SlashCommandHelper};
+    use super::{
+        normalize_multiline_submission, slash_command_prefix, LineEditor, SlashCommandHelper,
+    };
     use rustyline::completion::Completer;
     use rustyline::highlight::Highlighter;
     use rustyline::history::{DefaultHistory, History};
@@ -326,5 +416,11 @@ mod tests {
 
         let helper = editor.editor.helper().expect("helper should exist");
         assert_eq!(helper.completions, vec!["/model opus".to_string()]);
+    }
+
+    #[test]
+    fn normalize_multiline_submission_removes_continuation_markers() {
+        let normalized = normalize_multiline_submission("line one\\\nline two".to_string());
+        assert_eq!(normalized, "line one\nline two");
     }
 }

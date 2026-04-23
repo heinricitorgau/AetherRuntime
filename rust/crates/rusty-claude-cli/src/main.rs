@@ -2760,6 +2760,28 @@ fn run_repl(
                 if trimmed.is_empty() {
                     continue;
                 }
+                if matches!(trimmed.as_str(), "/multiline" | "/ml") {
+                    println!(
+                        "Multiline mode: type your message on multiple lines, then use /submit or .send to send, /cancel or .cancel to abort."
+                    );
+                    match editor.read_multiline_block()? {
+                        input::MultilineReadOutcome::Submit(block) => {
+                            let block_trimmed = block.trim().to_string();
+                            if block_trimmed.is_empty() {
+                                continue;
+                            }
+                            editor.push_history(block.clone());
+                            cli.record_prompt_history(&block_trimmed);
+                            cli.run_turn(&block_trimmed)?;
+                        }
+                        input::MultilineReadOutcome::Cancel => continue,
+                        input::MultilineReadOutcome::Exit => {
+                            cli.persist_session()?;
+                            break;
+                        }
+                    }
+                    continue;
+                }
                 if matches!(trimmed.as_str(), "/exit" | "/quit") {
                     cli.persist_session()?;
                     break;
@@ -3362,7 +3384,7 @@ impl LiveCli {
   \x1b[2mDirectory\x1b[0m        {}\n\
   \x1b[2mSession\x1b[0m          {}\n\
   \x1b[2mAuto-save\x1b[0m        {}\n\n\
-  Type \x1b[1m/help\x1b[0m for commands · \x1b[1m/status\x1b[0m for live context · \x1b[2m/resume latest\x1b[0m jumps back to the newest session · \x1b[1m/diff\x1b[0m then \x1b[1m/commit\x1b[0m to ship · \x1b[2mTab\x1b[0m for workflow completions · \x1b[2mShift+Enter\x1b[0m for newline",
+  Type \x1b[1m/help\x1b[0m for commands · \x1b[1m/status\x1b[0m for live context · \x1b[2m/resume latest\x1b[0m jumps back to the newest session · \x1b[1m/diff\x1b[0m then \x1b[1m/commit\x1b[0m to ship · \x1b[2mTab\x1b[0m for workflow completions · \x1b[2mShift+Enter/Ctrl+J\x1b[0m for newline · \x1b[2m/multiline\x1b[0m for reliable multi-line input",
             self.model,
             self.permission_mode.as_str(),
             git_branch,
@@ -4587,6 +4609,8 @@ fn render_repl_help() -> String {
         "  Tab                  Complete commands, modes, and recent sessions".to_string(),
         "  Ctrl-C               Clear input (or exit on empty prompt)".to_string(),
         "  Shift+Enter/Ctrl+J   Insert a newline".to_string(),
+        "  /multiline           Reliable multi-line input mode; /submit sends, /cancel aborts"
+            .to_string(),
         "  Auto-save            .claw/sessions/<session-id>.jsonl".to_string(),
         "  Resume latest        /resume latest".to_string(),
         "  Browse sessions      /session list".to_string(),

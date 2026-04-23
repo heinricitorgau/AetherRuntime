@@ -1,0 +1,98 @@
+research-claw-code agent usage
+==============================
+
+這份檔案是給使用者看的快速說明。
+
+一、這個 agent 是做什麼的
+
+- 在有網路時先下載與打包執行環境
+- 在無網路時直接啟動 agent 並提問
+- 預設用繁體中文回覆
+- 若要求寫程式但沒指定語言，預設輸出 C 語言程式
+- 預設直接輸出答案，不主動寫檔
+
+二、第一次準備離線 bundle
+
+macOS / Linux:
+
+cd ~/Desktop/research-claw-code
+bash deploy_local.sh
+
+Windows PowerShell:
+
+Set-Location ~/Desktop/research-claw-code
+powershell -ExecutionPolicy Bypass -File .\deploy_local.ps1
+
+三、離線啟動 agent
+
+macOS / Linux:
+
+cd ~/Desktop/research-claw-code
+bash local_ai/run.sh
+
+Windows PowerShell:
+
+Set-Location ~/Desktop/research-claw-code
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+
+四、直接問單一問題
+
+macOS / Linux:
+
+bash local_ai/run.sh --output-format text prompt "請用中文解釋這個錯誤訊息"
+
+Windows PowerShell:
+
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --output-format text prompt "請用中文解釋這個錯誤訊息"
+
+五、進入 agent 後怎麼問
+
+直接輸入問題即可，例如：
+
+請解釋這段程式碼
+
+或：
+
+請寫一個程式輸出 1
+
+六、多行輸入怎麼用
+
+最穩定的方法是：
+
+/multiline
+第一行
+第二行
+/submit
+
+取消輸入：
+
+/cancel
+
+補充：
+
+- Ctrl+J 也可以嘗試插入換行
+- Shift+Enter 在部分終端可用，但不保證穩定
+- Windows 上尤其建議優先用 /multiline
+
+七、預設行為
+
+- 回覆語言：繁體中文
+- 預設程式語言：C
+- 預設權限：read-only
+- 輸出方式：直接顯示在對話中，不主動寫檔
+
+八、如果要清掉下載的 bundle
+
+macOS / Linux:
+
+bash cleanup_local.sh
+
+Windows PowerShell:
+
+powershell -ExecutionPolicy Bypass -File .\cleanup_local.ps1
+
+九、注意事項
+
+- bundle 需要先在有網路的環境準備好
+- local_ai/runtime/ 可能很大，因為模型會一起打包
+- 清理指令只會刪除 repo 內的 bundle，不會刪除全域模型快取

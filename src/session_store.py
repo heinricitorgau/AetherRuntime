@@ -26,7 +26,23 @@ def save_session(session: StoredSession, directory: Path | None = None) -> Path:
 
 def load_session(session_id: str, directory: Path | None = None) -> StoredSession:
     target_dir = directory or DEFAULT_SESSION_DIR
-    data = json.loads((target_dir / f'{session_id}.json').read_text())
+    session_path = target_dir / f'{session_id}.json'
+    if not session_path.exists():
+        raise FileNotFoundError(
+            f"Session '{session_id}' not found at {session_path}. "
+            "The session may have expired or the path is incorrect."
+        )
+    try:
+        data = json.loads(session_path.read_text())
+    except json.JSONDecodeError as exc:
+        raise ValueError(
+            f"Session '{session_id}' has corrupted JSON at {session_path}: {exc}"
+        ) from exc
+    missing = [k for k in ('session_id', 'messages', 'input_tokens', 'output_tokens') if k not in data]
+    if missing:
+        raise ValueError(
+            f"Session '{session_id}' is missing required fields: {missing}"
+        )
     return StoredSession(
         session_id=data['session_id'],
         messages=tuple(data['messages']),

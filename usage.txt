@@ -8,6 +8,11 @@ research-claw-code usage
 cd ~/Desktop/research-claw-code
 bash deploy_local.sh
 
+Windows PowerShell：
+
+Set-Location ~/Desktop/research-claw-code
+powershell -ExecutionPolicy Bypass -File .\deploy_local.ps1
+
 這一步會：
 - 建置 claw CLI
 - 準備 bundled ollama 執行檔
@@ -18,18 +23,48 @@ bash deploy_local.sh
 
 bash local_ai/prepare_bundle.sh codellama
 
+Windows PowerShell：
+
+powershell -ExecutionPolicy Bypass -File .\local_ai\prepare_bundle.ps1 codellama
+
 2. 之後離線直接啟動
 
 cd ~/Desktop/research-claw-code
 bash local_ai/run.sh
 
+Windows PowerShell：
+
+Set-Location ~/Desktop/research-claw-code
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+
 3. 一次性問句
 
 bash local_ai/run.sh --output-format text prompt "幫我解釋這個 repo"
 
+Windows PowerShell：
+
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --output-format text prompt "幫我解釋這個 repo"
+
+離線模式預設會以繁體中文回覆。若想改寫回覆風格，可設定：
+
+CLAW_SYSTEM_PROMPT="請全程使用繁體中文，回答精簡一點" bash local_ai/run.sh
+
+如果要求寫程式但沒有指定語言，預設會輸出 C 語言程式。
+離線模式也會預設用 read-only 權限啟動，所以會直接輸出答案，不會主動寫入檔案。
+
 4. 搬到另一台電腦
 
 把整個 research-claw-code 資料夾連同 local_ai/runtime/ 一起複製過去即可。
+
+4.5 用完後清掉 deploy_local.sh 下載到 repo 裡的 bundle
+
+bash cleanup_local.sh
+
+Windows PowerShell：
+
+powershell -ExecutionPolicy Bypass -File .\cleanup_local.ps1
+
+這只會刪除 local_ai/runtime/，不會刪掉 ~/.ollama 的全域模型快取。
 
 5. 注意事項
 
@@ -42,6 +77,11 @@ bash local_ai/run.sh --output-format text prompt "幫我解釋這個 repo"
 
 CLAW_MODEL=llama3.2 bash local_ai/run.sh
 CLAW_OLLAMA_PORT=11435 bash local_ai/run.sh
+
+Windows PowerShell：
+
+$env:CLAW_MODEL="llama3.2"; powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+$env:CLAW_OLLAMA_PORT="11435"; powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
 
 7. 疑難排解
 
