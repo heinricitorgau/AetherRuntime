@@ -1,9 +1,9 @@
 # TEST_RECORD — 實驗性加固測試紀錄
 
-**日期：** 2026-04-13（v1/v2）、2026-04-15（v3）
+**日期：** 2026-04-13（v1/v2）、2026-04-15（v3）、2026-04-24（v4）
 **分支：** `test/experimental-hardening`
 **測試執行器：** Python `unittest`（標準庫，無需外部依賴）
-**總測試數量（本輪結束後）：** 174（原有 22 + v1 新增 64 + v2 新增 43 + v3 新增 45）— 全數通過 ✅
+**總測試數量（本輪結束後）：** 196（原有 22 + v1 新增 64 + v2 新增 43 + v3 新增 45 + v4 新增 22）— 全數通過 ✅
 
 ---
 
@@ -411,3 +411,108 @@ OK
 這些測試由 CI（`rust-ci.yml`）驗證，在具備穩定 Rust 工具鏈的機器上執行 `cargo test --workspace` 應全數通過。
 
 第三輪靜態分析新發現（詳見上方「Rust 靜態分析」段落）：最高優先級項目為 `bash_validation.rs` 的分號鏈接繞過問題，建議在 `extract_first_command` 之前先對命令字串進行 shell operator splitting（`;`、`&&`、`||`、`|`），對每個子命令段落分別驗證。
+
+---
+
+## 第四輪（v4）—— Proxy 層離線行為與 zh-TW 強化
+
+**日期：** 2026-04-24
+**新增測試數：** 22（累積 196）
+**測試檔：** `tests/test_experimental_hardening_v4_proxy.py`
+**執行指令：** `python3 tests/test_experimental_hardening_v4_proxy.py`
+**執行結果：** `Ran 22 tests in 0.621s — OK` ✅
+**受測模組：** `local_ai/proxy.py`（Anthropic ↔ Ollama 轉譯 proxy，純 stdlib 實作）
+
+### 背景
+
+v1–v3 聚焦於 Python port（`src/`）的權限、引擎、命令、session 與 query 子系統。v4 把範圍延伸到離線執行路徑上最關鍵的單元：`local_ai/proxy.py`。這個 proxy 是 bundle 執行時 `claw` CLI 與 bundled Ollama 之間的唯一橋樑，同時負責：
+
+1. Anthropic Messages API ↔ Ollama OpenAI-compatible `/v1/chat/completions` 雙向轉譯
+2. C 語言題目的本地靜態檢查 + 重寫迴圈（最多 2 次重試）
+3. 一般問題的真實 SSE 串流 passthrough
+4. 所有錯誤訊息一律以 zh-TW UTF-8 輸出
+
+### 假設表格（Hypothesis Table）
+
+| # | 假設 | 測試情境 | 預期 | 實際 | 狀態 |
+|---|------|---------|------|------|------|
+| H-v4-01 | 語言偵測：顯式 Python 關鍵字命中 | `detect_language("請幫我寫 python 的快排")` | `"python"` | `"python"` | ✅ PASS |
+| H-v4-02 | 語言偵測：顯式 Java 關鍵字命中 | `detect_language("用 Java 寫 fibonacci")` | `"java"` | `"java"` | ✅ PASS |
+| H-v4-03 | 語言偵測：C++ 不會誤判為 C | 含 `c++` 字樣 | `"cpp"`（非 `"c"`） | `"cpp"` | ✅ PASS |
+| H-v4-04 | 語言偵測：未指定語言預設 C | 單純「幫我寫排序」 | `"c"` | `"c"` | ✅ PASS |
+| H-v4-05 | 語言偵測：非程式題回傳 None | 「今天天氣如何」 | `None` | `None` | ✅ PASS |
+| H-v4-06 | 靜態 C 檢查：最小合法 C 通過 | `#include <stdio.h>` + `int main` | `ok=True` | `True` | ✅ PASS |
+| H-v4-07 | 靜態 C 檢查：缺少 `main` 被拒 | 只有函式宣告 | `ok=False` | `False` | ✅ PASS |
+| H-v4-08 | 靜態 C 檢查：拒絕 `std::` 命名空間 | `std::cout` 代碼片段 | `ok=False` | `False` | ✅ PASS |
+| H-v4-09 | 靜態 C 檢查：拒絕 `cout` | iostream 風格輸出 | `ok=False` | `False` | ✅ PASS |
+| H-v4-10 | 靜態 C 檢查：拒絕 `vector<>` 模板 | `std::vector<int>` | `ok=False` | `False` | ✅ PASS |
+| H-v4-11 | 級數數學檢查：hello world 被判不達題意 | 輸出 hello 的 C 程式 | 不通過 | 不通過 | ✅ PASS |
+| H-v4-12 | 級數數學檢查：級數題缺 `factorial` 被拒 | `sin(x)` 展開題目但沒 factorial | 不通過 | 不通過 | ✅ PASS |
+| H-v4-13 | `_send_json_error` 中文 UTF-8 往返保留原字元 | 中文錯誤訊息 | 位元組含原始中文 UTF-8 | 保留 | ✅ PASS |
+| H-v4-14 | 舊行為（`ensure_ascii=True`）會把中文跳脫為 `\uXXXX` | 對照實驗 | 含 `\u` 跳脫序列 | 確認差異 | ✅ PASS |
+| H-v4-15 | SSE 生成器：`text_to_anthropic_sse` 事件順序正確 | 純文字轉 SSE | `message_start` → `content_block_start` → `content_block_delta` → `content_block_stop` → `message_delta` → `message_stop` | 順序正確 | ✅ PASS |
+| H-v4-16 | SSE 生成器：中文 token 不被破壞 | 含 `「繁體中文」` 的 delta | UTF-8 原字元保留 | 保留 | ✅ PASS |
+| H-v4-17 | 端到端：`/health` 回 200 與 JSON | 起 proxy，call `GET /health` | 200 + JSON | 正確 | ✅ PASS |
+| H-v4-18 | 端到端：非串流 zh-TW 回覆 | `stream=False` 的 Messages call | Anthropic 格式 + 中文內容 | 正確 | ✅ PASS |
+| H-v4-19 | 端到端：串流真實 SSE（非 C 題） | `stream=True` 一般問題 | 多個 SSE 事件、含 `message_start`、`message_stop` | 真串流 | ✅ PASS |
+| H-v4-20 | 端到端：未知端點回 zh-TW UTF-8 錯誤 | `POST /v99/unknown` | 4xx + 中文 `未知的端點：` | 正確 | ✅ PASS |
+| H-v4-21 | 端到端：非法 JSON body 回 zh-TW UTF-8 錯誤 | POST `{bad json` | 4xx + 中文 `請求內容不是合法的 JSON` | 正確 | ✅ PASS |
+| H-v4-22 | 端到端：C 題第一次回 C++ 被拒、第二次修復後通過 | Fake Ollama 第 1 次回 `cout`，第 2 次回 `printf` | 第二輪輸出為合法 C | 正確 | ✅ PASS |
+
+### 測試類別分佈
+
+| 測試類別 | 測試數 | 覆蓋範圍 |
+|---------|-------|---------|
+| `TestLanguageDetection` | 5 | 程式語言偵測的多語系輸入（python/java/c++/c/non-code） |
+| `TestStaticCCheck` | 5 | C 語法/結構靜態檢查與 C++ 特徵拒絕 |
+| `TestSeriesMathCheck` | 2 | 級數題的語意級健全性檢查 |
+| `TestSendJsonErrorBytes` | 2 | 錯誤訊息 UTF-8 位元組保證（對照舊 `ensure_ascii=True` 行為） |
+| `TestSseGenerators` | 2 | Anthropic SSE 事件序列與中文 token 保真 |
+| `EndToEndProxy` | 6 | 子行程啟動真實 `proxy.py` 並以 Fake Ollama HTTP server 打端到端 |
+
+### 端到端測試架構
+
+`EndToEndProxy.setUpClass` 建立完整的離線執行鏡像：
+
+1. 挑兩個空閒 port（`socket.SOCK_STREAM` + `getsockname()[1]`），分別當 fake Ollama 與 proxy 的 port
+2. 啟動 `ThreadingHTTPServer` 承載 `FakeOllamaHandler`，支援：
+   - `GET /api/tags` — 回模型列表
+   - `POST /v1/chat/completions`（`stream=False`）— 回固定中文 JSON
+   - `POST /v1/chat/completions`（`stream=True`）— 逐 chunk 發 OpenAI SSE
+   - 以 `shared_state` 控制 C 修復流程：第 1 次回 `std::cout`、第 2 次回合法 C
+3. `subprocess.Popen` 起一份真實 `local_ai/proxy.py`，傳入 `CLAW_OLLAMA_BASE` 指向 fake Ollama
+4. `tearDownClass` 用 `terminate()` + `wait(timeout=5)` 乾淨關閉 proxy、`shutdown()` 關 fake Ollama
+
+### 本輪所做的強化（Strengthening）
+
+在跑 v4 測試的同時，對 `local_ai/proxy.py` 做了以下 4 項修復，以符合「離線模式預設 zh-TW UTF-8」的設計目標：
+
+| # | 位置 | 問題 | 修復 |
+|---|------|------|------|
+| S-v4-1 | `_send_json_error`（原版） | `json.dumps(..., ensure_ascii=True)` 導致中文錯誤訊息被跳脫成 `\uXXXX`，使用者在終端機看到亂碼 | 改為 `json.dumps(..., ensure_ascii=False).encode("utf-8")`，並補上 `Content-Type: application/json; charset=utf-8` 與精確的 `Content-Length` |
+| S-v4-2 | 無法連線到 Ollama 的分支 | 英文錯誤 `Could not connect to Ollama` | 改為 `無法連線到 Ollama，請先執行 ollama serve` |
+| S-v4-3 | 未知端點分支 | 英文 `Unknown endpoint: {path}` | 改為 `未知的端點：{path}` |
+| S-v4-4 | JSON 解析失敗分支 | 英文 `Request body is not valid JSON` | 改為 `請求內容不是合法的 JSON` |
+
+另外也順手把 `import os` 從某個 `finally` 區塊內拉到模組最上層（原本只在特定 code path 才會被 import，造成冷路徑測試時 `NameError`），並把上游 Ollama 呼叫強制 `stream=False`，由 proxy 自己決定要串流還是要等完整字串（C 修復流程必須拿到完整字串才能做靜態檢查）。
+
+### 如何重跑 v4
+
+```bash
+cd ~/Desktop/research-claw-code
+python3 tests/test_experimental_hardening_v4_proxy.py
+```
+
+不需 `pip install` 任何依賴——全程只用 Python 標準庫（`http.server`、`unittest`、`subprocess`、`socket`、`threading`、`json`）。
+
+### 未納入本輪、建議後續補強的項目
+
+以下是 v4 實驗中觀察到、但尚未寫成自動測試的潛在弱點，列給下一輪 v5 參考：
+
+1. **SSE 斷線恢復：** 當下游 Ollama 中途斷線，目前 proxy 只會把錯誤包成一個 `message_delta`；沒有測試覆蓋「串到一半 upstream 500」的情境。
+2. **C 修復無限迴圈保護：** `max_retries=2` 是靠計數器控制，沒有獨立測試驗證「即使模型連續 10 次回 C++，proxy 也必須在第 2 次之後停手」。
+3. **超大 prompt 的 `Content-Length`：** 用 `len(body)` 應對中文 UTF-8 多位元組字元，可加一組 >1 MB body 的壓力測試。
+4. **`CLAW_SYSTEM_PROMPT` 覆寫：** 環境變數注入的 system prompt 是否正確合流進上游 payload，目前只在 `run.sh` 的 smoke script 裡驗證，單元測試面沒有覆蓋。
+5. **bundle manifest BOM-less 往返：** PowerShell 端的寫入已改成 `UTF8Encoding($false)`；建議加一組「Windows 寫、Linux 讀」的跨平台 fixture 測試。
+
+這些項目建議排進 v5 計畫，暫不阻擋當前 v4 合入。

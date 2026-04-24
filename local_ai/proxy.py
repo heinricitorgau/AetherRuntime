@@ -761,13 +761,13 @@ class ProxyHandler(BaseHTTPRequestHandler):
         try:
             body = json.loads(raw)
         except json.JSONDecodeError:
-            self._send_json_error(400, "Invalid JSON")
+            self._send_json_error(400, "請求內容不是合法的 JSON")
             return
 
         if self.path in ("/v1/messages",):
             self._handle_messages(body)
         else:
-            self._send_json_error(404, f"Unknown endpoint: {self.path}")
+            self._send_json_error(404, f"未知的端點：{self.path}")
 
     def _handle_messages(self, body: dict) -> None:
         streaming = body.get("stream", False)
@@ -793,10 +793,12 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 )
         except URLError as exc:
             sys.stderr.write(f"[proxy] Ollama 連線失敗：{exc}\n")
-            self._send_json_error(502, "Bad Gateway: cannot reach Ollama")
+            self._send_json_error(502, "無法連線到 Ollama，請先執行 ollama serve")
         except HTTPError as exc:
             sys.stderr.write(f"[proxy] Ollama HTTP 錯誤：{exc}\n")
-            self._send_json_error(502, f"Bad Gateway: Ollama returned HTTP {exc.code}")
+            self._send_json_error(
+                502, f"Ollama 回應 HTTP {exc.code}：{exc.reason or '未知錯誤'}"
+            )
 
     def _sync_response(
         self,
