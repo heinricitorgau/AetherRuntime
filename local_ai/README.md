@@ -8,6 +8,17 @@
 
 這樣才符合「下載資料夾後，下個指令就能直接跑，而且不需要網路」。
 
+## Level 1 Windows Air-Gap
+
+本目錄的離線 bundle 目標包含 **Level 1 air-gap**：
+
+- 目標 Windows 電腦從出廠/空機開始就不連網。
+- 可以透過 USB、外接硬碟、光碟或預載映像檔帶入完整 bundle。
+- 目標機只執行 `local_ai/run.ps1`，不執行下載、安裝、編譯或 `ollama pull`。
+- bundle 應在另一台有網路的 Windows 準備機完成，且準備機與目標機需盡量保持相同 OS 與 CPU 架構。
+
+目前 Windows bundle 會帶入 `claw.exe`、`ollama.exe` 與模型快取。仍需注意：`run.ps1` 會用 `python`、`python3` 或 `py` 執行 `proxy.py`。若目標 Windows 空機沒有 Python，完整 Level 1 部署還需要額外帶入 portable Python，或未來改成 bundled `proxy.exe`。
+
 目前離線流程會用到的入口腳本也都集中在 `local_ai/` 目錄下。
 
 現在的 launcher 不依賴系統安裝的 `ollama`。它會直接使用 `local_ai/runtime/` 內打包好的執行檔與模型，並透過系統自帶的 Python 3 跑一層很薄的本地 proxy。離線模式下，proxy 會預設附加繁體中文 system prompt，因此一般提問會直接用中文回覆；如果要它寫程式而你沒有指定語言，預設會輸出 `C` 語言。啟動時也會預設使用 `read-only` 權限，所以它會直接輸出答案，而不是主動改檔或寫檔。
@@ -126,10 +137,11 @@ bundled local model
 - `local_ai/runtime/` 可能很大，因為模型本身會一起被打包。
 - 如果你用完後想回收 repo 內空間，可以執行 `bash local_ai/cleanup_local.sh`。
 - 如果你要把它分發給別人，直接壓縮整個 `research-claw-code` 資料夾即可。
+- Windows Level 1 air-gap 部署時，請在有網路的 Windows 準備機製作 bundle，再用 USB/外接硬碟/光碟/映像檔搬到無網路 Windows 目標機；目標機只跑 `run.ps1`。
 - 目前這個 bundle 是針對「相同作業系統 + 相同 CPU 架構」攜帶。例：這次打的是 `macOS arm64`，所以最穩是搬到另一台 `macOS arm64` 機器。`run.sh` 會檢查這個條件。
 - 也就是說：不需要安裝第三方軟體，但不能保證同一份 bundle 同時跨 `macOS / Linux / Windows` 或 `arm64 / x86_64` 全部通用。
 - 在 macOS 上，launcher 會優先使用系統自帶的 `/usr/bin/python3`，所以目標機器不需要另外安裝 Python。
-- 在 Windows 上，PowerShell launcher 會優先尋找 `python`、`python3` 或 `py`。
+- 在 Windows 上，PowerShell launcher 會優先尋找 `python`、`python3` 或 `py`；出廠空機若沒有 Python，需要把 portable Python 一起放進 bundle，或改用未來的 bundled `proxy.exe`。
 - `bash local_ai/cleanup_local.sh` 不會動到 `~/.ollama` 的全域模型快取，避免誤刪你原本就有的模型。
 - `powershell -ExecutionPolicy Bypass -File .\local_ai\cleanup_local.ps1` 也只會清 repo 內的 bundle。
 

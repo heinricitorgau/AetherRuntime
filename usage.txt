@@ -1,6 +1,19 @@
 research-claw-code usage
 ========================
 
+0. Level 1 Windows Air-Gap 目標
+
+這個 repo 要挑戰的無網路場景是：
+- 目標 Windows 電腦從出廠/空機開始就不連網
+- 允許用 USB、外接硬碟、光碟或預載映像檔帶入完整 bundle
+- 目標機不現場下載模型、不安裝 Ollama、不安裝 Rust、不編譯 claw
+- bundle 在另一台有網路且同 OS/同 CPU 架構的準備機完成
+
+目前 Windows bundle 會帶入 claw.exe、ollama.exe 與模型快取。
+注意：run.ps1 仍需要 python、python3 或 py 來執行 local_ai/proxy.py。
+若目標 Windows 空機沒有 Python，完整 Level 1 部署還需要帶入 portable Python，
+或之後改成 bundled proxy.exe。
+
 1. 第一次準備離線 bundle
 
 在有網路的機器上執行：
@@ -50,6 +63,9 @@ powershell -ExecutionPolicy Bypass -File .\local_ai\prepare_bundle.ps1 --cached-
 2. 把整個資料夾搬到目標機器
 
 把整個 research-claw-code 資料夾連同 local_ai/runtime/ 一起複製過去即可。
+
+Windows Level 1 air-gap 測試時，請用 USB、外接硬碟、光碟或預載映像檔搬到
+無網路 Windows 目標機。目標機只執行 run.ps1，不要在目標機執行 prepare_bundle.ps1。
 
 3. 之後離線直接啟動
 
@@ -122,6 +138,7 @@ $env:CLAW_SYSTEM_PROMPT="請全程使用繁體中文，回答精簡一點"; powe
 - local_ai/runtime/ 可能很大，因為模型會一起打包
 - --fast 會優先重用既有 binary 與已打包模型
 - --cached-only 不會下載模型；若本機沒有快取指定模型就直接失敗
+- Windows 出廠空機 Level 1 air-gap 需要額外確認 Python：目前 run.ps1 會找 python、python3 或 py
 - bundle manifest 是 BOM-less UTF-8，Windows 打出的 bundle 搬到 macOS / Linux 讀取不會被 BOM 卡住
 - 重新啟動時若舊 proxy/ollama 還占著 port，Windows 與 macOS / Linux 都會等最多 10 秒再接手
 - local_ai/deploy_local.sh 與 local_ai/deploy_local.ps1 都會在結束時印出總耗時

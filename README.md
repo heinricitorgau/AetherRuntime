@@ -7,6 +7,19 @@
 
 如果你的目標是「下載資料夾後，離線直接問問題」，從下面的離線快速開始即可。
 
+## 支援目標：Level 1 Windows Air-Gap
+
+本專案要挑戰的無網路場景是 **Level 1 air-gap**：
+
+- 目標 Windows 電腦可以是出廠/空機狀態，從頭到尾不連網。
+- 允許用 USB、外接硬碟、光碟或預載映像檔把完整 bundle 帶進目標機。
+- 目標機不應現場下載模型、安裝 Ollama、安裝 Rust 或編譯 `claw`。
+- 準備 bundle 的工作必須在另一台有網路、同作業系統與同 CPU 架構的準備機完成。
+
+也就是說，這不是「完全沒有外部媒介的空機自生成 AI」，而是「先製作完整可攜 bundle，再部署到全程無網路的 Windows 目標機」。
+
+目前 Windows bundle 已打包 `claw.exe`、`ollama.exe` 與模型快取；但 `local_ai/run.ps1` 仍需要目標機可執行 `python`、`python3` 或 `py` 來啟動 `local_ai/proxy.py`。若目標 Windows 空機沒有 Python，還需要把 portable Python 打包進 `local_ai/runtime/`，或之後把 proxy 做成獨立 `proxy.exe`，才算完整通過 Level 1。
+
 ## 快速開始：離線 bundle
 
 ### 1. 在有網路的機器準備 bundle
@@ -57,6 +70,8 @@ powershell -ExecutionPolicy Bypass -File .\local_ai\prepare_bundle.ps1 --cached-
 把整個 `research-claw-code/` 資料夾連同 `local_ai/runtime/` 一起複製到目標機器。
 
 目前 bundle 以「相同作業系統 + 相同 CPU 架構」可攜為主，例如 macOS arm64 打出的 bundle 最適合搬到另一台 macOS arm64。
+
+Windows Level 1 air-gap 測試時，建議在有網路的 Windows x64 準備機打包，再用 USB/外接硬碟/光碟/映像檔搬到無網路的 Windows x64 目標機。目標機啟動前不要再執行 `prepare_bundle.ps1`，只執行 `run.ps1`。
 
 ### 3. 在離線環境啟動
 
@@ -184,6 +199,6 @@ cargo run -p rusty-claude-cli -- prompt "explain this codebase"
 - bundle manifest 在 Windows 上也是以 BOM-less UTF-8 寫入，搬到 macOS / Linux 的 `run.sh` 讀取不會卡在 BOM。
 - 重新啟動時若舊 proxy / Ollama 還占著 port，Windows 與 macOS / Linux 都會等最多 10 秒嘗試釋放 port 再接手。
 - macOS launcher 會優先使用系統自帶的 `/usr/bin/python3`。
-- Windows launcher 會優先尋找 `python`、`python3` 或 `py`。
+- Windows launcher 會優先尋找 `python`、`python3` 或 `py`；若要支援出廠空機 Level 1 air-gap，仍需打包 portable Python 或改用獨立 `proxy.exe`。
 - `local_ai/deploy_local.sh` 與 `local_ai/deploy_local.ps1` 都會在結束時印出總耗時。
 - 若主要用途是解 C 題，建議優先用 `qwen2.5-coder:14b`；機器較吃緊時再考慮 `qwen2.5-coder:7b`。

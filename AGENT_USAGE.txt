@@ -12,6 +12,14 @@ research-claw-code agent usage
 - 預設直接輸出答案，不主動寫檔
 - 對 C 程式題，系統會先做本地語法與基本結構檢查；若明顯不是 C 或無法編譯，會要求模型重寫
 
+Level 1 Windows Air-Gap 目標：
+
+- 目標 Windows 電腦可以是出廠/空機，從頭到尾不連網
+- 可以用 USB、外接硬碟、光碟或預載映像檔帶入完整 bundle
+- 目標機只啟動 agent，不現場下載模型、不安裝 Ollama、不安裝 Rust、不編譯 claw
+- bundle 必須先在另一台有網路且同 OS/同 CPU 架構的準備機完成
+- 目前 Windows 啟動仍需要 python、python3 或 py；若出廠空機沒有 Python，需額外帶入 portable Python，或之後改用 bundled proxy.exe
+
 二、第一次準備離線 bundle
 
 macOS / Linux:
@@ -115,6 +123,8 @@ powershell -ExecutionPolicy Bypass -File .\local_ai\cleanup_local.ps1
 九、注意事項
 
 - bundle 需要先在有網路的環境準備好
+- Windows Level 1 air-gap 時，請用 USB、外接硬碟、光碟或預載映像檔把完整資料夾帶到無網路目標機
+- 目標機只執行 local_ai/run.ps1，不要在目標機執行 prepare_bundle.ps1
 - 若下載時間很短，優先考慮 `--fast`
 - 若現場完全不想下載模型，使用 `--cached-only`
 - local_ai/runtime/ 可能很大，因為模型會一起打包
