@@ -1,0 +1,28 @@
+{
+  "id": "2024_exam1_002",
+  "year": 2024,
+  "exam": "exam1",
+  "points": 16,
+  "topic": "Pattern Generation",
+  "difficulty": "medium",
+  "prompt": "Write a program that reads n and generates an arrow pattern. For n=3, the displayed rows are 3, then 2 2, then 12321, then 2, then 1.",
+  "required_features": [
+    "Read integer input n",
+    "Generate the arrow pattern using loops",
+    "Print the center row with ascending then descending digits",
+    "Print upper and lower rows with correct spacing"
+  ],
+  "sample_input": "3",
+  "expected_behavior": {
+    "output_contains": ["3", "2", "12321", "1"],
+    "output_format": "multi-line numeric pattern"
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "required_code_keywords": ["main", "scanf", "printf", "for"]
+  }
+}

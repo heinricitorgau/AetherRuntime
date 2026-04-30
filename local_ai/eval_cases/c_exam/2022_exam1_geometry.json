@@ -1,0 +1,31 @@
+{
+  "id": "2022_exam1_003",
+  "year": 2022,
+  "exam": "exam1",
+  "points": 26,
+  "topic": "Geometry - Points and Triangle",
+  "difficulty": "hard",
+  "prompt": "Given 4 points, answer geometry questions:\n\n(a) [3 pts] Read and display 4 points\n\n(b) [4 pts] Find point farthest from origin (0,0) and calculate distance\n    Distance formula: √((a-c)² + (b-d)²)\n\n(c) [10 pts] Calculate perimeter and area of triangle from first 3 points\n    Area formula: √(s(s-a)(s-b)(s-c)) where s=(a+b+c)/2\n    Show message if triangle cannot be formed\n\n(d) [9 pts] Check if 4th point is inside or outside the triangle\n    Hint: Point is inside if sum of areas of 3 sub-triangles equals original triangle area",
+  "required_features": [
+    "Read 4 coordinate pairs",
+    "Calculate distances",
+    "Compute triangle area using Heron's formula",
+    "Check point-in-triangle",
+    "Handle edge cases"
+  ],
+  "sample_input": "0 0 0 3 4 0 1 1",
+  "expected_behavior": {
+    "output_contains": ["points", "distance", "area", "perimeter"],
+    "output_format": "geometric calculations",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["sqrt", "double", "distance", "area"]
+  }
+}

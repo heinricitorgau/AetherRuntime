@@ -298,3 +298,195 @@ bash local_ai/run.sh --reindex-rag
 ### checker 一直警告
 
 如果本機沒有 C compiler，checker 會跳過編譯檢查，但仍會做靜態檢查。若答案在重試後仍未通過，系統會輸出目前最佳答案並附上「本地檢查警告」。
+
+---
+
+## C Exam Offline Eval Pack
+
+在離線環境中自動評估本地 AI 對 C 考題的回答品質。不需要網路、不增加模型大小。
+
+### 評估案例
+
+包含 19 個代表性考題，整理自這些 PDF：
+
+- **2021 Exam1**: Series, Pattern, Geometry, Game (4 cases)
+- **2022 Exam1**: Series, Diamond, Geometry, Tug War (4 cases)
+- **2023 Exam1**: Series, Diamond, Geometry, Tug War (4 cases)
+- **2024 Exam1**: Series, Arrow, Guessing Game (3 cases)
+- **2025 Midterm**: Series, Triangle, Triangles, Even/Odd Game (4 cases)
+
+每題包含：
+- 詳細問題描述
+- 樣本輸入/輸出
+- 必要功能清單
+- 編譯和執行要求
+- 評分標準
+
+### 快速開始
+
+```bash
+# 查看可用評估案例
+ls -la local_ai/eval_cases/c_exam/
+
+# 產生報告骨架；若沒有答案，case 會標示 no answer
+bash local_ai/run_eval.sh
+
+# 使用本地 AI 生成程式碼並評估
+bash local_ai/run_eval.sh --use-ai
+
+# 使用已準備好的答案檔測試；檔名格式為 <case_id>.c
+bash local_ai/run_eval.sh --answers-dir /path/to/answers
+
+# 篩選特定年份或主題
+bash local_ai/run_eval.sh --filter 2025
+bash local_ai/run_eval.sh --filter series
+bash local_ai/run_eval.sh --filter geometry
+```
+
+### 評估流程
+
+評估器執行以下 smoke tests：
+
+1. **Compile**: 檢查代碼是否能編譯（需要 cc/gcc/clang）
+2. **Run**: 執行編譯後的程式，提供樣本輸入
+3. **Keyword**: 檢查輸出是否包含必要關鍵字
+4. **Structure**: 檢查 C 程式碼是否包含 main、scanf、printf、loop 等必要結構
+5. **Score**: 根據上述結果計算得分
+
+### 評估報告
+
+執行後會生成 `eval_report.json`，包含：
+
+```json
+{
+  "timestamp": 1234567890,
+  "total_cases": 19,
+  "cases_tested": 19,
+  "total_points": 362,
+  "total_earned": 145,
+  "pass_rate": 72.5,
+  "results": [
+    {
+      "case_id": "2021_exam1_001",
+      "compile_pass": true,
+      "run_pass": true,
+      "keyword_pass": true,
+      "structure_pass": true,
+      "score": 12,
+      "output": "270944.7015728441",
+      "messages": ["Compile: OK", "Runtime: OK", "All keywords found"]
+    }
+  ]
+}
+```
+
+### 評估指標
+
+每個案例得分基於：
+
+- **Compile Pass** (必需)：程式是否能編譯
+- **Run Pass** (必需)：程式是否能執行
+- **Keyword Pass** (重要)：輸出是否包含 `expected_behavior.output_contains` 或 `checker_rules.output_keywords`
+- **Structure Pass** (重要)：程式碼是否包含 `checker_rules.required_code_keywords`
+
+得分計算：
+
+```
+if compile_pass and run_pass:
+    if keyword_pass and structure_pass:
+        score = points × 1.0
+    elif keyword_pass or structure_pass:
+        score = points × 0.7
+    else:
+        score = points × 0.5
+else:
+    score = points × 0.0 if not compile_pass else 0.25
+```
+
+### 生成 AI 回答
+
+使用 `--use-ai` 時，評估器會：
+
+1. 呼叫本地 AI（via `local_ai/run.sh`）
+2. 提示生成完整 C 程式
+3. 提取 C 代碼區塊
+4. 編譯並測試
+5. 記錄結果
+
+要求：
+- 本地 AI bundle 已準備好（`bash local_ai/deploy_local.sh`）
+- 本機需要 C compiler（gcc/clang）
+
+### 無 AI 評估
+
+若要測試已寫好的 C 代碼，建立一個答案目錄，檔名使用 case id：
+
+```bash
+# 例：只測 2021_exam1_001
+mkdir -p /tmp/c_exam_answers
+cat > /tmp/c_exam_answers/2021_exam1_001.c << 'EOF'
+#include <stdio.h>
+int main() {
+    int n;
+    scanf("%d", &n);
+    printf("Result: %d\n", n * 2);
+    return 0;
+}
+EOF
+
+bash local_ai/run_eval.sh --answers-dir /tmp/c_exam_answers --filter 2021_exam1_001
+```
+
+### 評估案例結構
+
+每個 JSON 案例包含：
+
+```json
+{
+  "id": "2021_exam1_001",
+  "year": 2021,
+  "exam": "exam1",
+  "points": 12,
+  "topic": "Series Calculation",
+  "difficulty": "medium",
+  "prompt": "Complete problem statement",
+  "required_features": ["List of key features"],
+  "sample_input": "11",
+  "expected_behavior": {
+    "output_contains": ["270944"],
+    "min_value": 270000,
+    "max_value": 271000
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "timeout_seconds": 5,
+    "required_code_keywords": ["main", "scanf", "printf", "for"]
+  }
+}
+```
+
+### 整合到教學工作流
+
+```bash
+# 1. 準備 bundle
+bash local_ai/deploy_local.sh
+
+# 2. 提問模型
+bash local_ai/run.sh "寫一個 C 程式計算級數"
+
+# 3. 評估所有案例
+bash local_ai/run_eval.sh --use-ai
+
+# 4. 查看報告
+cat eval_report.json | jq '.pass_rate'
+```
+
+### 已知限制
+
+- 編譯檢查需要本機 C compiler（cc/gcc/clang）
+- 若無編譯器，只執行靜態檢查和輸出驗證
+- 遊戲模擬題需要手動提供輸入序列
+- 評估不檢查演算法複雜度或優化
+- 不支援多檔案程式或 header file
+- 目前是 smoke test，不是精準人工閱卷替代品

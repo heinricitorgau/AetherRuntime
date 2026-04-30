@@ -1,0 +1,32 @@
+{
+  "id": "2021_exam1_004",
+  "year": 2021,
+  "exam": "exam1",
+  "points": 26,
+  "topic": "Game Simulation - Betting Game",
+  "difficulty": "hard",
+  "prompt": "Write a program that simulates a betting/guessing game.\n\nGame board (1-12):\n- Low: 1-4\n- Mid: 5-8\n- High: 9-12\n\nBetting options with risk:win ratios:\n- Odd|Even: 1:2\n- Low|Mid|High: 1:3\n- Single Number: 1:12\n\nGame flow:\n(a) [5 pts] Choose among 6 possible guesses\n(b) [5 pts] Generate random number 1-12\n(c) [10 pts] Award points based on risk:win ratio if correct\n(d) [2 pts] Allow continue playing\n(e) [4 pts] Display final points when quit",
+  "required_features": [
+    "Read betting choice",
+    "Generate random number 1-12",
+    "Calculate points based on risk:win ratio",
+    "Maintain game state and points",
+    "Loop until quit",
+    "Display results"
+  ],
+  "sample_input": "middle\\n20\\ny\\nno",
+  "expected_behavior": {
+    "output_contains": ["Enter", "points", "choice"],
+    "output_format": "game simulation",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["scanf", "printf", "rand", "srand", "while", "if"]
+  }
+}

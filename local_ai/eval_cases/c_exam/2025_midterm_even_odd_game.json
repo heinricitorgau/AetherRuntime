@@ -1,0 +1,32 @@
+{
+  "id": "2025_midterm_004",
+  "year": 2025,
+  "exam": "midterm",
+  "points": 23,
+  "topic": "Game Simulation - Even/Odd Guessing",
+  "difficulty": "medium",
+  "prompt": "Simulate an even/odd guessing game:\n\n(a) [3 pts] Generate 5 different random numbers (1-10), hide them\n\n(b) [10 pts] Game loop:\n    - Display hidden numbers as asterisks\n    - Player picks position\n    - Player guesses even or odd\n    - If correct, player wins 5 points\n    - Reveal the number\n\n(c) [4 pts] Continue until all numbers revealed\n    Display final score\n\nGame ends when all 5 positions are revealed.",
+  "required_features": [
+    "Generate 5 unique random numbers (1-10)",
+    "Hide numbers initially",
+    "Track guessed positions",
+    "Calculate correctness",
+    "Maintain score",
+    "Display game state"
+  ],
+  "sample_input": "2\\nO\\n5\\nE",
+  "expected_behavior": {
+    "output_contains": ["Numbers", "win", "points", "Pick"],
+    "output_format": "game simulation",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["rand", "srand", "scanf", "printf", "array"]
+  }
+}

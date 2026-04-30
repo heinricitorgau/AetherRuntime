@@ -1,0 +1,32 @@
+{
+  "id": "2025_midterm_003",
+  "year": 2025,
+  "exam": "midterm",
+  "points": 17,
+  "topic": "Geometry - Triangle Enumeration",
+  "difficulty": "medium",
+  "prompt": "Read coordinates of 4 points and list all triangles:\n\n(a) [3 pts] Read and validate 4 points\n\n(b) [14 pts] For each combination of 3 points:\n    - Calculate area using Heron's formula\n    - Display area if triangle can be formed\n    - Show message if collinear (no triangle)\n\nExample: Given 4 points, there are C(4,3)=4 possible triangles",
+  "required_features": [
+    "Read 4 coordinate pairs",
+    "Generate all 3-point combinations (C(4,3)=4 combinations)",
+    "Calculate area using Heron's formula",
+    "Check if points are collinear",
+    "Format output with 3 decimal places"
+  ],
+  "sample_input": "0 0 0 3 4 0 4 3",
+  "expected_behavior": {
+    "output_contains": ["area", "6.000"],
+    "output_format": "multiple triangle areas",
+    "combination_count": 4,
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["sqrt", "area", "triangle", "printf"]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "2025_midterm_002",
+  "year": 2025,
+  "exam": "midterm",
+  "points": 13,
+  "topic": "Pattern Generation",
+  "difficulty": "medium",
+  "prompt": "Write a program that reads n and generates a triangle pattern.\n\nExample with n=3:\n3\n2 2\n11111\n222\n3\n\nPattern expands with each row and displays repeated digits.",
+  "required_features": [
+    "Read integer n",
+    "Generate expanding triangle",
+    "Each row i has i digits (possibly repeated)",
+    "Correct spacing",
+    "Handle n from 1 to 10"
+  ],
+  "sample_input": "3",
+  "expected_behavior": {
+    "output_contains": ["3", "2 2", "11111", "222", "3"],
+    "output_format": "multi-line triangle",
+    "expanding": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["for", "printf", "nested loop"]
+  }
+}

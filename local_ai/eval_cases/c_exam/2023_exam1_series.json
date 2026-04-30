@@ -1,0 +1,31 @@
+{
+  "id": "2023_exam1_001",
+  "year": 2023,
+  "exam": "exam1",
+  "points": 14,
+  "topic": "Series Calculation",
+  "difficulty": "medium",
+  "prompt": "Write a function that receives n and returns the sum of the series 1 - 2/3 + 6/7 - ... + n!/(n^2 - n + 1). Write main to read n, call the function, and print f(n). Example: n=11 gives f(11)=324096.52032087732000000000.",
+  "required_features": [
+    "Read integer input n",
+    "Use a function to compute the series",
+    "Compute factorial terms",
+    "Alternate signs correctly",
+    "Print the value of f(n) with decimal precision"
+  ],
+  "sample_input": "11",
+  "expected_behavior": {
+    "output_contains": ["324096"],
+    "output_format": "floating point number",
+    "min_value": 324000,
+    "max_value": 324200
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "required_code_keywords": ["#include", "main", "scanf", "printf", "for"]
+  }
+}

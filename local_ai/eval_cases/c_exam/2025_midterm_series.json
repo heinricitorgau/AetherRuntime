@@ -1,0 +1,32 @@
+{
+  "id": "2025_midterm_001",
+  "year": 2025,
+  "exam": "midterm",
+  "points": 12,
+  "topic": "Series Calculation",
+  "difficulty": "medium",
+  "prompt": "Write a program that reads n and calculates the sum of the series:\n1 - 5/3 + 7/8 - ... + (2n+1)/(n²-1)\n\nFormula: Sum from i=1 to n of: (-1)^(i+1) * (2i+1) / (i²-1)\n\nExample: When n=10, sum = 0.607112",
+  "required_features": [
+    "Read integer n",
+    "Calculate numerator: 2i+1",
+    "Calculate denominator: i²-1",
+    "Apply alternating signs",
+    "Sum all terms",
+    "Output result with precision"
+  ],
+  "sample_input": "10",
+  "expected_behavior": {
+    "output_contains": ["0.607"],
+    "output_format": "decimal number",
+    "min_value": 0.6,
+    "max_value": 0.62
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["for", "printf", "double"]
+  }
+}

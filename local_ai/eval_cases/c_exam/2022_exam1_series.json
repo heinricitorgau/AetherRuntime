@@ -1,0 +1,31 @@
+{
+  "id": "2022_exam1_001",
+  "year": 2022,
+  "exam": "exam1",
+  "points": 11,
+  "topic": "Series Calculation",
+  "difficulty": "medium",
+  "prompt": "Write a program that reads n and calculates the sum of the series:\n1 - 2/3 + 6/7 - ... + n!/(n²-n+1)\n\nFormula: Sum from i=1 to n of: (-1)^(i+1) * i! / (i²-i+1)\n\nExample: When n=11, f(11) = 324096.52032087732",
+  "required_features": [
+    "Implement factorial calculation",
+    "Calculate series with alternating signs",
+    "Compute each term's denominator: i²-i+1",
+    "Sum all terms",
+    "Output with decimal precision"
+  ],
+  "sample_input": "11",
+  "expected_behavior": {
+    "output_contains": ["324096"],
+    "output_format": "number with decimals",
+    "min_value": 324000,
+    "max_value": 325000
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["factorial", "double", "for", "printf"]
+  }
+}

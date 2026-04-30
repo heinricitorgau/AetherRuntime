@@ -1,0 +1,32 @@
+{
+  "id": "2024_exam1_003",
+  "year": 2024,
+  "exam": "exam1",
+  "points": 26,
+  "topic": "Game Simulation",
+  "difficulty": "hard",
+  "prompt": "Write a program that simulates a roulette-style guessing game. The player's initial point is 0. Show choices O/E/L/C/R/N for odd, even, left, center, right, or exact number. The program generates a random winning number from 1 to 36, asks for the points at risk, applies the winning rates, asks whether to continue, and finally prints total guesses and the player's point total.",
+  "required_features": [
+    "Print the guessing choices table",
+    "Read the player's choice",
+    "Read the points at risk",
+    "Generate or select a winning number from 1 to 36",
+    "Handle odd/even, left/center/right, and exact-number guesses",
+    "Update the player's point total using the risk/winning rate",
+    "Ask whether to continue",
+    "Print total number of guesses and final points"
+  ],
+  "sample_input": "E\n20\nN\n",
+  "expected_behavior": {
+    "output_contains": ["choice", "point", "winning"],
+    "output_format": "interactive game text"
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "required_code_keywords": ["main", "scanf", "printf", "if", "while"]
+  }
+}

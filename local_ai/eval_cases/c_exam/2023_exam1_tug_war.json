@@ -1,0 +1,32 @@
+{
+  "id": "2023_exam1_004",
+  "year": 2023,
+  "exam": "exam1",
+  "points": 28,
+  "topic": "Game Simulation",
+  "difficulty": "hard",
+  "prompt": "Write a program to simulate a tug war game using stone, scissors, and paper. Print a welcome message, read the winning distance n, display positions from -n to n with a flag at the current distance, read the player's play, generate the computer's play, decide the round winner, update the tug status, and continue until either side reaches the winning distance.",
+  "required_features": [
+    "Read winning distance n",
+    "Display the tug-war track from -n to n",
+    "Read player choice for stone, scissors, or paper",
+    "Generate or otherwise select a computer choice",
+    "Decide draw/player win/computer win",
+    "Update the current distance",
+    "Loop until there is a winner",
+    "Print a final win or lose message"
+  ],
+  "sample_input": "1\n1\n",
+  "expected_behavior": {
+    "output_contains": ["Tug", "War", "choice"],
+    "output_format": "interactive game text"
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "required_code_keywords": ["main", "scanf", "printf", "while", "if"]
+  }
+}

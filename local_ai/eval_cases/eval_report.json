@@ -1,0 +1,78 @@
+{
+  "timestamp": 1777542074,
+  "total_cases": 4,
+  "cases_tested": 4,
+  "total_points": 65,
+  "total_earned": 0,
+  "results": [
+    {
+      "case_id": "2025_midterm_004",
+      "compile_pass": false,
+      "run_pass": false,
+      "keyword_pass": false,
+      "structure_pass": false,
+      "score": 0.0,
+      "messages": [
+        "No answer code supplied. Use --use-ai or --answers-dir."
+      ],
+      "case_info": {
+        "year": 2025,
+        "exam": "midterm",
+        "topic": "Game Simulation - Even/Odd Guessing",
+        "points": 23
+      }
+    },
+    {
+      "case_id": "2025_midterm_001",
+      "compile_pass": false,
+      "run_pass": false,
+      "keyword_pass": false,
+      "structure_pass": false,
+      "score": 0.0,
+      "messages": [
+        "No answer code supplied. Use --use-ai or --answers-dir."
+      ],
+      "case_info": {
+        "year": 2025,
+        "exam": "midterm",
+        "topic": "Series Calculation",
+        "points": 12
+      }
+    },
+    {
+      "case_id": "2025_midterm_002",
+      "compile_pass": false,
+      "run_pass": false,
+      "keyword_pass": false,
+      "structure_pass": false,
+      "score": 0.0,
+      "messages": [
+        "No answer code supplied. Use --use-ai or --answers-dir."
+      ],
+      "case_info": {
+        "year": 2025,
+        "exam": "midterm",
+        "topic": "Pattern Generation",
+        "points": 13
+      }
+    },
+    {
+      "case_id": "2025_midterm_003",
+      "compile_pass": false,
+      "run_pass": false,
+      "keyword_pass": false,
+      "structure_pass": false,
+      "score": 0.0,
+      "messages": [
+        "No answer code supplied. Use --use-ai or --answers-dir."
+      ],
+      "case_info": {
+        "year": 2025,
+        "exam": "midterm",
+        "topic": "Geometry - Triangle Enumeration",
+        "points": 17
+      }
+    }
+  ],
+  "pass_rate": 0.0
+}

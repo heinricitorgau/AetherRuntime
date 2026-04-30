@@ -1,0 +1,31 @@
+{
+  "id": "2021_exam1_003",
+  "year": 2021,
+  "exam": "exam1",
+  "points": 26,
+  "topic": "Geometry - Triangle and Points",
+  "difficulty": "hard",
+  "prompt": "Write a program with the following geometry functions:\n\n(a) [4 pts] Function: area of triangle formed by line ax+by=c with x-axis and y-axis\n    Hint: When y=0, x=c/a. When x=0, y=c/b\n\n(b) [5 pts] Function: distance from point (x,y) to line ax+by=c\n    Formula: |ax₀+by₀-c|/√(a²+b²)\n\n(c) [8 pts] Function: area of triangle formed by three points\n    Use Heron's formula: Area = √(s(s-a)(s-b)(s-c)) where s=(a+b+c)/2\n    Return 0 if triangle cannot be formed\n\n(d) [5 pts] Function: show line equation passing through two points",
+  "required_features": [
+    "Implement 4 geometry functions",
+    "Handle floating point calculations",
+    "Calculate distances between points",
+    "Apply Heron's formula",
+    "Validate triangle formation"
+  ],
+  "sample_input": "0 0\\n0 3\\n4 0",
+  "expected_behavior": {
+    "output_contains": ["area", "distance", "triangle"],
+    "output_format": "function results",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["sqrt", "fabs", "function", "float", "double"]
+  }
+}

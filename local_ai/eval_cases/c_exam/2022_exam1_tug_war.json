@@ -1,0 +1,32 @@
+{
+  "id": "2022_exam1_004",
+  "year": 2022,
+  "exam": "exam1",
+  "points": 28,
+  "topic": "Game Simulation - Tug War",
+  "difficulty": "hard",
+  "prompt": "Simulate a tug war game with rock-paper-scissors.\n\n(a) [4 pts] Print welcome and read winning distance n\n\n(b) [8 pts] Display distance scale from -n to n with flag at current position\n\n(c) [6 pts] Read player choice, generate random computer choice (1=rock, 2=scissors, 3=paper)\n\n(d) [5 pts] Determine winner and update tug position\n\n(e) [5 pts] Continue until someone reaches ±n and announce winner\n\nWinning rules: rock beats scissors, scissors beats paper, paper beats rock",
+  "required_features": [
+    "Display tug war board",
+    "Read player input (1,2,3)",
+    "Generate random computer choice",
+    "Implement win logic",
+    "Move flag based on outcome",
+    "Loop until winner"
+  ],
+  "sample_input": "3\\n1\\n1\\n1",
+  "expected_behavior": {
+    "output_contains": ["Welcome", "Tug War", "Enter", "winner"],
+    "output_format": "game simulation",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["scanf", "printf", "rand", "while"]
+  }
+}

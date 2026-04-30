@@ -1,0 +1,30 @@
+{
+  "id": "2022_exam1_002",
+  "year": 2022,
+  "exam": "exam1",
+  "points": 14,
+  "topic": "Pattern Generation",
+  "difficulty": "medium",
+  "prompt": "Write a program that reads n and generates a diamond pattern.\n\nExample with n=3:\n1\n2 2\n32123\n2 2\n1\n\nThe pattern forms a diamond shape with numbers increasing towards middle.",
+  "required_features": [
+    "Read integer n",
+    "Generate top half (expanding)",
+    "Generate middle row",
+    "Generate bottom half (contracting)",
+    "Correct number placement and spacing"
+  ],
+  "sample_input": "3",
+  "expected_behavior": {
+    "output_contains": ["1", "2 2", "32123", "2 2", "1"],
+    "output_format": "multi-line diamond",
+    "symmetrical": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": ["for", "printf", "loop"]
+  }
+}

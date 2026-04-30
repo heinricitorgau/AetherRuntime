@@ -1,0 +1,32 @@
+{
+  "id": "2023_exam1_003",
+  "year": 2023,
+  "exam": "exam1",
+  "points": 26,
+  "topic": "Geometry",
+  "difficulty": "hard",
+  "prompt": "Consider four points. Read four points and print them. Find the point farthest from (0,0) and its distance. Calculate the perimeter and area of the triangle formed by the first three points, or report that no triangle can be formed. Then check whether the last point is inside or outside the triangle. Example input: 0 0 0 3 4 0 1 1.",
+  "required_features": [
+    "Read four coordinate pairs",
+    "Print the four points",
+    "Compute Euclidean distances",
+    "Find the farthest point from the origin",
+    "Compute triangle perimeter",
+    "Compute triangle area using Heron's formula or coordinate formula",
+    "Detect invalid or collinear triangles",
+    "Check whether the fourth point is inside or outside the triangle"
+  ],
+  "sample_input": "0 0 0 3 4 0 1 1",
+  "expected_behavior": {
+    "output_contains": ["4.0000", "12.0000", "6.0000", "inside"],
+    "output_format": "text with coordinates and floating point values"
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "required_code_keywords": ["#include", "main", "scanf", "printf", "sqrt"]
+  }
+}
