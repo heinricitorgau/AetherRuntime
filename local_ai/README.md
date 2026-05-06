@@ -351,7 +351,7 @@ bash local_ai/run_eval.sh --filter geometry
 2. **Run**: 執行編譯後的程式，提供樣本輸入
 3. **Keyword**: 檢查輸出是否包含必要關鍵字
 4. **Structure**: 檢查 C 程式碼是否包含 main、scanf、printf、loop 等必要結構
-5. **Score**: 根據上述結果計算得分
+5. **Model/Pipeline Score**: 分開計算模型原始答案與 fallback 後 pipeline 的得分
 
 ### 評估報告
 
@@ -365,13 +365,28 @@ bash local_ai/run_eval.sh --filter geometry
   "total_points": 362,
   "total_earned": 145,
   "pass_rate": 72.5,
-  "results": [
+  "summary": {
+    "total_cases": 19,
+    "total_points": 362,
+    "model_points": 83.5,
+    "pipeline_points": 145,
+    "fallback_cases": 2,
+    "no_answer_cases": 0,
+    "compile_pass_cases": 12,
+    "run_pass_cases": 12
+  },
+  "cases": [
     {
       "case_id": "2021_exam1_001",
+      "answer_source": "model",
+      "used_fallback": false,
       "compile_pass": true,
+      "model_compile_pass": true,
       "run_pass": true,
       "keyword_pass": true,
       "structure_pass": true,
+      "model_score": 12,
+      "pipeline_score": 12,
       "score": 12,
       "output": "270944.7015728441",
       "messages": ["Compile: OK", "Runtime: OK", "All keywords found"]
@@ -385,9 +400,12 @@ bash local_ai/run_eval.sh --filter geometry
 每個案例得分基於：
 
 - **Compile Pass** (必需)：程式是否能編譯
+- **Model Compile Pass**：fallback 前，模型答案若有可抽出的 C code，是否能編譯
 - **Run Pass** (必需)：程式是否能執行
 - **Keyword Pass** (重要)：輸出是否包含 `expected_behavior.output_contains` 或 `checker_rules.output_keywords`
 - **Structure Pass** (重要)：程式碼是否包含 `checker_rules.required_code_keywords`
+- **Answer Source**：`model`、`repaired_model`、`fallback_scaffold` 或 `no_answer`
+- **Used Fallback**：是否使用 smoke-test scaffold 產生最後的 pipeline 結果
 
 得分計算：
 
@@ -401,6 +419,16 @@ if compile_pass and run_pass:
         score = points × 0.5
 else:
     score = points × 0.0 if not compile_pass else 0.25
+```
+
+`model_score` 是 fallback 前的分數，只衡量本地模型實際輸出的 C 程式解題能力。`pipeline_score` 是允許 fallback scaffold 後的完整離線 assistant resilience 分數。`fallback_scaffold` 不是正式考題解答；它只用來讓 eval pipeline 在模型 timeout、輸出格式失敗或無法抽出 C code 時仍能測試 checker、編譯、執行與 reporting 流程。
+
+終端機摘要會分開顯示：
+
+```text
+Model Score: 14.9/65 points (22.9%)
+Pipeline Score: 65/65 points (100.0%)
+Fallback Used: 2 cases
 ```
 
 ### 生成 AI 回答

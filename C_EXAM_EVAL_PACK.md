@@ -42,10 +42,37 @@ bash local_ai/run_eval.sh --filter series
 
 每個 result 會包含：
 
+- `answer_source`: `model`、`repaired_model`、`fallback_scaffold` 或 `no_answer`
+- `used_fallback`: final answer 是否使用 fallback scaffold
 - `compile_pass`: 是否能用本機 `cc/gcc/clang` 編譯
+- `model_compile_pass`: fallback 前，模型答案若有可抽出的 C code，是否能編譯
 - `run_pass`: 是否能用 `sample_input` 執行
 - `keyword_pass`: 輸出是否包含 expected output keywords
 - `structure_pass`: C code 是否包含必要結構關鍵字
-- `score`: 依上述 smoke checks 估算的分數
+- `model_score`: fallback 前，只用模型實際 C code 估算的分數
+- `pipeline_score`: 允許 fallback scaffold 後的完整 pipeline 分數
+- `score`: 兼容舊欄位，目前等同 `pipeline_score`
+
+Top-level report 也會包含：
+
+- `summary.total_cases`
+- `summary.total_points`
+- `summary.model_points`
+- `summary.pipeline_points`
+- `summary.fallback_cases`
+- `summary.no_answer_cases`
+- `summary.compile_pass_cases`
+- `summary.run_pass_cases`
+- `cases`: 每一題的完整 result
 
 目前目標是 smoke test，不追求完美評分，也不取代人工閱卷。
+
+`model_score` 衡量本地 AI 實際解 C 考題的能力；`pipeline_score` 衡量完整離線 assistant 在 fallback scaffold 允許下的穩定性。`fallback_scaffold` 不是正式考題解答，也不能代表模型會解題；它存在的目的只是讓模型 timeout、輸出格式失敗或無法抽出 C code 時，仍能穩定測試 checker、reporting、編譯與執行流程。
+
+終端機摘要會分開顯示：
+
+```text
+Model Score: 14.9/65 points (22.9%)
+Pipeline Score: 65/65 points (100.0%)
+Fallback Used: 2 cases
+```

@@ -208,7 +208,7 @@ bash local_ai/run_eval.sh --use-ai
 bash local_ai/run_eval.sh --answers-dir /path/to/answers --filter 2024
 ```
 
-報告包含 `compile_pass`、`run_pass`、`keyword_pass`、`structure_pass`、`score`，目前定位是 smoke test，不取代人工閱卷。
+報告包含 `answer_source`、`used_fallback`、`model_score`、`pipeline_score`、`compile_pass`、`model_compile_pass`、`run_pass`、`keyword_pass`、`structure_pass`。`model_score` 只衡量模型實際輸出的 C code；`pipeline_score` 則包含 fallback scaffold 後的 pipeline 韌性，目前定位是 smoke test，不取代人工閱卷。
 
 ## Offline USB Workflow
 

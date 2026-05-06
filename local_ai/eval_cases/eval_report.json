@@ -1,10 +1,20 @@
 {
-  "timestamp": 1777548035,
+  "timestamp": 1778072503,
   "total_cases": 4,
   "cases_tested": 4,
   "total_points": 65,
   "total_earned": 65.0,
-  "results": [
+  "summary": {
+    "total_cases": 4,
+    "total_points": 65,
+    "model_points": 0.0,
+    "pipeline_points": 65.0,
+    "fallback_cases": 4,
+    "no_answer_cases": 0,
+    "compile_pass_cases": 4,
+    "run_pass_cases": 4
+  },
+  "cases": [
     {
       "case_id": "2025_midterm_001",
       "compile_pass": true,
@@ -21,6 +31,11 @@
       ],
       "output": "0.607\n",
       "behavior_pass": true,
+      "answer_source": "fallback_scaffold",
+      "used_fallback": true,
+      "model_compile_pass": null,
+      "model_score": 0.0,
+      "pipeline_score": 12.0,
       "case_info": {
         "year": 2025,
         "exam": "midterm",
@@ -44,6 +59,11 @@
       ],
       "output": "3\n2 2\n11111\n222\n3\n",
       "behavior_pass": true,
+      "answer_source": "fallback_scaffold",
+      "used_fallback": true,
+      "model_compile_pass": null,
+      "model_score": 0.0,
+      "pipeline_score": 13.0,
       "case_info": {
         "year": 2025,
         "exam": "midterm",
@@ -67,6 +87,11 @@
       ],
       "output": "area\n6.000\n",
       "behavior_pass": true,
+      "answer_source": "fallback_scaffold",
+      "used_fallback": true,
+      "model_compile_pass": null,
+      "model_score": 0.0,
+      "pipeline_score": 17.0,
       "case_info": {
         "year": 2025,
         "exam": "midterm",
@@ -90,6 +115,125 @@
       ],
       "output": "Numbers\nwin\npoints\nPick\n",
       "behavior_pass": true,
+      "answer_source": "fallback_scaffold",
+      "used_fallback": true,
+      "model_compile_pass": null,
+      "model_score": 0.0,
+      "pipeline_score": 23.0,
+      "case_info": {
+        "year": 2025,
+        "exam": "midterm",
+        "topic": "Game Simulation - Even/Odd Guessing",
+        "points": 23
+      }
+    }
+  ],
+  "results": [
+    {
+      "case_id": "2025_midterm_001",
+      "compile_pass": true,
+      "run_pass": true,
+      "keyword_pass": true,
+      "structure_pass": true,
+      "score": 12.0,
+      "messages": [
+        "Code structure keywords found",
+        "Compile: Compiled successfully",
+        "Runtime: OK",
+        "Output keywords found",
+        "Behavior: Expected behavior smoke check passed"
+      ],
+      "output": "0.607\n",
+      "behavior_pass": true,
+      "answer_source": "fallback_scaffold",
+      "used_fallback": true,
+      "model_compile_pass": null,
+      "model_score": 0.0,
+      "pipeline_score": 12.0,
+      "case_info": {
+        "year": 2025,
+        "exam": "midterm",
+        "topic": "Series Calculation",
+        "points": 12
+      }
+    },
+    {
+      "case_id": "2025_midterm_002",
+      "compile_pass": true,
+      "run_pass": true,
+      "keyword_pass": true,
+      "structure_pass": true,
+      "score": 13.0,
+      "messages": [
+        "Code structure keywords found",
+        "Compile: Compiled successfully",
+        "Runtime: OK",
+        "Output keywords found",
+        "Behavior: Expected behavior smoke check passed"
+      ],
+      "output": "3\n2 2\n11111\n222\n3\n",
+      "behavior_pass": true,
+      "answer_source": "fallback_scaffold",
+      "used_fallback": true,
+      "model_compile_pass": null,
+      "model_score": 0.0,
+      "pipeline_score": 13.0,
+      "case_info": {
+        "year": 2025,
+        "exam": "midterm",
+        "topic": "Pattern Generation",
+        "points": 13
+      }
+    },
+    {
+      "case_id": "2025_midterm_003",
+      "compile_pass": true,
+      "run_pass": true,
+      "keyword_pass": true,
+      "structure_pass": true,
+      "score": 17.0,
+      "messages": [
+        "Code structure keywords found",
+        "Compile: Compiled successfully",
+        "Runtime: OK",
+        "Output keywords found",
+        "Behavior: Expected behavior smoke check passed"
+      ],
+      "output": "area\n6.000\n",
+      "behavior_pass": true,
+      "answer_source": "fallback_scaffold",
+      "used_fallback": true,
+      "model_compile_pass": null,
+      "model_score": 0.0,
+      "pipeline_score": 17.0,
+      "case_info": {
+        "year": 2025,
+        "exam": "midterm",
+        "topic": "Geometry - Triangle Enumeration",
+        "points": 17
+      }
+    },
+    {
+      "case_id": "2025_midterm_004",
+      "compile_pass": true,
+      "run_pass": true,
+      "keyword_pass": true,
+      "structure_pass": true,
+      "score": 23.0,
+      "messages": [
+        "Code structure keywords found",
+        "Compile: Compiled successfully",
+        "Runtime: OK",
+        "Output keywords found",
+        "Behavior: Expected behavior smoke check passed"
+      ],
+      "output": "Numbers\nwin\npoints\nPick\n",
+      "behavior_pass": true,
+      "answer_source": "fallback_scaffold",
+      "used_fallback": true,
+      "model_compile_pass": null,
+      "model_score": 0.0,
+      "pipeline_score": 23.0,
       "case_info": {
         "year": 2025,
         "exam": "midterm",

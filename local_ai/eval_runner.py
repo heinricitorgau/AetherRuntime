@@ -21,6 +21,10 @@ from typing import Any
 ANSI_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 PLAN_TIMEOUT_SECONDS = 30
 CODE_TIMEOUT_SECONDS = 180
+ANSWER_SOURCE_MODEL = "model"
+ANSWER_SOURCE_REPAIRED = "repaired_model"
+ANSWER_SOURCE_FALLBACK = "fallback_scaffold"
+ANSWER_SOURCE_NONE = "no_answer"
 
 
 def default_eval_dir() -> Path:
@@ -614,6 +618,22 @@ def build_smoke_fallback_code(case: dict[str, Any], reason: str) -> str:
     )
 
 
+def ai_generation_result(
+    *,
+    final_output: str = "",
+    model_output: str = "",
+    answer_source: str = ANSWER_SOURCE_NONE,
+    used_fallback: bool = False,
+) -> dict[str, Any]:
+    """Create the generation metadata carried into scoring/reporting."""
+    return {
+        "final_output": final_output,
+        "model_output": model_output,
+        "answer_source": answer_source,
+        "used_fallback": used_fallback,
+    }
+
+
 def call_local_ai(run_script: Path, prompt: str, timeout: int) -> subprocess.CompletedProcess[str]:
     env = os.environ.copy()
     env.setdefault("CLAW_PROMPT_PROFILE", "c_programming")
@@ -626,18 +646,18 @@ def call_local_ai(run_script: Path, prompt: str, timeout: int) -> subprocess.Com
     )
 
 
-def generate_ai_response(case: dict[str, Any]) -> str:
+def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
     """Generate C code from AI for the given case (requires local_ai/run.sh)."""
     prompt = case.get("prompt", "")
     if not prompt:
-        return ""
+        return ai_generation_result()
     
     try:
         run_script = local_ai_run_script()
         
         if not run_script.exists():
             print(f"Warning: local_ai/run.sh not found at {run_script}", file=sys.stderr)
-            return ""
+            return ai_generation_result()
         
         if should_decompose(case):
             try:
@@ -661,10 +681,18 @@ def generate_ai_response(case: dict[str, Any]) -> str:
                 code_result = call_local_ai(run_script, build_code_prompt(case, plan), CODE_TIMEOUT_SECONDS)
             except subprocess.TimeoutExpired:
                 print(f"Warning: code generation timeout for {case.get('id')}", file=sys.stderr)
-                return build_smoke_fallback_code(case, "code generation timeout")
+                return ai_generation_result(
+                    final_output=build_smoke_fallback_code(case, "code generation timeout"),
+                    answer_source=ANSWER_SOURCE_FALLBACK,
+                    used_fallback=True,
+                )
             combined = "\n".join(part for part in (code_result.stdout, code_result.stderr) if part)
             if extract_c_code(combined, debug=False):
-                return combined
+                return ai_generation_result(
+                    final_output=combined,
+                    model_output=combined,
+                    answer_source=ANSWER_SOURCE_MODEL,
+                )
 
             try:
                 retry_result = call_local_ai(
@@ -674,19 +702,37 @@ def generate_ai_response(case: dict[str, Any]) -> str:
                 )
             except subprocess.TimeoutExpired:
                 print(f"Warning: code retry timeout for {case.get('id')}", file=sys.stderr)
-                return build_smoke_fallback_code(case, "code retry timeout")
+                return ai_generation_result(
+                    final_output=build_smoke_fallback_code(case, "code retry timeout"),
+                    model_output=combined,
+                    answer_source=ANSWER_SOURCE_FALLBACK,
+                    used_fallback=True,
+                )
             retry_output = "\n".join(part for part in (retry_result.stdout, retry_result.stderr) if part)
             if extract_c_code(retry_output, debug=False):
-                return retry_output
+                return ai_generation_result(
+                    final_output=retry_output,
+                    model_output=retry_output,
+                    answer_source=ANSWER_SOURCE_REPAIRED,
+                )
 
             debug_extraction_failure(combined or retry_output)
             print(f"Warning: code generation failed for {case.get('id')}", file=sys.stderr)
-            return build_smoke_fallback_code(case, "code extraction failed")
+            return ai_generation_result(
+                final_output=build_smoke_fallback_code(case, "code extraction failed"),
+                model_output=combined or retry_output,
+                answer_source=ANSWER_SOURCE_FALLBACK,
+                used_fallback=True,
+            )
 
         result = call_local_ai(run_script, build_model_prompt(case), CODE_TIMEOUT_SECONDS)
         combined = "\n".join(part for part in (result.stdout, result.stderr) if part)
         if result.returncode == 0 and extract_c_code(combined, debug=False):
-            return combined
+            return ai_generation_result(
+                final_output=combined,
+                model_output=combined,
+                answer_source=ANSWER_SOURCE_MODEL,
+            )
 
         extracted = extract_c_code(combined)
         if extracted:
@@ -694,22 +740,39 @@ def generate_ai_response(case: dict[str, Any]) -> str:
                 f"Warning: local AI returned non-zero for {case.get('id')}, but C code was found; continuing.",
                 file=sys.stderr,
             )
-            return extracted
+            return ai_generation_result(
+                final_output=extracted,
+                model_output=extracted,
+                answer_source=ANSWER_SOURCE_MODEL,
+            )
 
         repair_result = call_local_ai(run_script, build_repair_prompt(combined), CODE_TIMEOUT_SECONDS)
         repaired = "\n".join(part for part in (repair_result.stdout, repair_result.stderr) if part)
         if extract_c_code(repaired, debug=False):
-            return repaired
+            return ai_generation_result(
+                final_output=repaired,
+                model_output=repaired,
+                answer_source=ANSWER_SOURCE_REPAIRED,
+            )
 
         details = combined.strip()
         print(f"Warning: AI generation failed for {case.get('id')}: {details[:300]}", file=sys.stderr)
-        return build_smoke_fallback_code(case, "direct generation failed")
+        return ai_generation_result(
+            final_output=build_smoke_fallback_code(case, "direct generation failed"),
+            model_output=combined or repaired,
+            answer_source=ANSWER_SOURCE_FALLBACK,
+            used_fallback=True,
+        )
     except subprocess.TimeoutExpired:
         print(f"Warning: AI generation timeout for {case.get('id')}", file=sys.stderr)
-        return build_smoke_fallback_code(case, "model timeout")
+        return ai_generation_result(
+            final_output=build_smoke_fallback_code(case, "model timeout"),
+            answer_source=ANSWER_SOURCE_FALLBACK,
+            used_fallback=True,
+        )
     except Exception as e:
         print(f"Warning: error generating code: {e}", file=sys.stderr)
-        return ""
+        return ai_generation_result()
 
 
 def run_evaluation(
@@ -748,6 +811,17 @@ def run_evaluation(
         "cases_tested": 0,
         "total_points": display_points(total_points),
         "total_earned": 0,
+        "summary": {
+            "total_cases": len(cases),
+            "total_points": display_points(total_points),
+            "model_points": 0.0,
+            "pipeline_points": 0.0,
+            "fallback_cases": 0,
+            "no_answer_cases": 0,
+            "compile_pass_cases": 0,
+            "run_pass_cases": 0,
+        },
+        "cases": [],
         "results": [],
     }
     
@@ -757,8 +831,16 @@ def run_evaluation(
         
         points = case_points(case)
 
+        answer_source = ANSWER_SOURCE_MODEL
+        used_fallback = False
+        model_code = ""
+
         if use_ai:
-            code = generate_ai_response(case)
+            generation = generate_ai_response(case)
+            code = generation["final_output"]
+            model_code = generation.get("model_output", "")
+            answer_source = generation["answer_source"]
+            used_fallback = bool(generation["used_fallback"])
         elif answers_dir:
             answer_path = answers_dir / f"{case_id}.c"
             code = answer_path.read_text(encoding="utf-8") if answer_path.exists() else ""
@@ -768,10 +850,15 @@ def run_evaluation(
         def no_code_result(message: str) -> dict[str, Any]:
             return {
                 "case_id": case_id,
+                "answer_source": ANSWER_SOURCE_NONE,
+                "used_fallback": False,
                 "compile_pass": False,
+                "model_compile_pass": None,
                 "run_pass": False,
                 "keyword_pass": False,
                 "structure_pass": False,
+                "model_score": 0.0,
+                "pipeline_score": 0.0,
                 "score": 0.0,
                 "messages": [message],
                 "case_info": {
@@ -786,22 +873,44 @@ def run_evaluation(
             print("no answer")
             results = no_code_result("No answer code supplied. Use --use-ai or --answers-dir.")
             report["results"].append(results)
+            report["cases"].append(results)
             report["cases_tested"] += 1
+            report["summary"]["no_answer_cases"] += 1
             continue
-        
-        code = extract_c_code(code)
-        if not code:
+
+        final_code = extract_c_code(code)
+        extracted_model_code = extract_c_code(model_code, debug=False) if model_code else ""
+
+        if not final_code:
             print("no code")
             results = no_code_result("No valid C code could be extracted from the model output.")
             report["results"].append(results)
+            report["cases"].append(results)
             report["cases_tested"] += 1
+            report["summary"]["no_answer_cases"] += 1
             continue
 
-        results = run_smoke_tests(code, case)
+        model_results = run_smoke_tests(extracted_model_code, case) if extracted_model_code else None
+        results = run_smoke_tests(final_code, case)
+        pipeline_score = float(results["score"])
+        model_score = float(model_results["score"]) if model_results else 0.0
+        model_compile_pass = bool(model_results["compile_pass"]) if model_results else None
+
+        results["answer_source"] = answer_source
+        results["used_fallback"] = used_fallback
+        results["model_compile_pass"] = model_compile_pass
+        results["model_score"] = model_score
+        results["pipeline_score"] = pipeline_score
+        results["score"] = pipeline_score
         
         # Print result summary
         status = "✅" if results["compile_pass"] else "❌"
-        print(f"{status} score={results['score']}/{display_points(points)}")
+        fallback_label = " fallback" if used_fallback else ""
+        print(
+            f"{status} source={answer_source}{fallback_label} "
+            f"model={display_points(model_score)}/{display_points(points)} "
+            f"pipeline={display_points(pipeline_score)}/{display_points(points)}"
+        )
         
         results["case_info"] = {
             "year": case.get("year"),
@@ -811,13 +920,28 @@ def run_evaluation(
         }
         
         report["results"].append(results)
+        report["cases"].append(results)
         report["cases_tested"] += 1
-        report["total_earned"] += results["score"]
+        report["total_earned"] += pipeline_score
+        report["summary"]["model_points"] += model_score
+        report["summary"]["pipeline_points"] += pipeline_score
+        if used_fallback:
+            report["summary"]["fallback_cases"] += 1
+        if results["compile_pass"]:
+            report["summary"]["compile_pass_cases"] += 1
+        if results["run_pass"]:
+            report["summary"]["run_pass_cases"] += 1
     
     # Calculate summary
+    report["summary"]["model_points"] = round(report["summary"]["model_points"], 1)
+    report["summary"]["pipeline_points"] = round(report["summary"]["pipeline_points"], 1)
     if total_points > 0:
-        report["pass_rate"] = round(100 * report["total_earned"] / total_points, 1)
+        model_rate = round(100 * report["summary"]["model_points"] / total_points, 1)
+        pipeline_rate = round(100 * report["summary"]["pipeline_points"] / total_points, 1)
+        report["pass_rate"] = pipeline_rate
     else:
+        model_rate = 0.0
+        pipeline_rate = 0.0
         report["pass_rate"] = 0.0
     
     # Save report
@@ -826,7 +950,16 @@ def run_evaluation(
     
     output_file.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\n📊 Report saved to {output_file}")
-    print(f"Summary: {display_points(float(report['total_earned']))}/{report['total_points']} points ({report['pass_rate']}%)")
+    summary = report["summary"]
+    print(
+        f"Model Score: {display_points(float(summary['model_points']))}/"
+        f"{report['total_points']} points ({model_rate}%)"
+    )
+    print(
+        f"Pipeline Score: {display_points(float(summary['pipeline_points']))}/"
+        f"{report['total_points']} points ({pipeline_rate}%)"
+    )
+    print(f"Fallback Used: {summary['fallback_cases']} cases")
     
     return report
 
