@@ -20,11 +20,12 @@ from typing import Any
 
 ANSI_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 PLAN_TIMEOUT_SECONDS = 30
-CODE_TIMEOUT_SECONDS = 180
+CODE_TIMEOUT_SECONDS = 420
 ANSWER_SOURCE_MODEL = "model"
 ANSWER_SOURCE_REPAIRED = "repaired_model"
 ANSWER_SOURCE_FALLBACK = "fallback_scaffold"
 ANSWER_SOURCE_NONE = "no_answer"
+TAIL_CHARS = 1200
 
 
 def default_eval_dir() -> Path:
@@ -49,6 +50,37 @@ def local_ai_run_script() -> Path:
     """Return the repo-local local_ai/run.sh regardless of caller cwd."""
     local_ai_dir = Path(__file__).resolve().parent
     return local_ai_dir / "run.sh"
+
+
+def find_claw_binary_for_run_script(run_script: Path) -> Path | None:
+    """Mirror local_ai/run.sh claw lookup so eval can fail fast."""
+    local_ai_dir = run_script.resolve().parent
+    project_dir = local_ai_dir.parent
+    candidates = (
+        local_ai_dir / "runtime" / "bin" / "claw",
+        project_dir / "rust" / "target" / "release" / "claw",
+        project_dir / "rust" / "target" / "debug" / "claw",
+    )
+    for candidate in candidates:
+        if candidate.is_file() and os.access(candidate, os.X_OK):
+            return candidate
+
+    system_claw = shutil.which("claw")
+    return Path(system_claw) if system_claw else None
+
+
+def local_ai_unavailable_reason() -> str | None:
+    """Return a human-readable launcher dependency problem, if any."""
+    run_script = local_ai_run_script()
+    if not run_script.exists():
+        return f"local_ai/run.sh not found at {run_script}"
+    if find_claw_binary_for_run_script(run_script) is None:
+        return (
+            "cannot find claw binary; expected one of "
+            "local_ai/runtime/bin/claw, rust/target/release/claw, "
+            "rust/target/debug/claw, or a system PATH claw"
+        )
+    return None
 
 
 def load_eval_cases(eval_dir: Path | None = None) -> list[dict[str, Any]]:
@@ -201,7 +233,7 @@ def heuristic_extract_c_code(text: str) -> str:
 
 def debug_extraction_failure(raw_output: str) -> None:
     print("[debug] raw model output:", file=sys.stderr)
-    print(raw_output[:500], file=sys.stderr)
+    print(text_tail(raw_output), file=sys.stderr)
     print("[debug] extraction failed", file=sys.stderr)
 
 
@@ -228,6 +260,39 @@ def extract_c_code(text: str, *, debug: bool = True) -> str:
     if debug:
         debug_extraction_failure(text)
     return ""
+
+
+def text_tail(value: str, limit: int = TAIL_CHARS) -> str:
+    """Return a readable tail for subprocess diagnostics."""
+    normalized = normalize_model_output(value or "")
+    if len(normalized) <= limit:
+        return normalized
+    return normalized[-limit:]
+
+
+def combined_invocation_text(invocation: dict[str, Any]) -> str:
+    """Preserve stdout/stderr separately in logs, but combine for code extraction."""
+    return "\n".join(
+        part
+        for part in (invocation.get("stdout", ""), invocation.get("stderr", ""))
+        if part
+    )
+
+
+def log_invocation_failure(label: str, case_id: str, invocation: dict[str, Any]) -> None:
+    """Print actionable local AI failure details without hiding launcher errors."""
+    timeout_status = "yes" if invocation.get("timed_out") else "no"
+    print(
+        f"Warning: {label} failed for {case_id}; "
+        f"returncode={invocation.get('returncode')} timeout={timeout_status}",
+        file=sys.stderr,
+    )
+    stdout_tail = text_tail(invocation.get("stdout", ""))
+    stderr_tail = text_tail(invocation.get("stderr", ""))
+    if stdout_tail:
+        print(f"[debug] {label} stdout tail:\n{stdout_tail}", file=sys.stderr)
+    if stderr_tail:
+        print(f"[debug] {label} stderr tail:\n{stderr_tail}", file=sys.stderr)
 
 
 def find_c_compiler() -> str | None:
@@ -634,16 +699,47 @@ def ai_generation_result(
     }
 
 
-def call_local_ai(run_script: Path, prompt: str, timeout: int) -> subprocess.CompletedProcess[str]:
+def call_local_ai(run_script: Path, prompt: str, timeout: int) -> dict[str, Any]:
     env = os.environ.copy()
     env.setdefault("CLAW_PROMPT_PROFILE", "c_programming")
-    return subprocess.run(
-        ["bash", str(run_script), "--output-format", "text", "prompt", prompt],
-        capture_output=True,
-        text=True,
-        timeout=timeout,
-        env=env,
-    )
+    command = [
+        "bash",
+        str(run_script),
+        "--output-format",
+        "text",
+        "--compact",
+        "prompt",
+        prompt,
+    ]
+    try:
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            env=env,
+        )
+        return {
+            "command": command,
+            "returncode": result.returncode,
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "timed_out": False,
+        }
+    except subprocess.TimeoutExpired as exc:
+        stdout = exc.stdout or ""
+        stderr = exc.stderr or ""
+        if isinstance(stdout, bytes):
+            stdout = stdout.decode("utf-8", errors="replace")
+        if isinstance(stderr, bytes):
+            stderr = stderr.decode("utf-8", errors="replace")
+        return {
+            "command": command,
+            "returncode": None,
+            "stdout": stdout,
+            "stderr": stderr,
+            "timed_out": True,
+        }
 
 
 def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
@@ -660,61 +756,68 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
             return ai_generation_result()
         
         if should_decompose(case):
-            try:
-                plan_result = call_local_ai(run_script, build_plan_prompt(case), PLAN_TIMEOUT_SECONDS)
-            except subprocess.TimeoutExpired:
+            plan_result = call_local_ai(run_script, build_plan_prompt(case), PLAN_TIMEOUT_SECONDS)
+            if plan_result["timed_out"]:
                 print(
                     f"Warning: planning timeout for {case.get('id')}; using local fallback plan.",
                     file=sys.stderr,
                 )
                 plan = build_local_fallback_plan(case)
             else:
-                plan = "\n".join(part for part in (plan_result.stdout, plan_result.stderr) if part)
+                plan = plan_result["stdout"] if plan_result["returncode"] == 0 else ""
                 if not plan.strip():
                     print(
                         f"Warning: planning failed for {case.get('id')}; using local fallback plan.",
                         file=sys.stderr,
                     )
+                    log_invocation_failure("planning", str(case.get("id")), plan_result)
                     plan = build_local_fallback_plan(case)
 
-            try:
-                code_result = call_local_ai(run_script, build_code_prompt(case, plan), CODE_TIMEOUT_SECONDS)
-            except subprocess.TimeoutExpired:
-                print(f"Warning: code generation timeout for {case.get('id')}", file=sys.stderr)
+            code_result = call_local_ai(run_script, build_code_prompt(case, plan), CODE_TIMEOUT_SECONDS)
+            if code_result["timed_out"]:
+                log_invocation_failure("code generation", str(case.get("id")), code_result)
                 return ai_generation_result(
                     final_output=build_smoke_fallback_code(case, "code generation timeout"),
                     answer_source=ANSWER_SOURCE_FALLBACK,
                     used_fallback=True,
                 )
-            combined = "\n".join(part for part in (code_result.stdout, code_result.stderr) if part)
-            if extract_c_code(combined, debug=False):
+            combined = combined_invocation_text(code_result)
+            if code_result["returncode"] == 0 and extract_c_code(combined, debug=False):
                 return ai_generation_result(
                     final_output=combined,
                     model_output=combined,
                     answer_source=ANSWER_SOURCE_MODEL,
                 )
-
-            try:
-                retry_result = call_local_ai(
-                    run_script,
-                    build_code_retry_prompt(case, plan, combined),
-                    CODE_TIMEOUT_SECONDS,
+            if code_result["returncode"] != 0:
+                log_invocation_failure("code generation", str(case.get("id")), code_result)
+                return ai_generation_result(
+                    final_output=build_smoke_fallback_code(case, "code generation failed"),
+                    model_output=combined,
+                    answer_source=ANSWER_SOURCE_FALLBACK,
+                    used_fallback=True,
                 )
-            except subprocess.TimeoutExpired:
-                print(f"Warning: code retry timeout for {case.get('id')}", file=sys.stderr)
+
+            retry_result = call_local_ai(
+                run_script,
+                build_code_retry_prompt(case, plan, combined),
+                CODE_TIMEOUT_SECONDS,
+            )
+            if retry_result["timed_out"]:
+                log_invocation_failure("code retry", str(case.get("id")), retry_result)
                 return ai_generation_result(
                     final_output=build_smoke_fallback_code(case, "code retry timeout"),
                     model_output=combined,
                     answer_source=ANSWER_SOURCE_FALLBACK,
                     used_fallback=True,
                 )
-            retry_output = "\n".join(part for part in (retry_result.stdout, retry_result.stderr) if part)
-            if extract_c_code(retry_output, debug=False):
+            retry_output = combined_invocation_text(retry_result)
+            if retry_result["returncode"] == 0 and extract_c_code(retry_output, debug=False):
                 return ai_generation_result(
                     final_output=retry_output,
                     model_output=retry_output,
                     answer_source=ANSWER_SOURCE_REPAIRED,
                 )
+            log_invocation_failure("code retry", str(case.get("id")), retry_result)
 
             debug_extraction_failure(combined or retry_output)
             print(f"Warning: code generation failed for {case.get('id')}", file=sys.stderr)
@@ -726,8 +829,15 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
             )
 
         result = call_local_ai(run_script, build_model_prompt(case), CODE_TIMEOUT_SECONDS)
-        combined = "\n".join(part for part in (result.stdout, result.stderr) if part)
-        if result.returncode == 0 and extract_c_code(combined, debug=False):
+        combined = combined_invocation_text(result)
+        if result["timed_out"]:
+            log_invocation_failure("AI generation", str(case.get("id")), result)
+            return ai_generation_result(
+                final_output=build_smoke_fallback_code(case, "model timeout"),
+                answer_source=ANSWER_SOURCE_FALLBACK,
+                used_fallback=True,
+            )
+        if result["returncode"] == 0 and extract_c_code(combined, debug=False):
             return ai_generation_result(
                 final_output=combined,
                 model_output=combined,
@@ -735,7 +845,7 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
             )
 
         extracted = extract_c_code(combined)
-        if extracted:
+        if result["returncode"] != 0 and extracted:
             print(
                 f"Warning: local AI returned non-zero for {case.get('id')}, but C code was found; continuing.",
                 file=sys.stderr,
@@ -745,15 +855,24 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
                 model_output=extracted,
                 answer_source=ANSWER_SOURCE_MODEL,
             )
+        if result["returncode"] != 0:
+            log_invocation_failure("AI generation", str(case.get("id")), result)
+            return ai_generation_result(
+                final_output=build_smoke_fallback_code(case, "direct generation failed"),
+                model_output=combined,
+                answer_source=ANSWER_SOURCE_FALLBACK,
+                used_fallback=True,
+            )
 
         repair_result = call_local_ai(run_script, build_repair_prompt(combined), CODE_TIMEOUT_SECONDS)
-        repaired = "\n".join(part for part in (repair_result.stdout, repair_result.stderr) if part)
-        if extract_c_code(repaired, debug=False):
+        repaired = combined_invocation_text(repair_result)
+        if repair_result["returncode"] == 0 and extract_c_code(repaired, debug=False):
             return ai_generation_result(
                 final_output=repaired,
                 model_output=repaired,
                 answer_source=ANSWER_SOURCE_REPAIRED,
             )
+        log_invocation_failure("AI repair", str(case.get("id")), repair_result)
 
         details = combined.strip()
         print(f"Warning: AI generation failed for {case.get('id')}: {details[:300]}", file=sys.stderr)
@@ -802,6 +921,13 @@ def run_evaluation(
 
     if use_ai:
         cases = sorted(cases, key=generation_priority)
+    ai_unavailable = local_ai_unavailable_reason() if use_ai else None
+    if ai_unavailable:
+        print(
+            f"Warning: local AI unavailable: {ai_unavailable}; "
+            "using fallback scaffolds for AI-mode pipeline checks.",
+            file=sys.stderr,
+        )
     
     total_points = sum(case_points(case) for case in cases)
 
@@ -836,11 +962,16 @@ def run_evaluation(
         model_code = ""
 
         if use_ai:
-            generation = generate_ai_response(case)
-            code = generation["final_output"]
-            model_code = generation.get("model_output", "")
-            answer_source = generation["answer_source"]
-            used_fallback = bool(generation["used_fallback"])
+            if ai_unavailable:
+                code = build_smoke_fallback_code(case, f"local AI unavailable: {ai_unavailable}")
+                answer_source = ANSWER_SOURCE_FALLBACK
+                used_fallback = True
+            else:
+                generation = generate_ai_response(case)
+                code = generation["final_output"]
+                model_code = generation.get("model_output", "")
+                answer_source = generation["answer_source"]
+                used_fallback = bool(generation["used_fallback"])
         elif answers_dir:
             answer_path = answers_dir / f"{case_id}.c"
             code = answer_path.read_text(encoding="utf-8") if answer_path.exists() else ""
@@ -902,6 +1033,8 @@ def run_evaluation(
         results["model_score"] = model_score
         results["pipeline_score"] = pipeline_score
         results["score"] = pipeline_score
+        if ai_unavailable and use_ai:
+            results["messages"].append(f"Local AI unavailable: {ai_unavailable}")
         
         # Print result summary
         status = "✅" if results["compile_pass"] else "❌"

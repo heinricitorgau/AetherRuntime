@@ -1,5 +1,5 @@
 {
-  "timestamp": 1778072503,
+  "timestamp": 1778073220,
   "total_cases": 4,
   "cases_tested": 4,
   "total_points": 65,
@@ -27,7 +27,8 @@
         "Compile: Compiled successfully",
         "Runtime: OK",
         "Output keywords found",
-        "Behavior: Expected behavior smoke check passed"
+        "Behavior: Expected behavior smoke check passed",
+        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
       ],
       "output": "0.607\n",
       "behavior_pass": true,
@@ -55,7 +56,8 @@
         "Compile: Compiled successfully",
         "Runtime: OK",
         "Output keywords found",
-        "Behavior: Expected behavior smoke check passed"
+        "Behavior: Expected behavior smoke check passed",
+        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
       ],
       "output": "3\n2 2\n11111\n222\n3\n",
       "behavior_pass": true,
@@ -83,7 +85,8 @@
         "Compile: Compiled successfully",
         "Runtime: OK",
         "Output keywords found",
-        "Behavior: Expected behavior smoke check passed"
+        "Behavior: Expected behavior smoke check passed",
+        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
       ],
       "output": "area\n6.000\n",
       "behavior_pass": true,
@@ -111,7 +114,8 @@
         "Compile: Compiled successfully",
         "Runtime: OK",
         "Output keywords found",
-        "Behavior: Expected behavior smoke check passed"
+        "Behavior: Expected behavior smoke check passed",
+        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
       ],
       "output": "Numbers\nwin\npoints\nPick\n",
       "behavior_pass": true,
@@ -141,7 +145,8 @@
         "Compile: Compiled successfully",
         "Runtime: OK",
         "Output keywords found",
-        "Behavior: Expected behavior smoke check passed"
+        "Behavior: Expected behavior smoke check passed",
+        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
       ],
       "output": "0.607\n",
       "behavior_pass": true,
@@ -169,7 +174,8 @@
         "Compile: Compiled successfully",
         "Runtime: OK",
         "Output keywords found",
-        "Behavior: Expected behavior smoke check passed"
+        "Behavior: Expected behavior smoke check passed",
+        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
       ],
       "output": "3\n2 2\n11111\n222\n3\n",
       "behavior_pass": true,
@@ -197,7 +203,8 @@
         "Compile: Compiled successfully",
         "Runtime: OK",
         "Output keywords found",
-        "Behavior: Expected behavior smoke check passed"
+        "Behavior: Expected behavior smoke check passed",
+        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
       ],
       "output": "area\n6.000\n",
       "behavior_pass": true,
@@ -225,7 +232,8 @@
         "Compile: Compiled successfully",
         "Runtime: OK",
         "Output keywords found",
-        "Behavior: Expected behavior smoke check passed"
+        "Behavior: Expected behavior smoke check passed",
+        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
       ],
       "output": "Numbers\nwin\npoints\nPick\n",
       "behavior_pass": true,
