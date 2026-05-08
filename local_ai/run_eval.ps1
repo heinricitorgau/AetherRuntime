@@ -62,19 +62,19 @@ $strictOffline = Test-Truthy $env:CLAW_STRICT_OFFLINE
 
 # Check if eval cases exist
 if (-not (Test-Path $evalDir)) {
-    Write-Fail "Eval cases not found at $evalDir (找不到評估案例目錄)"
+    Write-Fail "Eval cases not found at $evalDir"
 }
 
 # Find Python
 $pythonPath = Resolve-PythonPath $runtimeDir $strictOffline
 if (-not $pythonPath) {
     if ($strictOffline) {
-        Write-Fail "bundled Python not found (strict offline 模式需要 local_ai\runtime\python\python.exe)"
+        Write-Fail "bundled Python not found (strict offline mode requires local_ai\runtime\python\python.exe)"
     }
-    Write-Fail "python not found; install Python or add it to PATH (找不到 Python，請確認已安裝或加入 PATH)"
+    Write-Fail "python not found; install Python or add it to PATH"
 }
 
-Write-Header "C Exam Offline Evaluation Pack (C 語言離線評估包)"
+Write-Header "C Exam Offline Evaluation Pack"
 
 # Parse arguments
 $useAi = $false
@@ -86,24 +86,24 @@ for ($i = 0; $i -lt $args.Count; $i++) {
     switch ($args[$i]) {
         "--use-ai" {
             $useAi = $true
-            Write-Info "Will generate code using local AI (將使用本地 AI 產生程式碼)"
+            Write-Info "Will generate code using local AI"
         }
         "--filter" {
             if ($i + 1 -ge $args.Count) { Write-Fail "--filter requires a TEXT" }
             $filter = $args[$i + 1]
-            Write-Info "Filtering cases (過濾條件): $filter"
+            Write-Info "Filtering cases: $filter"
             $i++
         }
         "--output" {
             if ($i + 1 -ge $args.Count) { Write-Fail "--output requires a FILE" }
             $output = $args[$i + 1]
-            Write-Info "Output file (輸出檔案): $output"
+            Write-Info "Output file: $output"
             $i++
         }
         "--answers-dir" {
             if ($i + 1 -ge $args.Count) { Write-Fail "--answers-dir requires a DIR" }
             $answersDir = $args[$i + 1]
-            Write-Info "Using answer files from (使用答案目錄): $answersDir"
+            Write-Info "Using answer files from: $answersDir"
             $i++
         }
         { $_ -in "--help", "-h" } {
@@ -117,7 +117,7 @@ for ($i = 0; $i -lt $args.Count; $i++) {
             exit 0
         }
         default {
-            Write-Warn "Unknown argument (未知參數): $($args[$i])"
+            Write-Warn "Unknown argument: $($args[$i])"
         }
     }
 }
@@ -145,13 +145,13 @@ if ($answersDir) {
 }
 
 # Run evaluation
-Write-Header "Running Evaluation (開始評估)"
+Write-Header "Running Evaluation"
 & $pythonPath @evalArgs
 $exitCode = $LASTEXITCODE
 
 if ($exitCode -eq 0) {
-    Write-Ok "Evaluation complete (評估完成)"
+    Write-Ok "Evaluation complete"
 } else {
-    Write-Fail "Evaluation failed with exit code $exitCode (評估失敗)"
+    Write-Fail "Evaluation failed with exit code $exitCode"
 }
 exit $exitCode

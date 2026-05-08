@@ -161,10 +161,10 @@ while ($argIndex -lt $args.Count) {
         "--help" {
             Write-Host "usage: powershell -ExecutionPolicy Bypass -File .\local_ai\prepare_bundle.ps1 [model] [--fast] [--cached-only] [--python-zip PATH] [--python-dir PATH]"
             Write-Host ""
-            Write-Host "  --fast         優先重用既有 binary 與已打包模型，減少重建與重拷貝"
-            Write-Host "  --cached-only  不下載模型；若本機快取缺少指定模型就直接失敗"
-            Write-Host "  --python-zip   打包 Windows embeddable / portable Python zip 到 local_ai/runtime/python"
-            Write-Host "  --python-dir   打包已解壓且含 python.exe 的 portable Python 目錄"
+            Write-Host "  --fast         Reuse existing binaries and bundled model to reduce rebuild/copy"
+            Write-Host "  --cached-only  Do not download model; fail if not cached locally"
+            Write-Host "  --python-zip   Bundle Windows embeddable/portable Python zip into local_ai/runtime/python"
+            Write-Host "  --python-dir   Bundle an extracted portable Python directory containing python.exe"
             exit 0
         }
         default {
@@ -301,19 +301,19 @@ try {
 }
 
 Write-Host ""
-Write-Host "離線 bundle 已完成。"
+Write-Host "Offline bundle is ready."
 Write-Host ""
-Write-Host "之後只要把整個 repo 複製到目標機器，就可以直接執行："
+Write-Host "Copy the entire repo to the target machine and run:"
 Write-Host "  powershell -ExecutionPolicy Bypass -File local_ai/run.ps1"
 Write-Host ""
-Write-Host "若想改模型："
+Write-Host "To change the model:"
 Write-Host "  powershell -ExecutionPolicy Bypass -File local_ai/prepare_bundle.ps1 qwen2.5-coder:14b"
 Write-Host ""
-Write-Host "若想盡量少下載、少重建："
+Write-Host "To minimize downloads and rebuilds:"
 Write-Host "  powershell -ExecutionPolicy Bypass -File local_ai/prepare_bundle.ps1 --fast"
 Write-Host ""
-Write-Host "若只允許使用本機已快取的模型："
+Write-Host "To only use locally cached models:"
 Write-Host "  powershell -ExecutionPolicy Bypass -File local_ai/prepare_bundle.ps1 --cached-only"
 Write-Host ""
-Write-Host "若要支援 Windows 空機 Level 1 air-gap，請加入 portable Python："
+Write-Host "For Windows Level 1 air-gap (no Python on target), bundle portable Python:"
 Write-Host "  powershell -ExecutionPolicy Bypass -File local_ai/prepare_bundle.ps1 --python-zip C:\path\python-embed-amd64.zip"
