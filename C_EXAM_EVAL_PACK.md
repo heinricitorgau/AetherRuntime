@@ -24,16 +24,21 @@
 ```bash
 # 產生報告骨架；沒有答案時會標示 no answer
 bash local_ai/run_eval.sh
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1
 
 # 呼叫本地模型回答並評估
 bash local_ai/run_eval.sh --use-ai
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-ai
 
 # 使用已準備好的 C 答案檔；檔名需為 <case_id>.c
 bash local_ai/run_eval.sh --answers-dir /path/to/answers
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --answers-dir C:\path\to\answers
 
 # 篩選年份、題號或 topic
 bash local_ai/run_eval.sh --filter 2024
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --filter 2024
 bash local_ai/run_eval.sh --filter series
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --filter series
 ```
 
 預設報告輸出到 `local_ai/eval_cases/eval_report.json`，可用 `--output FILE` 指定位置。

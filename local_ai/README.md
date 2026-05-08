@@ -330,17 +330,23 @@ ls -la local_ai/eval_cases/c_exam/
 
 # 產生報告骨架；若沒有答案，case 會標示 no answer
 bash local_ai/run_eval.sh
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1
 
 # 使用本地 AI 生成程式碼並評估
 bash local_ai/run_eval.sh --use-ai
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-ai
 
 # 使用已準備好的答案檔測試；檔名格式為 <case_id>.c
 bash local_ai/run_eval.sh --answers-dir /path/to/answers
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --answers-dir C:\path\to\answers
 
 # 篩選特定年份或主題
 bash local_ai/run_eval.sh --filter 2025
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --filter 2025
 bash local_ai/run_eval.sh --filter series
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --filter series
 bash local_ai/run_eval.sh --filter geometry
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --filter geometry
 ```
 
 ### 評估流程
@@ -463,6 +469,7 @@ int main() {
 EOF
 
 bash local_ai/run_eval.sh --answers-dir /tmp/c_exam_answers --filter 2021_exam1_001
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --answers-dir /tmp/c_exam_answers --filter 2021_exam1_001
 ```
 
 ### 評估案例結構
@@ -505,6 +512,7 @@ bash local_ai/run.sh "寫一個 C 程式計算級數"
 
 # 3. 評估所有案例
 bash local_ai/run_eval.sh --use-ai
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-ai
 
 # 4. 查看報告
 cat eval_report.json | jq '.pass_rate'
