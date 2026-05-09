@@ -57,13 +57,13 @@ bash local_ai/prepare_bundle.sh
 預設模型是 `qwen2.5-coder:14b`。若想指定別的模型：
 
 ```bash
-bash local_ai/prepare_bundle.sh qwen2.5-coder:14b
+bash local_ai/prepare_bundle.sh qwen2.5-coder:1.5b
 ```
 
 Windows PowerShell：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\local_ai\prepare_bundle.ps1 qwen2.5-coder:14b
+powershell -ExecutionPolicy Bypass -File .\local_ai\prepare_bundle.ps1 qwen2.5-coder:1.5b
 ```
 
 Windows Level 1 air-gap 若目標機沒有 Python，請在準備機加入 portable Python：
@@ -241,10 +241,45 @@ bundled local model
 - `bash local_ai/cleanup_local.sh` 不會動到 `~/.ollama` 的全域模型快取，避免誤刪你原本就有的模型。
 - `powershell -ExecutionPolicy Bypass -File .\local_ai\cleanup_local.ps1` 也只會清 repo 內的 bundle。
 
+## 硬體與模型推薦 (Recommended Models by Hardware Tier)
+
+| 模型名稱 | Size Class | RAM 需求 | 啟動速度 | 預設 Timeout | 建議用途 |
+|---|---|---|---|---|---|
+| `qwen2.5-coder:1.5b` (預設) | small | ~2 GB | 快 | 60s / 15s | 基礎測試、除錯 (Smoke Tests) |
+| `qwen2.5-coder:7b` | medium | ~5 GB | 中等 | 180s / 30s | 平衡效能與品質 (無 GPU 亦可) |
+| `qwen2.5-coder:14b` | large | ~10 GB | 慢 (CPU) | 300s / 60s | 高品質程式碼生成 (建議有 GPU) |
+
+## 除錯與 Smoke Test (Debugging Workflow)
+
+當環境啟動後沒有回應、或是卡住時，請使用 `--smoke-test` 參數快速驗證基礎建設是否打通：
+
+macOS / Linux:
+```bash
+bash local_ai/run.sh --smoke-test
+```
+
+Windows:
+```powershell
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --smoke-test
+```
+
+`--smoke-test` 會強制使用最小的 `1.5b` 模型、極短的 Timeout、關閉修復流程，並固定送出一個簡單的英文 prompt。
+此模式**主要驗證 Ollama + Proxy 的同步 API 是否運作正常**，會直接對 proxy 送出 HTTP POST。如果能成功回傳助理回應文字，代表本地端基礎設施已準備就緒。
+
+若 Proxy 的 smoke-test 成功，但正常使用時 `claw` 仍然失敗或卡住，則問題通常出在 `claw` 終端機與 Proxy 之間的**串流協定（SSE）相容性**。
+若你想強制使用 `claw` 來跑 smoke-test 以測試串流相容性，可以加上：
+`CLAW_SMOKE_USE_CLAW=1 powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --smoke-test`
+
+若要看更詳細的串流與 Timeout 日誌，可以開啟 `CLAW_DEBUG=1`：
+
+```bash
+CLAW_DEBUG=1 bash local_ai/run.sh
+```
+
 ## 常用環境變數
 
 ```bash
-CLAW_MODEL=qwen2.5-coder:14b bash local_ai/run.sh
+CLAW_MODEL=qwen2.5-coder:1.5b bash local_ai/run.sh
 CLAW_OLLAMA_PORT=11435 bash local_ai/run.sh
 CLAW_PERMISSION_MODE=read-only bash local_ai/run.sh
 CLAW_SYSTEM_PROMPT="請全程使用繁體中文，並用條列整理答案。" bash local_ai/run.sh

@@ -134,6 +134,20 @@ $binDir = Join-Path $runtimeDir "bin"
 $bundledOllamaHome = Join-Path $runtimeDir "ollama-home"
 $manifestPath = Join-Path $runtimeDir "bundle-manifest.txt"
 
+function Get-ModelSizeClass($modelName) {
+    if ($modelName -match ':(0\.5|1|1\.5|3)b') { return "small" }
+    if ($modelName -match ':(7|8)b')            { return "medium" }
+    return "large"
+}
+
+function Get-AdaptiveTimeouts($sizeClass) {
+    switch ($sizeClass) {
+        "small"  { return @{ Full = 60;  FirstToken = 15 } }
+        "medium" { return @{ Full = 180; FirstToken = 30 } }
+        default  { return @{ Full = 300; FirstToken = 60 } }
+    }
+}
+
 function Get-BundledModelManifestPath($bundledOllamaHome, $model) {
     $modelName = $model.Split(":", 2)[0]
     $baseDir = Join-Path $bundledOllamaHome ("models/manifests/registry.ollama.ai/library/" + $modelName)
@@ -171,13 +185,14 @@ function Get-BundledModelRequestName($bundledOllamaHome, $model) {
     return $model
 }
 
-$defaultModel = "qwen2.5-coder:14b"
+$defaultModel = "qwen2.5-coder:1.5b"
 if (Test-Path $manifestPath) {
     $manifestModelLine = Select-String -Path $manifestPath -Pattern '^model=' -ErrorAction SilentlyContinue
     if ($manifestModelLine) {
         $defaultModel = $manifestModelLine.Line.Substring(6)
     }
 }
+$isDefaultModel = (-not $env:CLAW_MODEL)
 $model = if ($env:CLAW_MODEL) { $env:CLAW_MODEL } else { $defaultModel }
 $proxyPort = if ($env:CLAW_PROXY_PORT) { [int]$env:CLAW_PROXY_PORT } else { 8082 }
 $ollamaPort = if ($env:CLAW_OLLAMA_PORT) { [int]$env:CLAW_OLLAMA_PORT } else { 11435 }
@@ -188,6 +203,26 @@ $promptProfile = if ($env:CLAW_PROMPT_PROFILE) { $env:CLAW_PROMPT_PROFILE } else
 $promptDir = if ($env:CLAW_PROMPT_DIR) { $env:CLAW_PROMPT_DIR } else { Join-Path $scriptDir "prompts" }
 $strictOffline = Test-Truthy $env:CLAW_STRICT_OFFLINE
 $ragQuery = ""
+
+$smokeTest = $args -contains "--smoke-test"
+if ($smokeTest) {
+    $model = "qwen2.5-coder:1.5b"
+    $env:CLAW_MODEL = $model
+    $env:CLAW_OLLAMA_TIMEOUT_SECONDS = "60"
+    $env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS = "15"
+    $env:CLAW_MAX_REPAIR_RETRIES = "0"
+    $env:CLAW_FORCE_NON_STREAM = "1"
+    $promptProfile = "smoke_test"
+}
+
+$sizeClass = Get-ModelSizeClass $model
+$timeouts = Get-AdaptiveTimeouts $sizeClass
+if (-not $env:CLAW_OLLAMA_TIMEOUT_SECONDS) {
+    $env:CLAW_OLLAMA_TIMEOUT_SECONDS = $timeouts.Full.ToString()
+}
+if (-not $env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS) {
+    $env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS = $timeouts.FirstToken.ToString()
+}
 
 $proxyProcess = $null
 $ollamaProcess = $null
@@ -202,7 +237,13 @@ try {
   \_____|_|\__,_| \_/\_/     |_____| offline
 "@
     Write-Host ""
-    Write-Host "  model: $model" -ForegroundColor Cyan
+    if ($smokeTest) { 
+        Write-Host "  running lightweight offline smoke test" -ForegroundColor Green 
+        Write-Host "  force non-stream: enabled" -ForegroundColor Green 
+    }
+    elseif ($isDefaultModel) { Write-Host "  default smoke-test model selected ($model)" -ForegroundColor DarkGray }
+    Write-Host "  model: $model ($sizeClass)" -ForegroundColor Cyan
+    Write-Host "  timeout: $($env:CLAW_OLLAMA_TIMEOUT_SECONDS)s (first-token: $($env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS)s)" -ForegroundColor Cyan
     Write-Host "  perms: $permissionMode" -ForegroundColor Cyan
     Write-Host "  proxy: http://127.0.0.1:$proxyPort" -ForegroundColor Cyan
     Write-Host "  ollama: $ollamaUrl" -ForegroundColor Cyan
@@ -225,6 +266,9 @@ try {
     $passthroughArgs = @()
     for ($i = 0; $i -lt $args.Count; $i++) {
         switch ($args[$i]) {
+            "--smoke-test" {
+                # Handled globally
+            }
             "--import-docs" {
                 if ($i + 1 -ge $args.Count) { Write-Fail "--import-docs requires a source path" }
                 & $pythonPath (Join-Path $scriptDir "rag/import_usb_docs.py") $args[$i + 1]
@@ -245,7 +289,11 @@ try {
             }
         }
     }
-    $args = $passthroughArgs
+    if ($smokeTest) {
+        $args = @("--output-format", "text", "prompt", "hello")
+    } else {
+        $args = $passthroughArgs
+    }
 
     $clawFallbacks = @()
     if (-not $strictOffline) {
@@ -327,23 +375,26 @@ try {
 
     Write-Header "proxy"
     Stop-ListenerOnPort $proxyPort "proxy"
-    $proxyLog = Join-Path ([System.IO.Path]::GetTempPath()) "claw-local-proxy.log"
-    $proxyArgs = @(
-        (Join-Path $scriptDir "proxy.py"),
-        "--model", $model,
-        "--ollama-model", $ollamaRequestModel,
-        "--port", "$proxyPort",
-        "--ollama-url", $ollamaUrl,
-        "--prompt-profile", $promptProfile,
-        "--prompt-dir", $promptDir
-    )
+    $logsDir = Join-Path $runtimeDir "logs"
+    if (-not (Test-Path $logsDir)) { New-Item -ItemType Directory -Path $logsDir | Out-Null }
+    $proxyOutLog = Join-Path $logsDir "proxy.out.log"
+    $proxyErrLog = Join-Path $logsDir "proxy.err.log"
+    Write-Info "proxy target ollama: $ollamaUrl"
+    $env:CLAW_MODEL = $model
+    $env:OLLAMA_MODEL = $model
+    $env:CLAW_OLLAMA_URL = $ollamaUrl
+    $proxyScript = Join-Path $scriptDir "proxy.py"
+    $proxyArgString = "`"$proxyScript`" --model `"$model`" --ollama-model `"$ollamaRequestModel`" --port $proxyPort --ollama-url `"$ollamaUrl`" --prompt-profile `"$promptProfile`" --prompt-dir `"$promptDir`" --first-token-timeout $($env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS)"
     if ($systemPrompt) {
-        $proxyArgs += @("--system-prompt", $systemPrompt)
+        $proxyArgString += " --system-prompt `"$systemPrompt`""
     }
-    $proxyProcess = Start-Process -FilePath $pythonPath -ArgumentList $proxyArgs -RedirectStandardOutput $proxyLog -RedirectStandardError $proxyLog -PassThru -WindowStyle Hidden
+    if ($smokeTest) {
+        $proxyArgString += " --smoke-test"
+    }
+    $proxyProcess = Start-Process -FilePath $pythonPath -ArgumentList $proxyArgString -RedirectStandardOutput $proxyOutLog -RedirectStandardError $proxyErrLog -PassThru -WindowStyle Hidden
     $proxyReadyIn = Wait-HttpOk "http://127.0.0.1:$proxyPort/health" 10
     if ($null -eq $proxyReadyIn) {
-        Write-Fail "proxy failed to start; check $proxyLog"
+        Write-Fail "proxy failed to start; check $proxyOutLog and $proxyErrLog"
     }
     Write-Ok "proxy ready in ${proxyReadyIn}s"
 
@@ -353,6 +404,33 @@ try {
 
     $env:ANTHROPIC_BASE_URL = "http://127.0.0.1:$proxyPort"
     $env:ANTHROPIC_API_KEY = "local-ollama"
+
+    if ($smokeTest -and ($env:CLAW_SMOKE_USE_CLAW -ne "1")) {
+        Write-Info "running proxy-level smoke test..."
+        $body = @{
+            model = $model
+            messages = @(
+                @{ role = "user"; content = "hello" }
+            )
+            stream = $false
+        } | ConvertTo-Json -Depth 3 -Compress
+
+        try {
+            $response = Invoke-RestMethod -Uri "http://127.0.0.1:$proxyPort/v1/messages" -Method Post -Body $body -ContentType "application/json" -TimeoutSec 60
+            $text = $response.content[0].text
+            if ($text) {
+                Write-Host ""
+                Write-Host "Assistant: $text" -ForegroundColor Green
+                Write-Host ""
+                Write-Ok "smoke-test passed: proxy sync API returned text"
+                exit 0
+            } else {
+                Write-Fail "smoke-test failed: empty text returned from proxy. Raw response: $($response | ConvertTo-Json -Compress)"
+            }
+        } catch {
+            Write-Fail "smoke-test failed: $_"
+        }
+    }
 
     if ($ragQuery -and $args.Count -eq 0) {
         $args = @("--output-format", "text", "prompt", $ragQuery)
@@ -367,8 +445,18 @@ try {
     }
     $finalArgs += $args
 
-    & $clawPath @finalArgs
-    $exitCode = $LASTEXITCODE
+    # Start-Process -NoNewWindow passes the parent's console handle directly so
+    # claw sees a real TTY.  '& $clawPath' creates an internal pipe; crossterm
+    # ANSI sequences are buffered with response text and the spinner finish()
+    # clears the response line before it reaches the screen.
+    $clawArgStr = ($finalArgs | ForEach-Object {
+        if ($_ -match '[ \t"]') { '"' + $_.Replace('"', '\"') + '"' } else { $_ }
+    }) -join ' '
+    $clawProcParams = @{ FilePath = $clawPath; NoNewWindow = $true; PassThru = $true }
+    if ($clawArgStr) { $clawProcParams['ArgumentList'] = $clawArgStr }
+    $clawProc = Start-Process @clawProcParams
+    $clawProc.WaitForExit()
+    $exitCode = $clawProc.ExitCode
     exit $exitCode
 } finally {
     Write-Host ""

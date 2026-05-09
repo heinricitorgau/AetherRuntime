@@ -66,12 +66,43 @@ bundled_model_request_name() {
     printf "%s" "$model_ref"
 }
 
-default_model="qwen2.5-coder:14b"
+get_model_size_class() {
+    local model_name="$1"
+    if [[ "$model_name" =~ :(0\.5|1|1\.5|3)b ]]; then
+        echo "small"
+    elif [[ "$model_name" =~ :(7|8)b ]]; then
+        echo "medium"
+    else
+        echo "large"
+    fi
+}
+
+get_adaptive_timeout_full() {
+    case "$1" in
+        small) echo 60 ;;
+        medium) echo 180 ;;
+        *) echo 300 ;;
+    esac
+}
+
+get_adaptive_timeout_first() {
+    case "$1" in
+        small) echo 15 ;;
+        medium) echo 30 ;;
+        *) echo 60 ;;
+    esac
+}
+
+default_model="qwen2.5-coder:1.5b"
 if [[ -f "$MANIFEST_PATH" ]]; then
     manifest_model="$(awk -F= '/^model=/{print $2}' "$MANIFEST_PATH" | tail -n 1)"
     if [[ -n "$manifest_model" ]]; then
         default_model="$manifest_model"
     fi
+fi
+IS_DEFAULT_MODEL=0
+if [[ -z "${CLAW_MODEL:-}" ]]; then
+    IS_DEFAULT_MODEL=1
 fi
 MODEL="${CLAW_MODEL:-$default_model}"
 PROXY_PORT="${CLAW_PROXY_PORT:-8082}"
@@ -82,6 +113,32 @@ SYSTEM_PROMPT="${CLAW_SYSTEM_PROMPT:-}"
 PROMPT_PROFILE="${CLAW_PROMPT_PROFILE:-default_zh_tw}"
 PROMPT_DIR="${CLAW_PROMPT_DIR:-$SCRIPT_DIR/prompts}"
 RAG_QUERY=""
+
+SMOKE_TEST=0
+for arg in "$@"; do
+    if [[ "$arg" == "--smoke-test" ]]; then
+        SMOKE_TEST=1
+        break
+    fi
+done
+
+if [[ "$SMOKE_TEST" -eq 1 ]]; then
+    MODEL="qwen2.5-coder:1.5b"
+    export CLAW_MODEL="$MODEL"
+    export CLAW_OLLAMA_TIMEOUT_SECONDS="60"
+    export CLAW_FIRST_TOKEN_TIMEOUT_SECONDS="15"
+    export CLAW_MAX_REPAIR_RETRIES="0"
+    export CLAW_FORCE_NON_STREAM="1"
+    PROMPT_PROFILE="smoke_test"
+fi
+
+SIZE_CLASS="$(get_model_size_class "$MODEL")"
+if [[ -z "${CLAW_OLLAMA_TIMEOUT_SECONDS:-}" ]]; then
+    export CLAW_OLLAMA_TIMEOUT_SECONDS="$(get_adaptive_timeout_full "$SIZE_CLASS")"
+fi
+if [[ -z "${CLAW_FIRST_TOKEN_TIMEOUT_SECONDS:-}" ]]; then
+    export CLAW_FIRST_TOKEN_TIMEOUT_SECONDS="$(get_adaptive_timeout_first "$SIZE_CLASS")"
+fi
 
 PROXY_PID=""
 OLLAMA_PID=""
@@ -133,7 +190,13 @@ print_banner() {
   \_____|_|\__,_| \_/\_/     |_____| offline
 BANNER
     printf "${RESET}\n"
-    printf "  model: ${CYAN}%s${RESET}\n" "$MODEL"
+    if [[ "$SMOKE_TEST" -eq 1 ]]; then
+        printf "  ${GREEN}running lightweight offline smoke test${RESET}\n"
+    elif [[ "$IS_DEFAULT_MODEL" -eq 1 ]]; then
+        printf "  default smoke-test model selected (%s)\n" "$MODEL"
+    fi
+    printf "  model: ${CYAN}%s (%s)${RESET}\n" "$MODEL" "$SIZE_CLASS"
+    printf "  timeout: ${CYAN}%ss (first-token: %ss)${RESET}\n" "${CLAW_OLLAMA_TIMEOUT_SECONDS}" "${CLAW_FIRST_TOKEN_TIMEOUT_SECONDS}"
     printf "  perms: ${CYAN}%s${RESET}\n" "$PERMISSION_MODE"
     printf "  proxy: ${CYAN}http://127.0.0.1:%s${RESET}\n" "$PROXY_PORT"
     printf "  ollama: ${CYAN}%s${RESET}\n\n" "$OLLAMA_URL"
@@ -226,6 +289,9 @@ ok "python: ${PYTHON_BIN}"
 passthrough_args=()
 while [[ "$#" -gt 0 ]]; do
     case "$1" in
+        --smoke-test)
+            shift
+            ;;
         --import-docs)
             [[ "$#" -ge 2 ]] || fail "--import-docs requires a source path"
             "$PYTHON_BIN" "$SCRIPT_DIR/rag/import_usb_docs.py" "$2"
@@ -247,7 +313,9 @@ while [[ "$#" -gt 0 ]]; do
             ;;
     esac
 done
-if [[ "${#passthrough_args[@]}" -gt 0 ]]; then
+if [[ "$SMOKE_TEST" -eq 1 ]]; then
+    set -- --output-format text prompt "hello"
+elif [[ "${#passthrough_args[@]}" -gt 0 ]]; then
     set -- "${passthrough_args[@]}"
 else
     set --
@@ -346,6 +414,9 @@ header "proxy"
 
 stop_listener_on_port "$PROXY_PORT" "proxy"
 
+export CLAW_MODEL="$MODEL"
+export OLLAMA_MODEL="$MODEL"
+export CLAW_OLLAMA_URL="$OLLAMA_URL"
 proxy_args=(
     "$SCRIPT_DIR/proxy.py"
     --model "$MODEL"
@@ -354,9 +425,13 @@ proxy_args=(
     --ollama-url "$OLLAMA_URL"
     --prompt-profile "$PROMPT_PROFILE"
     --prompt-dir "$PROMPT_DIR"
+    --first-token-timeout "${CLAW_FIRST_TOKEN_TIMEOUT_SECONDS}"
 )
 if [[ -n "$SYSTEM_PROMPT" ]]; then
     proxy_args+=(--system-prompt "$SYSTEM_PROMPT")
+fi
+if [[ "$SMOKE_TEST" -eq 1 ]]; then
+    proxy_args+=(--smoke-test)
 fi
 "$PYTHON_BIN" "${proxy_args[@]}" >/tmp/claw-local-proxy.log 2>&1 &
 PROXY_PID=$!
@@ -376,6 +451,39 @@ printf "${GREEN}ready${RESET} local AI is up. Press Ctrl+C to exit.\n\n"
 
 export ANTHROPIC_BASE_URL="http://127.0.0.1:${PROXY_PORT}"
 export ANTHROPIC_API_KEY="local-ollama"
+
+if [[ "$SMOKE_TEST" -eq 1 && "${CLAW_SMOKE_USE_CLAW:-0}" != "1" ]]; then
+    info "running proxy-level smoke test..."
+    PAYLOAD="{\"model\":\"$MODEL\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}],\"stream\":false}"
+    cat << 'EOF' > /tmp/claw_smoke_test.py
+import urllib.request, json, sys
+req = urllib.request.Request(sys.argv[1], data=sys.argv[2].encode('utf-8'), headers={'Content-Type': 'application/json'}, method='POST')
+try:
+    with urllib.request.urlopen(req, timeout=60) as response:
+        data = json.loads(response.read().decode('utf-8'))
+        text = data.get("content", [{}])[0].get("text", "")
+        if text:
+            print(text)
+            sys.exit(0)
+        else:
+            print(f"Empty text in response: {data}", file=sys.stderr)
+            sys.exit(1)
+except Exception as e:
+    print(f"Request failed: {e}", file=sys.stderr)
+    sys.exit(1)
+EOF
+    if TEXT=$("$PYTHON_BIN" /tmp/claw_smoke_test.py "http://127.0.0.1:${PROXY_PORT}/v1/messages" "$PAYLOAD"); then
+        echo ""
+        printf "${GREEN}Assistant: %s${RESET}\n" "$TEXT"
+        echo ""
+        ok "smoke-test passed: proxy sync API returned text"
+        rm -f /tmp/claw_smoke_test.py
+        exit 0
+    else
+        rm -f /tmp/claw_smoke_test.py
+        fail "smoke-test failed"
+    fi
+fi
 
 if [[ -n "$RAG_QUERY" && "$#" -eq 0 ]]; then
     set -- --output-format text prompt "$RAG_QUERY"

@@ -26,7 +26,11 @@ import time
 import uuid
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
+from urllib.request import Request, urlopen, build_opener, ProxyHandler
+
+# 建立一個不使用任何系統 Proxy 的 opener，避免 Windows 上 urllib 錯誤地將 localhost 導向 VPN/Proxy
+_no_proxy_opener = build_opener(ProxyHandler({}))
+
 
 try:
     from prompt_loader import load_prompt_profile
@@ -44,7 +48,15 @@ except ImportError:  # pragma: no cover - package import path used by tests
 
 DEFAULT_PORT = 8082
 DEFAULT_OLLAMA_URL = "http://localhost:11434"
-DEFAULT_MODEL = "qwen2.5-coder:14b"
+DEFAULT_MODEL = "qwen2.5-coder:1.5b"
+DEFAULT_OLLAMA_TIMEOUT = 60
+DEFAULT_FIRST_TOKEN_TIMEOUT = 15
+DEFAULT_MAX_REPAIR_RETRIES = 1
+HEARTBEAT_INTERVAL = 5
+_DEBUG = os.environ.get("CLAW_DEBUG", "").strip() in ("1", "true", "yes")
+
+class FirstTokenTimeoutError(Exception):
+    pass
 DEFAULT_SYSTEM_PROMPT = (
     "你是離線終端機助理。"
     "請全程只使用繁體中文回答，不要混用英文、日文、韓文、越南文或其他語言。"
@@ -92,7 +104,6 @@ LANGUAGE_PATTERNS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("rust", ("rust",)),
 )
 
-MAX_C_REPAIR_ATTEMPTS = 2
 C_FORBIDDEN_PATTERNS: tuple[tuple[str, str], ...] = (
     (r"\bstd::", "包含 C++ 命名空間 std::"),
     (r"\bcout\s*<<", "使用了 C++ 的 cout"),
@@ -470,7 +481,9 @@ def _ollama_api_chat_to_openai_response(ollama_data: dict, model: str) -> dict:
     }
 
 
-def _request_ollama_completion(oai_payload: dict, ollama_url: str) -> dict:
+def _request_ollama_completion(
+    oai_payload: dict, ollama_url: str, timeout: int = DEFAULT_OLLAMA_TIMEOUT
+) -> dict:
     non_streaming_payload = dict(oai_payload)
     non_streaming_payload["stream"] = False
     openai_req = Request(
@@ -483,8 +496,11 @@ def _request_ollama_completion(oai_payload: dict, ollama_url: str) -> dict:
         method="POST",
     )
     try:
-        with urlopen(openai_req, timeout=120) as resp:
-            return json.loads(resp.read())
+        with _no_proxy_opener.open(openai_req, timeout=timeout) as resp:
+            raw_resp = resp.read()
+        if _DEBUG:
+            sys.stderr.write(f"[proxy:debug] ollama /v1 raw response (first 500): {raw_resp[:500]!r}\n")
+        return json.loads(raw_resp)
     except HTTPError as exc:
         if exc.code != 404:
             raise
@@ -496,12 +512,17 @@ def _request_ollama_completion(oai_payload: dict, ollama_url: str) -> dict:
         headers={"Content-Type": "application/json"},
         method="POST",
     )
-    with urlopen(api_req, timeout=120) as resp:
-        ollama_data = json.loads(resp.read())
+    with _no_proxy_opener.open(api_req, timeout=timeout) as resp:
+        raw_resp = resp.read()
+    if _DEBUG:
+        sys.stderr.write(f"[proxy:debug] ollama /api/chat raw response (first 500): {raw_resp[:500]!r}\n")
+    ollama_data = json.loads(raw_resp)
     return _ollama_api_chat_to_openai_response(ollama_data, oai_payload["model"])
 
 
-def _open_ollama_stream(oai_payload: dict, ollama_url: str):
+def _open_ollama_stream(
+    oai_payload: dict, ollama_url: str, timeout: int = DEFAULT_OLLAMA_TIMEOUT
+):
     """開啟一個對 Ollama /v1/chat/completions 的串流連線，回傳檔案物件。"""
     streaming_payload = dict(oai_payload)
     streaming_payload["stream"] = True
@@ -515,7 +536,16 @@ def _open_ollama_stream(oai_payload: dict, ollama_url: str):
         },
         method="POST",
     )
-    return urlopen(req, timeout=120)
+    return _no_proxy_opener.open(req, timeout=timeout)
+
+
+def _set_socket_timeout(response, timeout: float):
+    try:
+        sock = getattr(getattr(response, "fp", None), "raw", None)
+        if sock and hasattr(sock, "_sock"):
+            sock._sock.settimeout(timeout)
+    except Exception:
+        pass
 
 
 def _repair_c_response(
@@ -523,9 +553,10 @@ def _repair_c_response(
     oai_payload: dict,
     initial_response: dict,
     ollama_url: str,
+    timeout: int = DEFAULT_OLLAMA_TIMEOUT,
 ) -> dict:
     current_response = initial_response
-    max_attempts = int(os.environ.get("CLAW_MAX_REPAIR_RETRIES", str(MAX_C_REPAIR_ATTEMPTS)))
+    max_attempts = int(os.environ.get("CLAW_MAX_REPAIR_RETRIES", str(DEFAULT_MAX_REPAIR_RETRIES)))
     best_response = current_response
     best_check = {"ok": False, "score": -1.0, "issues": [], "suggestions": []}
     for _ in range(max_attempts + 1):
@@ -539,6 +570,9 @@ def _repair_c_response(
         if _ >= max_attempts:
             break
 
+        if _DEBUG:
+            sys.stderr.write(f"[proxy:debug] retry #{_+1} reason=checker failed (score={check.get('score', 0)})\n")
+
         repair_messages = list(oai_payload.get("messages", []))
         repair_messages.append({"role": "assistant", "content": content_text})
         repair_messages.append({
@@ -549,7 +583,7 @@ def _repair_c_response(
         repair_payload["messages"] = repair_messages
         repair_payload["stream"] = False
         repair_payload["temperature"] = 0.0
-        current_response = _request_ollama_completion(repair_payload, ollama_url)
+        current_response = _request_ollama_completion(repair_payload, ollama_url, timeout)
 
     content_text = best_response.get("choices", [{}])[0].get("message", {}).get("content", "")
     best_response = dict(best_response)
@@ -658,7 +692,32 @@ def openai_to_anthropic(oai: dict, model: str) -> dict:
 
 # ── SSE 串流轉換 ──────────────────────────────────────────────────────────────
 
-def stream_openai_to_anthropic(ollama_response, model: str):
+def _iter_sse_lines(response):
+    """從 urllib response 逐行讀取 SSE 行。
+
+    urllib 的 __iter__ 使用 readline()，但回傳 bytes 可能包含多行或
+    不完整行。這裡用 readline() 搭配 buffer 確保每次 yield 一行完整文字。
+    """
+    buf = b""
+    while True:
+        chunk = response.read(4096)
+        if not chunk:
+            # 處理殘留 buffer
+            if buf:
+                for part in buf.split(b"\n"):
+                    line = part.decode("utf-8", errors="replace").strip()
+                    if line:
+                        yield line
+            break
+        buf += chunk
+        while b"\n" in buf:
+            raw_line, buf = buf.split(b"\n", 1)
+            line = raw_line.decode("utf-8", errors="replace").strip()
+            if line:
+                yield line
+
+
+def stream_openai_to_anthropic(ollama_response, model: str, first_token_timeout: int, full_timeout: int, debug: bool):
     """
     把 Ollama 的 OpenAI-compat SSE 串流轉換為 Anthropic SSE 串流。
     每次 yield 一行已編碼的 bytes。
@@ -687,23 +746,64 @@ def stream_openai_to_anthropic(ollama_response, model: str):
     yield b"event: ping\ndata: {\"type\":\"ping\"}\n\n"
 
     output_tokens = 0
+    total_chars = 0
     finish_reason = "end_turn"
+    debug_chunks: list[str] = []
+    
+    t_start = time.monotonic()
+    t_first_token = None
+    last_heartbeat = t_start
 
-    for raw_line in ollama_response:
-        line = raw_line.decode("utf-8", errors="replace").strip()
-        if not line or not line.startswith("data: "):
+    for line in _iter_sse_lines(ollama_response):
+        now = time.monotonic()
+        if t_first_token is None and (now - t_start) > first_token_timeout:
+            raise FirstTokenTimeoutError(f"model produced no tokens before first-token timeout ({first_token_timeout}s)")
+            
+        if debug and (now - last_heartbeat) >= HEARTBEAT_INTERVAL:
+            if t_first_token is None:
+                sys.stderr.write(f"[proxy] waiting for first token... ({now - t_start:.0f}s)\n")
+            else:
+                sys.stderr.write(f"[proxy] stream chars={total_chars}\n")
+            last_heartbeat = now
+        # Ollama SSE 格式：以 "data: " 開頭；跳過 "event:" 行和空行
+        if line.startswith("data: "):
+            payload_str = line[6:]
+        elif line.startswith("{"):
+            # 某些 Ollama 版本直接輸出 raw JSON（無 data: 前綴）
+            payload_str = line
+        else:
             continue
-        payload_str = line[6:]
+
         if payload_str == "[DONE]":
             break
         try:
             chunk = json.loads(payload_str)
         except json.JSONDecodeError:
+            if _DEBUG:
+                sys.stderr.write(f"[proxy:debug] skip unparseable chunk: {line[:120]!r}\n")
             continue
 
         choices = chunk.get("choices", [])
         if not choices:
+            # Ollama /api/chat 格式（備用）：直接包含 message.content
+            msg_content = chunk.get("message", {}).get("content", "")
+            if msg_content:
+                if t_first_token is None:
+                    t_first_token = time.monotonic()
+                    _set_socket_timeout(ollama_response, full_timeout)
+                output_tokens += 1
+                total_chars += len(msg_content)
+                if debug and len(debug_chunks) < 5:
+                    debug_chunks.append(msg_content)
+                yield sse_line("content_block_delta", {
+                    "type": "content_block_delta",
+                    "index": 0,
+                    "delta": {"type": "text_delta", "text": msg_content},
+                })
+            if chunk.get("done"):
+                break
             continue
+
         delta = choices[0].get("delta", {})
         text_delta = delta.get("content", "")
         fr = choices[0].get("finish_reason")
@@ -711,12 +811,31 @@ def stream_openai_to_anthropic(ollama_response, model: str):
             finish_reason = "end_turn" if fr in ("stop", None) else fr
 
         if text_delta:
+            if t_first_token is None:
+                t_first_token = time.monotonic()
+                _set_socket_timeout(ollama_response, full_timeout)
             output_tokens += 1
+            total_chars += len(text_delta)
+            if debug and len(debug_chunks) < 5:
+                debug_chunks.append(text_delta)
             yield sse_line("content_block_delta", {
                 "type": "content_block_delta",
                 "index": 0,
                 "delta": {"type": "text_delta", "text": text_delta},
             })
+
+    if debug:
+        duration = time.monotonic() - t_start
+        latency = (t_first_token - t_start) if t_first_token else duration
+        if debug_chunks:
+            sys.stderr.write(f"[proxy:debug] first {len(debug_chunks)} emitted text chunks: {debug_chunks!r}\n")
+        sys.stderr.write(f"[proxy:debug] stream metrics - first token latency: {latency:.1f}s, total duration: {duration:.1f}s, total chars: {total_chars}\n")
+        
+    if total_chars == 0 or "".join(debug_chunks).strip() == "":
+        sys.stderr.write("[proxy] empty stream response — Ollama returned no text\n")
+        # Do not emit normal stop events if stream is empty. Instead, emit error trailer.
+        yield _mid_stream_error_trailer("empty model stream response")
+        return
 
     # content_block_stop
     yield sse_line("content_block_stop", {"type": "content_block_stop", "index": 0})
@@ -803,6 +922,9 @@ class ProxyHandler(BaseHTTPRequestHandler):
     local_model: str = DEFAULT_MODEL
     ollama_model: str = DEFAULT_MODEL
     default_system_prompt: str = DEFAULT_SYSTEM_PROMPT
+    ollama_timeout: int = DEFAULT_OLLAMA_TIMEOUT
+    first_token_timeout: int = DEFAULT_FIRST_TOKEN_TIMEOUT
+    smoke_test: bool = False
 
     def log_message(self, fmt: str, *args) -> None:  # 簡化日誌
         sys.stderr.write(f"[proxy] {fmt % args}\n")
@@ -842,11 +964,32 @@ class ProxyHandler(BaseHTTPRequestHandler):
             self._send_json_error(404, f"未知的端點：{self.path}")
 
     def _handle_messages(self, body: dict) -> None:
+        incoming_stream = body.get("stream", False)
+        claw_force_non_stream = os.environ.get("CLAW_FORCE_NON_STREAM", "")
+        force_non_stream = claw_force_non_stream == "1"
+        if force_non_stream and incoming_stream:
+            body["stream"] = False
+            sys.stderr.write("[proxy] force non-stream mode enabled\n")
+
         streaming = body.get("stream", False)
+        selected_path = "sync" if not streaming else "stream"
+        sys.stderr.write(
+            f"[proxy] incoming stream={incoming_stream}, "
+            f"CLAW_FORCE_NON_STREAM={claw_force_non_stream}, "
+            f"effective stream={streaming}, "
+            f"selected path={selected_path}\n"
+        )
+
+        if _DEBUG:
+            sys.stderr.write(
+                f"[proxy:debug] /v1/messages keys={list(body.keys())}"
+                f" model={body.get('model', '(none)')!r} stream={streaming}"
+                f" ollama_url={self.ollama_url} ollama_model={self.ollama_model}\n"
+            )
         latest_user_text = _latest_user_text(body)
         oai_payload = anthropic_to_openai(body, self.ollama_model, self.default_system_prompt)
         requested_language = _detect_programming_language(latest_user_text)
-        needs_c_repair = requested_language == "c"
+        needs_c_repair = (requested_language == "c") and not self.smoke_test
 
         try:
             if streaming:
@@ -864,13 +1007,35 @@ class ProxyHandler(BaseHTTPRequestHandler):
                     latest_user_text,
                 )
         except URLError as exc:
-            sys.stderr.write(f"[proxy] Ollama 連線失敗：{exc}\n")
-            self._send_json_error(502, "無法連線到 Ollama，請先執行 ollama serve")
+            reason = getattr(exc, "reason", exc)
+            if isinstance(reason, (TimeoutError, OSError)) and "timed out" in str(reason).lower():
+                sys.stderr.write(
+                    f"[proxy] request timed out after {self.ollama_timeout}s"
+                    f" (model={self.ollama_model}, url={self.ollama_url})"
+                    f" — increase CLAW_OLLAMA_TIMEOUT_SECONDS or use a smaller model\n"
+                )
+                self._send_json_error(
+                    504,
+                    f"Ollama request timed out after {self.ollama_timeout}s"
+                    f" — set CLAW_OLLAMA_TIMEOUT_SECONDS to a higher value",
+                )
+            else:
+                sys.stderr.write(f"[proxy] Ollama 連線失敗：{exc}\n")
+                self._send_json_error(502, "無法連線到 Ollama，請先執行 ollama serve")
         except HTTPError as exc:
             sys.stderr.write(f"[proxy] Ollama HTTP 錯誤：{exc}\n")
             self._send_json_error(
                 502, f"Ollama 回應 HTTP {exc.code}：{exc.reason or '未知錯誤'}"
             )
+        except TimeoutError as exc:
+            sys.stderr.write(f"[proxy] direct TimeoutError caught: {exc}\n")
+            self._send_json_error(
+                504, f"Ollama request timed out directly (TimeoutError)"
+            )
+        except Exception as exc:
+            import traceback
+            sys.stderr.write(f"[proxy] unknown exception in _handle_messages: {exc}\n{traceback.format_exc()}\n")
+            self._send_json_error(500, "Internal proxy error")
 
     def _sync_response(
         self,
@@ -879,10 +1044,17 @@ class ProxyHandler(BaseHTTPRequestHandler):
         needs_c_repair: bool,
         user_text: str,
     ) -> None:
-        oai_data = _request_ollama_completion(oai_payload, self.ollama_url)
+        oai_data = _request_ollama_completion(oai_payload, self.ollama_url, self.ollama_timeout)
         if needs_c_repair:
-            oai_data = _repair_c_response(user_text, oai_payload, oai_data, self.ollama_url)
+            oai_data = _repair_c_response(user_text, oai_payload, oai_data, self.ollama_url, self.ollama_timeout)
         result = openai_to_anthropic(oai_data, model)
+        content_text = (result.get("content") or [{}])[0].get("text", "")
+        if _DEBUG:
+            sys.stderr.write(f"[proxy:debug] final Anthropic response (first 500): {json.dumps(result)[:500]}\n")
+        if not content_text:
+            sys.stderr.write(f"[proxy] empty model response (model={self.ollama_model})\n")
+            self._send_json_error(502, "empty model response")
+            return
         body_bytes = json.dumps(result).encode()
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
@@ -916,15 +1088,17 @@ class ProxyHandler(BaseHTTPRequestHandler):
             # C 題會走本地檢查 + 重試路徑，需要完整文字才能檢驗。
             # 這條路徑的上游錯誤會直接 bubble 到 _handle_messages 的錯誤包裝器，
             # 因此 header 還沒送之前出錯，仍然可以送 JSON 錯誤。
-            oai_data = _request_ollama_completion(oai_payload, self.ollama_url)
+            oai_data = _request_ollama_completion(oai_payload, self.ollama_url, self.ollama_timeout)
             oai_data = _repair_c_response(
-                user_text, oai_payload, oai_data, self.ollama_url
+                user_text, oai_payload, oai_data, self.ollama_url, self.ollama_timeout
             )
             content_text = (
                 oai_data.get("choices", [{}])[0]
                 .get("message", {})
                 .get("content", "")
             )
+            if _DEBUG:
+                sys.stderr.write(f"[proxy:debug] C-repair content (first 200): {content_text[:200]!r}\n")
             self._send_sse_headers()
             self._emit_prerendered_text_sse(content_text, model)
             return
@@ -933,26 +1107,54 @@ class ProxyHandler(BaseHTTPRequestHandler):
         # 只有真的拿到上游 stream 才送出 200 header，避免「送完 200 才發現
         # 上游掛掉，outer handler 只好再送一份 502」的協定衝突。
         try:
-            upstream = _open_ollama_stream(oai_payload, self.ollama_url)
+            # We open with first_token_timeout so the socket timeouts early if the first token is delayed
+            upstream = _open_ollama_stream(oai_payload, self.ollama_url, self.first_token_timeout)
         except HTTPError as exc:
             if exc.code != 404:
                 raise
             # 舊版 Ollama 沒有 /v1/chat/completions，退回非串流再模擬 SSE。
-            oai_data = _request_ollama_completion(oai_payload, self.ollama_url)
+            oai_data = _request_ollama_completion(oai_payload, self.ollama_url, self.ollama_timeout)
             content_text = (
                 oai_data.get("choices", [{}])[0]
                 .get("message", {})
                 .get("content", "")
             )
+            if _DEBUG:
+                sys.stderr.write(f"[proxy:debug] fallback content (first 200): {content_text[:200]!r}\n")
             self._send_sse_headers()
             self._emit_prerendered_text_sse(content_text, model)
             return
 
         # Upstream 就緒，承諾進入串流模式。
-        self._send_sse_headers()
+        if _DEBUG:
+            sys.stderr.write(f"[proxy:debug] opened ollama stream model={self.ollama_model}\n")
+        
+        # Pull the generator. We want to buffer until we get the first chunk, to handle FirstTokenTimeoutError
+        # before sending headers.
+        generator = stream_openai_to_anthropic(upstream, model, self.first_token_timeout, self.ollama_timeout, _DEBUG)
+        
         try:
             with upstream:
-                for chunk in stream_openai_to_anthropic(upstream, model):
+                # To be safe against TimeoutError during the first iteration (which pulls from the stream)
+                buffered_chunks = []
+                try:
+                    for chunk in generator:
+                        buffered_chunks.append(chunk)
+                        if b"content_block_delta" in chunk:
+                            break
+                except (FirstTokenTimeoutError, TimeoutError) as exc:
+                    sys.stderr.write(f"[proxy] first-token timeout: {exc}\n")
+                    self._send_json_error(502, "model produced no tokens before first-token timeout")
+                    return
+                
+                # First token arrived safely, we can send headers
+                self._send_sse_headers()
+                for chunk in buffered_chunks:
+                    self.wfile.write(chunk)
+                self.wfile.flush()
+                
+                # Continue the rest of the stream
+                for chunk in generator:
                     self.wfile.write(chunk)
                     self.wfile.flush()
         except BrokenPipeError:
@@ -967,12 +1169,45 @@ class ProxyHandler(BaseHTTPRequestHandler):
         ) as exc:
             # Header 已送，再送一份 502 只會打亂 SSE。用 trailer 告訴客戶端
             # 收工，並把錯誤寫到 stderr 給離線 log 追查。
-            sys.stderr.write(f"[proxy] upstream interrupted mid-stream: {exc}\n")
+            is_timeout = isinstance(exc, (TimeoutError, OSError)) and "timed out" in str(exc).lower()
+            if is_timeout:
+                sys.stderr.write(
+                    f"[proxy] mid-stream timeout after {self.ollama_timeout}s"
+                    f" (model={self.ollama_model})"
+                    f" — increase CLAW_OLLAMA_TIMEOUT_SECONDS\n"
+                )
+            else:
+                sys.stderr.write(f"[proxy] upstream interrupted mid-stream: {exc}\n")
             try:
                 self.wfile.write(_mid_stream_error_trailer("上游連線中斷"))
                 self.wfile.flush()
             except Exception:
                 pass
+
+
+# ── 設定解析 ──────────────────────────────────────────────────────────────────
+
+def _resolve_model() -> str:
+    for var in ("CLAW_MODEL", "OLLAMA_MODEL"):
+        val = os.environ.get(var, "").strip()
+        if val:
+            return val
+    return DEFAULT_MODEL
+
+
+def _normalize_url(raw: str) -> str:
+    raw = raw.strip()
+    if raw.startswith(("http://", "https://")):
+        return raw
+    return "http://" + raw
+
+
+def _resolve_ollama_url() -> str:
+    for var in ("CLAW_OLLAMA_URL", "CLAW_OLLAMA_HOST", "OLLAMA_HOST"):
+        val = os.environ.get(var, "").strip()
+        if val:
+            return _normalize_url(val)
+    return DEFAULT_OLLAMA_URL
 
 
 # ── 主程式 ────────────────────────────────────────────────────────────────────
@@ -991,10 +1226,10 @@ def wait_for_ollama(ollama_url: str, timeout: int = 30) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Anthropic ↔ Ollama 代理")
-    parser.add_argument("--model", default=DEFAULT_MODEL, help="Ollama 模型名稱")
+    parser.add_argument("--model", default=None, help="Ollama 模型名稱")
     parser.add_argument("--ollama-model", default=None, help="實際送給 Ollama 的模型名稱")
-    parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="代理監聽埠")
-    parser.add_argument("--ollama-url", default=DEFAULT_OLLAMA_URL, help="Ollama 服務 URL")
+    parser.add_argument("--port", type=int, default=None, help="代理監聽埠")
+    parser.add_argument("--ollama-url", default=None, help="Ollama 服務 URL")
     parser.add_argument(
         "--system-prompt",
         default=None,
@@ -1002,25 +1237,59 @@ def main() -> None:
     )
     parser.add_argument("--prompt-profile", default=None, help="local_ai/prompts 底下的 prompt profile")
     parser.add_argument("--prompt-dir", default=None, help="prompt profile 目錄")
+    parser.add_argument("--first-token-timeout", type=int, default=None, help="First token timeout in seconds")
+    parser.add_argument("--smoke-test", action="store_true", help="Enable smoke test mode")
     args = parser.parse_args()
 
-    ProxyHandler.ollama_url = args.ollama_url
-    ProxyHandler.local_model = args.model
-    ProxyHandler.ollama_model = args.ollama_model or args.model
+    model = args.model or _resolve_model()
+    ollama_url = _normalize_url(args.ollama_url) if args.ollama_url else _resolve_ollama_url()
+    port = args.port if args.port is not None else int(os.environ.get("CLAW_PROXY_PORT", str(DEFAULT_PORT)))
+    ollama_model = args.ollama_model or model
+    try:
+        ollama_timeout = int(os.environ.get("CLAW_OLLAMA_TIMEOUT_SECONDS", str(DEFAULT_OLLAMA_TIMEOUT)))
+    except ValueError:
+        ollama_timeout = DEFAULT_OLLAMA_TIMEOUT
+        
+    try:
+        first_token_timeout = args.first_token_timeout or int(os.environ.get("CLAW_FIRST_TOKEN_TIMEOUT_SECONDS", str(DEFAULT_FIRST_TOKEN_TIMEOUT)))
+    except ValueError:
+        first_token_timeout = DEFAULT_FIRST_TOKEN_TIMEOUT
+
+    ProxyHandler.ollama_url = ollama_url
+    ProxyHandler.local_model = model
+    ProxyHandler.ollama_model = ollama_model
+    ProxyHandler.ollama_timeout = ollama_timeout
+    ProxyHandler.first_token_timeout = first_token_timeout
+    ProxyHandler.smoke_test = args.smoke_test
     ProxyHandler.default_system_prompt = load_prompt_profile(
         profile=args.prompt_profile,
         prompt_dir=args.prompt_dir,
         override_prompt=args.system_prompt,
     )
 
-    sys.stderr.write(f"[proxy] 等待 Ollama 啟動（{args.ollama_url}）...\n")
-    if not wait_for_ollama(args.ollama_url):
+    sys.stderr.write(f"[proxy] Ollama URL: {ollama_url}\n")
+    sys.stderr.write(f"[proxy] model: {model}\n")
+    
+    size_class = "large"
+    if re.search(r":(0\.5|1|1\.5|3)b", model, re.I): size_class = "small"
+    elif re.search(r":(7|8)b", model, re.I): size_class = "medium"
+    
+    sys.stderr.write(f"[proxy] model size class: {size_class}\n")
+    sys.stderr.write(f"[proxy] port: {port}\n")
+    sys.stderr.write(f"[proxy] full timeout: {ollama_timeout}s\n")
+    sys.stderr.write(f"[proxy] first-token timeout: {first_token_timeout}s\n")
+    sys.stderr.write(f"[proxy] retry count: {os.environ.get('CLAW_MAX_REPAIR_RETRIES', str(DEFAULT_MAX_REPAIR_RETRIES))}\n")
+    sys.stderr.write(f"[proxy] force non-stream: {str(os.environ.get('CLAW_FORCE_NON_STREAM', '') == '1').lower()}\n")
+    if _DEBUG:
+        sys.stderr.write("[proxy] debug: CLAW_DEBUG enabled\n")
+    sys.stderr.write(f"[proxy] 等待 Ollama 啟動...\n")
+    if not wait_for_ollama(ollama_url):
         sys.stderr.write("[proxy] 錯誤：無法連線到 Ollama，請先執行 ollama serve\n")
         sys.exit(1)
 
-    server = HTTPServer(("127.0.0.1", args.port), ProxyHandler)
+    server = HTTPServer(("127.0.0.1", port), ProxyHandler)
     sys.stderr.write(
-        f"[proxy] 就緒 ─ 監聽 localhost:{args.port}  →  Ollama({args.model})\n"
+        f"[proxy] 就緒 ─ 監聽 localhost:{port}  →  Ollama({model})\n"
     )
     try:
         server.serve_forever()
