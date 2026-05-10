@@ -367,7 +367,15 @@ ls -la local_ai/eval_cases/c_exam/
 bash local_ai/run_eval.sh
 powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1
 
-# 使用本地 AI 生成程式碼並評估
+# ── proxy sync AI 模式（Windows 推薦）──
+# 自動啟動 Ollama + proxy，直接呼叫 /v1/messages stream=false
+bash local_ai/run_eval.sh --use-proxy-ai
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-proxy-ai
+
+# Windows 推薦用法：篩選特定年份
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-proxy-ai --filter 2025
+
+# ── claw 串流 AI 模式（Linux/Mac）──
 bash local_ai/run_eval.sh --use-ai
 powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-ai
 
@@ -472,7 +480,36 @@ Pipeline Score: 65/65 points (100.0%)
 Fallback Used: 2 cases
 ```
 
-### 生成 AI 回答
+### AI 模式選擇
+
+| 模式 | 指令 | 依賴 | Windows 推薦 |
+|------|------|------|-------------|
+| `--use-proxy-ai` | proxy sync API (stream=false) | Ollama + Python proxy（自動啟動）| ✅ 推薦 |
+| `--use-ai` | claw 串流輸出 | claw binary + run.sh | ❌ Windows 串流相容性不穩定 |
+
+### 使用 proxy sync AI（--use-proxy-ai）
+
+`run_eval.ps1 --use-proxy-ai` 會：
+
+1. 找到 ollama binary（bundled 優先，fallback PATH）
+2. 啟動 ollama（若尚未執行）
+3. 啟動 proxy（`local_ai/proxy.py`，`stream=false` 路徑）
+4. 直接 POST 到 `http://127.0.0.1:8082/v1/messages`
+5. 從 `response["content"][0]["text"]` 提取 C code
+6. 評估完成後自動關閉代理和 ollama
+
+預設模型：`qwen2.5-coder:1.5b`（可用 `CLAW_MODEL` 覆蓋）  
+預設 timeout：60s per request
+
+```powershell
+# 先用 smoke-test 確認服務正常（可選）
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --smoke-test
+
+# 執行 proxy sync AI 評估
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-proxy-ai --filter 2025
+```
+
+### 使用 claw 串流 AI（--use-ai）
 
 使用 `--use-ai` 時，評估器會：
 
@@ -485,6 +522,7 @@ Fallback Used: 2 cases
 要求：
 - 本地 AI bundle 已準備好（`bash local_ai/deploy_local.sh`）
 - 本機需要 C compiler（gcc/clang）
+- Windows 上 claw 串流輸出可能因 crossterm TTY 問題不顯示（建議改用 `--use-proxy-ai`）
 
 ### 無 AI 評估
 

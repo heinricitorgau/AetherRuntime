@@ -132,6 +132,25 @@ if [[ "$SMOKE_TEST" -eq 1 ]]; then
     PROMPT_PROFILE="smoke_test"
 fi
 
+CLAW_STREAM_TEST=0
+for arg in "$@"; do
+    if [[ "$arg" == "--claw-stream-test" ]]; then
+        CLAW_STREAM_TEST=1
+        break
+    fi
+done
+
+if [[ "$CLAW_STREAM_TEST" -eq 1 ]]; then
+    MODEL="qwen2.5-coder:1.5b"
+    export CLAW_MODEL="$MODEL"
+    export CLAW_DEBUG="1"
+    export CLAW_DISABLE_TOOLS="1"
+    export CLAW_MAX_REPAIR_RETRIES="0"
+    export CLAW_OLLAMA_TIMEOUT_SECONDS="60"
+    export CLAW_FIRST_TOKEN_TIMEOUT_SECONDS="15"
+    PROMPT_PROFILE="smoke_test"
+fi
+
 SIZE_CLASS="$(get_model_size_class "$MODEL")"
 if [[ -z "${CLAW_OLLAMA_TIMEOUT_SECONDS:-}" ]]; then
     export CLAW_OLLAMA_TIMEOUT_SECONDS="$(get_adaptive_timeout_full "$SIZE_CLASS")"
@@ -290,6 +309,9 @@ passthrough_args=()
 while [[ "$#" -gt 0 ]]; do
     case "$1" in
         --smoke-test)
+            shift
+            ;;
+        --claw-stream-test)
             shift
             ;;
         --import-docs)
@@ -483,6 +505,13 @@ EOF
         rm -f /tmp/claw_smoke_test.py
         fail "smoke-test failed"
     fi
+fi
+
+if [[ "$CLAW_STREAM_TEST" -eq 1 ]]; then
+    info "running claw stream test with prompt 'hello'..."
+    info "inspect SSE log: $RUNTIME_DIR/logs/proxy.sse.log"
+    info "inspect proxy stderr: /tmp/claw-local-proxy.log"
+    exec "$CLAW_BIN" --model "$MODEL" --permission-mode "$PERMISSION_MODE" prompt "hello"
 fi
 
 if [[ -n "$RAG_QUERY" && "$#" -eq 0 ]]; then

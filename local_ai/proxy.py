@@ -54,6 +54,20 @@ DEFAULT_FIRST_TOKEN_TIMEOUT = 15
 DEFAULT_MAX_REPAIR_RETRIES = 1
 HEARTBEAT_INTERVAL = 5
 _DEBUG = os.environ.get("CLAW_DEBUG", "").strip() in ("1", "true", "yes")
+_SSE_LOG = None  # set to an open binary file by _open_sse_log() when CLAW_DEBUG=1
+
+
+def _open_sse_log() -> None:
+    global _SSE_LOG
+    log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "runtime", "logs")
+    os.makedirs(log_dir, exist_ok=True)
+    log_path = os.path.join(log_dir, "proxy.sse.log")
+    try:
+        _SSE_LOG = open(log_path, "wb")  # noqa: WPS515
+        sys.stderr.write(f"[proxy:debug] SSE log: {log_path}\n")
+    except OSError as exc:
+        sys.stderr.write(f"[proxy:debug] could not open SSE log: {exc}\n")
+
 
 class FirstTokenTimeoutError(Exception):
     pass
@@ -743,7 +757,6 @@ def stream_openai_to_anthropic(ollama_response, model: str, first_token_timeout:
         "index": 0,
         "content_block": {"type": "text", "text": ""},
     })
-    yield b"event: ping\ndata: {\"type\":\"ping\"}\n\n"
 
     output_tokens = 0
     total_chars = 0
@@ -831,9 +844,8 @@ def stream_openai_to_anthropic(ollama_response, model: str, first_token_timeout:
             sys.stderr.write(f"[proxy:debug] first {len(debug_chunks)} emitted text chunks: {debug_chunks!r}\n")
         sys.stderr.write(f"[proxy:debug] stream metrics - first token latency: {latency:.1f}s, total duration: {duration:.1f}s, total chars: {total_chars}\n")
         
-    if total_chars == 0 or "".join(debug_chunks).strip() == "":
+    if total_chars == 0:
         sys.stderr.write("[proxy] empty stream response — Ollama returned no text\n")
-        # Do not emit normal stop events if stream is empty. Instead, emit error trailer.
         yield _mid_stream_error_trailer("empty model stream response")
         return
 
@@ -964,6 +976,12 @@ class ProxyHandler(BaseHTTPRequestHandler):
             self._send_json_error(404, f"未知的端點：{self.path}")
 
     def _handle_messages(self, body: dict) -> None:
+        if os.environ.get("CLAW_DISABLE_TOOLS", "") == "1":
+            body.pop("tools", None)
+            body.pop("tool_choice", None)
+            if _DEBUG:
+                sys.stderr.write("[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice\n")
+
         incoming_stream = body.get("stream", False)
         claw_force_non_stream = os.environ.get("CLAW_FORCE_NON_STREAM", "")
         force_non_stream = claw_force_non_stream == "1"
@@ -981,9 +999,15 @@ class ProxyHandler(BaseHTTPRequestHandler):
         )
 
         if _DEBUG:
+            _tools = body.get("tools") or []
+            _first_user = _latest_user_text(body)[:120].replace("\n", " ")
             sys.stderr.write(
                 f"[proxy:debug] /v1/messages keys={list(body.keys())}"
                 f" model={body.get('model', '(none)')!r} stream={streaming}"
+                f" max_tokens={body.get('max_tokens', '(none)')}"
+                f" tools={len(_tools)} tool_choice={body.get('tool_choice', '(none)')!r}"
+                f" system={'yes' if body.get('system') else 'no'}"
+                f" first_user={_first_user!r}"
                 f" ollama_url={self.ollama_url} ollama_model={self.ollama_model}\n"
             )
         latest_user_text = _latest_user_text(body)
@@ -1062,17 +1086,28 @@ class ProxyHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body_bytes)
 
+    def _write_sse_chunk(self, chunk: bytes) -> None:
+        self.wfile.write(chunk)
+        if _SSE_LOG is not None:
+            try:
+                _SSE_LOG.write(chunk)
+                _SSE_LOG.flush()
+            except OSError:
+                pass
+
     def _send_sse_headers(self) -> None:
         self.send_response(200)
         self.send_header("Content-Type", "text/event-stream; charset=utf-8")
         self.send_header("Cache-Control", "no-cache")
+        self.send_header("Connection", "keep-alive")
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
 
     def _emit_prerendered_text_sse(self, content_text: str, model: str) -> None:
         """Headers 已送出後，把整段文字轉成 Anthropic SSE 並寫出。"""
         try:
             for chunk in text_to_anthropic_sse(content_text, model):
-                self.wfile.write(chunk)
+                self._write_sse_chunk(chunk)
                 self.wfile.flush()
         except BrokenPipeError:
             sys.stderr.write("[proxy] client disconnected during stream\n")
@@ -1150,12 +1185,12 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 # First token arrived safely, we can send headers
                 self._send_sse_headers()
                 for chunk in buffered_chunks:
-                    self.wfile.write(chunk)
+                    self._write_sse_chunk(chunk)
                 self.wfile.flush()
-                
+
                 # Continue the rest of the stream
                 for chunk in generator:
-                    self.wfile.write(chunk)
+                    self._write_sse_chunk(chunk)
                     self.wfile.flush()
         except BrokenPipeError:
             sys.stderr.write("[proxy] client disconnected during stream\n")
@@ -1282,6 +1317,7 @@ def main() -> None:
     sys.stderr.write(f"[proxy] force non-stream: {str(os.environ.get('CLAW_FORCE_NON_STREAM', '') == '1').lower()}\n")
     if _DEBUG:
         sys.stderr.write("[proxy] debug: CLAW_DEBUG enabled\n")
+        _open_sse_log()
     sys.stderr.write(f"[proxy] 等待 Ollama 啟動...\n")
     if not wait_for_ollama(ollama_url):
         sys.stderr.write("[proxy] 錯誤：無法連線到 Ollama，請先執行 ollama serve\n")

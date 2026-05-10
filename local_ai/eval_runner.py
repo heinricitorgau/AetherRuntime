@@ -17,6 +17,8 @@ import tempfile
 import time
 from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 ANSI_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 PLAN_TIMEOUT_SECONDS = 30
@@ -26,6 +28,9 @@ ANSWER_SOURCE_REPAIRED = "repaired_model"
 ANSWER_SOURCE_FALLBACK = "fallback_scaffold"
 ANSWER_SOURCE_NONE = "no_answer"
 TAIL_CHARS = 1200
+PROXY_AI_DEFAULT_MODEL = "qwen2.5-coder:1.5b"
+PROXY_AI_DEFAULT_TIMEOUT = 60
+PROXY_AI_DEFAULT_PORT = 8082
 
 
 def default_eval_dir() -> Path:
@@ -742,6 +747,153 @@ def call_local_ai(run_script: Path, prompt: str, timeout: int) -> dict[str, Any]
         }
 
 
+def call_proxy_ai(proxy_url: str, model: str, prompt: str, timeout: int) -> dict[str, Any]:
+    """POST to proxy /v1/messages with stream=false. Returns {text, error, timed_out}."""
+    payload = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "stream": False,
+    }
+    req = Request(
+        f"{proxy_url}/v1/messages",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urlopen(req, timeout=timeout) as resp:
+            body = json.loads(resp.read())
+        content = body.get("content") or []
+        text = content[0].get("text", "") if content else ""
+        return {"text": text, "error": None, "timed_out": False}
+    except URLError as exc:
+        reason = getattr(exc, "reason", exc)
+        timed_out = isinstance(reason, (TimeoutError, OSError)) and "timed out" in str(reason).lower()
+        return {"text": "", "error": str(exc), "timed_out": timed_out}
+    except HTTPError as exc:
+        return {"text": "", "error": f"HTTP {exc.code}: {exc.reason}", "timed_out": False}
+    except Exception as exc:
+        return {"text": "", "error": str(exc), "timed_out": False}
+
+
+def generate_proxy_ai_response(
+    case: dict[str, Any],
+    proxy_url: str,
+    model: str,
+    timeout: int,
+) -> dict[str, Any]:
+    """Generate C code via proxy sync API (no claw dependency)."""
+    prompt = case.get("prompt", "")
+    if not prompt:
+        return ai_generation_result()
+
+    try:
+        if should_decompose(case):
+            plan_resp = call_proxy_ai(proxy_url, model, build_plan_prompt(case), timeout)
+            if plan_resp["timed_out"]:
+                print(
+                    f"Warning: proxy planning timeout for {case.get('id')}; using local fallback plan.",
+                    file=sys.stderr,
+                )
+                plan = build_local_fallback_plan(case)
+            elif plan_resp["error"] or not plan_resp["text"].strip():
+                print(
+                    f"Warning: proxy planning failed for {case.get('id')}: {plan_resp['error']}; using local fallback plan.",
+                    file=sys.stderr,
+                )
+                plan = build_local_fallback_plan(case)
+            else:
+                plan = plan_resp["text"]
+
+            code_resp = call_proxy_ai(proxy_url, model, build_code_prompt(case, plan), timeout)
+            if code_resp["timed_out"]:
+                print(f"Warning: proxy code generation timeout for {case.get('id')}", file=sys.stderr)
+                return ai_generation_result(
+                    final_output=build_smoke_fallback_code(case, "proxy code generation timeout"),
+                    answer_source=ANSWER_SOURCE_FALLBACK,
+                    used_fallback=True,
+                )
+            if code_resp["error"]:
+                print(
+                    f"Warning: proxy code generation error for {case.get('id')}: {code_resp['error']}",
+                    file=sys.stderr,
+                )
+                return ai_generation_result(
+                    final_output=build_smoke_fallback_code(case, "proxy code generation failed"),
+                    answer_source=ANSWER_SOURCE_FALLBACK,
+                    used_fallback=True,
+                )
+            text = code_resp["text"]
+            if extract_c_code(text, debug=False):
+                return ai_generation_result(
+                    final_output=text,
+                    model_output=text,
+                    answer_source=ANSWER_SOURCE_MODEL,
+                )
+
+            retry_resp = call_proxy_ai(
+                proxy_url, model, build_code_retry_prompt(case, plan, text), timeout
+            )
+            retry_text = retry_resp.get("text", "")
+            if not retry_resp["error"] and not retry_resp["timed_out"] and extract_c_code(retry_text, debug=False):
+                return ai_generation_result(
+                    final_output=retry_text,
+                    model_output=retry_text,
+                    answer_source=ANSWER_SOURCE_REPAIRED,
+                )
+
+            debug_extraction_failure(text or retry_text)
+            return ai_generation_result(
+                final_output=build_smoke_fallback_code(case, "proxy code extraction failed"),
+                model_output=text or retry_text,
+                answer_source=ANSWER_SOURCE_FALLBACK,
+                used_fallback=True,
+            )
+
+        resp = call_proxy_ai(proxy_url, model, build_model_prompt(case), timeout)
+        if resp["timed_out"]:
+            print(f"Warning: proxy AI timeout for {case.get('id')}", file=sys.stderr)
+            return ai_generation_result(
+                final_output=build_smoke_fallback_code(case, "proxy model timeout"),
+                answer_source=ANSWER_SOURCE_FALLBACK,
+                used_fallback=True,
+            )
+        if resp["error"]:
+            print(f"Warning: proxy AI error for {case.get('id')}: {resp['error']}", file=sys.stderr)
+            return ai_generation_result(
+                final_output=build_smoke_fallback_code(case, "proxy model error"),
+                answer_source=ANSWER_SOURCE_FALLBACK,
+                used_fallback=True,
+            )
+        text = resp["text"]
+        if extract_c_code(text, debug=False):
+            return ai_generation_result(
+                final_output=text,
+                model_output=text,
+                answer_source=ANSWER_SOURCE_MODEL,
+            )
+
+        repair_resp = call_proxy_ai(proxy_url, model, build_repair_prompt(text), timeout)
+        repair_text = repair_resp.get("text", "")
+        if not repair_resp["error"] and not repair_resp["timed_out"] and extract_c_code(repair_text, debug=False):
+            return ai_generation_result(
+                final_output=repair_text,
+                model_output=repair_text,
+                answer_source=ANSWER_SOURCE_REPAIRED,
+            )
+
+        print(f"Warning: proxy AI generation failed for {case.get('id')}: {text[:200]}", file=sys.stderr)
+        return ai_generation_result(
+            final_output=build_smoke_fallback_code(case, "proxy direct generation failed"),
+            model_output=text or repair_text,
+            answer_source=ANSWER_SOURCE_FALLBACK,
+            used_fallback=True,
+        )
+    except Exception as exc:
+        print(f"Warning: proxy AI generation error for {case.get('id')}: {exc}", file=sys.stderr)
+        return ai_generation_result()
+
+
 def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
     """Generate C code from AI for the given case (requires local_ai/run.sh)."""
     prompt = case.get("prompt", "")
@@ -897,6 +1049,10 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
 def run_evaluation(
     eval_dir: Path | None = None,
     use_ai: bool = False,
+    use_proxy_ai: bool = False,
+    proxy_url: str | None = None,
+    proxy_model: str | None = None,
+    proxy_timeout: int | None = None,
     case_filter: str | None = None,
     output_file: Path | None = None,
     answers_dir: Path | None = None,
@@ -904,7 +1060,7 @@ def run_evaluation(
     """Run full evaluation suite."""
     eval_dir = eval_dir or default_eval_dir()
     cases = load_eval_cases(eval_dir)
-    
+
     if case_filter:
         needle = case_filter.lower()
         cases = [
@@ -914,12 +1070,12 @@ def run_evaluation(
             or needle in str(c.get("year", "")).lower()
             or needle in c.get("_filename", "").lower()
         ]
-    
+
     if not cases:
         print("No eval cases found", file=sys.stderr)
         return {"error": "No cases found"}
 
-    if use_ai:
+    if use_ai or use_proxy_ai:
         cases = sorted(cases, key=generation_priority)
     ai_unavailable = local_ai_unavailable_reason() if use_ai else None
     if ai_unavailable:
@@ -928,6 +1084,14 @@ def run_evaluation(
             "using fallback scaffolds for AI-mode pipeline checks.",
             file=sys.stderr,
         )
+
+    _proxy_url = proxy_url or f"http://127.0.0.1:{PROXY_AI_DEFAULT_PORT}"
+    _proxy_model = proxy_model or os.environ.get("CLAW_MODEL", "") or PROXY_AI_DEFAULT_MODEL
+    _proxy_timeout = proxy_timeout if proxy_timeout is not None else PROXY_AI_DEFAULT_TIMEOUT
+    if use_proxy_ai:
+        print(f"Using proxy sync AI mode", flush=True)
+        print(f"Proxy URL: {_proxy_url}", flush=True)
+        print(f"Model: {_proxy_model}", flush=True)
     
     total_points = sum(case_points(case) for case in cases)
 
@@ -961,7 +1125,13 @@ def run_evaluation(
         used_fallback = False
         model_code = ""
 
-        if use_ai:
+        if use_proxy_ai:
+            generation = generate_proxy_ai_response(case, _proxy_url, _proxy_model, _proxy_timeout)
+            code = generation["final_output"]
+            model_code = generation.get("model_output", "")
+            answer_source = generation["answer_source"]
+            used_fallback = bool(generation["used_fallback"])
+        elif use_ai:
             if ai_unavailable:
                 code = build_smoke_fallback_code(case, f"local AI unavailable: {ai_unavailable}")
                 answer_source = ANSWER_SOURCE_FALLBACK
@@ -1108,7 +1278,32 @@ def main() -> None:
     parser.add_argument(
         "--use-ai",
         action="store_true",
-        help="Generate code using local AI (requires local_ai/run.sh)",
+        help="Generate code using local AI via run.sh (claw-based; may be unstable on Windows)",
+    )
+    parser.add_argument(
+        "--use-proxy-ai",
+        action="store_true",
+        help=(
+            "Generate code via proxy sync API (stream=false). "
+            "Recommended on Windows; no claw streaming dependency. "
+            "Requires Ollama + proxy already running, or use run_eval.ps1 --use-proxy-ai."
+        ),
+    )
+    parser.add_argument(
+        "--proxy-url",
+        default=None,
+        help=f"Proxy base URL for --use-proxy-ai (default: http://127.0.0.1:{PROXY_AI_DEFAULT_PORT})",
+    )
+    parser.add_argument(
+        "--proxy-model",
+        default=None,
+        help=f"Model name for --use-proxy-ai (default: {PROXY_AI_DEFAULT_MODEL} or CLAW_MODEL env)",
+    )
+    parser.add_argument(
+        "--proxy-timeout",
+        type=int,
+        default=None,
+        help=f"Per-request timeout in seconds for --use-proxy-ai (default: {PROXY_AI_DEFAULT_TIMEOUT})",
     )
     parser.add_argument(
         "--filter",
@@ -1132,6 +1327,10 @@ def main() -> None:
     run_evaluation(
         eval_dir=args.eval_dir,
         use_ai=args.use_ai,
+        use_proxy_ai=args.use_proxy_ai,
+        proxy_url=args.proxy_url,
+        proxy_model=args.proxy_model,
+        proxy_timeout=args.proxy_timeout,
         case_filter=args.filter,
         output_file=args.output,
         answers_dir=args.answers_dir,

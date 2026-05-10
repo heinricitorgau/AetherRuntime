@@ -215,6 +215,18 @@ if ($smokeTest) {
     $promptProfile = "smoke_test"
 }
 
+$clawStreamTest = $args -contains "--claw-stream-test"
+if ($clawStreamTest) {
+    $model = "qwen2.5-coder:1.5b"
+    $env:CLAW_MODEL = $model
+    $env:CLAW_DEBUG = "1"
+    $env:CLAW_DISABLE_TOOLS = "1"
+    $env:CLAW_MAX_REPAIR_RETRIES = "0"
+    $env:CLAW_OLLAMA_TIMEOUT_SECONDS = "60"
+    $env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS = "15"
+    $promptProfile = "smoke_test"
+}
+
 $sizeClass = Get-ModelSizeClass $model
 $timeouts = Get-AdaptiveTimeouts $sizeClass
 if (-not $env:CLAW_OLLAMA_TIMEOUT_SECONDS) {
@@ -267,6 +279,9 @@ try {
     for ($i = 0; $i -lt $args.Count; $i++) {
         switch ($args[$i]) {
             "--smoke-test" {
+                # Handled globally
+            }
+            "--claw-stream-test" {
                 # Handled globally
             }
             "--import-docs" {
@@ -430,6 +445,16 @@ try {
         } catch {
             Write-Fail "smoke-test failed: $_"
         }
+    }
+
+    if ($clawStreamTest) {
+        Write-Info "running claw stream test with prompt 'hello'..."
+        Write-Info "inspect SSE log: $(Join-Path $runtimeDir 'logs\proxy.sse.log')"
+        Write-Info "inspect proxy stderr: $proxyErrLog"
+        $streamTestArgs = "--model $model --permission-mode $permissionMode prompt hello"
+        $streamProc = Start-Process -FilePath $clawPath -ArgumentList $streamTestArgs -NoNewWindow -PassThru
+        $streamProc.WaitForExit()
+        exit $streamProc.ExitCode
     }
 
     if ($ragQuery -and $args.Count -eq 0) {

@@ -26,7 +26,14 @@
 bash local_ai/run_eval.sh
 powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1
 
-# 呼叫本地模型回答並評估
+# ── proxy sync AI 模式（Windows 推薦；自動啟動 Ollama + proxy）──
+bash local_ai/run_eval.sh --use-proxy-ai
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-proxy-ai
+
+# 篩選年份（Windows 推薦用法）
+powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-proxy-ai --filter 2025
+
+# ── claw 串流 AI 模式（Linux/Mac；Windows 串流相容性不穩定）──
 bash local_ai/run_eval.sh --use-ai
 powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-ai
 
@@ -40,6 +47,16 @@ powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --filter 2024
 bash local_ai/run_eval.sh --filter series
 powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --filter series
 ```
+
+## AI 模式比較
+
+| 模式 | 指令 | 依賴 | Windows 推薦 |
+|------|------|------|-------------|
+| `--use-proxy-ai` | proxy sync API (stream=false) | Ollama + Python proxy（自動啟動）| ✅ 推薦 |
+| `--use-ai` | claw 串流 | claw binary + run.sh | ❌ 串流相容性不穩定 |
+
+`--use-proxy-ai` 預設模型為 `qwen2.5-coder:1.5b`（可用 `CLAW_MODEL` 環境變數覆蓋）。  
+`--use-ai` 使用 claw 的串流輸出，在 Windows 上目前可能因 crossterm TTY 問題導致回應不顯示。
 
 預設報告輸出到 `local_ai/eval_cases/eval_report.json`，可用 `--output FILE` 指定位置。
 

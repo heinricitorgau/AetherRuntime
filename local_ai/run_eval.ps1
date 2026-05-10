@@ -31,6 +31,35 @@ function Resolve-CommandPath($name) {
     return $command.Source
 }
 
+function Find-BinaryPath($primary, $fallbacks) {
+    if (Test-Path $primary) { return $primary }
+    foreach ($candidate in $fallbacks) {
+        if ($candidate -and (Test-Path $candidate)) { return $candidate }
+    }
+    return $null
+}
+
+function Test-PortListening($port) {
+    try {
+        $listener = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction Stop
+        return $listener.Count -gt 0
+    } catch {
+        return $false
+    }
+}
+
+function Wait-HttpOk($url, $seconds) {
+    for ($i = 1; $i -le $seconds; $i++) {
+        try {
+            Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 2 | Out-Null
+            return $i
+        } catch {
+            Start-Sleep -Seconds 1
+        }
+    }
+    return $null
+}
+
 function Test-Truthy($value) {
     if (-not $value) { return $false }
     return @("1", "true", "yes", "on") -contains $value.ToString().Trim().ToLowerInvariant()
@@ -78,6 +107,7 @@ Write-Header "C Exam Offline Evaluation Pack"
 
 # Parse arguments
 $useAi = $false
+$useProxyAi = $false
 $filter = ""
 $output = ""
 $answersDir = ""
@@ -86,7 +116,11 @@ for ($i = 0; $i -lt $args.Count; $i++) {
     switch ($args[$i]) {
         "--use-ai" {
             $useAi = $true
-            Write-Info "Will generate code using local AI"
+            Write-Info "Will generate code using local AI (claw-based)"
+        }
+        "--use-proxy-ai" {
+            $useProxyAi = $true
+            Write-Info "Will generate code via proxy sync API (Windows recommended)"
         }
         "--filter" {
             if ($i + 1 -ge $args.Count) { Write-Fail "--filter requires a TEXT" }
@@ -110,10 +144,15 @@ for ($i = 0; $i -lt $args.Count; $i++) {
             Write-Host "Usage: powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 [options]"
             Write-Host ""
             Write-Host "Options:"
-            Write-Host "  --use-ai              Ask the bundled/local model to answer each case."
+            Write-Host "  --use-proxy-ai        Generate code via proxy sync API. Starts Ollama + proxy"
+            Write-Host "                        automatically. Recommended on Windows. (default model: qwen2.5-coder:1.5b)"
+            Write-Host "  --use-ai              Generate code via claw/run.sh (may be unstable on Windows)."
             Write-Host "  --answers-dir DIR     Use DIR/<case_id>.c answers instead of the model."
             Write-Host "  --filter TEXT         Run cases whose id, filename, year, or topic matches TEXT."
             Write-Host "  --output FILE         Write eval_report.json to FILE."
+            Write-Host ""
+            Write-Host "Windows recommended:"
+            Write-Host "  powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-proxy-ai --filter 2025"
             exit 0
         }
         default {
@@ -145,9 +184,87 @@ if ($answersDir) {
 }
 
 # Run evaluation
-Write-Header "Running Evaluation"
-& $pythonPath @evalArgs
-$exitCode = $LASTEXITCODE
+if ($useProxyAi) {
+    $binDir = Join-Path $runtimeDir "bin"
+    $bundledOllamaHome = Join-Path $runtimeDir "ollama-home"
+    $proxyPort = if ($env:CLAW_PROXY_PORT) { [int]$env:CLAW_PROXY_PORT } else { 8082 }
+    $ollamaPort = if ($env:CLAW_OLLAMA_PORT) { [int]$env:CLAW_OLLAMA_PORT } else { 11435 }
+    $ollamaUrl = if ($env:OLLAMA_URL) { $env:OLLAMA_URL } else { "http://127.0.0.1:$ollamaPort" }
+    $proxyUrl = "http://127.0.0.1:$proxyPort"
+    $proxyModel = if ($env:CLAW_MODEL) { $env:CLAW_MODEL } else { "qwen2.5-coder:1.5b" }
+    $promptProfile = if ($env:CLAW_PROMPT_PROFILE) { $env:CLAW_PROMPT_PROFILE } else { "c_programming" }
+    $promptDir = if ($env:CLAW_PROMPT_DIR) { $env:CLAW_PROMPT_DIR } else { Join-Path $scriptDir "prompts" }
+
+    $ollamaPath = Find-BinaryPath (Join-Path $binDir "ollama.exe") @(Resolve-CommandPath "ollama")
+    if (-not $ollamaPath) { Write-Fail "cannot find ollama binary (looked in $binDir and PATH)" }
+
+    if (Test-Path $bundledOllamaHome) {
+        $env:OLLAMA_MODELS = Join-Path $bundledOllamaHome "models"
+        Write-Ok "using bundled models: $env:OLLAMA_MODELS"
+    } else {
+        Write-Warn "bundled model cache not found; using system ollama cache"
+    }
+    $env:OLLAMA_HOST = "127.0.0.1:$ollamaPort"
+
+    $ollamaProcess = $null
+    if (Test-PortListening $ollamaPort) {
+        Write-Ok "ollama already running on port $ollamaPort"
+    } else {
+        Write-Info "starting ollama on port $ollamaPort"
+        $ollamaProcess = Start-Process -FilePath $ollamaPath -ArgumentList "serve" -PassThru -WindowStyle Hidden
+        $ready = Wait-HttpOk "$ollamaUrl/api/tags" 30
+        if ($null -eq $ready) { Write-Fail "ollama failed to start within 30s" }
+        Write-Ok "ollama ready in ${ready}s"
+    }
+
+    $proxyProcess = $null
+    if (Test-PortListening $proxyPort) {
+        Write-Ok "proxy already running on port $proxyPort"
+    } else {
+        Write-Info "starting proxy on port $proxyPort"
+        $logsDir = Join-Path $runtimeDir "logs"
+        if (-not (Test-Path $logsDir)) { New-Item -ItemType Directory -Path $logsDir | Out-Null }
+        $proxyScript = Join-Path $scriptDir "proxy.py"
+        $proxyArgStr = "`"$proxyScript`" --model `"$proxyModel`" --ollama-model `"$proxyModel`" --port $proxyPort --ollama-url `"$ollamaUrl`" --prompt-profile `"$promptProfile`" --prompt-dir `"$promptDir`""
+        $proxyProcess = Start-Process -FilePath $pythonPath -ArgumentList $proxyArgStr `
+            -RedirectStandardOutput (Join-Path $logsDir "proxy-eval.out.log") `
+            -RedirectStandardError (Join-Path $logsDir "proxy-eval.err.log") `
+            -PassThru -WindowStyle Hidden
+        $ready = Wait-HttpOk "http://127.0.0.1:$proxyPort/health" 15
+        if ($null -eq $ready) { Write-Fail "proxy failed to start within 15s; check $logsDir\proxy-eval.err.log" }
+        Write-Ok "proxy ready in ${ready}s"
+    }
+
+    Write-Info "Using proxy sync AI mode"
+    Write-Info "Proxy URL: $proxyUrl"
+    Write-Info "Model: $proxyModel"
+
+    $env:CLAW_MODEL = $proxyModel
+    $evalArgs += "--use-proxy-ai"
+    $evalArgs += "--proxy-url"
+    $evalArgs += $proxyUrl
+    $evalArgs += "--proxy-model"
+    $evalArgs += $proxyModel
+
+    Write-Header "Running Evaluation"
+    try {
+        & $pythonPath @evalArgs
+        $exitCode = $LASTEXITCODE
+    } finally {
+        if ($proxyProcess -and -not $proxyProcess.HasExited) {
+            Stop-Process -Id $proxyProcess.Id -Force -ErrorAction SilentlyContinue
+            Write-Info "proxy stopped"
+        }
+        if ($ollamaProcess -and -not $ollamaProcess.HasExited) {
+            Stop-Process -Id $ollamaProcess.Id -Force -ErrorAction SilentlyContinue
+            Write-Info "ollama stopped"
+        }
+    }
+} else {
+    Write-Header "Running Evaluation"
+    & $pythonPath @evalArgs
+    $exitCode = $LASTEXITCODE
+}
 
 if ($exitCode -eq 0) {
     Write-Ok "Evaluation complete"
