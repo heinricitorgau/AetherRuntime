@@ -32,6 +32,46 @@ PROXY_AI_DEFAULT_MODEL = "qwen2.5-coder:1.5b"
 PROXY_AI_DEFAULT_TIMEOUT = 60
 PROXY_AI_DEFAULT_PORT = 8082
 
+# Eval generation uses relaxed timeouts vs. smoke-test's fail-fast defaults.
+# Smoke-test: full=60s first_token=15s (hard-coded in run.ps1/run.sh --smoke-test).
+# Eval: larger prompts need more generation time, so we use a separate profile.
+EVAL_AI_TIMEOUTS: dict[str, dict[str, int]] = {
+    "small":  {"full": 180, "first_token": 45,  "plan": 90,  "case": 240},
+    "medium": {"full": 300, "first_token": 90,  "plan": 180, "case": 360},
+    "large":  {"full": 600, "first_token": 180, "plan": 360, "case": 660},
+}
+
+
+def _model_size_class(model_name: str) -> str:
+    if re.search(r":(0\.5|1|1\.5|3)b", model_name, re.IGNORECASE):
+        return "small"
+    if re.search(r":(7|8)b", model_name, re.IGNORECASE):
+        return "medium"
+    return "large"
+
+
+def apply_eval_ai_timeouts() -> tuple[int, int]:
+    """Set relaxed eval-generation timeout env vars; skip vars already exported by the user.
+
+    Returns (plan_timeout_seconds, case_timeout_seconds) for use as subprocess timeouts.
+    Logs the active profile to stderr so it appears in eval output.
+    """
+    model = os.environ.get("CLAW_MODEL", "").strip() or PROXY_AI_DEFAULT_MODEL
+    size = _model_size_class(model)
+    t = EVAL_AI_TIMEOUTS[size]
+    if not os.environ.get("CLAW_OLLAMA_TIMEOUT_SECONDS", ""):
+        os.environ["CLAW_OLLAMA_TIMEOUT_SECONDS"] = str(t["full"])
+    if not os.environ.get("CLAW_FIRST_TOKEN_TIMEOUT_SECONDS", ""):
+        os.environ["CLAW_FIRST_TOKEN_TIMEOUT_SECONDS"] = str(t["first_token"])
+    print(
+        f"[eval-timeout-profile] model={model} size={size}"
+        f" full_timeout={os.environ['CLAW_OLLAMA_TIMEOUT_SECONDS']}"
+        f" first_token_timeout={os.environ['CLAW_FIRST_TOKEN_TIMEOUT_SECONDS']}"
+        f" case_timeout={t['case']}",
+        file=sys.stderr,
+    )
+    return t["plan"], t["case"]
+
 
 def default_eval_dir() -> Path:
     """Get default eval cases directory."""
@@ -51,24 +91,39 @@ def display_points(points: float) -> int | float:
     return int(points) if points.is_integer() else points
 
 
+_IS_WINDOWS = sys.platform == "win32"
+
+
 def local_ai_run_script() -> Path:
-    """Return the repo-local local_ai/run.sh regardless of caller cwd."""
+    """Return the platform-appropriate local_ai launcher script."""
     local_ai_dir = Path(__file__).resolve().parent
-    return local_ai_dir / "run.sh"
+    return local_ai_dir / ("run.ps1" if _IS_WINDOWS else "run.sh")
 
 
 def find_claw_binary_for_run_script(run_script: Path) -> Path | None:
-    """Mirror local_ai/run.sh claw lookup so eval can fail fast."""
+    """Mirror local_ai/run.sh and run.ps1 claw lookup so eval can fail fast.
+
+    Checks both bare names (Unix) and .exe variants (Windows) so the same
+    function works on all platforms without branching at the call site.
+    """
     local_ai_dir = run_script.resolve().parent
     project_dir = local_ai_dir.parent
     candidates = (
         local_ai_dir / "runtime" / "bin" / "claw",
+        local_ai_dir / "runtime" / "bin" / "claw.exe",
         project_dir / "rust" / "target" / "release" / "claw",
+        project_dir / "rust" / "target" / "release" / "claw.exe",
         project_dir / "rust" / "target" / "debug" / "claw",
+        project_dir / "rust" / "target" / "debug" / "claw.exe",
     )
+    is_windows = sys.platform == "win32"
     for candidate in candidates:
-        if candidate.is_file() and os.access(candidate, os.X_OK):
-            return candidate
+        if is_windows:
+            if candidate.is_file():
+                return candidate
+        else:
+            if candidate.is_file() and os.access(candidate, os.X_OK):
+                return candidate
 
     system_claw = shutil.which("claw")
     return Path(system_claw) if system_claw else None
@@ -77,13 +132,15 @@ def find_claw_binary_for_run_script(run_script: Path) -> Path | None:
 def local_ai_unavailable_reason() -> str | None:
     """Return a human-readable launcher dependency problem, if any."""
     run_script = local_ai_run_script()
+    script_name = "run.ps1" if _IS_WINDOWS else "run.sh"
     if not run_script.exists():
-        return f"local_ai/run.sh not found at {run_script}"
+        return f"local_ai/{script_name} not found at {run_script}"
     if find_claw_binary_for_run_script(run_script) is None:
         return (
             "cannot find claw binary; expected one of "
-            "local_ai/runtime/bin/claw, rust/target/release/claw, "
-            "rust/target/debug/claw, or a system PATH claw"
+            "local_ai/runtime/bin/claw(.exe), "
+            "rust/target/release/claw(.exe), "
+            "rust/target/debug/claw(.exe), or a system PATH claw"
         )
     return None
 
@@ -493,6 +550,28 @@ def build_model_prompt(case: dict[str, Any]) -> str:
     )
 
 
+SMALL_MODEL_PROMPT_MAX_CHARS = 1500
+
+
+def _use_lightweight_eval() -> bool:
+    """True when the active model is small; skips decomposition to reduce token load."""
+    model = os.environ.get("CLAW_MODEL", "").strip()
+    return bool(model) and _model_size_class(model) == "small"
+
+
+def build_small_model_prompt(case: dict[str, Any]) -> str:
+    """Short direct prompt for 1.5b-class models — no planning step, no extra context."""
+    problem = case.get("prompt", "")
+    if len(problem) > SMALL_MODEL_PROMPT_MAX_CHARS:
+        problem = problem[:SMALL_MODEL_PROMPT_MAX_CHARS] + "\n[truncated]"
+    return (
+        "You are solving a C programming exam problem.\n"
+        "Output exactly one complete C program in one ```c block.\n"
+        "No explanation.\n\n"
+        f"Problem:\n{problem}\n"
+    )
+
+
 def should_decompose(case: dict[str, Any]) -> bool:
     difficulty = str(case.get("difficulty", "")).lower()
     prompt = str(case.get("prompt", ""))
@@ -694,6 +773,7 @@ def ai_generation_result(
     model_output: str = "",
     answer_source: str = ANSWER_SOURCE_NONE,
     used_fallback: bool = False,
+    timed_out: bool = False,
 ) -> dict[str, Any]:
     """Create the generation metadata carried into scoring/reporting."""
     return {
@@ -701,21 +781,39 @@ def ai_generation_result(
         "model_output": model_output,
         "answer_source": answer_source,
         "used_fallback": used_fallback,
+        "timed_out": timed_out,
     }
 
 
 def call_local_ai(run_script: Path, prompt: str, timeout: int) -> dict[str, Any]:
     env = os.environ.copy()
     env.setdefault("CLAW_PROMPT_PROFILE", "c_programming")
-    command = [
-        "bash",
-        str(run_script),
-        "--output-format",
-        "text",
-        "--compact",
-        "prompt",
-        prompt,
-    ]
+    if _IS_WINDOWS:
+        env.setdefault("CLAW_MODEL", "qwen2.5-coder:1.5b")
+        command = [
+            "powershell",
+            "-ExecutionPolicy", "Bypass",
+            "-File", str(run_script),
+            "--output-format", "text",
+            "--compact",
+            "prompt", prompt,
+        ]
+        launcher = "run.ps1"
+    else:
+        command = [
+            "bash",
+            str(run_script),
+            "--output-format", "text",
+            "--compact",
+            "prompt", prompt,
+        ]
+        launcher = "run.sh"
+    platform_label = "Windows" if _IS_WINDOWS else sys.platform
+    print(
+        f"[local_ai_invocation] platform={platform_label} launcher={launcher} "
+        f"args={command[:-1] + [repr(prompt[:80])]}",
+        file=sys.stderr,
+    )
     try:
         result = subprocess.run(
             command,
@@ -894,24 +992,41 @@ def generate_proxy_ai_response(
         return ai_generation_result()
 
 
-def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
-    """Generate C code from AI for the given case (requires local_ai/run.sh)."""
+def generate_ai_response(
+    case: dict[str, Any],
+    code_timeout: int = CODE_TIMEOUT_SECONDS,
+    plan_timeout: int = PLAN_TIMEOUT_SECONDS,
+) -> dict[str, Any]:
+    """Generate C code from AI for the given case (requires local_ai launcher).
+
+    code_timeout / plan_timeout are subprocess timeouts passed to call_local_ai.
+    Callers that use eval-generation mode should pass values from apply_eval_ai_timeouts()
+    rather than relying on the module-level smoke-test defaults.
+    """
     prompt = case.get("prompt", "")
     if not prompt:
         return ai_generation_result()
-    
+
     try:
         run_script = local_ai_run_script()
-        
+        script_name = "run.ps1" if _IS_WINDOWS else "run.sh"
+
         if not run_script.exists():
-            print(f"Warning: local_ai/run.sh not found at {run_script}", file=sys.stderr)
+            print(f"Warning: local_ai/{script_name} not found at {run_script}", file=sys.stderr)
             return ai_generation_result()
-        
-        if should_decompose(case):
-            plan_result = call_local_ai(run_script, build_plan_prompt(case), PLAN_TIMEOUT_SECONDS)
+
+        lightweight = _use_lightweight_eval()
+        if lightweight:
+            print(
+                f"[eval] small-model lightweight eval mode enabled ({case.get('id')})",
+                file=sys.stderr,
+            )
+
+        if not lightweight and should_decompose(case):
+            plan_result = call_local_ai(run_script, build_plan_prompt(case), plan_timeout)
             if plan_result["timed_out"]:
                 print(
-                    f"Warning: planning timeout for {case.get('id')}; using local fallback plan.",
+                    f"Warning: planning timeout ({plan_timeout}s) for {case.get('id')}; using local fallback plan.",
                     file=sys.stderr,
                 )
                 plan = build_local_fallback_plan(case)
@@ -925,13 +1040,12 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
                     log_invocation_failure("planning", str(case.get("id")), plan_result)
                     plan = build_local_fallback_plan(case)
 
-            code_result = call_local_ai(run_script, build_code_prompt(case, plan), CODE_TIMEOUT_SECONDS)
+            code_result = call_local_ai(run_script, build_code_prompt(case, plan), code_timeout)
             if code_result["timed_out"]:
                 log_invocation_failure("code generation", str(case.get("id")), code_result)
                 return ai_generation_result(
-                    final_output=build_smoke_fallback_code(case, "code generation timeout"),
-                    answer_source=ANSWER_SOURCE_FALLBACK,
-                    used_fallback=True,
+                    answer_source=ANSWER_SOURCE_NONE,
+                    timed_out=True,
                 )
             combined = combined_invocation_text(code_result)
             if code_result["returncode"] == 0 and extract_c_code(combined, debug=False):
@@ -952,15 +1066,13 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
             retry_result = call_local_ai(
                 run_script,
                 build_code_retry_prompt(case, plan, combined),
-                CODE_TIMEOUT_SECONDS,
+                code_timeout,
             )
             if retry_result["timed_out"]:
                 log_invocation_failure("code retry", str(case.get("id")), retry_result)
                 return ai_generation_result(
-                    final_output=build_smoke_fallback_code(case, "code retry timeout"),
-                    model_output=combined,
-                    answer_source=ANSWER_SOURCE_FALLBACK,
-                    used_fallback=True,
+                    answer_source=ANSWER_SOURCE_NONE,
+                    timed_out=True,
                 )
             retry_output = combined_invocation_text(retry_result)
             if retry_result["returncode"] == 0 and extract_c_code(retry_output, debug=False):
@@ -980,14 +1092,14 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
                 used_fallback=True,
             )
 
-        result = call_local_ai(run_script, build_model_prompt(case), CODE_TIMEOUT_SECONDS)
+        direct_prompt = build_small_model_prompt(case) if lightweight else build_model_prompt(case)
+        result = call_local_ai(run_script, direct_prompt, code_timeout)
         combined = combined_invocation_text(result)
         if result["timed_out"]:
             log_invocation_failure("AI generation", str(case.get("id")), result)
             return ai_generation_result(
-                final_output=build_smoke_fallback_code(case, "model timeout"),
-                answer_source=ANSWER_SOURCE_FALLBACK,
-                used_fallback=True,
+                answer_source=ANSWER_SOURCE_NONE,
+                timed_out=True,
             )
         if result["returncode"] == 0 and extract_c_code(combined, debug=False):
             return ai_generation_result(
@@ -1016,7 +1128,7 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
                 used_fallback=True,
             )
 
-        repair_result = call_local_ai(run_script, build_repair_prompt(combined), CODE_TIMEOUT_SECONDS)
+        repair_result = call_local_ai(run_script, build_repair_prompt(combined), code_timeout)
         repaired = combined_invocation_text(repair_result)
         if repair_result["returncode"] == 0 and extract_c_code(repaired, debug=False):
             return ai_generation_result(
@@ -1037,9 +1149,8 @@ def generate_ai_response(case: dict[str, Any]) -> dict[str, Any]:
     except subprocess.TimeoutExpired:
         print(f"Warning: AI generation timeout for {case.get('id')}", file=sys.stderr)
         return ai_generation_result(
-            final_output=build_smoke_fallback_code(case, "model timeout"),
-            answer_source=ANSWER_SOURCE_FALLBACK,
-            used_fallback=True,
+            answer_source=ANSWER_SOURCE_NONE,
+            timed_out=True,
         )
     except Exception as e:
         print(f"Warning: error generating code: {e}", file=sys.stderr)
@@ -1085,6 +1196,15 @@ def run_evaluation(
             file=sys.stderr,
         )
 
+    # Eval-generation timeout profile — relaxed vs. smoke-test fail-fast defaults.
+    # apply_eval_ai_timeouts() sets CLAW_OLLAMA_TIMEOUT_SECONDS /
+    # CLAW_FIRST_TOKEN_TIMEOUT_SECONDS in os.environ (only if not already exported)
+    # so they flow into run.ps1/run.sh → proxy when call_local_ai spawns the launcher.
+    _plan_timeout = PLAN_TIMEOUT_SECONDS
+    _code_timeout = CODE_TIMEOUT_SECONDS
+    if use_ai and not ai_unavailable:
+        _plan_timeout, _code_timeout = apply_eval_ai_timeouts()
+
     _proxy_url = proxy_url or f"http://127.0.0.1:{PROXY_AI_DEFAULT_PORT}"
     _proxy_model = proxy_model or os.environ.get("CLAW_MODEL", "") or PROXY_AI_DEFAULT_MODEL
     _proxy_timeout = proxy_timeout if proxy_timeout is not None else PROXY_AI_DEFAULT_TIMEOUT
@@ -1124,6 +1244,7 @@ def run_evaluation(
         answer_source = ANSWER_SOURCE_MODEL
         used_fallback = False
         model_code = ""
+        gen_timed_out = False
 
         if use_proxy_ai:
             generation = generate_proxy_ai_response(case, _proxy_url, _proxy_model, _proxy_timeout)
@@ -1137,11 +1258,14 @@ def run_evaluation(
                 answer_source = ANSWER_SOURCE_FALLBACK
                 used_fallback = True
             else:
-                generation = generate_ai_response(case)
+                generation = generate_ai_response(
+                    case, code_timeout=_code_timeout, plan_timeout=_plan_timeout
+                )
                 code = generation["final_output"]
                 model_code = generation.get("model_output", "")
                 answer_source = generation["answer_source"]
                 used_fallback = bool(generation["used_fallback"])
+                gen_timed_out = bool(generation.get("timed_out", False))
         elif answers_dir:
             answer_path = answers_dir / f"{case_id}.c"
             code = answer_path.read_text(encoding="utf-8") if answer_path.exists() else ""
@@ -1171,8 +1295,14 @@ def run_evaluation(
             }
 
         if not code:
-            print("no answer")
-            results = no_code_result("No answer code supplied. Use --use-ai or --answers-dir.")
+            if gen_timed_out:
+                print(f"timeout ({_code_timeout}s)")
+                msg = f"Case timed out after {_code_timeout}s; no code generated."
+            else:
+                print("no answer")
+                msg = "No answer code supplied. Use --use-ai or --answers-dir."
+            results = no_code_result(msg)
+            results["timed_out"] = gen_timed_out
             report["results"].append(results)
             report["cases"].append(results)
             report["cases_tested"] += 1

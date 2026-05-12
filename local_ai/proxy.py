@@ -56,6 +56,32 @@ HEARTBEAT_INTERVAL = 5
 _DEBUG = os.environ.get("CLAW_DEBUG", "").strip() in ("1", "true", "yes")
 _SSE_LOG = None  # set to an open binary file by _open_sse_log() when CLAW_DEBUG=1
 
+_MAX_TOKENS_CAPS: dict[str, int] = {
+    "small":  512,
+    "medium": 2048,
+    "large":  4096,
+}
+
+
+def _model_size_class(model_name: str) -> str:
+    m = re.search(r"[:\-_](\d+\.?\d*)b", model_name.lower())
+    if m:
+        size = float(m.group(1))
+        if size <= 3:
+            return "small"
+        if size <= 13:
+            return "medium"
+    return "large"
+
+
+def _get_effective_max_tokens(size_class: str, requested: int) -> int:
+    cap = _MAX_TOKENS_CAPS.get(size_class, _MAX_TOKENS_CAPS["large"])
+    return min(requested, cap)
+
+
+_SMOKE_SYSTEM_PROMPT = "Reply with exactly OK."
+_SMOKE_MAX_TOKENS = 64
+
 
 def _open_sse_log() -> None:
     global _SSE_LOG
@@ -982,6 +1008,11 @@ class ProxyHandler(BaseHTTPRequestHandler):
             if _DEBUG:
                 sys.stderr.write("[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice\n")
 
+        _smoke_mode = self.smoke_test or os.environ.get("CLAW_SMOKE_TEST", "") == "1"
+        if _smoke_mode:
+            body["system"] = _SMOKE_SYSTEM_PROMPT
+            sys.stderr.write("[proxy] smoke system prompt override enabled\n")
+
         incoming_stream = body.get("stream", False)
         claw_force_non_stream = os.environ.get("CLAW_FORCE_NON_STREAM", "")
         force_non_stream = claw_force_non_stream == "1"
@@ -997,6 +1028,22 @@ class ProxyHandler(BaseHTTPRequestHandler):
             f"effective stream={streaming}, "
             f"selected path={selected_path}\n"
         )
+
+        requested_max_tokens = body.get("max_tokens")
+        if requested_max_tokens is not None:
+            if _smoke_mode:
+                effective_max_tokens = min(requested_max_tokens, _SMOKE_MAX_TOKENS)
+            else:
+                size_class = _model_size_class(self.ollama_model)
+                effective_max_tokens = _get_effective_max_tokens(size_class, requested_max_tokens)
+            if effective_max_tokens < requested_max_tokens:
+                sys.stderr.write(
+                    f"[proxy] clamped max_tokens: requested={requested_max_tokens}"
+                    f" effective={effective_max_tokens}\n"
+                )
+            body["max_tokens"] = effective_max_tokens
+            if _DEBUG:
+                sys.stderr.write(f"[proxy:debug] effective_max_tokens={effective_max_tokens}\n")
 
         if _DEBUG:
             _tools = body.get("tools") or []

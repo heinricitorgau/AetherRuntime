@@ -212,6 +212,8 @@ if ($smokeTest) {
     $env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS = "15"
     $env:CLAW_MAX_REPAIR_RETRIES = "0"
     $env:CLAW_FORCE_NON_STREAM = "1"
+    $env:CLAW_SMOKE_TEST = "1"
+    $env:CLAW_SYSTEM_PROMPT = "Reply with exactly OK."
     $promptProfile = "smoke_test"
 }
 
@@ -224,6 +226,9 @@ if ($clawStreamTest) {
     $env:CLAW_MAX_REPAIR_RETRIES = "0"
     $env:CLAW_OLLAMA_TIMEOUT_SECONDS = "60"
     $env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS = "15"
+    $env:CLAW_FORCE_NON_STREAM = "1"
+    $env:CLAW_SMOKE_TEST = "1"
+    $env:CLAW_SYSTEM_PROMPT = "Reply with exactly OK."
     $promptProfile = "smoke_test"
 }
 
@@ -249,9 +254,13 @@ try {
   \_____|_|\__,_| \_/\_/     |_____| offline
 "@
     Write-Host ""
-    if ($smokeTest) { 
-        Write-Host "  running lightweight offline smoke test" -ForegroundColor Green 
-        Write-Host "  force non-stream: enabled" -ForegroundColor Green 
+    if ($smokeTest) {
+        Write-Host "  running lightweight offline smoke test" -ForegroundColor Green
+        Write-Host "  force non-stream: enabled" -ForegroundColor Green
+    }
+    elseif ($clawStreamTest) {
+        Write-Host "  running claw stream compatibility test (non-stream mode)" -ForegroundColor Green
+        Write-Host "  force non-stream: enabled for claw stream compatibility test" -ForegroundColor Green
     }
     elseif ($isDefaultModel) { Write-Host "  default smoke-test model selected ($model)" -ForegroundColor DarkGray }
     Write-Host "  model: $model ($sizeClass)" -ForegroundColor Cyan

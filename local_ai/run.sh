@@ -129,6 +129,8 @@ if [[ "$SMOKE_TEST" -eq 1 ]]; then
     export CLAW_FIRST_TOKEN_TIMEOUT_SECONDS="15"
     export CLAW_MAX_REPAIR_RETRIES="0"
     export CLAW_FORCE_NON_STREAM="1"
+    export CLAW_SMOKE_TEST="1"
+    export CLAW_SYSTEM_PROMPT="Reply with exactly OK."
     PROMPT_PROFILE="smoke_test"
 fi
 
@@ -148,6 +150,9 @@ if [[ "$CLAW_STREAM_TEST" -eq 1 ]]; then
     export CLAW_MAX_REPAIR_RETRIES="0"
     export CLAW_OLLAMA_TIMEOUT_SECONDS="60"
     export CLAW_FIRST_TOKEN_TIMEOUT_SECONDS="15"
+    export CLAW_FORCE_NON_STREAM="1"
+    export CLAW_SMOKE_TEST="1"
+    export CLAW_SYSTEM_PROMPT="Reply with exactly OK."
     PROMPT_PROFILE="smoke_test"
 fi
 
@@ -211,6 +216,9 @@ BANNER
     printf "${RESET}\n"
     if [[ "$SMOKE_TEST" -eq 1 ]]; then
         printf "  ${GREEN}running lightweight offline smoke test${RESET}\n"
+    elif [[ "$CLAW_STREAM_TEST" -eq 1 ]]; then
+        printf "  ${GREEN}running claw stream compatibility test (non-stream mode)${RESET}\n"
+        printf "  ${GREEN}force non-stream: enabled for claw stream compatibility test${RESET}\n"
     elif [[ "$IS_DEFAULT_MODEL" -eq 1 ]]; then
         printf "  default smoke-test model selected (%s)\n" "$MODEL"
     fi

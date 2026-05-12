@@ -263,8 +263,26 @@ Windows:
 powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --smoke-test
 ```
 
-`--smoke-test` 會強制使用最小的 `1.5b` 模型、極短的 Timeout、關閉修復流程，並固定送出一個簡單的英文 prompt。
+`--smoke-test` 會強制使用最小的 `1.5b` 模型、**極短的 Timeout**（full=60s、first-token=15s）、關閉修復流程，並固定送出一個簡單的英文 prompt。
 此模式**主要驗證 Ollama + Proxy 的同步 API 是否運作正常**，會直接對 proxy 送出 HTTP POST。如果能成功回傳助理回應文字，代表本地端基礎設施已準備就緒。
+
+> **Timeout 策略說明**
+>
+> | 情境 | full timeout | first-token timeout | 說明 |
+> |------|-------------|---------------------|------|
+> | `--smoke-test` | 60s | 15s | fail-fast，驗證基礎建設 |
+> | eval `--use-ai` (small) | 180s | 45s | 考題 prompt 較長，需要更多生成時間 |
+> | eval `--use-ai` (medium) | 300s | 90s | 同上 |
+> | eval `--use-ai` (large) | 600s | 180s | 同上 |
+>
+> eval 模式會自動在 `os.environ` 設定 `CLAW_OLLAMA_TIMEOUT_SECONDS` 與
+> `CLAW_FIRST_TOKEN_TIMEOUT_SECONDS`（僅在使用者未手動 export 的情況下），
+> 讓這些值流入 `run.ps1` / `run.sh` → proxy。若要手動覆蓋：
+> ```powershell
+> $env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS = "60"
+> $env:CLAW_OLLAMA_TIMEOUT_SECONDS = "240"
+> powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-ai --filter 2025
+> ```
 
 若 Proxy 的 smoke-test 成功，但正常使用時 `claw` 仍然失敗或卡住，則問題通常出在 `claw` 終端機與 Proxy 之間的**串流協定（SSE）相容性**。
 若你想強制使用 `claw` 來跑 smoke-test 以測試串流相容性，可以加上：

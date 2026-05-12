@@ -1,5 +1,5 @@
 {
-  "timestamp": 1778223724,
+  "timestamp": 1778416346,
   "total_cases": 4,
   "cases_tested": 4,
   "total_points": 65,
@@ -24,8 +24,7 @@
       "score": 0.0,
       "messages": [
         "Code structure keywords found",
-        "Compile: No C compiler found (cc/gcc/clang)",
-        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
+        "Compile: No C compiler found (cc/gcc/clang)"
       ],
       "answer_source": "fallback_scaffold",
       "used_fallback": true,
@@ -48,8 +47,7 @@
       "score": 0.0,
       "messages": [
         "Code structure keywords found",
-        "Compile: No C compiler found (cc/gcc/clang)",
-        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
+        "Compile: No C compiler found (cc/gcc/clang)"
       ],
       "answer_source": "fallback_scaffold",
       "used_fallback": true,
@@ -72,8 +70,7 @@
       "score": 0.0,
       "messages": [
         "Code structure keywords found",
-        "Compile: No C compiler found (cc/gcc/clang)",
-        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
+        "Compile: No C compiler found (cc/gcc/clang)"
       ],
       "answer_source": "fallback_scaffold",
       "used_fallback": true,
@@ -96,8 +93,7 @@
       "score": 0.0,
       "messages": [
         "Code structure keywords found",
-        "Compile: No C compiler found (cc/gcc/clang)",
-        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
+        "Compile: No C compiler found (cc/gcc/clang)"
       ],
       "answer_source": "fallback_scaffold",
       "used_fallback": true,
@@ -122,8 +118,7 @@
       "score": 0.0,
       "messages": [
         "Code structure keywords found",
-        "Compile: No C compiler found (cc/gcc/clang)",
-        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
+        "Compile: No C compiler found (cc/gcc/clang)"
       ],
       "answer_source": "fallback_scaffold",
       "used_fallback": true,
@@ -146,8 +141,7 @@
       "score": 0.0,
       "messages": [
         "Code structure keywords found",
-        "Compile: No C compiler found (cc/gcc/clang)",
-        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
+        "Compile: No C compiler found (cc/gcc/clang)"
       ],
       "answer_source": "fallback_scaffold",
       "used_fallback": true,
@@ -170,8 +164,7 @@
       "score": 0.0,
       "messages": [
         "Code structure keywords found",
-        "Compile: No C compiler found (cc/gcc/clang)",
-        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
+        "Compile: No C compiler found (cc/gcc/clang)"
       ],
       "answer_source": "fallback_scaffold",
       "used_fallback": true,
@@ -194,8 +187,7 @@
       "score": 0.0,
       "messages": [
         "Code structure keywords found",
-        "Compile: No C compiler found (cc/gcc/clang)",
-        "Local AI unavailable: cannot find claw binary; expected one of local_ai/runtime/bin/claw, rust/target/release/claw, rust/target/debug/claw, or a system PATH claw"
+        "Compile: No C compiler found (cc/gcc/clang)"
       ],
       "answer_source": "fallback_scaffold",
       "used_fallback": true,
