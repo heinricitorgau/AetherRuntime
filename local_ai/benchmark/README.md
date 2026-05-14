@@ -18,7 +18,7 @@ This benchmark measures:
 | **Compile** | Does `gcc -std=c99 -Wall` accept the code without errors? |
 | **Runtime** | Does the compiled binary produce the expected output tokens? |
 | **Semantic** | Does static analysis pass (no `scanf` type mismatch, no infinite loops, etc.)? |
-| **Keyword** | Does the code use the required C constructs (`for`, `scanf`, `rand`, …)? |
+| **Keyword** | Does the code use the required C constructs (`for`, `scanf`, `rand`, ...)? |
 
 A compile pass alone is **not enough**. A program can compile cleanly and still:
 - Write garbage due to a wrong `scanf` format specifier
@@ -30,34 +30,116 @@ Runtime output matching catches wrong-answer programs; semantic analysis catches
 
 ---
 
-## Why deterministic evaluation matters
+## Why a Baseline Run Is Needed Before Fine-tuning
 
-| Problem with non-deterministic eval | How this benchmark avoids it |
-|-------------------------------------|------------------------------|
-| GPT judge gives different verdicts on re-run | All checks are rule-based |
-| Soft scoring hides compile errors | compile/runtime/semantic are separate binary flags |
-| Temperature > 0 makes scores unstable | Default `temperature=0.0` for all runs |
-| Different test inputs between runs | `sample_input` comes from the eval case JSON — fixed per task |
-| Manual review is not reproducible | Fully automated, no human in the loop |
+Fine-tuning without a baseline is a common mistake. Without a pre-fine-tune measurement:
+
+- You cannot tell whether SFT improved the model or just shifted it
+- You cannot isolate regressions (e.g. compile rate drops after fine-tuning)
+- You cannot prove the fine-tune was worth the training cost
+
+The baseline establishes the **pre-fine-tune floor** on the same task distribution as the training data. After fine-tuning, run the same benchmark with the same run_id prefix and compare with `scoring.py --compare`.
 
 ---
 
-## Difference between compile / runtime / semantic correctness
+## Why Strict Benchmark Prompting Matters
 
-```
-Structure      The code "looks like" valid C (has #include, has int main, balanced braces).
-               Does NOT mean it compiles or runs correctly.
+Small models (1B–7B) in instruction-following mode frequently produce output that wastes their entire token budget on:
 
-Compile        gcc -std=c99 -Wall accepts the code with exit code 0.
-               Does NOT mean the output is correct.
+- Long preambles: "Here is a C program that solves the problem..."
+- Re-stating the problem: "The series is defined as..."
+- Chinese explanations: self-narration in the training language
+- Markdown structure: headers, bullet points, fenced sub-examples
+- Redundant comments: inline documentation of every line
 
-Runtime        The compiled binary produces the expected output tokens when given
-               the sample input. This catches wrong-answer programs.
+For a 3B model with `max_tokens=768`, a response that spends 400 tokens on explanation before writing the first line of code will often **truncate mid-function**. The result compiles with errors, scores 0 on compile+runtime, and the entire benchmark run appears broken.
 
-Semantic       Static analysis: scanf type mismatch, strcmp on int, rand without srand,
-               while(1) without break, array[i-1] OOB, etc.
-               This catches bugs that compile silently and may even produce some output.
-```
+The fix is **not to increase max_tokens** — that makes the model more likely to elaborate further. The fix is to change the system prompt to suppress non-code output.
+
+`--strict-code-only` activates a stricter prompt and smaller token budget specifically calibrated for code-only output:
+
+| Mode | System prompt | max_tokens | temperature |
+|------|--------------|-----------|------------|
+| standard | `code_gen_v1.txt` | 768 | 0.0 |
+| `--strict-code-only` | `code_gen_strict.txt` | 384 | 0.1 |
+
+The strict prompt explicitly bans explanations, Chinese text, markdown headings, and sample I/O repetition. 384 tokens is enough for most exam-level C programs (our dataset avg completion is 312 tokens of code).
+
+---
+
+## Small-Model Benchmark Optimization
+
+Rules of thumb for benchmarking 1B–7B models on code generation:
+
+**Token budget**
+
+- A typical exam-level C solution is 200–400 tokens of actual code
+- `max_tokens=768` leaves 370+ tokens of slack for prose — models fill it
+- `max_tokens=384` forces early termination of prose, but code completes cleanly if prompted correctly
+- Use `report_analysis.py` to measure `avg_code_ratio` before committing to a token budget
+
+**Temperature**
+
+- `temperature=0.0`: fully deterministic, same input always gives same output
+  - Best for reproducibility, worst for quality on hard tasks
+- `temperature=0.1`: tiny stochasticity, model stays focused, avoids mode collapse
+  - Recommended for strict mode where prompt already constrains format
+- `temperature >= 0.7`: model explores more, explanation rate increases, timeout risk rises
+
+**Timeout**
+
+- 3B models typically respond in 10–60 seconds per case on a mid-range GPU
+- Default `--timeout=180` is safe for all cases including game simulation problems
+- Measure `timeout_count` via `report_analysis.py`; if > 0, consider `--strict-code-only`
+- A timeout is worse than a compile error for benchmarking — the case produces no signal
+
+**Extraction fallback**
+
+If the model does not use a ` ```c ``` ` fence, code extraction falls back to a heuristic (scan for `#include` + `int main` + balanced braces). Check `fence_usage_rate` in analysis; if < 80%, the strict prompt or a reminder line ("wrap your code in ```c") will help.
+
+---
+
+## Token Budget Engineering
+
+The goal of token budget engineering is to maximize **useful tokens** (C code) while minimizing **waste tokens** (prose, markdown, explanation).
+
+Measure the waste before optimizing:
+
+    python local_ai/benchmark/report_analysis.py --run-id baseline_3b
+
+Key metrics from the analysis report:
+
+| Metric | Good | Warning | Action |
+|--------|------|---------|--------|
+| `avg_code_ratio` | > 70% | < 50% | Use `--strict-code-only` |
+| `truncation_rate` | < 10% | > 20% | Increase `max_tokens` or use strict prompt |
+| `timeout_rate` | 0% | > 10% | Reduce `max_tokens`, use strict prompt |
+| `chinese_text_rate` | 0% | > 0% | Add "Respond in English only" to prompt |
+| `fence_usage_rate` | > 90% | < 70% | Remind model: "Output only a single ```c block" |
+
+After adding `--strict-code-only`:
+
+    python local_ai/benchmark/run_baseline.py --strict-code-only --run-id strict_3b
+    python local_ai/benchmark/report_analysis.py --compare baseline_3b strict_3b
+
+The comparison table shows side-by-side improvement in code ratio and reduction in waste.
+
+---
+
+## Difference Between compile / runtime / semantic Correctness
+
+    Structure      The code "looks like" valid C (has #include, has int main, balanced braces).
+                   Does NOT mean it compiles or runs correctly.
+
+    Compile        gcc -std=c99 -Wall accepts the code with exit code 0.
+                   Does NOT mean the output is correct.
+
+    Runtime        The compiled binary produces the expected output tokens when given
+                   the sample input. This catches wrong-answer programs.
+
+    Semantic       Static analysis: scanf type mismatch, strcmp on int, rand without srand,
+                   while(1) without break, array[i-1] OOB, etc.
+                   This catches bugs that compile silently and may even produce some output.
 
 Example: A series-sum program that uses `int` accumulator instead of `double` will compile
 cleanly, run without crashing, produce output — but the numeric values will be wrong, and
@@ -69,9 +151,9 @@ the runtime check will catch the mismatch with `expected_tokens`.
 
 All results depend only on:
 1. The model weights (fixed by model name + Ollama state)
-2. The task definitions in `eval_cases/c_exam/*.json` (versioned in git)
-3. The system prompt in `prompts/` (versioned in git)
-4. `temperature=0.0` (passed to every API call)
+2. The task definitions in `local_ai/ingest/output/training/splits/test_code_generation.jsonl` (versioned)
+3. The system prompt in `prompts/` (versioned)
+4. `temperature=0.0` (default) or `0.1` (strict mode)
 
 Given the same inputs, every check produces the same verdict.
 
@@ -79,72 +161,106 @@ Given the same inputs, every check produces the same verdict.
 
 ## File Structure
 
-```
-local_ai/benchmark/
-  _bench_common.py            shared utilities (proxy, compile, score)
-  benchmark_cases.py          task loader from eval_cases/c_exam/*.json
-  run_baseline.py             main entry point — run model, save results
-  scoring.py                  aggregate metrics + comparison tool
-  prompts/
-    code_gen_v1.txt           standard system prompt (used by default)
-    code_gen_brief.txt        minimal prompt variant
-    code_gen_stepwise.txt     chain-of-thought variant
-  reports/
-    runs/<run_id>/
-      meta.json               run configuration
-      results.jsonl           per-case results
-      report.json             aggregate metrics
-      report.md               human-readable summary
-      passed_cases.jsonl      accepted cases (score >= 60)
-      failed_cases.jsonl      rejected cases
-    baseline_report.json      copy of latest run report (top-level shortcut)
-    baseline_report.md        copy of latest run report (markdown)
-    passed_cases.jsonl        top-level shortcut
-    failed_cases.jsonl        top-level shortcut
-```
+    local_ai/benchmark/
+      _bench_common.py            shared utilities (proxy, compile, score, semantic_check)
+      benchmark_cases.py          task loader from JSONL training splits
+      run_baseline.py             main entry point -- run model, save results
+      scoring.py                  aggregate metrics + comparison tool
+      report_analysis.py          token waste / code ratio analysis
+      prompts/
+        code_gen_v1.txt           standard system prompt (default)
+        code_gen_brief.txt        minimal variant
+        code_gen_stepwise.txt     chain-of-thought variant
+        code_gen_strict.txt       strict code-only prompt (used by --strict-code-only)
+      reports/
+        runs/<run_id>/
+          meta.json               run configuration
+          raw_outputs.jsonl       full model responses (no truncation -- for debug)
+          results.jsonl           per-case evaluation records
+          report.json             aggregate metrics
+          report.md               human-readable benchmark summary
+          passed_cases.jsonl      score >= 60
+          failed_cases.jsonl      score < 60
+          analysis_report.json    token waste analysis
+          analysis_report.md      human-readable waste analysis
+        baseline_report.json      copy of latest run (top-level shortcut)
+        baseline_report.md        copy of latest run (markdown)
+        passed_cases.jsonl        top-level shortcut
+        failed_cases.jsonl        top-level shortcut
+
+---
+
+## Windows Setup
+
+Requirements:
+- Python 3.9+ (the version already used in this project)
+- gcc via msys2 ucrt64: `C:\msys64\ucrt64\bin\gcc.exe`
+- Ollama running with the target model loaded
+- The proxy server running (`python local_ai/proxy.py --model qwen2.5-coder:3b`)
+
+No additional Python packages are required. All benchmark code uses only the standard library.
+
+gcc is auto-detected from:
+1. `gcc` / `cc` on PATH
+2. `C:\msys64\ucrt64\bin\gcc.exe`
+3. `C:\msys64\mingw64\bin\gcc.exe`
+4. `C:\MinGW\bin\gcc.exe`
+5. `C:\TDM-GCC-64\bin\gcc.exe`
+
+If gcc is not found, compile and runtime checks are skipped (structure, semantic, and keyword checks still run).
 
 ---
 
 ## Quick Start
 
-```powershell
-# Terminal 1: start proxy
-cd local_ai
-python proxy.py --model qwen2.5-coder:3b
+Terminal 1 (start proxy):
 
-# Terminal 2: run benchmark (all 19 tasks)
-python local_ai/benchmark/run_baseline.py
+    cd local_ai
+    python proxy.py --model qwen2.5-coder:3b
 
-# Run with specific model and run ID
-python local_ai/benchmark/run_baseline.py `
-    --model qwen2.5-coder:3b `
-    --run-id baseline_3b `
-    --max-tokens 2048
+Terminal 2 (run benchmark):
 
-# Run only 2021 tasks (quick smoke test)
-python local_ai/benchmark/run_baseline.py --filter 2021
+    # Standard run (2025 test set, all 4 tasks)
+    python local_ai/benchmark/run_baseline.py
 
-# Skip compile+runtime (proxy response quality only)
-python local_ai/benchmark/run_baseline.py --no-compile
+    # Strict code-only run (recommended for 3b models)
+    python local_ai/benchmark/run_baseline.py --strict-code-only
 
-# Dry run — list tasks without API calls
-python local_ai/benchmark/run_baseline.py --dry-run
+    # Give the run a name to track it
+    python local_ai/benchmark/run_baseline.py --run-id baseline_3b
+    python local_ai/benchmark/run_baseline.py --strict-code-only --run-id strict_3b
 
-# Re-score an existing run
-python local_ai/benchmark/scoring.py --run-id baseline_3b
+    # Use all accepted training records (2021-2025, 16 tasks)
+    python local_ai/benchmark/run_baseline.py --source accepted
 
-# Compare two runs
-python local_ai/benchmark/scoring.py --compare baseline_3b lora_3b_v1
+    # Only run 2025 tasks
+    python local_ai/benchmark/run_baseline.py --filter 2025
 
-# List all benchmark tasks
-python local_ai/benchmark/benchmark_cases.py --list
-```
+    # Skip compile and runtime (proxy response quality only)
+    python local_ai/benchmark/run_baseline.py --no-compile
+
+    # List tasks without making API calls
+    python local_ai/benchmark/run_baseline.py --dry-run
+
+After the run:
+
+    # Analyse token waste and code ratio
+    python local_ai/benchmark/report_analysis.py --run-id baseline_3b
+
+    # Compare standard vs strict
+    python local_ai/benchmark/report_analysis.py --compare baseline_3b strict_3b
+
+    # Compare benchmark scores across runs
+    python local_ai/benchmark/scoring.py --compare baseline_3b strict_3b
+
+    # List available tasks
+    python local_ai/benchmark/benchmark_cases.py --list
 
 ---
 
 ## Score Formula
 
-Weights are identical to the training_quality pipeline for cross-run comparability:
+Weights match the training_quality pipeline for cross-run comparability:
 
 | Check | Points |
 |-------|-------:|
@@ -152,82 +268,78 @@ Weights are identical to the training_quality pipeline for cross-run comparabili
 | Keywords (required C constructs) | 15 |
 | Compile | 40 |
 | Runtime (output token match) | 30 |
-| **Total** | **100** |
+| Total | 100 |
 
-**Accepted**: score ≥ 60.
+Accepted: score >= 60.
 
 ---
 
 ## Benchmark Dimensions
 
 ### compile
-```
-gcc -std=c99 -Wall -o <exe> <src> -lm
-```
+
+    gcc -std=c99 -Wall -o <exe> <src> -lm
+
 Pass = exit code 0. Uses msys2 PATH prefix on Windows for DLL resolution.
 
 ### runtime
-```
-echo <sample_input> | <exe>
-```
+
+    echo <sample_input> | <exe>
+
 Checks that every token in `expected_behavior.output_contains` appears in stdout.
 Match ratio = found/total. Pass = match_ratio > 0.
 
 ### semantic
-Heuristic static analysis without a full C parser. Checks:
 
-**Errors** (always fail):
-- `scanf("%s")` writing into a non-`char[]` variable
-- `scanf("%d")` writing into a `float`/`double`
-- `` ` `` code fence still present in output
+Heuristic static analysis without a full C parser:
 
-**Warnings** (counted; fail if > threshold):
-- `rand()` without `srand()`
-- `srand()` without `time(NULL)`
-- `rand()%` without uniqueness tracking
-- `while(1)` without `break`/`return`/`exit`
-- `array[i-1]` in a loop starting from `i=0`
+Errors (always fail):
+- scanf("%s") writing into a non-char[] variable
+- scanf("%d") writing into a float/double
+- code fence still present in output
+
+Warnings (counted; fail if > threshold):
+- rand() without srand()
+- srand() without time(NULL)
+- rand()% without uniqueness tracking
+- while(1) without break/return/exit
+- array[i-1] in a loop starting from i=0
 
 ### keyword
-Checks `checker_rules.keywords` from the eval case. Pass = at least 50% of required
+
+Checks checker_rules.keywords from the eval case. Pass = at least 50% of required
 keywords found in the generated code.
 
 ### timeout
+
 Two kinds of timeout:
-- **Proxy timeout**: model took longer than `--timeout` seconds to respond
-- **Binary timeout**: compiled program ran longer than `--run-timeout` seconds
+- Proxy timeout: model took longer than --timeout seconds to respond
+- Binary timeout: compiled program ran longer than --run-timeout seconds
 
 ### truncation
+
 Checks that the response is a complete program:
-- Ends with `}`
-- `{` count equals `}` count
-
----
-
-## Adding a New Prompt Variant
-
-1. Create `prompts/my_prompt.txt` with the system prompt text
-2. Run: `python local_ai/benchmark/run_baseline.py --prompt-file local_ai/benchmark/prompts/my_prompt.txt --run-id my_run`
-3. Compare: `python local_ai/benchmark/scoring.py --compare baseline_3b my_run`
+- Ends with }
+- { count equals } count
 
 ---
 
 ## Comparing Baseline vs Fine-tuned Model
 
-```powershell
-# Baseline run
-python local_ai/benchmark/run_baseline.py `
-    --model qwen2.5-coder:3b --run-id baseline_3b
+    # Step 1: establish baseline before fine-tuning
+    python local_ai/benchmark/run_baseline.py --run-id baseline_3b
 
-# After fine-tuning and loading the adapter:
-python local_ai/benchmark/run_baseline.py `
-    --model qwen2.5-coder:3b-lora-v1 --run-id lora_3b_v1
+    # Step 2: fine-tune (outside this benchmark)
 
-# Side-by-side comparison
-python local_ai/benchmark/scoring.py --compare baseline_3b lora_3b_v1
-```
+    # Step 3: benchmark the fine-tuned model
+    python local_ai/benchmark/run_baseline.py --model qwen2.5-coder:3b-lora-v1 --run-id lora_3b_v1
+
+    # Step 4: compare
+    python local_ai/benchmark/scoring.py --compare baseline_3b lora_3b_v1
 
 The comparison table shows per-dimension pass rates and average score for each run.
+A fine-tuned model should show improvement in compile_pass_rate and runtime_pass_rate
+without regression in semantic_pass_rate.
 
 ---
 
@@ -235,10 +347,13 @@ The comparison table shows per-dimension pass rates and average score for each r
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `CLAW_MODEL` | `qwen2.5-coder:3b` | Model name |
-| `CLAW_PROXY_URL` | `http://127.0.0.1:8082` | Proxy base URL |
-| `CLAW_BENCHMARK_MAX_TOKENS` | `1536` | Max tokens per response |
-| `CLAW_BENCHMARK_TIMEOUT` | `90` | Proxy request timeout (seconds) |
+| CLAW_MODEL | qwen2.5-coder:3b | Model name |
+| CLAW_PROXY_URL | http://127.0.0.1:8082 | Proxy base URL |
+| CLAW_BENCHMARK_MAX_TOKENS | 768 | Max tokens per response (standard mode) |
+| CLAW_BENCHMARK_TIMEOUT_SECONDS | 180 | Proxy request timeout in seconds |
+
+Note: --strict-code-only overrides max_tokens to 384 and temperature to 0.1
+regardless of env var values.
 
 ---
 

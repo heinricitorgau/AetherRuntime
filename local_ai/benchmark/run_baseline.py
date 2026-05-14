@@ -1,39 +1,48 @@
 #!/usr/bin/env python3
-"""Run a model against benchmark tasks and record deterministic results.
+"""Run benchmark tasks against the local proxy and record deterministic results.
 
 For each task the runner:
-  1. Calls the proxy API (configurable model, max_tokens, temperature)
-  2. Extracts C code from the response (fence-first, heuristic fallback)
-  3. Checks for truncation (unbalanced braces / does not end with '}')
+  1. Calls proxy (configurable model, max_tokens, temperature)
+  2. Extracts C code from response (fence-first, heuristic fallback)
+  3. Checks truncation (unbalanced braces / no trailing '}')
   4. Validates structure (#include, int main, balanced braces)
-  5. Compiles with gcc (if available)
-  6. Runs the compiled binary with the task's sample_input
-  7. Checks runtime output against expected tokens
-  8. Runs semantic static analysis (scanf type mismatch, while(1) without break, …)
+  5. Compiles with gcc -std=c99 -Wall
+  6. Runs compiled binary with task's sample_input
+  7. Checks runtime output against expected_tokens
+  8. Runs semantic static analysis (scanf type mismatch, infinite loops, ...)
   9. Checks keyword presence (required C constructs)
- 10. Computes a deterministic score (0–100)
+ 10. Computes deterministic score 0-100
 
-All results are saved to reports/runs/<run_id>/results.jsonl.
-A summary report is written by scoring.py automatically at the end.
+Modes:
+  default          temperature=0.0  max_tokens=768   prompt=code_gen_v1.txt
+  --strict-code-only  temperature=0.1  max_tokens=384   prompt=code_gen_strict.txt
+                   Reduces timeout risk by forcing the model to emit code only.
+
+Output files (in reports/runs/<run_id>/):
+  raw_outputs.jsonl        complete model responses (full text, no truncation)
+  results.jsonl            per-case evaluation records
+  baseline_report.json     aggregate metrics
+  baseline_report.md       human-readable summary
+  passed_cases.jsonl       cases with score >= 60
+  failed_cases.jsonl       cases with score < 60
 
 Usage:
-    python local_ai/benchmark/run_baseline.py
-    python local_ai/benchmark/run_baseline.py --model qwen2.5-coder:3b
-    python local_ai/benchmark/run_baseline.py --run-id my_run --max-tokens 2048
-    python local_ai/benchmark/run_baseline.py --filter 2021 2022
-    python local_ai/benchmark/run_baseline.py --no-compile        # skip compile+runtime
-    python local_ai/benchmark/run_baseline.py --dry-run           # print tasks, no API calls
+  python local_ai/benchmark/run_baseline.py
+  python local_ai/benchmark/run_baseline.py --strict-code-only
+  python local_ai/benchmark/run_baseline.py --model qwen2.5-coder:3b --run-id baseline_3b
+  python local_ai/benchmark/run_baseline.py --source accepted --filter 2021 2022
+  python local_ai/benchmark/run_baseline.py --no-compile
+  python local_ai/benchmark/run_baseline.py --dry-run
 
 Env:
-    CLAW_MODEL               model name override
-    CLAW_BENCHMARK_MAX_TOKENS max tokens override
-    CLAW_BENCHMARK_TIMEOUT    proxy request timeout in seconds
-    CLAW_PROXY_URL            proxy base URL
+  CLAW_MODEL                       model name (default: qwen2.5-coder:3b)
+  CLAW_PROXY_URL                   proxy base URL (default: http://127.0.0.1:8082)
+  CLAW_BENCHMARK_MAX_TOKENS        max tokens per response (default: 768)
+  CLAW_BENCHMARK_TIMEOUT_SECONDS   proxy request timeout seconds (default: 180)
 """
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import sys
 import tempfile
@@ -51,46 +60,36 @@ from _bench_common import (
     check_structure,
     compile_code,
     compute_score,
-    find_compiler,
     extract_c,
+    find_compiler,
     is_truncated,
     load_prompt_file,
     now_iso,
     run_exe,
     run_ts,
+    semantic_check,
     write_json,
     write_jsonl,
 )
 from benchmark_cases import load_tasks
 
-# ── Defaults ─────────────────────────────────────────────────────────────────
+# ── Defaults (match env var names in spec) ───────────────────────────────────
 
-_DEFAULT_PROXY      = "http://127.0.0.1:8082"
-_DEFAULT_MODEL      = "qwen2.5-coder:3b"
-_DEFAULT_MAX_TOKENS = 1536
-_DEFAULT_TIMEOUT    = 90       # proxy request timeout (seconds)
-_DEFAULT_RUN_TIMEOUT = 8       # executable run timeout (seconds)
-_DEFAULT_TEMPERATURE = 0.0     # deterministic by default
-_ACCEPT_THRESHOLD   = 60
+_DEFAULT_PROXY       = "http://127.0.0.1:8082"
+_DEFAULT_MODEL       = "qwen2.5-coder:3b"
+_DEFAULT_MAX_TOKENS  = 768
+_DEFAULT_TIMEOUT     = 180     # CLAW_BENCHMARK_TIMEOUT_SECONDS
+_DEFAULT_RUN_TIMEOUT = 8       # compiled binary run timeout
+_DEFAULT_TEMPERATURE = 0.0     # deterministic default
+_ACCEPT_THRESHOLD    = 60
+
+# Strict code-only mode overrides
+_STRICT_MAX_TOKENS  = 384
+_STRICT_TEMPERATURE = 0.1
+_STRICT_PROMPT_FILE = "code_gen_strict.txt"
 
 
 # ── Per-case evaluation ───────────────────────────────────────────────────────
-
-def _semantic_check(code: str) -> dict:
-    """Run static analysis.  Returns dict with keys: passed, warnings, errors, risk_score."""
-    try:
-        from static_analysis import analyse
-        result = analyse(code)
-        return {
-            "passed":     len(result.errors) == 0,
-            "warnings":   result.warnings,
-            "errors":     result.errors,
-            "risk_score": result.risk_score,
-        }
-    except ImportError:
-        return {"passed": True, "warnings": [], "errors": [], "risk_score": 0.0,
-                "note": "static_analysis not available"}
-
 
 def evaluate_case(
     task: dict,
@@ -102,42 +101,58 @@ def evaluate_case(
     run_timeout: int,
     compiler: str | None,
     work_dir: Path,
-) -> dict:
-    """Run a single benchmark task end-to-end and return a result record."""
+    temperature: float = _DEFAULT_TEMPERATURE,
+) -> tuple[dict, dict]:
+    """Evaluate one task.  Returns (result_record, raw_output_record)."""
     case_id = task["id"]
 
-    # ── 1. Call proxy ──────────────────────────────────────────────────────
+    # ── 1. Proxy call ─────────────────────────────────────────────────────
     raw_response, proxy_error, latency_ms = call_proxy(
         proxy_url=proxy_url,
         model=model,
         system=system_prompt,
-        user=task["prompt"],
+        user=task["instruction"],
         max_tokens=max_tokens,
         timeout=timeout,
-        temperature=_DEFAULT_TEMPERATURE,
+        temperature=temperature,
     )
 
-    proxy_timed_out = proxy_error is not None and "timeout" in proxy_error.lower()
+    proxy_timed_out = proxy_error is not None and (
+        "timeout" in proxy_error.lower() or "timed out" in proxy_error.lower()
+    )
+
+    raw_record = {
+        "id":          case_id,
+        "model":       model,
+        "timestamp":   now_iso(),
+        "latency_ms":  latency_ms,
+        "raw_response": raw_response,
+        "proxy_error":  proxy_error,
+    }
 
     checks: dict = {}
 
-    # ── 2. Extraction ──────────────────────────────────────────────────────
+    # ── 2. Proxy status ───────────────────────────────────────────────────
+    checks["proxy"] = {
+        "passed":    proxy_error is None,
+        "timed_out": proxy_timed_out,
+        "note":      proxy_error or "ok",
+    }
+
+    # ── 3. Extraction ─────────────────────────────────────────────────────
     if proxy_error:
-        extracted_code  = ""
-        extract_method  = "none"
-        checks["proxy"] = {"passed": False, "note": proxy_error, "timed_out": proxy_timed_out}
+        extracted_code, extract_method = "", "none"
     else:
         extracted_code, extract_method = extract_c(raw_response)
-        checks["proxy"] = {"passed": True, "note": "ok", "timed_out": False}
 
-    # ── 3. Truncation ──────────────────────────────────────────────────────
+    # ── 4. Truncation ─────────────────────────────────────────────────────
     truncated = is_truncated(extracted_code) if extracted_code else True
     checks["truncation"] = {
         "passed": not truncated,
-        "note":   "ok" if not truncated else "code appears truncated",
+        "note":   "ok" if not truncated else "truncated",
     }
 
-    # ── 4. Structure ───────────────────────────────────────────────────────
+    # ── 5. Structure ──────────────────────────────────────────────────────
     if extracted_code:
         struct = check_structure(extracted_code)
     else:
@@ -148,21 +163,21 @@ def evaluate_case(
         "issues": struct["issues"],
     }
 
-    # ── 5. Compile ─────────────────────────────────────────────────────────
+    # ── 6. Compile ────────────────────────────────────────────────────────
     if compiler and extracted_code:
         comp = compile_code(extracted_code, case_id, work_dir, compiler)
     else:
-        reason = "no compiler" if not compiler else "no code"
+        reason = "no compiler available" if not compiler else "no code extracted"
         comp = {"ok": False, "message": reason, "errors": [], "warnings": [], "exe": None}
     checks["compile"] = {
         "passed":   comp["ok"],
         "message":  comp["message"],
-        "errors":   comp.get("errors", []),
-        "warnings": comp.get("warnings", []),
+        "errors":   comp.get("errors", [])[:5],
+        "warnings": comp.get("warnings", [])[:3],
     }
 
-    # ── 6. Runtime ─────────────────────────────────────────────────────────
-    if comp["exe"]:
+    # ── 7. Runtime ────────────────────────────────────────────────────────
+    if comp.get("exe"):
         run_result = run_exe(comp["exe"], task["sample_input"], timeout=run_timeout)
         out_match  = check_output_tokens(run_result["output"], task["expected_tokens"])
         checks["runtime"] = {
@@ -171,7 +186,7 @@ def evaluate_case(
             "match_ratio": out_match["match_ratio"],
             "found":       out_match["found"],
             "missing":     out_match["missing"],
-            "output_head": run_result["output"][:300],
+            "output_head": run_result["output"][:400],
         }
     else:
         checks["runtime"] = {
@@ -184,44 +199,40 @@ def evaluate_case(
             "note":        "not run (compile failed or no compiler)",
         }
 
-    # ── 7. Semantic ────────────────────────────────────────────────────────
-    if extracted_code:
-        sem = _semantic_check(extracted_code)
-    else:
-        sem = {"passed": False, "warnings": [], "errors": ["empty code"], "risk_score": 1.0}
-    checks["semantic"] = sem
-
-    # ── 8. Keywords ────────────────────────────────────────────────────────
-    kw_result = check_keywords(extracted_code, task["expected_keywords"])
-    checks["keyword"] = {
-        "passed":  kw_result["score"] >= 0.5,
-        "score":   kw_result["score"],
-        "found":   kw_result["found"],
-        "missing": kw_result["missing"],
+    # ── 8. Semantic ───────────────────────────────────────────────────────
+    checks["semantic"] = semantic_check(extracted_code) if extracted_code else {
+        "passed": False, "warnings": [], "errors": ["empty code"], "risk_score": 1.0
     }
 
-    # ── 9. Score ───────────────────────────────────────────────────────────
-    score_result = compute_score(
-        structure_score=struct["score"],
-        keyword_score=kw_result["score"],
-        compile_ok=comp["ok"],
-        runtime_ratio=checks["runtime"]["match_ratio"],
-    )
+    # ── 9. Keywords ───────────────────────────────────────────────────────
+    kw = check_keywords(extracted_code, task["expected_keywords"])
+    checks["keyword"] = {
+        "passed":  kw["score"] >= 0.5 if task["expected_keywords"] else True,
+        "score":   kw["score"],
+        "found":   kw["found"],
+        "missing": kw["missing"],
+    }
 
+    # ── 10. Score ─────────────────────────────────────────────────────────
+    score_result = compute_score(
+        structure_score = struct["score"],
+        keyword_score   = kw["score"],
+        compile_ok      = comp["ok"],
+        runtime_ratio   = checks["runtime"]["match_ratio"],
+    )
     accepted = score_result["total"] >= _ACCEPT_THRESHOLD
 
-    return {
-        "id":             case_id,
-        "model":          model,
-        "timestamp":      now_iso(),
-        "latency_ms":     latency_ms,
-        "extract_method": extract_method,
-        "raw_response":   raw_response[:4000],
-        "extracted_code": extracted_code[:4000],
-        "checks":         checks,
-        "score":          score_result["total"],
+    result = {
+        "id":              case_id,
+        "model":           model,
+        "timestamp":       now_iso(),
+        "latency_ms":      latency_ms,
+        "extract_method":  extract_method,
+        "extracted_code":  extracted_code[:4000],
+        "checks":          checks,
+        "score":           score_result["total"],
         "score_breakdown": score_result["breakdown"],
-        "accepted":       accepted,
+        "accepted":        accepted,
         "task_meta": {
             "topic":      task["topic"],
             "difficulty": task["difficulty"],
@@ -230,9 +241,10 @@ def evaluate_case(
             "exam":       task["exam"],
         },
     }
+    return result, raw_record
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
+# ── Main runner ───────────────────────────────────────────────────────────────
 
 def run_benchmark(
     tasks: list[dict],
@@ -242,49 +254,39 @@ def run_benchmark(
     max_tokens: int,
     timeout: int,
     run_timeout: int,
-    run_id: str,
+    out_dir: Path,
+    temperature: float = _DEFAULT_TEMPERATURE,
+    strict_code_only: bool = False,
     dry_run: bool = False,
     skip_compile: bool = False,
 ) -> dict:
-    out_dir = REPORTS_DIR / "runs" / run_id
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    compiler   = None if skip_compile else find_compiler()
-    work_dir   = Path(tempfile.mkdtemp(prefix="bench_build_"))
-    results    = []
+    compiler = None if skip_compile else find_compiler()
+    work_dir = Path(tempfile.mkdtemp(prefix="bench_build_"))
 
-    # Save run metadata before starting
-    meta = {
-        "run_id":        run_id,
-        "timestamp":     now_iso(),
-        "model":         model,
-        "proxy_url":     proxy_url,
-        "max_tokens":    max_tokens,
-        "timeout":       timeout,
-        "run_timeout":   run_timeout,
-        "system_prompt": system_prompt,
-        "compiler":      compiler,
-        "tasks_total":   len(tasks),
-        "skip_compile":  skip_compile,
-        "dry_run":       dry_run,
-    }
-    write_json(meta, out_dir / "meta.json")
+    results:     list[dict] = []
+    raw_outputs: list[dict] = []
 
     total = len(tasks)
-    print(f"\n[benchmark] run_id={run_id}  model={model}  tasks={total}")
-    print(f"[benchmark] proxy={proxy_url}  max_tokens={max_tokens}  timeout={timeout}s")
-    print(f"[benchmark] compiler={'none (skip)' if skip_compile else (compiler or 'not found')}")
+    mode_tag = "STRICT" if strict_code_only else "standard"
+    print(f"\n[benchmark] model={model}  tasks={total}  mode={mode_tag}")
+    print(f"[benchmark] proxy={proxy_url}  max_tokens={max_tokens}  timeout={timeout}s  temp={temperature}")
+    print(f"[benchmark] compiler={'none (skip)' if skip_compile else (compiler or 'NOT FOUND')}")
+    print(f"[benchmark] out_dir={out_dir}")
+    if not compiler and not skip_compile:
+        print("[benchmark] WARNING: no C compiler found — compile/runtime checks disabled")
     print()
 
     for i, task in enumerate(tasks, 1):
         prefix = f"[{i:02d}/{total}] {task['id']}"
         if dry_run:
-            print(f"{prefix}  [dry-run skipped]")
+            print(f"{prefix}  [dry-run]")
             continue
 
-        print(f"{prefix}  ...", end="", flush=True)
+        print(f"{prefix}  ", end="", flush=True)
 
-        result = evaluate_case(
+        result, raw = evaluate_case(
             task=task,
             proxy_url=proxy_url,
             model=model,
@@ -294,90 +296,147 @@ def run_benchmark(
             run_timeout=run_timeout,
             compiler=compiler,
             work_dir=work_dir,
+            temperature=temperature,
         )
-        results.append(result)
+        # Tag strict mode in result for later analysis
+        result["strict_code_only"] = strict_code_only
+        raw["strict_code_only"]    = strict_code_only
 
-        # One-line status summary
-        c  = "C" if result["checks"]["compile"]["passed"] else "-"
-        r  = "R" if result["checks"]["runtime"]["passed"] else "-"
-        s  = "S" if result["checks"]["semantic"]["passed"] else "-"
-        k  = "K" if result["checks"]["keyword"]["passed"]  else "-"
-        tr = "T" if result["checks"]["truncation"]["passed"] else "-"
+        results.append(result)
+        raw_outputs.append(raw)
+
+        chk = result["checks"]
+        p   = "P" if chk.get("proxy",     {}).get("passed") else "-"
+        c   = "C" if chk.get("compile",   {}).get("passed") else "-"
+        r   = "R" if chk.get("runtime",   {}).get("passed") else "-"
+        s   = "S" if chk.get("semantic",  {}).get("passed") else "-"
+        k   = "K" if chk.get("keyword",   {}).get("passed") else "-"
+        t   = "T" if chk.get("truncation",{}).get("passed") else "-"
         score = result["score"]
         lat   = result["latency_ms"]
-        print(f"  [{c}{r}{s}{k}{tr}] score={score:3d}  {lat}ms")
+        print(f"[{p}{c}{r}{s}{k}{t}] score={score:3d}  {lat}ms")
 
     if dry_run:
         print(f"\n[benchmark] dry-run: {total} tasks listed, no API calls made")
         return {}
 
-    # Save results JSONL
-    results_path = out_dir / "results.jsonl"
-    write_jsonl(results, results_path)
-    print(f"\n[benchmark] {len(results)} results saved -> {results_path}")
-
-    # Inline scoring
-    import scoring as _scoring
-    report = _scoring.score_run(results=results, meta=meta, out_dir=out_dir)
-
-    # Also copy to reports/ top-level for easy "latest baseline" access
-    write_json(report, REPORTS_DIR / "baseline_report.json")
-    _scoring.write_markdown(report, REPORTS_DIR / "baseline_report.md")
+    # ── Write output files ────────────────────────────────────────────────
+    # raw_outputs keeps the full response text for truncation/waste analysis
+    write_jsonl(raw_outputs, out_dir / "raw_outputs.jsonl")
+    write_jsonl(results,     out_dir / "results.jsonl")
 
     passed = [r for r in results if r["accepted"]]
     failed = [r for r in results if not r["accepted"]]
-    write_jsonl(passed, REPORTS_DIR / "passed_cases.jsonl")
-    write_jsonl(failed, REPORTS_DIR / "failed_cases.jsonl")
+    write_jsonl(passed, out_dir / "passed_cases.jsonl")
+    write_jsonl(failed, out_dir / "failed_cases.jsonl")
 
+    # ── Inline scoring ────────────────────────────────────────────────────
+    import scoring as _scoring
+    meta = {
+        "model":            model,
+        "proxy_url":        proxy_url,
+        "max_tokens":       max_tokens,
+        "temperature":      temperature,
+        "strict_code_only": strict_code_only,
+        "timeout":          timeout,
+        "run_timeout":      run_timeout,
+        "system_prompt":    system_prompt[:200],
+        "compiler":         compiler,
+        "tasks_total":      len(tasks),
+        "skip_compile":     skip_compile,
+    }
+    report = _scoring.score_run(results=results, meta=meta, out_dir=out_dir)
+
+    print(f"\n[benchmark] {len(results)} results saved -> {out_dir}")
     return report
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Run benchmark tasks against the local proxy model"
+        description="Benchmark a model against C code generation tasks"
     )
-    parser.add_argument("--model",
+    parser.add_argument(
+        "--model",
         default=os.environ.get("CLAW_MODEL", "").strip() or _DEFAULT_MODEL,
-        help="Model name (default: qwen2.5-coder:3b)")
-    parser.add_argument("--max-tokens", type=int,
+    )
+    parser.add_argument(
+        "--max-tokens", type=int,
         default=int(os.environ.get("CLAW_BENCHMARK_MAX_TOKENS", _DEFAULT_MAX_TOKENS)),
-        help=f"Max tokens per response (default: {_DEFAULT_MAX_TOKENS})")
-    parser.add_argument("--timeout", type=int,
-        default=int(os.environ.get("CLAW_BENCHMARK_TIMEOUT", _DEFAULT_TIMEOUT)),
-        help=f"Proxy request timeout in seconds (default: {_DEFAULT_TIMEOUT})")
-    parser.add_argument("--run-timeout", type=int, default=_DEFAULT_RUN_TIMEOUT,
-        help=f"Compiled binary run timeout in seconds (default: {_DEFAULT_RUN_TIMEOUT})")
-    parser.add_argument("--proxy-url",
-        default=os.environ.get("CLAW_PROXY_URL", _DEFAULT_PROXY))
-    parser.add_argument("--run-id",
-        default=None,
-        help="Identifier for this run (default: baseline_<timestamp>)")
-    parser.add_argument("--filter", "-f", nargs="*",
-        help="Only run tasks whose ID starts with these strings")
-    parser.add_argument("--prompt-file",
-        default=str(PROMPTS_DIR / "code_gen_v1.txt"),
-        help="Path to the system prompt file")
-    parser.add_argument("--no-compile", action="store_true",
-        help="Skip compile and runtime checks")
-    parser.add_argument("--dry-run", action="store_true",
-        help="List tasks without making API calls")
+    )
+    parser.add_argument(
+        "--timeout", type=int,
+        default=int(os.environ.get("CLAW_BENCHMARK_TIMEOUT_SECONDS", _DEFAULT_TIMEOUT)),
+        help="Proxy request timeout in seconds",
+    )
+    parser.add_argument("--run-timeout", type=int, default=_DEFAULT_RUN_TIMEOUT)
+    parser.add_argument(
+        "--proxy-url",
+        default=os.environ.get("CLAW_PROXY_URL", _DEFAULT_PROXY),
+    )
+    parser.add_argument(
+        "--run-id", default=None,
+        help="Identifier for this run (default: baseline_<timestamp>)",
+    )
+    parser.add_argument(
+        "--source", default="test",
+        choices=["test", "accepted", "all"],
+        help="Task source JSONL (default: test = test_code_generation.jsonl)",
+    )
+    parser.add_argument(
+        "--filter", "-f", nargs="*",
+        help="Only run tasks whose ID starts with these strings",
+    )
+    parser.add_argument(
+        "--prompt-file", default=None,
+        help="Path to system prompt file (default depends on mode)",
+    )
+    parser.add_argument(
+        "--strict-code-only", action="store_true",
+        help=(
+            "Strict code-only mode: forces max_tokens=384, temperature=0.1, "
+            "and uses code_gen_strict.txt prompt to minimise explanation waste."
+        ),
+    )
+    parser.add_argument("--temperature", type=float, default=None,
+        help="Override temperature (default: 0.0 standard, 0.1 strict)")
+    parser.add_argument("--no-compile", action="store_true")
+    parser.add_argument("--dry-run",    action="store_true")
     args = parser.parse_args()
 
-    run_id = args.run_id or f"baseline_{run_ts()}"
+    # ── Resolve strict-mode overrides ────────────────────────────────────
+    strict = args.strict_code_only
 
-    prompt_path = Path(args.prompt_file)
-    if not prompt_path.exists():
-        # Fall back to default prompt if custom file not found
-        default_prompt = (
+    effective_max_tokens = (
+        _STRICT_MAX_TOKENS if strict else args.max_tokens
+    )
+    effective_temperature = (
+        args.temperature if args.temperature is not None
+        else (_STRICT_TEMPERATURE if strict else _DEFAULT_TEMPERATURE)
+    )
+
+    if args.prompt_file:
+        prompt_path = Path(args.prompt_file)
+    elif strict:
+        prompt_path = PROMPTS_DIR / _STRICT_PROMPT_FILE
+    else:
+        prompt_path = PROMPTS_DIR / "code_gen_v1.txt"
+
+    if prompt_path.exists():
+        system_prompt = load_prompt_file(prompt_path)
+    else:
+        system_prompt = (
             "You are a C programming assistant. "
             "Output exactly one complete C99 program. Do not explain."
         )
         print(f"[warn] prompt file not found: {prompt_path}, using built-in default")
-        system_prompt = default_prompt
-    else:
-        system_prompt = load_prompt_file(prompt_path)
 
-    tasks = load_tasks(filter_ids=args.filter)
+    # ── Run ID ────────────────────────────────────────────────────────────
+    run_id = args.run_id or (
+        f"strict_{run_ts()}" if strict else f"baseline_{run_ts()}"
+    )
+    out_dir = REPORTS_DIR / "runs" / run_id
+
+    tasks = load_tasks(source=args.source, filter_ids=args.filter)
     if not tasks:
         print("[error] no tasks found", file=sys.stderr)
         sys.exit(1)
@@ -387,28 +446,46 @@ def main() -> None:
         proxy_url=args.proxy_url,
         model=args.model,
         system_prompt=system_prompt,
-        max_tokens=args.max_tokens,
+        max_tokens=effective_max_tokens,
         timeout=args.timeout,
         run_timeout=args.run_timeout,
-        run_id=run_id,
+        out_dir=out_dir,
+        temperature=effective_temperature,
+        strict_code_only=strict,
         dry_run=args.dry_run,
         skip_compile=args.no_compile,
     )
 
     if report:
+        # Also write top-level shortcuts
+        import scoring as _scoring
+        write_json(report, REPORTS_DIR / "baseline_report.json")
+        _scoring.write_markdown(report, REPORTS_DIR / "baseline_report.md")
+        passed_all = [r for r in report.get("results", []) if r.get("accepted")]
+        failed_all = [r for r in report.get("results", []) if not r.get("accepted")]
+        write_jsonl(passed_all, REPORTS_DIR / "passed_cases.jsonl")
+        write_jsonl(failed_all, REPORTS_DIR / "failed_cases.jsonl")
+
         r = report.get("rates", {})
-        print(f"\n{'='*50}")
-        print(f"Run: {run_id}")
-        print(f"Model: {args.model}")
-        print(f"Tasks: {report.get('cases_run', 0)}")
-        print(f"  compile:  {r.get('compile_pass_rate', 0):.0%}")
-        print(f"  runtime:  {r.get('runtime_pass_rate', 0):.0%}")
-        print(f"  semantic: {r.get('semantic_pass_rate', 0):.0%}")
-        print(f"  keyword:  {r.get('keyword_pass_rate', 0):.0%}")
-        print(f"  truncation-free: {r.get('truncation_pass_rate', 0):.0%}")
-        print(f"  avg score: {report.get('average_score', 0):.1f}/100")
-        print(f"  accepted:  {report.get('accepted', 0)}/{report.get('cases_run', 0)}")
-        print(f"{'='*50}")
+        print(f"\n{'='*60}")
+        print(f"Run ID:          {run_id}")
+        print(f"Model:           {args.model}")
+        print(f"Mode:            {'STRICT code-only' if strict else 'standard'}")
+        print(f"max_tokens:      {effective_max_tokens}")
+        print(f"temperature:     {effective_temperature}")
+        print(f"Tasks:           {report.get('cases_run', 0)}")
+        print(f"  compile:       {r.get('compile_pass_rate', 0):.0%}")
+        print(f"  runtime:       {r.get('runtime_pass_rate', 0):.0%}")
+        print(f"  semantic:      {r.get('semantic_pass_rate', 0):.0%}")
+        print(f"  keyword:       {r.get('keyword_pass_rate', 0):.0%}")
+        print(f"  not-truncated: {r.get('truncation_pass_rate', 0):.0%}")
+        print(f"  avg score:     {report.get('average_score', 0):.1f}/100")
+        print(f"  accepted:      {report.get('accepted', 0)}/{report.get('cases_run', 0)}")
+        print(f"{'='*60}")
+        print(f"\nReports: {REPORTS_DIR / 'baseline_report.md'}")
+        print(f"Run dir: {out_dir}")
+        if strict:
+            print(f"\nTip: python local_ai/benchmark/report_analysis.py --run-id {run_id}")
 
 
 if __name__ == "__main__":

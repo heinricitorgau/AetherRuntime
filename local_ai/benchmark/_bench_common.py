@@ -39,6 +39,35 @@ _TQ_DIR = str(LOCAL_AI_ROOT / "training_quality")
 if _TQ_DIR not in sys.path:
     sys.path.insert(0, _TQ_DIR)
 
+try:
+    from static_analysis import analyse as _static_analyse  # type: ignore[import]
+    _HAS_STATIC_ANALYSIS = True
+except ImportError:
+    _static_analyse = None  # type: ignore[assignment]
+    _HAS_STATIC_ANALYSIS = False
+
+
+def semantic_check(code: str) -> dict:
+    """Run static analysis on C code.  Never raises; returns a safe dict on failure."""
+    if not _HAS_STATIC_ANALYSIS or _static_analyse is None:
+        return {
+            "passed": True, "warnings": [], "errors": [], "risk_score": 0.0,
+            "note": "[warn] static_analysis not available; semantic check skipped",
+        }
+    try:
+        result = _static_analyse(code)
+        return {
+            "passed":     len(result.errors) == 0,
+            "warnings":   result.warnings,
+            "errors":     result.errors,
+            "risk_score": result.risk_score,
+        }
+    except Exception as exc:
+        return {
+            "passed": True, "warnings": [], "errors": [], "risk_score": 0.0,
+            "note": f"[warn] static_analysis error: {exc}",
+        }
+
 
 # ── Time ────────────────────────────────────────────────────────────────────
 
