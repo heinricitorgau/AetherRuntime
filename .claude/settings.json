@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(python local_ai/ingest/split_training.py)",
+      "Bash(Select-String -NotMatch \"^{|^  \\\\\"|^}|Splitting\")",
+      "Bash(python run_pipeline.py --skip-compile --dry-run)",
+      "Bash(python run_pipeline.py --threshold 60)",
+      "Bash(\"/c/msys64/ucrt64/bin/gcc\" --version)",
+      "Bash(\"C:/msys64/ucrt64/bin/gcc.exe\" --version)",
+      "Bash(python _diagnose_compile.py)",
+      "Bash(cd \"/tmp\")",
+      "Bash(echo '#include <stdio.h>\\\\nint main\\(\\){printf\\(\"hello\\\\\\\\n\"\\);return 0;}')",
+      "Bash(\"/c/msys64/ucrt64/bin/gcc\" -std=c99 -o test test.c)",
+      "Bash(./test)",
+      "Bash(echo '#include <stdio.h>')",
+      "Bash(echo 'int main\\(\\){printf\\(\"ok\\\\n\"\\);return 0;}')",
+      "Bash(/c/msys64/ucrt64/bin/gcc -o /tmp/t /tmp/t.c)",
+      "Bash(/tmp/t)",
+      "Read(//c/msys64/ucrt64/bin/**)",
+      "Bash(python3 -c ' *)",
+      "Bash(PATH=/c/msys64/ucrt64/bin:/c/msys64/usr/bin:__TRACKED_VAR__ gcc -o /tmp/hello /tmp/hello.c)",
+      "Bash(/tmp/hello)",
+      "Bash(python compile_validator.py)",
+      "Bash(python audit_accepted_dataset.py)",
+      "Bash(python audit_accepted_dataset.py --max-warnings 1)",
+      "Bash(python local_ai/training_quality/audit_accepted_dataset.py)",
+      "Bash(python package_sft_dataset.py)",
+      "Bash(python package_sft_dataset.py --strip-code-fences)",
+      "Bash(python local_ai/training_quality/fill_concept_summaries.py)",
+      "Bash(python package_sft_dataset.py --input reports/semantic_accepted_filled.jsonl)",
+      "Bash(python local_ai/benchmark/benchmark_cases.py --list)",
+      "Bash(python local_ai/benchmark/run_baseline.py --dry-run --filter 2021)",
+      "Bash(python local_ai/benchmark/scoring.py --help)"
+    ]
+  }
+}

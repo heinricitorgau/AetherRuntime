@@ -1,0 +1,186 @@
+{
+  "validator": "compile",
+  "timestamp": "2026-05-14T09:44:22+00:00",
+  "compiler": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+  "work_dir": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr",
+  "total": 19,
+  "passed": 16,
+  "failed": 3,
+  "results": [
+    {
+      "id": "2021_exam1_004",
+      "ok": false,
+      "message": "compile error (10 errors)",
+      "errors": [
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:19:13: error: implicit declaration of function 'strcmp' [-Wimplicit-function-declaration]",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:19:20: error: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:19:49: error: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:19:78: error: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:21:27: error: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:21:56: error: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:23:25: error: subscripted value is neither array nor pointer nor vector",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:23:44: error: subscripted value is neither array nor pointer nor vector",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:24:37: error: subscripted value is neither array nor pointer nor vector",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:33:20: error: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]"
+      ],
+      "warnings": [
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_004.c:15:17: warning: format '%s' expects argument of type 'char *', but argument 2 has type 'int *' [-Wformat=]"
+      ],
+      "exe": null
+    },
+    {
+      "id": "2021_exam1_003",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_003.exe"
+    },
+    {
+      "id": "2021_exam1_002",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_002.exe"
+    },
+    {
+      "id": "2021_exam1_001",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2021_exam1_001.exe"
+    },
+    {
+      "id": "2022_exam1_003",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2022_exam1_003.exe"
+    },
+    {
+      "id": "2022_exam1_002",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2022_exam1_002.exe"
+    },
+    {
+      "id": "2022_exam1_001",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2022_exam1_001.exe"
+    },
+    {
+      "id": "2022_exam1_004",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2022_exam1_004.exe"
+    },
+    {
+      "id": "2023_exam1_003",
+      "ok": false,
+      "message": "compile error (3 errors)",
+      "errors": [
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2023_exam1_003.c:48:43: error: passing argument 1 of 'calculateArea' from incompatible pointer type [-Wincompatible-pointer-types]",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2023_exam1_003.c:48:54: error: passing argument 2 of 'calculateArea' makes integer from pointer without a cast [-Wint-conversion]",
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2023_exam1_003.c:48:23: error: too many arguments to function 'calculateArea'; expected 2, have 3"
+      ],
+      "warnings": [],
+      "exe": null
+    },
+    {
+      "id": "2023_exam1_002",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2023_exam1_002.exe"
+    },
+    {
+      "id": "2023_exam1_001",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2023_exam1_001.exe"
+    },
+    {
+      "id": "2023_exam1_004",
+      "ok": false,
+      "message": "compile error (1 errors)",
+      "errors": [
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2023_exam1_004.c:28:11: error: implicit declaration of function 'time' [-Wimplicit-function-declaration]"
+      ],
+      "warnings": [],
+      "exe": null
+    },
+    {
+      "id": "2024_exam1_003",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2024_exam1_003.c:68:27: warning: self-comparison always evaluates to true [-Wtautological-compare]"
+      ],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2024_exam1_003.exe"
+    },
+    {
+      "id": "2024_exam1_002",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2024_exam1_002.exe"
+    },
+    {
+      "id": "2024_exam1_001",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2024_exam1_001.exe"
+    },
+    {
+      "id": "2025_midterm_004",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [
+        "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2025_midterm_004.c:48:18: warning: format '%c' expects argument of type 'char *', but argument 2 has type 'int *' [-Wformat=]"
+      ],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2025_midterm_004.exe"
+    },
+    {
+      "id": "2025_midterm_001",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2025_midterm_001.exe"
+    },
+    {
+      "id": "2025_midterm_002",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2025_midterm_002.exe"
+    },
+    {
+      "id": "2025_midterm_003",
+      "ok": true,
+      "message": "ok",
+      "errors": [],
+      "warnings": [],
+      "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\tq_build_55bg25kr\\2025_midterm_003.exe"
+    }
+  ]
+}

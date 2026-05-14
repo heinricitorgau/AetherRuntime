@@ -57,7 +57,7 @@ _DEBUG = os.environ.get("CLAW_DEBUG", "").strip() in ("1", "true", "yes")
 _SSE_LOG = None  # set to an open binary file by _open_sse_log() when CLAW_DEBUG=1
 
 _MAX_TOKENS_CAPS: dict[str, int] = {
-    "small":  512,
+    "small":  1536,
     "medium": 2048,
     "large":  4096,
 }
@@ -81,6 +81,12 @@ def _get_effective_max_tokens(size_class: str, requested: int) -> int:
 
 _SMOKE_SYSTEM_PROMPT = "Reply with exactly OK."
 _SMOKE_MAX_TOKENS = 64
+_LIGHTWEIGHT_SYSTEM_PROMPT = (
+    "You are a C programming assistant.\n"
+    "Output exactly one complete C program.\n"
+    "Do not explain.\n"
+    "Do not use markdown fences."
+)
 
 
 def _open_sse_log() -> None:
@@ -1012,6 +1018,9 @@ class ProxyHandler(BaseHTTPRequestHandler):
         if _smoke_mode:
             body["system"] = _SMOKE_SYSTEM_PROMPT
             sys.stderr.write("[proxy] smoke system prompt override enabled\n")
+        elif os.environ.get("CLAW_LIGHTWEIGHT_EVAL", "") == "1":
+            body["system"] = _LIGHTWEIGHT_SYSTEM_PROMPT
+            sys.stderr.write("[proxy] lightweight eval system prompt override enabled\n")
 
         incoming_stream = body.get("stream", False)
         claw_force_non_stream = os.environ.get("CLAW_FORCE_NON_STREAM", "")

@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-05-14T11:34:53+00:00",
+  "input": "local_ai\\training_quality\\reports\\semantic_accepted_filled.jsonl",
+  "strip_fences": false,
+  "records": {
+    "total": 41,
+    "packaged": 41,
+    "skipped": 0,
+    "by_type": {
+      "code_generation": 16,
+      "concept_summary": 25
+    }
+  },
+  "validation_issues": [],
+  "outputs": {
+    "chatml": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\training_quality\\reports\\sft_chatml.jsonl",
+    "alpaca": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\training_quality\\reports\\sft_alpaca.jsonl",
+    "instruction_output": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\training_quality\\reports\\sft_instruction_output.jsonl"
+  }
+}

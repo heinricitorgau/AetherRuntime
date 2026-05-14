@@ -1,100 +1,108 @@
-PS C:\Users\User\OneDrive\Desktop\research-claw-code> Get-Content .\local_ai\runtime\logs\proxy.err.log -Tail 120
-[proxy] Ollama URL: http://127.0.0.1:11435
-[proxy] model: qwen2.5-coder:1.5b
-[proxy] model size class: small
-[proxy] port: 8082
-[proxy] full timeout: 60s
-[proxy] first-token timeout: 15s
-[proxy] retry count: 0
-[proxy] force non-stream: true
-[proxy] debug: CLAW_DEBUG enabled
-[proxy:debug] SSE log: C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\logs\proxy.sse.log
-[proxy] 等待 Ollama 啟動...
-[proxy] 就緒 ─ 監聽 localhost:8082  →  Ollama(qwen2.5-coder:1.5b)
-[proxy] "GET /health HTTP/1.1" 200 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] force non-stream mode enabled
-[proxy] incoming stream=True, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'stream', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy] direct TimeoutError caught: timed out
-[proxy] "POST /v1/messages HTTP/1.1" 504 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] force non-stream mode enabled
-[proxy] incoming stream=True, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'stream', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy] direct TimeoutError caught: timed out
-[proxy] "POST /v1/messages HTTP/1.1" 504 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] force non-stream mode enabled
-[proxy] incoming stream=True, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'stream', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy] direct TimeoutError caught: timed out
-[proxy] "POST /v1/messages HTTP/1.1" 504 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] force non-stream mode enabled
-[proxy] incoming stream=True, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'stream', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy] direct TimeoutError caught: timed out
-[proxy] "POST /v1/messages HTTP/1.1" 504 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] force non-stream mode enabled
-[proxy] incoming stream=True, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'stream', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy:debug] ollama /v1 raw response (first 500): b'{"id":"chatcmpl-188","object":"chat.completion","created":1778554566,"model":"qwen2.5-coder:1.5b","system_fingerprint":"fp_ollama","choices":[{"index":0,"message":{"role":"assistant","content":"Hello! How can I assist you today?"},"finish_reason":"stop"}],"usage":{"prompt_tokens":4096,"completion_tokens":10,"total_tokens":4106}}\n'
-[proxy:debug] final Anthropic response (first 500): {"id": "msg_b27f5c39ba814a6696012a5b", "type": "message", "role": "assistant", "content": [{"type": "text", "text": "Hello! How can I assist you today?"}], "model": "qwen2.5-coder:1.5b", "stop_reason": "end_turn", "stop_sequence": null, "usage": {"input_tokens": 4096, "output_tokens": 10}}
-[proxy] "POST /v1/messages HTTP/1.1" 200 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] incoming stream=False, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy] direct TimeoutError caught: timed out
-[proxy] "POST /v1/messages HTTP/1.1" 504 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] incoming stream=False, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy] direct TimeoutError caught: timed out
-[proxy] "POST /v1/messages HTTP/1.1" 504 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] incoming stream=False, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy] direct TimeoutError caught: timed out
-[proxy] "POST /v1/messages HTTP/1.1" 504 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] incoming stream=False, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy] direct TimeoutError caught: timed out
-[proxy] "POST /v1/messages HTTP/1.1" 504 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] incoming stream=False, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy] direct TimeoutError caught: timed out
-[proxy] "POST /v1/messages HTTP/1.1" 504 -
-[proxy:debug] CLAW_DISABLE_TOOLS: stripped tools/tool_choice
-[proxy] incoming stream=False, CLAW_FORCE_NON_STREAM=1, effective stream=False, selected path=sync
-[proxy] clamped max_tokens: requested=64000 effective=512
-[proxy:debug] effective_max_tokens=512
-[proxy:debug] /v1/messages keys=['max_tokens', 'messages', 'model', 'system'] model='qwen2.5-coder:1.5b' stream=False max_tokens=512 tools=0 tool_choice='(none)' system=yes first_user='hello' ollama_url=http://127.0.0.1:11435 ollama_model=qwen2.5-coder:1.5b
-[proxy:debug] ollama /v1 raw response (first 500): b'{"id":"chatcmpl-411","object":"chat.completion","created":1778554909,"model":"qwen2.5-coder:1.5b","system_fingerprint":"fp_ollama","choices":[{"index":0,"message":{"role":"assistant","content":"Hello! How can I assist you today?"},"finish_reason":"stop"}],"usage":{"prompt_tokens":4096,"completion_tokens":10,"total_tokens":4106}}\n'
-[proxy:debug] final Anthropic response (first 500): {"id": "msg_ad2ba3f2ff424e4f9f020fc2", "type": "message", "role": "assistant", "content": [{"type": "text", "text": "Hello! How can I assist you today?"}], "model": "qwen2.5-coder:1.5b", "stop_reason": "end_turn", "stop_sequence": null, "usage": {"input_tokens": 4096, "output_tokens": 10}}
-[proxy] "POST /v1/messages HTTP/1.1" 200 -
-PS C:\Users\User\OneDrive\Desktop\research-claw-code> Get-Content .\local_ai\runtime\logs\proxy.sse.log -Tail 120
-PS C:\Users\User\OneDrive\Desktop\research-claw-code>
+PS C:\Users\User\OneDrive\Desktop\research-claw-code> $env:CLAW_MODEL="qwen2.5-coder:1.5b"
+PS C:\Users\User\OneDrive\Desktop\research-claw-code> powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-ai --filter 2025
+                                                                                                                                                                                                          == C Exam Offline Evaluation Pack ==                                                                                                                                                                        -> Will generate code using local AI (claw-based)                                                                                                                                                         -> Filtering cases: 2025                                                                                                                                                                                
+
+== Running Evaluation ==
+  If one case appears stuck for too long, press Ctrl+C.
+  Partial report may not be complete.
+
+[eval-timeout-profile] model=qwen2.5-coder:1.5b size=small full_timeout=180 first_token_timeout=45 case_timeout=240
+[eval-case-budget] model=qwen2.5-coder:1.5b size=small budget=240s (adaptive default)
+Evaluating 2025_midterm_001... [eval] small-model lightweight eval mode enabled (2025_midterm_001)
+[local_ai_invocation] platform=Windows launcher=run.ps1 args=['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\run.ps1', '--output-format', 'text', '--compact', 'prompt', "'You are solving a C programming exam problem.\\nOutput exactly one complete C prog'"]
+[debug] raw model output:
+7.0.0.1:11435
+  prompt: c_programming
+
+
+== preflight ==
+  ok python: C:\Users\User\AppData\Local\Microsoft\WindowsApps\python.exe
+  ok claw: C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\bin\claw.exe
+  ok ollama: C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\bin\ollama.exe
+  ok using bundled models: C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\ollama-home\models
+  ok bundle target matches this machine: Windows/AMD64
+
+== ollama ==
+  -> starting bundled ollama service on http://127.0.0.1:11435
+  ok bundled service ready in 1s
+  ok model cached locally: qwen2.5-coder:1.5b
+
+== proxy ==
+  !! port 8082 already in use; restarting proxy
+  ok proxy port 8082 cleared
+  -> proxy target ollama: http://127.0.0.1:11435
+  xx proxy failed to start; check C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\logs\proxy.out.log and C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\logs\proxy.err.log
+
+[claw-local] shutting down...
+  -> proxy stopped
+
+  Log hints (run after stopping):
+    Get-Content .\local_ai\runtime\logs\proxy.err.log -Tail 120                                                                                                                                               Get-Content .\local_ai\runtime\logs\proxy.out.log -Tail 40                                                                                                                                            [debug] extraction failed                                                                                                                                                                                 Warning: AI generation failed for 2025_midterm_001; returncode=1 timeout=no                                                                                                                               
+[debug] AI generation stdout tail:
+7.0.0.1:11435
+  prompt: c_programming
+
+
+== preflight ==
+  ok python: C:\Users\User\AppData\Local\Microsoft\WindowsApps\python.exe
+  ok claw: C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\bin\claw.exe
+  ok ollama: C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\bin\ollama.exe
+  ok using bundled models: C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\ollama-home\models
+  ok bundle target matches this machine: Windows/AMD64
+
+== ollama ==
+  -> starting bundled ollama service on http://127.0.0.1:11435
+  ok bundled service ready in 1s
+  ok model cached locally: qwen2.5-coder:1.5b
+
+== proxy ==
+  !! port 8082 already in use; restarting proxy
+  ok proxy port 8082 cleared
+  -> proxy target ollama: http://127.0.0.1:11435
+  xx proxy failed to start; check C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\logs\proxy.out.log and C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\runtime\logs\proxy.err.log
+
+[claw-local] shutting down...
+  -> proxy stopped
+
+  Log hints (run after stopping):
+    Get-Content .\local_ai\runtime\logs\proxy.err.log -Tail 120
+    Get-Content .\local_ai\runtime\logs\proxy.out.log -Tail 40
+❌ source=fallback_scaffold fallback model=0/12 pipeline=0/12
+Evaluating 2025_midterm_002... [eval] small-model lightweight eval mode enabled (2025_midterm_002)
+[local_ai_invocation] platform=Windows launcher=run.ps1 args=['powershell', '-ExecutionPolicy', 'Bypass', '-File', 'C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\run.ps1', '--output-format', 'text', '--compact', 'prompt', "'You are solving a C programming exam problem.\\nOutput exactly one complete C prog'"]
+Traceback (most recent call last):
+  File "C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\eval_runner.py", line 1612, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\eval_runner.py", line 1598, in main
+    run_evaluation(
+    ~~~~~~~~~~~~~~^
+        eval_dir=args.eval_dir,
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+        answers_dir=args.answers_dir,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\eval_runner.py", line 1362, in run_evaluation
+    generation = generate_ai_response(
+        case,
+    ...<2 lines>...
+        case_budget=_case_budget,
+    )
+  File "C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\eval_runner.py", line 1185, in generate_ai_response
+    result = call_local_ai(run_script, direct_prompt, _step_t(code_timeout))
+  File "C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\eval_runner.py", line 888, in call_local_ai
+    stdout, stderr = proc.communicate(timeout=timeout)
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Python\pythoncore-3.14-64\Lib\subprocess.py", line 1221, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Python\pythoncore-3.14-64\Lib\subprocess.py", line 1662, in _communicate
+    self.stdout_thread.join(self._remaining_time(endtime))
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1133, in join
+    self._os_thread_handle.join(timeout)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyboardInterrupt
+PS C:\Users\User\OneDrive\Desktop\research-claw-code> 

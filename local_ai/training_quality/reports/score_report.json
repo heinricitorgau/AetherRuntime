@@ -1,0 +1,473 @@
+{
+  "validator": "score",
+  "timestamp": "2026-05-14T09:44:55+00:00",
+  "threshold": 60,
+  "weights": {
+    "compile": 40,
+    "runtime": 30,
+    "keyword": 15,
+    "structure": 15
+  },
+  "total_records": 19,
+  "accepted": 16,
+  "rejected": 3,
+  "no_compiler": false,
+  "scores": [
+    {
+      "id": "2023_exam1_001",
+      "total": 93,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 30,
+          "note": "match=1.00"
+        },
+        "keyword": {
+          "pts": 8,
+          "note": "score=0.50"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2024_exam1_001",
+      "total": 93,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 30,
+          "note": "match=1.00"
+        },
+        "keyword": {
+          "pts": 8,
+          "note": "score=0.50"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2021_exam1_001",
+      "total": 91,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 30,
+          "note": "match=1.00"
+        },
+        "keyword": {
+          "pts": 6,
+          "note": "score=0.40"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2022_exam1_003",
+      "total": 90,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 22,
+          "note": "match=0.75"
+        },
+        "keyword": {
+          "pts": 13,
+          "note": "score=0.88"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2021_exam1_003",
+      "total": 86,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 20,
+          "note": "match=0.67"
+        },
+        "keyword": {
+          "pts": 11,
+          "note": "score=0.73"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2021_exam1_002",
+      "total": 86,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 24,
+          "note": "match=0.80"
+        },
+        "keyword": {
+          "pts": 7,
+          "note": "score=0.47"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2024_exam1_002",
+      "total": 85,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 22,
+          "note": "match=0.75"
+        },
+        "keyword": {
+          "pts": 8,
+          "note": "score=0.50"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2023_exam1_002",
+      "total": 83,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 20,
+          "note": "match=0.67"
+        },
+        "keyword": {
+          "pts": 8,
+          "note": "score=0.50"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2025_midterm_003",
+      "total": 81,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 15,
+          "note": "match=0.50"
+        },
+        "keyword": {
+          "pts": 11,
+          "note": "score=0.75"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2024_exam1_003",
+      "total": 75,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 10,
+          "note": "match=0.33"
+        },
+        "keyword": {
+          "pts": 10,
+          "note": "score=0.67"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2022_exam1_002",
+      "total": 72,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 12,
+          "note": "match=0.40"
+        },
+        "keyword": {
+          "pts": 5,
+          "note": "score=0.33"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2025_midterm_002",
+      "total": 72,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 12,
+          "note": "match=0.40"
+        },
+        "keyword": {
+          "pts": 5,
+          "note": "score=0.33"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2022_exam1_004",
+      "total": 68,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 0,
+          "note": "match=0.00"
+        },
+        "keyword": {
+          "pts": 13,
+          "note": "score=0.88"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2025_midterm_004",
+      "total": 65,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 0,
+          "note": "match=0.00"
+        },
+        "keyword": {
+          "pts": 10,
+          "note": "score=0.65"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2022_exam1_001",
+      "total": 63,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 0,
+          "note": "match=0.00"
+        },
+        "keyword": {
+          "pts": 8,
+          "note": "score=0.50"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2025_midterm_001",
+      "total": 63,
+      "breakdown": {
+        "compile": {
+          "pts": 40,
+          "note": "ok"
+        },
+        "runtime": {
+          "pts": 0,
+          "note": "match=0.00"
+        },
+        "keyword": {
+          "pts": 8,
+          "note": "score=0.50"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": true,
+      "threshold": 60
+    },
+    {
+      "id": "2023_exam1_004",
+      "total": 30,
+      "breakdown": {
+        "compile": {
+          "pts": 0,
+          "note": "compile error (1 errors)"
+        },
+        "runtime": {
+          "pts": 0,
+          "note": "match=0.00"
+        },
+        "keyword": {
+          "pts": 15,
+          "note": "score=1.00"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": false,
+      "threshold": 60
+    },
+    {
+      "id": "2021_exam1_004",
+      "total": 28,
+      "breakdown": {
+        "compile": {
+          "pts": 0,
+          "note": "compile error (10 errors)"
+        },
+        "runtime": {
+          "pts": 0,
+          "note": "match=0.00"
+        },
+        "keyword": {
+          "pts": 13,
+          "note": "score=0.83"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": false,
+      "threshold": 60
+    },
+    {
+      "id": "2023_exam1_003",
+      "total": 24,
+      "breakdown": {
+        "compile": {
+          "pts": 0,
+          "note": "compile error (3 errors)"
+        },
+        "runtime": {
+          "pts": 0,
+          "note": "match=0.00"
+        },
+        "keyword": {
+          "pts": 9,
+          "note": "score=0.62"
+        },
+        "structure": {
+          "pts": 15,
+          "note": "score=1.00  issues=[]"
+        }
+      },
+      "accepted": false,
+      "threshold": 60
+    }
+  ]
+}

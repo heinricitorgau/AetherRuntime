@@ -1,0 +1,50 @@
+[
+  {
+    "id": "c_midterm_programming_2025_cleaned_0000",
+    "source_file": "c-midterm-programming-2025.cleaned.html",
+    "section": "",
+    "content": "C Programming Midterm Exam - 3A Student No: Name:\nPart 3: Program (95 points)",
+    "content_type": "text",
+    "estimated_tokens": 15
+  },
+  {
+    "id": "c_midterm_programming_2025_cleaned_0001",
+    "source_file": "c-midterm-programming-2025.cleaned.html",
+    "section": "Question 1",
+    "content": "1. (12 points) Write a program that reads n and calculates the sum of the following series: 1 −5\n3 + 7\n8 −. . . 2n+1\nn2−1. A possible run may look like: Enter n: 10 The sum of the series is: 0.607112",
+    "content_type": "text",
+    "estimated_tokens": 39
+  },
+  {
+    "id": "c_midterm_programming_2025_cleaned_0002",
+    "source_file": "c-midterm-programming-2025.cleaned.html",
+    "section": "Question 2",
+    "content": "2. (13 points) Write a program that reads n and generates a triangle as follows: Enter n: 3 3 2 2 11111 222 3",
+    "content_type": "text",
+    "estimated_tokens": 21
+  },
+  {
+    "id": "c_midterm_programming_2025_cleaned_0003",
+    "source_file": "c-midterm-programming-2025.cleaned.html",
+    "section": "Question 3",
+    "content": "3. (a) (3 points) Read coordinates of four points. (b) (14 points) List all possible triangles formed by any three of these four points and their area. If no triangle can be formed, also show the message. A possible run may look like: Enter four points: 0 0 0 3 4 0 4 3 The area formed by (0.00, 0.00), (0.00, 3.00), and (4.00, 0.00) is 6.000. The area formed by (0.00, 0.00), (0.00, 3.00), and (4.00, 3.00) is 6.000. The area formed by (0.00, 0.00), (4.00, 0.00), and (4.00, 3.00) is 6.000. The area formed by (0.00, 3.00), (4.00, 0.00), and (4.00, 3.00) is 6.000. Enter four points: 0 0 1 1 2 2 3 3 No triangle can be formed.",
+    "content_type": "text",
+    "estimated_tokens": 125
+  },
+  {
+    "id": "c_midterm_programming_2025_cleaned_0004",
+    "source_file": "c-midterm-programming-2025.cleaned.html",
+    "section": "Question 4",
+    "content": "4. (a) (9 points) Write a program to randomly generate 5 different numbers between 1 and 10 and hide them. (b) (10 points) The player picks a number and guesses whether a number is even or odd. After a number is guessed, the number is exposed. If guessing right, the player wins the points. (c) (4 points) The game is over until all numbers are exposed.\nA possible run may look like: Numbers: * * * * * Pick a number: 2 Even or Odd (E|O)? O You guess right and win 5 points. ==================================== Numbers: * 5 * * * Pick a number: 5 Even or Odd (E|O)? E ... ==================================== Numbers: 2 5 8 4 7 You win 17 points.",
+    "content_type": "text",
+    "estimated_tokens": 129
+  },
+  {
+    "id": "c_midterm_programming_2025_cleaned_0005",
+    "source_file": "c-midterm-programming-2025.cleaned.html",
+    "section": "Question 5",
+    "content": "5. (a) (3 points) Read coordinates of two points. (b) (5 points) Write a function that passes two points and prints the circle equation in the form of (x - a)∧2 + (y - b)∧2 = r∧2 where (a, b) is the central point. Hint: The circle passing (a, b) and (c, d) is (x - a+c\n2 )2 = (a−c)2+(b−d)2\n2 )2 + (y - b+d\n4 . (c) (3 points) Write a function passing a circle and returns the area of the circle. (d) (4 points) Write a function that passes a point and check if the point inside, outside, or one the circle. (e) (15 points) Write a function that passes a circle (x - a)2 + (y - b)2 = r2 and showes the intersection with x-axis and y-axis. Hint:  (x - a)2 + (y - b)2 = r2 can be in the form as x2 - 2ax + y2 - 2by + (a2 + b2 - r2).  When y = 0, (x - a)2 + (y - b)2 = r2 intersects with x-axis where x is −B± √\nB2−4AC 2A and A = 1, B = -2a, and C = a2 + b2- r2.  When x = 0, (x - a)2 + (y - b)2 = r2 intersects with x-axis where y is −B± √\nB2−4AC 2A and A = 1, B = -2b, and C = a2 + b2- r2.\nA possible run may look like:\nEnter 2 points: 0 3 4 0 The line equation passing (3.0000, 0.0000) and (0.0000, 4.0000) is 4.0000x + 3.0000y = 12.0000. The circle passing (4.0000, 0.0000) and (0.0000, 3.0000) is (x - 2.0000)^2 + (y - 1.5000)^2 = 2.5^2 The circle area is 19.6349540849. The intersection points with x-axis are (0.0000, 0.0000) and (4.0000, 0.0000). The intersection points with y-axis are (0.0000, 0.0000) and (0.0000, 3.0000). Enter a point: 1 1 (1.0000, 1.0000) is inside the circle.",
+    "content_type": "text",
+    "estimated_tokens": 297
+  }
+]

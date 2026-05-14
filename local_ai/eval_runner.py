@@ -11,6 +11,7 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -31,14 +32,32 @@ TAIL_CHARS = 1200
 PROXY_AI_DEFAULT_MODEL = "qwen2.5-coder:1.5b"
 PROXY_AI_DEFAULT_TIMEOUT = 60
 PROXY_AI_DEFAULT_PORT = 8082
+_LIGHTWEIGHT_MAX_TOKENS: dict[str, int] = {
+    "qwen2.5-coder:1.5b": 256,
+    "qwen2.5-coder:3b":   768,
+    "qwen2.5-coder:7b":   1024,
+}
+_LIGHTWEIGHT_MAX_TOKENS_BY_SIZE: dict[str, int] = {"small": 256, "medium": 1024, "large": 2048}
+
+
+def _lightweight_max_tokens(model: str) -> int:
+    env_val = os.environ.get("CLAW_LIGHTWEIGHT_MAX_TOKENS", "").strip()
+    if env_val:
+        try:
+            return max(64, int(env_val))
+        except ValueError:
+            pass
+    if model in _LIGHTWEIGHT_MAX_TOKENS:
+        return _LIGHTWEIGHT_MAX_TOKENS[model]
+    return _LIGHTWEIGHT_MAX_TOKENS_BY_SIZE[_model_size_class(model)]
 
 # Eval generation uses relaxed timeouts vs. smoke-test's fail-fast defaults.
 # Smoke-test: full=60s first_token=15s (hard-coded in run.ps1/run.sh --smoke-test).
 # Eval: larger prompts need more generation time, so we use a separate profile.
 EVAL_AI_TIMEOUTS: dict[str, dict[str, int]] = {
     "small":  {"full": 180, "first_token": 45,  "plan": 90,  "case": 240},
-    "medium": {"full": 300, "first_token": 90,  "plan": 180, "case": 360},
-    "large":  {"full": 600, "first_token": 180, "plan": 360, "case": 660},
+    "medium": {"full": 300, "first_token": 90,  "plan": 180, "case": 420},
+    "large":  {"full": 600, "first_token": 180, "plan": 360, "case": 720},
 }
 
 
@@ -73,6 +92,32 @@ def apply_eval_ai_timeouts() -> tuple[int, int]:
     return t["plan"], t["case"]
 
 
+def _resolve_case_budget() -> int:
+    """Return the per-case wall-clock budget in seconds.
+
+    Priority: CLAW_EVAL_CASE_TIMEOUT_SECONDS env var → adaptive default by model size.
+    """
+    env_val = os.environ.get("CLAW_EVAL_CASE_TIMEOUT_SECONDS", "").strip()
+    if env_val:
+        try:
+            budget = max(10, int(env_val))
+            print(
+                f"[eval-case-budget] CLAW_EVAL_CASE_TIMEOUT_SECONDS={budget}s (from env)",
+                file=sys.stderr,
+            )
+            return budget
+        except ValueError:
+            pass
+    model = os.environ.get("CLAW_MODEL", "").strip() or PROXY_AI_DEFAULT_MODEL
+    size = _model_size_class(model)
+    budget = EVAL_AI_TIMEOUTS[size]["case"]
+    print(
+        f"[eval-case-budget] model={model} size={size} budget={budget}s (adaptive default)",
+        file=sys.stderr,
+    )
+    return budget
+
+
 def default_eval_dir() -> Path:
     """Get default eval cases directory."""
     return Path(__file__).resolve().parent / "eval_cases" / "c_exam"
@@ -92,6 +137,37 @@ def display_points(points: float) -> int | float:
 
 
 _IS_WINDOWS = sys.platform == "win32"
+
+
+def _kill_process_tree(proc: "subprocess.Popen[str]") -> None:
+    """Kill a subprocess and all its children. Best-effort; never raises."""
+    if _IS_WINDOWS:
+        try:
+            subprocess.run(
+                ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                capture_output=True,
+                timeout=5,
+            )
+        except Exception:
+            pass
+    else:
+        try:
+            os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+        except (ProcessLookupError, PermissionError, OSError):
+            pass
+    try:
+        proc.kill()
+    except Exception:
+        pass
+
+
+def make_subprocess_env(base_env: dict[str, str] | None = None) -> dict[str, str]:
+    """Return a copy of base_env with UTF-8 I/O vars set (no-overwrite if already present)."""
+    env = dict(base_env if base_env is not None else os.environ)
+    env.setdefault("PYTHONUTF8", "1")
+    env.setdefault("PYTHONIOENCODING", "utf-8")
+    env.setdefault("POWERSHELL_TELEMETRY_OPTOUT", "1")
+    return env
 
 
 def local_ai_run_script() -> Path:
@@ -382,6 +458,8 @@ def compile_c_code(code: str, work_dir: Path, case_id: str) -> tuple[bool, str, 
             [compiler, "-std=c99", "-Wall", "-Wextra", "-o", str(exe_path), str(source_path), "-lm"],
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=10,
         )
         if result.returncode == 0:
@@ -402,6 +480,8 @@ def run_c_program(exe_path: Path, sample_input: str, timeout: int = 5) -> tuple[
             input=sample_input if sample_input.endswith("\n") else sample_input + "\n",
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=timeout,
         )
         return result.returncode == 0, result.stdout + result.stderr
@@ -554,7 +634,9 @@ SMALL_MODEL_PROMPT_MAX_CHARS = 1500
 
 
 def _use_lightweight_eval() -> bool:
-    """True when the active model is small; skips decomposition to reduce token load."""
+    """True when CLAW_LIGHTWEIGHT_EVAL=1 or the active model is small-class."""
+    if os.environ.get("CLAW_LIGHTWEIGHT_EVAL", "") == "1":
+        return True
     model = os.environ.get("CLAW_MODEL", "").strip()
     return bool(model) and _model_size_class(model) == "small"
 
@@ -774,6 +856,8 @@ def ai_generation_result(
     answer_source: str = ANSWER_SOURCE_NONE,
     used_fallback: bool = False,
     timed_out: bool = False,
+    timeout_stage: str = "",
+    timeout_seconds: int = 0,
 ) -> dict[str, Any]:
     """Create the generation metadata carried into scoring/reporting."""
     return {
@@ -782,11 +866,13 @@ def ai_generation_result(
         "answer_source": answer_source,
         "used_fallback": used_fallback,
         "timed_out": timed_out,
+        "timeout_stage": timeout_stage,
+        "timeout_seconds": timeout_seconds,
     }
 
 
 def call_local_ai(run_script: Path, prompt: str, timeout: int) -> dict[str, Any]:
-    env = os.environ.copy()
+    env = make_subprocess_env(os.environ)
     env.setdefault("CLAW_PROMPT_PROFILE", "c_programming")
     if _IS_WINDOWS:
         env.setdefault("CLAW_MODEL", "qwen2.5-coder:1.5b")
@@ -814,42 +900,47 @@ def call_local_ai(run_script: Path, prompt: str, timeout: int) -> dict[str, Any]
         f"args={command[:-1] + [repr(prompt[:80])]}",
         file=sys.stderr,
     )
+    popen_kwargs: dict[str, Any] = {
+        "stdout": subprocess.PIPE,
+        "stderr": subprocess.PIPE,
+        "encoding": "utf-8",
+        "errors": "replace",
+        "env": env,
+    }
+    if not _IS_WINDOWS:
+        popen_kwargs["start_new_session"] = True
+    proc = subprocess.Popen(command, **popen_kwargs)
     try:
-        result = subprocess.run(
-            command,
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-            env=env,
-        )
+        stdout, stderr = proc.communicate(timeout=timeout)
         return {
             "command": command,
-            "returncode": result.returncode,
-            "stdout": result.stdout,
-            "stderr": result.stderr,
+            "returncode": proc.returncode,
+            "stdout": stdout,
+            "stderr": stderr,
             "timed_out": False,
         }
-    except subprocess.TimeoutExpired as exc:
-        stdout = exc.stdout or ""
-        stderr = exc.stderr or ""
-        if isinstance(stdout, bytes):
-            stdout = stdout.decode("utf-8", errors="replace")
-        if isinstance(stderr, bytes):
-            stderr = stderr.decode("utf-8", errors="replace")
+    except subprocess.TimeoutExpired:
+        _kill_process_tree(proc)
+        try:
+            stdout, stderr = proc.communicate(timeout=3)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            stdout, stderr = proc.communicate()
         return {
             "command": command,
             "returncode": None,
-            "stdout": stdout,
-            "stderr": stderr,
+            "stdout": stdout or "",
+            "stderr": stderr or "",
             "timed_out": True,
         }
 
 
-def call_proxy_ai(proxy_url: str, model: str, prompt: str, timeout: int) -> dict[str, Any]:
+def call_proxy_ai(proxy_url: str, model: str, prompt: str, timeout: int, max_tokens: int = 2048) -> dict[str, Any]:
     """POST to proxy /v1/messages with stream=false. Returns {text, error, timed_out}."""
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": max_tokens,
         "stream": False,
     }
     req = Request(
@@ -886,6 +977,48 @@ def generate_proxy_ai_response(
         return ai_generation_result()
 
     try:
+        if _use_lightweight_eval():
+            lw_max_tokens = _lightweight_max_tokens(model)
+            print(
+                f"[eval] lightweight local model mode enabled ({case.get('id')})"
+                f" max_tokens={lw_max_tokens}",
+                file=sys.stderr,
+            )
+            resp = call_proxy_ai(
+                proxy_url, model, build_small_model_prompt(case), timeout, max_tokens=lw_max_tokens
+            )
+            if resp["timed_out"]:
+                print(f"Warning: proxy lightweight timeout for {case.get('id')}", file=sys.stderr)
+                return ai_generation_result(
+                    final_output=build_smoke_fallback_code(case, "proxy lightweight timeout"),
+                    answer_source=ANSWER_SOURCE_FALLBACK,
+                    used_fallback=True,
+                )
+            if resp["error"]:
+                print(
+                    f"Warning: proxy lightweight error for {case.get('id')}: {resp['error']}",
+                    file=sys.stderr,
+                )
+                return ai_generation_result(
+                    final_output=build_smoke_fallback_code(case, f"proxy lightweight error"),
+                    answer_source=ANSWER_SOURCE_FALLBACK,
+                    used_fallback=True,
+                )
+            text = resp["text"]
+            if extract_c_code(text, debug=False):
+                return ai_generation_result(
+                    final_output=text,
+                    model_output=text,
+                    answer_source=ANSWER_SOURCE_MODEL,
+                )
+            debug_extraction_failure(text)
+            return ai_generation_result(
+                final_output=build_smoke_fallback_code(case, "proxy lightweight: no C code extracted"),
+                model_output=text,
+                answer_source=ANSWER_SOURCE_FALLBACK,
+                used_fallback=True,
+            )
+
         if should_decompose(case):
             plan_resp = call_proxy_ai(proxy_url, model, build_plan_prompt(case), timeout)
             if plan_resp["timed_out"]:
@@ -996,13 +1129,35 @@ def generate_ai_response(
     case: dict[str, Any],
     code_timeout: int = CODE_TIMEOUT_SECONDS,
     plan_timeout: int = PLAN_TIMEOUT_SECONDS,
+    case_budget: int = 0,
 ) -> dict[str, Any]:
     """Generate C code from AI for the given case (requires local_ai launcher).
 
-    code_timeout / plan_timeout are subprocess timeouts passed to call_local_ai.
-    Callers that use eval-generation mode should pass values from apply_eval_ai_timeouts()
-    rather than relying on the module-level smoke-test defaults.
+    code_timeout / plan_timeout cap individual subprocess steps.
+    case_budget is a hard wall-clock cap across all steps; 0 means no cap.
+    Callers that use eval-generation mode should pass values from apply_eval_ai_timeouts().
     """
+    case_start = time.monotonic()
+    current_stage = "generation"
+
+    def _step_t(cap: int) -> int:
+        """Clamp cap to remaining budget; minimum 5s so no zero-timeout calls are made."""
+        if not case_budget:
+            return cap
+        rem = int(case_budget - (time.monotonic() - case_start))
+        return max(5, min(cap, rem))
+
+    def _over_budget() -> bool:
+        return bool(case_budget) and (time.monotonic() - case_start) >= case_budget
+
+    def _budget_result(stage: str) -> dict[str, Any]:
+        return ai_generation_result(
+            answer_source=ANSWER_SOURCE_NONE,
+            timed_out=True,
+            timeout_stage=stage,
+            timeout_seconds=case_budget,
+        )
+
     prompt = case.get("prompt", "")
     if not prompt:
         return ai_generation_result()
@@ -1023,7 +1178,8 @@ def generate_ai_response(
             )
 
         if not lightweight and should_decompose(case):
-            plan_result = call_local_ai(run_script, build_plan_prompt(case), plan_timeout)
+            current_stage = "planning"
+            plan_result = call_local_ai(run_script, build_plan_prompt(case), _step_t(plan_timeout))
             if plan_result["timed_out"]:
                 print(
                     f"Warning: planning timeout ({plan_timeout}s) for {case.get('id')}; using local fallback plan.",
@@ -1040,13 +1196,14 @@ def generate_ai_response(
                     log_invocation_failure("planning", str(case.get("id")), plan_result)
                     plan = build_local_fallback_plan(case)
 
-            code_result = call_local_ai(run_script, build_code_prompt(case, plan), code_timeout)
+            current_stage = "generation"
+            if _over_budget():
+                return _budget_result(current_stage)
+
+            code_result = call_local_ai(run_script, build_code_prompt(case, plan), _step_t(code_timeout))
             if code_result["timed_out"]:
                 log_invocation_failure("code generation", str(case.get("id")), code_result)
-                return ai_generation_result(
-                    answer_source=ANSWER_SOURCE_NONE,
-                    timed_out=True,
-                )
+                return _budget_result(current_stage)
             combined = combined_invocation_text(code_result)
             if code_result["returncode"] == 0 and extract_c_code(combined, debug=False):
                 return ai_generation_result(
@@ -1063,17 +1220,17 @@ def generate_ai_response(
                     used_fallback=True,
                 )
 
+            if _over_budget():
+                return _budget_result(current_stage)
+
             retry_result = call_local_ai(
                 run_script,
                 build_code_retry_prompt(case, plan, combined),
-                code_timeout,
+                _step_t(code_timeout),
             )
             if retry_result["timed_out"]:
                 log_invocation_failure("code retry", str(case.get("id")), retry_result)
-                return ai_generation_result(
-                    answer_source=ANSWER_SOURCE_NONE,
-                    timed_out=True,
-                )
+                return _budget_result(current_stage)
             retry_output = combined_invocation_text(retry_result)
             if retry_result["returncode"] == 0 and extract_c_code(retry_output, debug=False):
                 return ai_generation_result(
@@ -1093,14 +1250,12 @@ def generate_ai_response(
             )
 
         direct_prompt = build_small_model_prompt(case) if lightweight else build_model_prompt(case)
-        result = call_local_ai(run_script, direct_prompt, code_timeout)
+        current_stage = "generation"
+        result = call_local_ai(run_script, direct_prompt, _step_t(code_timeout))
         combined = combined_invocation_text(result)
         if result["timed_out"]:
             log_invocation_failure("AI generation", str(case.get("id")), result)
-            return ai_generation_result(
-                answer_source=ANSWER_SOURCE_NONE,
-                timed_out=True,
-            )
+            return _budget_result(current_stage)
         if result["returncode"] == 0 and extract_c_code(combined, debug=False):
             return ai_generation_result(
                 final_output=combined,
@@ -1128,8 +1283,15 @@ def generate_ai_response(
                 used_fallback=True,
             )
 
-        repair_result = call_local_ai(run_script, build_repair_prompt(combined), code_timeout)
+        current_stage = "repair"
+        if _over_budget():
+            return _budget_result(current_stage)
+
+        repair_result = call_local_ai(run_script, build_repair_prompt(combined), _step_t(code_timeout))
         repaired = combined_invocation_text(repair_result)
+        if repair_result["timed_out"]:
+            log_invocation_failure("AI repair", str(case.get("id")), repair_result)
+            return _budget_result(current_stage)
         if repair_result["returncode"] == 0 and extract_c_code(repaired, debug=False):
             return ai_generation_result(
                 final_output=repaired,
@@ -1151,6 +1313,8 @@ def generate_ai_response(
         return ai_generation_result(
             answer_source=ANSWER_SOURCE_NONE,
             timed_out=True,
+            timeout_stage=current_stage,
+            timeout_seconds=case_budget,
         )
     except Exception as e:
         print(f"Warning: error generating code: {e}", file=sys.stderr)
@@ -1186,6 +1350,10 @@ def run_evaluation(
         print("No eval cases found", file=sys.stderr)
         return {"error": "No cases found"}
 
+    # Allow activation via env var (set by run_eval.ps1/run_eval.sh --use-proxy-ai)
+    if not use_proxy_ai and os.environ.get("CLAW_EVAL_USE_PROXY_AI", "") == "1":
+        use_proxy_ai = True
+
     if use_ai or use_proxy_ai:
         cases = sorted(cases, key=generation_priority)
     ai_unavailable = local_ai_unavailable_reason() if use_ai else None
@@ -1202,16 +1370,31 @@ def run_evaluation(
     # so they flow into run.ps1/run.sh → proxy when call_local_ai spawns the launcher.
     _plan_timeout = PLAN_TIMEOUT_SECONDS
     _code_timeout = CODE_TIMEOUT_SECONDS
+    _case_budget = 0
     if use_ai and not ai_unavailable:
         _plan_timeout, _code_timeout = apply_eval_ai_timeouts()
+        _case_budget = _resolve_case_budget()
 
-    _proxy_url = proxy_url or f"http://127.0.0.1:{PROXY_AI_DEFAULT_PORT}"
+    _proxy_url = proxy_url or os.environ.get("CLAW_PROXY_URL", "") or f"http://127.0.0.1:{PROXY_AI_DEFAULT_PORT}"
     _proxy_model = proxy_model or os.environ.get("CLAW_MODEL", "") or PROXY_AI_DEFAULT_MODEL
-    _proxy_timeout = proxy_timeout if proxy_timeout is not None else PROXY_AI_DEFAULT_TIMEOUT
+    if proxy_timeout is not None:
+        _proxy_timeout = proxy_timeout
+    elif use_proxy_ai:
+        _env_budget = os.environ.get("CLAW_EVAL_CASE_TIMEOUT_SECONDS", "").strip()
+        if _env_budget:
+            try:
+                _proxy_timeout = max(10, int(_env_budget))
+            except ValueError:
+                _proxy_timeout = EVAL_AI_TIMEOUTS[_model_size_class(_proxy_model)]["full"]
+        else:
+            _proxy_timeout = EVAL_AI_TIMEOUTS[_model_size_class(_proxy_model)]["full"]
+    else:
+        _proxy_timeout = PROXY_AI_DEFAULT_TIMEOUT
     if use_proxy_ai:
         print(f"Using proxy sync AI mode", flush=True)
         print(f"Proxy URL: {_proxy_url}", flush=True)
         print(f"Model: {_proxy_model}", flush=True)
+        print(f"Request timeout: {_proxy_timeout}s", flush=True)
     
     total_points = sum(case_points(case) for case in cases)
 
@@ -1230,6 +1413,8 @@ def run_evaluation(
             "no_answer_cases": 0,
             "compile_pass_cases": 0,
             "run_pass_cases": 0,
+            "timeout_cases": 0,
+            "timeout_stages": {},
         },
         "cases": [],
         "results": [],
@@ -1245,6 +1430,8 @@ def run_evaluation(
         used_fallback = False
         model_code = ""
         gen_timed_out = False
+        gen_timeout_stage = ""
+        gen_timeout_seconds = 0
 
         if use_proxy_ai:
             generation = generate_proxy_ai_response(case, _proxy_url, _proxy_model, _proxy_timeout)
@@ -1259,13 +1446,18 @@ def run_evaluation(
                 used_fallback = True
             else:
                 generation = generate_ai_response(
-                    case, code_timeout=_code_timeout, plan_timeout=_plan_timeout
+                    case,
+                    code_timeout=_code_timeout,
+                    plan_timeout=_plan_timeout,
+                    case_budget=_case_budget,
                 )
                 code = generation["final_output"]
                 model_code = generation.get("model_output", "")
                 answer_source = generation["answer_source"]
                 used_fallback = bool(generation["used_fallback"])
                 gen_timed_out = bool(generation.get("timed_out", False))
+                gen_timeout_stage = generation.get("timeout_stage", "")
+                gen_timeout_seconds = int(generation.get("timeout_seconds", 0))
         elif answers_dir:
             answer_path = answers_dir / f"{case_id}.c"
             code = answer_path.read_text(encoding="utf-8") if answer_path.exists() else ""
@@ -1296,17 +1488,34 @@ def run_evaluation(
 
         if not code:
             if gen_timed_out:
-                print(f"timeout ({_code_timeout}s)")
-                msg = f"Case timed out after {_code_timeout}s; no code generated."
+                elapsed = gen_timeout_seconds or _case_budget or _code_timeout
+                stage = gen_timeout_stage or "generation"
+                print()
+                print(f"case timed out after {elapsed}s at stage {stage}")
+                print(
+                    f"source=no_answer timeout "
+                    f"model=0/{display_points(points)} "
+                    f"pipeline=0/{display_points(points)}"
+                )
+                msg = f"Case timed out after {elapsed}s at stage {stage}."
             else:
                 print("no answer")
                 msg = "No answer code supplied. Use --use-ai or --answers-dir."
             results = no_code_result(msg)
             results["timed_out"] = gen_timed_out
+            results["timeout"] = gen_timed_out
+            results["timeout_stage"] = gen_timeout_stage if gen_timed_out else ""
+            results["timeout_seconds"] = gen_timeout_seconds if gen_timed_out else 0
             report["results"].append(results)
             report["cases"].append(results)
             report["cases_tested"] += 1
             report["summary"]["no_answer_cases"] += 1
+            if gen_timed_out:
+                report["summary"]["timeout_cases"] += 1
+                s = gen_timeout_stage or "generation"
+                report["summary"]["timeout_stages"][s] = (
+                    report["summary"]["timeout_stages"].get(s, 0) + 1
+                )
             continue
 
         final_code = extract_c_code(code)
@@ -1393,7 +1602,11 @@ def run_evaluation(
         f"{report['total_points']} points ({pipeline_rate}%)"
     )
     print(f"Fallback Used: {summary['fallback_cases']} cases")
-    
+    if summary.get("timeout_cases", 0):
+        print(f"Timeout Cases: {summary['timeout_cases']} cases")
+        for stage, count in sorted(summary.get("timeout_stages", {}).items()):
+            print(f"  at stage {stage}: {count}")
+
     return report
 
 
@@ -1452,8 +1665,22 @@ def main() -> None:
         default=None,
         help="Optional directory containing <case_id>.c answers for offline smoke tests",
     )
+    parser.add_argument(
+        "--timeout-seconds",
+        type=int,
+        default=None,
+        metavar="N",
+        help=(
+            "Hard per-case wall-clock timeout in seconds for --use-ai mode "
+            "(default: adaptive by model size — small=240 medium=420 large=720). "
+            "Sets CLAW_EVAL_CASE_TIMEOUT_SECONDS."
+        ),
+    )
     args = parser.parse_args()
-    
+
+    if args.timeout_seconds is not None:
+        os.environ["CLAW_EVAL_CASE_TIMEOUT_SECONDS"] = str(args.timeout_seconds)
+
     run_evaluation(
         eval_dir=args.eval_dir,
         use_ai=args.use_ai,

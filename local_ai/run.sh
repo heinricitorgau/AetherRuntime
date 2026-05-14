@@ -200,6 +200,9 @@ cleanup() {
         kill "$OLLAMA_PID" 2>/dev/null || true
         info "ollama stopped"
     fi
+    printf "\n  Log hints (run after stopping):\n"
+    printf "    tail -120 /tmp/claw-local-proxy.log\n"
+    printf "    tail -40 /tmp/claw-local-ollama.log\n"
 }
 trap cleanup EXIT INT TERM
 
@@ -477,7 +480,9 @@ for i in $(seq 1 10); do
 done
 
 header "launch"
-printf "${GREEN}ready${RESET} local AI is up. Press Ctrl+C to exit.\n\n"
+printf "${GREEN}ready${RESET} local AI is up. Press Ctrl+C to exit.\n"
+printf "  If no new output appears for 60 seconds, press Ctrl+C to stop.\n"
+printf "  Cleanup will stop proxy and bundled Ollama automatically.\n\n"
 
 export ANTHROPIC_BASE_URL="http://127.0.0.1:${PROXY_PORT}"
 export ANTHROPIC_API_KEY="local-ollama"

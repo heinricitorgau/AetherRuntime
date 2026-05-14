@@ -1,0 +1,12 @@
+{
+  "total_records": 44,
+  "eval_cases": 19,
+  "pdf_chunks": 25,
+  "answered": 19,
+  "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training",
+  "files": {
+    "code_generation": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\code_generation.jsonl",
+    "pdf_chunks": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\pdf_chunks.jsonl",
+    "combined": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\combined.jsonl"
+  }
+}

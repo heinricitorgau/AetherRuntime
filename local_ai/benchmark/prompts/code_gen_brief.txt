@@ -1,0 +1,1 @@
+Write a complete C99 program. Output code only. No explanation, no commentary.

@@ -103,6 +103,10 @@ if (-not $pythonPath) {
     Write-Fail "python not found; install Python or add it to PATH"
 }
 
+$env:PYTHONUTF8 = "1"
+$env:PYTHONIOENCODING = "utf-8"
+$env:POWERSHELL_TELEMETRY_OPTOUT = "1"
+
 Write-Header "C Exam Offline Evaluation Pack"
 
 # Parse arguments
@@ -111,6 +115,7 @@ $useProxyAi = $false
 $filter = ""
 $output = ""
 $answersDir = ""
+$timeoutSeconds = ""
 
 for ($i = 0; $i -lt $args.Count; $i++) {
     switch ($args[$i]) {
@@ -140,6 +145,12 @@ for ($i = 0; $i -lt $args.Count; $i++) {
             Write-Info "Using answer files from: $answersDir"
             $i++
         }
+        "--timeout-seconds" {
+            if ($i + 1 -ge $args.Count) { Write-Fail "--timeout-seconds requires a number" }
+            $timeoutSeconds = $args[$i + 1]
+            Write-Info "Per-case timeout: ${timeoutSeconds}s"
+            $i++
+        }
         { $_ -in "--help", "-h" } {
             Write-Host "Usage: powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 [options]"
             Write-Host ""
@@ -150,15 +161,21 @@ for ($i = 0; $i -lt $args.Count; $i++) {
             Write-Host "  --answers-dir DIR     Use DIR/<case_id>.c answers instead of the model."
             Write-Host "  --filter TEXT         Run cases whose id, filename, year, or topic matches TEXT."
             Write-Host "  --output FILE         Write eval_report.json to FILE."
+            Write-Host "  --timeout-seconds N   Hard per-case wall-clock timeout (default: adaptive by model size)."
             Write-Host ""
             Write-Host "Windows recommended:"
             Write-Host "  powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-proxy-ai --filter 2025"
+            Write-Host "  powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --use-ai --filter 2025 --timeout-seconds 180"
             exit 0
         }
         default {
             Write-Warn "Unknown argument: $($args[$i])"
         }
     }
+}
+
+if ($timeoutSeconds) {
+    $env:CLAW_EVAL_CASE_TIMEOUT_SECONDS = $timeoutSeconds
 }
 
 # Build eval runner command
@@ -240,6 +257,8 @@ if ($useProxyAi) {
     Write-Info "Model: $proxyModel"
 
     $env:CLAW_MODEL = $proxyModel
+    $env:CLAW_EVAL_USE_PROXY_AI = "1"
+    $env:CLAW_PROXY_URL = $proxyUrl
     $evalArgs += "--use-proxy-ai"
     $evalArgs += "--proxy-url"
     $evalArgs += $proxyUrl
@@ -247,6 +266,9 @@ if ($useProxyAi) {
     $evalArgs += $proxyModel
 
     Write-Header "Running Evaluation"
+    Write-Host "  If one case appears stuck for too long, press Ctrl+C." -ForegroundColor DarkGray
+    Write-Host "  Partial report may not be complete." -ForegroundColor DarkGray
+    Write-Host ""
     try {
         & $pythonPath @evalArgs
         $exitCode = $LASTEXITCODE
@@ -259,9 +281,15 @@ if ($useProxyAi) {
             Stop-Process -Id $ollamaProcess.Id -Force -ErrorAction SilentlyContinue
             Write-Info "ollama stopped"
         }
+        Write-Host ""
+        Write-Host "  Log hints (run after stopping):" -ForegroundColor DarkGray
+        Write-Host "    Get-Content .\local_ai\runtime\logs\proxy.err.log -Tail 120" -ForegroundColor DarkGray
     }
 } else {
     Write-Header "Running Evaluation"
+    Write-Host "  If one case appears stuck for too long, press Ctrl+C." -ForegroundColor DarkGray
+    Write-Host "  Partial report may not be complete." -ForegroundColor DarkGray
+    Write-Host ""
     & $pythonPath @evalArgs
     $exitCode = $LASTEXITCODE
 }

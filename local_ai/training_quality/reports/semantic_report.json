@@ -1,0 +1,587 @@
+{
+  "timestamp": "2026-05-14T10:57:08+00:00",
+  "input": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\splits\\accepted\\combined.jsonl",
+  "checked": 16,
+  "semantic_accepted": 16,
+  "semantic_rejected": 0,
+  "skipped": 25,
+  "strict": false,
+  "max_warnings": 4,
+  "top_warning_categories": [
+    [
+      "rand()% used but no 'seen[]' uniqueness",
+      3
+    ],
+    [
+      "rand() used without srand() — results",
+      1
+    ],
+    [
+      "array[i-1] accessed in loop starting from",
+      1
+    ]
+  ],
+  "top_error_categories": [],
+  "results": [
+    {
+      "id": "2021_exam1_003",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 64
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2021_exam1_002",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 33
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2021_exam1_001",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 33
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2022_exam1_003",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 66
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2022_exam1_002",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 39
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2022_exam1_001",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 33
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2022_exam1_004",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.16,
+        "warnings": [
+          "rand() used without srand() — results will not be random",
+          "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
+        ],
+        "errors": [],
+        "signals": {
+          "has_rand": true,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": true,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 63
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2023_exam1_002",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 30
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2023_exam1_001",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 35
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "c_exam1_programming_2021_cleaned_0000",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2021_cleaned_0001",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2021_cleaned_0002",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2021_cleaned_0003",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2021_cleaned_0004",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2022_cleaned_0000",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2022_cleaned_0001",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2022_cleaned_0002",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2022_cleaned_0003",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2022_cleaned_0004",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2023_cleaned_0000",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2023_cleaned_0001",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2023_cleaned_0002",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2023_cleaned_0003",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2023_cleaned_0004",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "2024_exam1_003",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.08,
+        "warnings": [
+          "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
+        ],
+        "errors": [],
+        "signals": {
+          "has_rand": true,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": true,
+          "has_string_h": false,
+          "has_time_h": true,
+          "loc": 90
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2024_exam1_002",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 44
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2024_exam1_001",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 34
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "c_exam1_programming_2024_cleaned_0000",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2024_cleaned_0001",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2024_cleaned_0002",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_exam1_programming_2024_cleaned_0003",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "2025_midterm_004",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.16,
+        "warnings": [
+          "array[i-1] accessed in loop starting from i=0 — potential out-of-bounds at first iteration",
+          "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
+        ],
+        "errors": [],
+        "signals": {
+          "has_rand": true,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": true,
+          "has_string_h": false,
+          "has_time_h": true,
+          "loc": 63
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2025_midterm_001",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 26
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2025_midterm_002",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 33
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "2025_midterm_003",
+      "type": "code_generation",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": {
+        "semantic_pass": true,
+        "risk_score": 0.0,
+        "warnings": [],
+        "errors": [],
+        "signals": {
+          "has_rand": false,
+          "has_strcmp": false,
+          "has_scanf_s": false,
+          "has_while1": false,
+          "has_string_h": false,
+          "has_time_h": false,
+          "loc": 51
+        }
+      },
+      "skipped": false
+    },
+    {
+      "id": "c_midterm_programming_2025_cleaned_0000",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_midterm_programming_2025_cleaned_0001",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_midterm_programming_2025_cleaned_0002",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_midterm_programming_2025_cleaned_0003",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_midterm_programming_2025_cleaned_0004",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    },
+    {
+      "id": "c_midterm_programming_2025_cleaned_0005",
+      "type": "concept_summary",
+      "semantic_accepted": true,
+      "rejection_reason": null,
+      "analysis": null,
+      "skipped": true
+    }
+  ]
+}

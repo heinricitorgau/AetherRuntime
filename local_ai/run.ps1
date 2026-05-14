@@ -424,6 +424,8 @@ try {
 
     Write-Header "launch"
     Write-Host "ready local AI is up. Press Ctrl+C to exit." -ForegroundColor Green
+    Write-Host "  If no new output appears for 60 seconds, press Ctrl+C to stop." -ForegroundColor DarkGray
+    Write-Host "  Cleanup will stop proxy and bundled Ollama automatically." -ForegroundColor DarkGray
     Write-Host ""
 
     $env:ANTHROPIC_BASE_URL = "http://127.0.0.1:$proxyPort"
@@ -503,4 +505,8 @@ try {
         Stop-Process -Id $ollamaProcess.Id -Force -ErrorAction SilentlyContinue
         Write-Info "ollama stopped"
     }
+    Write-Host ""
+    Write-Host "  Log hints (run after stopping):" -ForegroundColor DarkGray
+    Write-Host "    Get-Content .\local_ai\runtime\logs\proxy.err.log -Tail 120" -ForegroundColor DarkGray
+    Write-Host "    Get-Content .\local_ai\runtime\logs\proxy.out.log -Tail 40" -ForegroundColor DarkGray
 }

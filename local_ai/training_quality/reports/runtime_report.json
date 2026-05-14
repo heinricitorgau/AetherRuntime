@@ -1,0 +1,357 @@
+{
+  "validator": "runtime",
+  "timestamp": "2026-05-14T09:44:55+00:00",
+  "total": 19,
+  "passed": 12,
+  "failed": 7,
+  "results": [
+    {
+      "id": "2021_exam1_004",
+      "ok": false,
+      "message": "no executable (compile failed)",
+      "output": "",
+      "match": {}
+    },
+    {
+      "id": "2021_exam1_003",
+      "ok": true,
+      "timed_out": false,
+      "output": "Area from line: 0.00\nDistance from point (0.00, 0.00) to line: 0.00\nArea from points (0.00, 0.00), (0.00, 3.00), (4.00, 0.00): 6.00\ny = 0.00",
+      "match": {
+        "expected_tokens": [
+          "area",
+          "distance",
+          "triangle"
+        ],
+        "found": [
+          "area",
+          "distance"
+        ],
+        "missing": [
+          "triangle"
+        ],
+        "match_score": 0.667
+      }
+    },
+    {
+      "id": "2021_exam1_002",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter an integer n (1-10): 1\n121\n12321\n121\n1",
+      "match": {
+        "expected_tokens": [
+          "3",
+          "2 2",
+          "12321",
+          "2",
+          "1"
+        ],
+        "found": [
+          "3",
+          "12321",
+          "2",
+          "1"
+        ],
+        "missing": [
+          "2 2"
+        ],
+        "match_score": 0.8
+      }
+    },
+    {
+      "id": "2021_exam1_001",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter an integer n between 1 and 20: The sum of the series is: 270944.701572844118346",
+      "match": {
+        "expected_tokens": [
+          "270944"
+        ],
+        "found": [
+          "270944"
+        ],
+        "missing": [],
+        "match_score": 1.0
+      }
+    },
+    {
+      "id": "2022_exam1_003",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter 4 coordinate pairs separated by spaces: Farthest point from origin: (4.00, 0.00)\nDistance: 4.00\nTriangle Area: 6.00\nPerimeter: 12.00\n4th point is inside the triangle.",
+      "match": {
+        "expected_tokens": [
+          "points",
+          "distance",
+          "area",
+          "perimeter"
+        ],
+        "found": [
+          "distance",
+          "area",
+          "perimeter"
+        ],
+        "missing": [
+          "points"
+        ],
+        "match_score": 0.75
+      }
+    },
+    {
+      "id": "2022_exam1_002",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter the value of n: 1 \n1 2 1 \n1 2 3 2 1 \n123\n1 2 1 \n1",
+      "match": {
+        "expected_tokens": [
+          "1",
+          "2 2",
+          "32123",
+          "2 2",
+          "1"
+        ],
+        "found": [
+          "1",
+          "1"
+        ],
+        "missing": [
+          "2 2",
+          "32123",
+          "2 2"
+        ],
+        "match_score": 0.4
+      }
+    },
+    {
+      "id": "2022_exam1_001",
+      "ok": false,
+      "timed_out": false,
+      "output": "Enter the value of n: The sum of the series is: -nan(ind)",
+      "match": {
+        "expected_tokens": [
+          "324096"
+        ],
+        "found": [],
+        "missing": [
+          "324096"
+        ],
+        "match_score": 0.0
+      }
+    },
+    {
+      "id": "2022_exam1_004",
+      "ok": false,
+      "timed_out": true,
+      "output": "timeout after 8s",
+      "match": {
+        "expected_tokens": [
+          "Welcome",
+          "Tug War",
+          "Enter",
+          "winner"
+        ],
+        "found": [],
+        "missing": [
+          "Welcome",
+          "Tug War",
+          "Enter",
+          "winner"
+        ],
+        "match_score": 0.0
+      }
+    },
+    {
+      "id": "2023_exam1_003",
+      "ok": false,
+      "message": "no executable (compile failed)",
+      "output": "",
+      "match": {}
+    },
+    {
+      "id": "2023_exam1_002",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter an integer n: 1\n12\n123\n5\n12\n1",
+      "match": {
+        "expected_tokens": [
+          "1",
+          "2",
+          "32123"
+        ],
+        "found": [
+          "1",
+          "2"
+        ],
+        "missing": [
+          "32123"
+        ],
+        "match_score": 0.667
+      }
+    },
+    {
+      "id": "2023_exam1_001",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter an integer n: f(11) = 324096.520320877316408",
+      "match": {
+        "expected_tokens": [
+          "324096"
+        ],
+        "found": [
+          "324096"
+        ],
+        "missing": [],
+        "match_score": 1.0
+      }
+    },
+    {
+      "id": "2023_exam1_004",
+      "ok": false,
+      "message": "no executable (compile failed)",
+      "output": "",
+      "match": {}
+    },
+    {
+      "id": "2024_exam1_003",
+      "ok": true,
+      "timed_out": false,
+      "output": "Welcome to the Roulette-style Guessing Game!\nYour initial point is: 0\nChoose your guess:\nO - Odd\nE - Even\nL - Left (1-18)\nC - Center (19-36)\nR - Right (19-36)\nN - Exact number\nEnter your guess: Enter the points at risk: You won! Your new point is: 20\nDo you want to continue? (Y/N): Total number of guesses: 1\nFinal points: 20",
+      "match": {
+        "expected_tokens": [
+          "choice",
+          "point",
+          "winning"
+        ],
+        "found": [
+          "point"
+        ],
+        "missing": [
+          "choice",
+          "winning"
+        ],
+        "match_score": 0.333
+      }
+    },
+    {
+      "id": "2024_exam1_002",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter an integer n: 1\n1 11\n1 1 12 1\n123",
+      "match": {
+        "expected_tokens": [
+          "3",
+          "2",
+          "12321",
+          "1"
+        ],
+        "found": [
+          "3",
+          "2",
+          "1"
+        ],
+        "missing": [
+          "12321"
+        ],
+        "match_score": 0.75
+      }
+    },
+    {
+      "id": "2024_exam1_001",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter an integer n: f(11) = 270944.7015728441",
+      "match": {
+        "expected_tokens": [
+          "270944"
+        ],
+        "found": [
+          "270944"
+        ],
+        "missing": [],
+        "match_score": 1.0
+      }
+    },
+    {
+      "id": "2025_midterm_004",
+      "ok": false,
+      "timed_out": true,
+      "output": "timeout after 8s",
+      "match": {
+        "expected_tokens": [
+          "Numbers",
+          "win",
+          "points",
+          "Pick"
+        ],
+        "found": [],
+        "missing": [
+          "Numbers",
+          "win",
+          "points",
+          "Pick"
+        ],
+        "match_score": 0.0
+      }
+    },
+    {
+      "id": "2025_midterm_001",
+      "ok": false,
+      "timed_out": false,
+      "output": "Enter an integer n: The sum of the series is: inf",
+      "match": {
+        "expected_tokens": [
+          "0.607"
+        ],
+        "found": [],
+        "missing": [
+          "0.607"
+        ],
+        "match_score": 0.0
+      }
+    },
+    {
+      "id": "2025_midterm_002",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter an integer n (1 to 10):   1\n 22\n333",
+      "match": {
+        "expected_tokens": [
+          "3",
+          "2 2",
+          "11111",
+          "222",
+          "3"
+        ],
+        "found": [
+          "3",
+          "3"
+        ],
+        "missing": [
+          "2 2",
+          "11111",
+          "222"
+        ],
+        "match_score": 0.4
+      }
+    },
+    {
+      "id": "2025_midterm_003",
+      "ok": true,
+      "timed_out": false,
+      "output": "Enter the coordinates of 4 points: Triangles:\nArea: 4.146\nArea: 4.146\nArea: 4.146\nArea: 4.146",
+      "match": {
+        "expected_tokens": [
+          "area",
+          "6.000"
+        ],
+        "found": [
+          "area"
+        ],
+        "missing": [
+          "6.000"
+        ],
+        "match_score": 0.5
+      }
+    }
+  ]
+}

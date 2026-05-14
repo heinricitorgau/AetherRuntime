@@ -1,0 +1,14 @@
+{
+  "run_id": "baseline_20260514_123517",
+  "timestamp": "2026-05-14T12:35:17+00:00",
+  "model": "qwen2.5-coder:3b",
+  "proxy_url": "http://127.0.0.1:8082",
+  "max_tokens": 1536,
+  "timeout": 90,
+  "run_timeout": 8,
+  "system_prompt": "You are a C programming assistant. Output exactly one complete C99 program. Do not explain.",
+  "compiler": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
+  "tasks_total": 4,
+  "skip_compile": false,
+  "dry_run": true
+}

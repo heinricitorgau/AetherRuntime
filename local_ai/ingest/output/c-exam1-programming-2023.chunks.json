@@ -1,0 +1,42 @@
+[
+  {
+    "id": "c_exam1_programming_2023_cleaned_0000",
+    "source_file": "c-exam1-programming-2023.cleaned.html",
+    "section": "",
+    "content": "C Programming Exam I - 3A Student No: Name:\nPart 3: Program (82 points)",
+    "content_type": "text",
+    "estimated_tokens": 14
+  },
+  {
+    "id": "c_exam1_programming_2023_cleaned_0001",
+    "source_file": "c-exam1-programming-2023.cleaned.html",
+    "section": "Question 1",
+    "content": "1. (a) (11 points) Write a function that passes n and returns the value of the following the sum of the following series: 1 1 −2\n3 + 6\n7 . . . n! n2−n+1.\n(b) (3 points) Write the main function that uses the above function.\nA possible run may look like: Enter n: 11 f(11) = 324096.52032087732000000000",
+    "content_type": "text",
+    "estimated_tokens": 60
+  },
+  {
+    "id": "c_exam1_programming_2023_cleaned_0002",
+    "source_file": "c-exam1-programming-2023.cleaned.html",
+    "section": "Question 2",
+    "content": "2. (14 points) Write a program that reads n and generates a diamond shown as below. A possible run may look like:\nEnter n: 3 1 2 2 32123 2 2 1",
+    "content_type": "text",
+    "estimated_tokens": 28
+  },
+  {
+    "id": "c_exam1_programming_2023_cleaned_0003",
+    "source_file": "c-exam1-programming-2023.cleaned.html",
+    "section": "Question 3",
+    "content": "3. (26 points) Conider 4 points and write a program to answer the following questions.\n(a) (3 points) Read 4 points and show the points.\n(b) (4 points) Find the point which is farthest to (0, 0) and its distance. Hint: The distance between 2 ponts (a, b) and (c, d) is p\n(a −c)2 + (b −d)2.\n(c) (10 points) Calculate the perimeter and the area of the triangle formed by the ﬁrst 3 points. If the triangle cannot be formed, also show the information. Hint: The area of a triangle with 3 sides: a, b, and c is p\n(s(s −a)(s −b)(s −c)) where s = a+b+c\n2 .\n(d) (9 points) Check if the last point (x, y) inside or outside the triangle. Hint: If a point is inside the triangle, the sum of areas of 3 triangles formed by the point and other 3 points is equal to the area of the triangle.\nA possible run may look like:\nEnter 4 points: 0 0 0 3 4 0 1 1 The points are (0.0000, 0.0000), (0.0000, 3.0000), (4.0000, 0.0000), and (1.0000, 1.0000). (4.0000, 0.0000) is farthest to (0, 0) and its distance is 4.0000. The perimeter of the triangle is 12.0000. The area of the triangle is 6.0000. (1.0000, 1.0000) is inside the triangle.",
+    "content_type": "text",
+    "estimated_tokens": 223
+  },
+  {
+    "id": "c_exam1_programming_2023_cleaned_0004",
+    "source_file": "c-exam1-programming-2023.cleaned.html",
+    "section": "Question 4",
+    "content": "4. (28 points) Write a program to simulate a tug war in which winning or losing is decided by stone, scissor, and paper.\n(a) (4 points) Print a welcome message and read the winning distance, n.\n(b) (8 points) Print the distance in number from -n to n and a ﬂag is located in the place of the current winning or losing distance.\n(c) (6 points) Read the player’s play and computer randomly generates its play.\n(d) (5 points) Print who is the winner and update the status of tug.\n(e) (5 points) The game continue until there is a winner and announce the winner.\nA possible run may look like:\n================================================================ Welcome to the Tug War! ================================================================ Enter the winning distance: 3 F -3 -2 -1 0 1 2 3 Enter your play (1. stone 2. scissor 3. paper): 1 Computer’s choice: paper ------------------------- Computer Win ------------------------- F -3 -2 -1 0 1 2 3 Enter your play (1. stone 2. scissor 3. paper): 3 Computer’s choice: paper ------------------------------ Draw ---------------------------- F -3 -2 -1 0 1 2 3 ..... ..... Your choice (1. stone 2. scissor 3. paper): 2 Computer’s choice: paper -------------------------- Player Win -------------------------- F -3 -2 -1 0 1 2 3 Congratulation! You win the game!",
+    "content_type": "text",
+    "estimated_tokens": 262
+  }
+]

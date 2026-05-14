@@ -319,6 +319,53 @@ $env:CLAW_MAX_REPAIR_RETRIES="2"; powershell -ExecutionPolicy Bypass -File .\loc
 
 ## 疑難排解
 
+### 長時間無輸出 / 卡住時
+
+如果畫面上 **60 秒以上沒有新輸出**，通常代表模型卡在生成或 proxy 等待逾時。
+此時直接按 **Ctrl+C** 中止即可，launcher 的 `finally` / `trap` 會自動停止 proxy 與 bundled Ollama。
+
+常見原因：
+- `max_tokens` 過大（claw 預設送 64000，proxy 會自動 clamp 至 512/2048/4096）
+- 系統 RAM 不足，模型載入極慢
+- Ollama 在 CPU 模式下處理大 prompt 需要較長時間
+
+建議先用 smoke-test 確認基礎建設：
+```powershell
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --smoke-test
+```
+```bash
+bash local_ai/run.sh --smoke-test
+```
+
+### 停止後查看日誌
+
+Windows（proxy err log 最有用）：
+```powershell
+Get-Content .\local_ai\runtime\logs\proxy.err.log -Tail 120
+Get-Content .\local_ai\runtime\logs\proxy.out.log -Tail 40
+```
+
+macOS / Linux：
+```bash
+tail -120 /tmp/claw-local-proxy.log
+tail -40 /tmp/claw-local-ollama.log
+```
+
+eval 模式日誌：
+```powershell
+Get-Content .\local_ai\runtime\logs\proxy.err.log -Tail 120
+```
+```bash
+tail -120 /tmp/claw-eval-proxy.log
+tail -40 /tmp/claw-eval-ollama.log
+```
+
+開啟詳細 debug 日誌（含 SSE 串流逐幀記錄）：
+```powershell
+$env:CLAW_DEBUG="1"; powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --claw-stream-test
+# SSE 逐幀: Get-Content .\local_ai\runtime\logs\proxy.sse.log -Tail 200
+```
+
 ### 找不到 bundle
 
 代表還沒先執行：

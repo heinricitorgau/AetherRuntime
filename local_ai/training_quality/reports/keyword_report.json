@@ -1,0 +1,623 @@
+{
+  "validator": "keyword",
+  "timestamp": "2026-05-14T09:44:20+00:00",
+  "total": 19,
+  "passed": 15,
+  "failed": 4,
+  "results": [
+    {
+      "id": "2021_exam1_004",
+      "ok": true,
+      "combined_score": 0.834,
+      "code_keywords": {
+        "required": [
+          "scanf",
+          "printf",
+          "rand",
+          "srand",
+          "while",
+          "if"
+        ],
+        "found": [
+          "scanf",
+          "printf",
+          "rand",
+          "srand",
+          "while",
+          "if"
+        ],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "Enter",
+          "points",
+          "choice"
+        ],
+        "found": [
+          "Enter",
+          "points"
+        ],
+        "missing": [
+          "choice"
+        ],
+        "score": 0.667
+      }
+    },
+    {
+      "id": "2021_exam1_003",
+      "ok": true,
+      "combined_score": 0.734,
+      "code_keywords": {
+        "required": [
+          "sqrt",
+          "fabs",
+          "function",
+          "float",
+          "double"
+        ],
+        "found": [
+          "sqrt",
+          "fabs",
+          "function",
+          "double"
+        ],
+        "missing": [
+          "float"
+        ],
+        "score": 0.8
+      },
+      "output_literals": {
+        "expected": [
+          "area",
+          "distance",
+          "triangle"
+        ],
+        "found": [
+          "area",
+          "distance"
+        ],
+        "missing": [
+          "triangle"
+        ],
+        "score": 0.667
+      }
+    },
+    {
+      "id": "2021_exam1_002",
+      "ok": false,
+      "combined_score": 0.475,
+      "code_keywords": {
+        "required": [
+          "scanf",
+          "printf",
+          "for",
+          "loop"
+        ],
+        "found": [
+          "scanf",
+          "printf",
+          "for"
+        ],
+        "missing": [
+          "loop"
+        ],
+        "score": 0.75
+      },
+      "output_literals": {
+        "expected": [
+          "3",
+          "2 2",
+          "12321",
+          "2",
+          "1"
+        ],
+        "found": [
+          "1"
+        ],
+        "missing": [
+          "3",
+          "2 2",
+          "12321",
+          "2"
+        ],
+        "score": 0.2
+      }
+    },
+    {
+      "id": "2021_exam1_001",
+      "ok": false,
+      "combined_score": 0.4,
+      "code_keywords": {
+        "required": [
+          "scanf",
+          "printf",
+          "main",
+          "for",
+          "while"
+        ],
+        "found": [
+          "scanf",
+          "printf",
+          "main",
+          "for"
+        ],
+        "missing": [
+          "while"
+        ],
+        "score": 0.8
+      },
+      "output_literals": {
+        "expected": [
+          "270944"
+        ],
+        "found": [],
+        "missing": [
+          "270944"
+        ],
+        "score": 0.0
+      }
+    },
+    {
+      "id": "2022_exam1_003",
+      "ok": true,
+      "combined_score": 0.875,
+      "code_keywords": {
+        "required": [
+          "sqrt",
+          "double",
+          "distance",
+          "area"
+        ],
+        "found": [
+          "sqrt",
+          "double",
+          "distance",
+          "area"
+        ],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "points",
+          "distance",
+          "area",
+          "perimeter"
+        ],
+        "found": [
+          "distance",
+          "area",
+          "perimeter"
+        ],
+        "missing": [
+          "points"
+        ],
+        "score": 0.75
+      }
+    },
+    {
+      "id": "2022_exam1_002",
+      "ok": false,
+      "combined_score": 0.334,
+      "code_keywords": {
+        "required": [
+          "for",
+          "printf",
+          "loop"
+        ],
+        "found": [
+          "for",
+          "printf"
+        ],
+        "missing": [
+          "loop"
+        ],
+        "score": 0.667
+      },
+      "output_literals": {
+        "expected": [
+          "1",
+          "2 2",
+          "32123",
+          "2 2",
+          "1"
+        ],
+        "found": [],
+        "missing": [
+          "1",
+          "2 2",
+          "32123",
+          "2 2",
+          "1"
+        ],
+        "score": 0.0
+      }
+    },
+    {
+      "id": "2022_exam1_001",
+      "ok": true,
+      "combined_score": 0.5,
+      "code_keywords": {
+        "required": [
+          "factorial",
+          "double",
+          "for",
+          "printf"
+        ],
+        "found": [
+          "factorial",
+          "double",
+          "for",
+          "printf"
+        ],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "324096"
+        ],
+        "found": [],
+        "missing": [
+          "324096"
+        ],
+        "score": 0.0
+      }
+    },
+    {
+      "id": "2022_exam1_004",
+      "ok": true,
+      "combined_score": 0.875,
+      "code_keywords": {
+        "required": [
+          "scanf",
+          "printf",
+          "rand",
+          "while"
+        ],
+        "found": [
+          "scanf",
+          "printf",
+          "rand",
+          "while"
+        ],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "Welcome",
+          "Tug War",
+          "Enter",
+          "winner"
+        ],
+        "found": [
+          "Welcome",
+          "Tug War",
+          "Enter"
+        ],
+        "missing": [
+          "winner"
+        ],
+        "score": 0.75
+      }
+    },
+    {
+      "id": "2023_exam1_003",
+      "ok": true,
+      "combined_score": 0.625,
+      "code_keywords": {
+        "required": [],
+        "found": [],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "4.0000",
+          "12.0000",
+          "6.0000",
+          "inside"
+        ],
+        "found": [
+          "inside"
+        ],
+        "missing": [
+          "4.0000",
+          "12.0000",
+          "6.0000"
+        ],
+        "score": 0.25
+      }
+    },
+    {
+      "id": "2023_exam1_002",
+      "ok": true,
+      "combined_score": 0.5,
+      "code_keywords": {
+        "required": [],
+        "found": [],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "1",
+          "2",
+          "32123"
+        ],
+        "found": [],
+        "missing": [
+          "1",
+          "2",
+          "32123"
+        ],
+        "score": 0.0
+      }
+    },
+    {
+      "id": "2023_exam1_001",
+      "ok": true,
+      "combined_score": 0.5,
+      "code_keywords": {
+        "required": [],
+        "found": [],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "324096"
+        ],
+        "found": [],
+        "missing": [
+          "324096"
+        ],
+        "score": 0.0
+      }
+    },
+    {
+      "id": "2023_exam1_004",
+      "ok": true,
+      "combined_score": 1.0,
+      "code_keywords": {
+        "required": [],
+        "found": [],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "Tug",
+          "War",
+          "choice"
+        ],
+        "found": [
+          "Tug",
+          "War",
+          "choice"
+        ],
+        "missing": [],
+        "score": 1.0
+      }
+    },
+    {
+      "id": "2024_exam1_003",
+      "ok": true,
+      "combined_score": 0.666,
+      "code_keywords": {
+        "required": [],
+        "found": [],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "choice",
+          "point",
+          "winning"
+        ],
+        "found": [
+          "point"
+        ],
+        "missing": [
+          "choice",
+          "winning"
+        ],
+        "score": 0.333
+      }
+    },
+    {
+      "id": "2024_exam1_002",
+      "ok": true,
+      "combined_score": 0.5,
+      "code_keywords": {
+        "required": [],
+        "found": [],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "3",
+          "2",
+          "12321",
+          "1"
+        ],
+        "found": [],
+        "missing": [
+          "3",
+          "2",
+          "12321",
+          "1"
+        ],
+        "score": 0.0
+      }
+    },
+    {
+      "id": "2024_exam1_001",
+      "ok": true,
+      "combined_score": 0.5,
+      "code_keywords": {
+        "required": [],
+        "found": [],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "270944"
+        ],
+        "found": [],
+        "missing": [
+          "270944"
+        ],
+        "score": 0.0
+      }
+    },
+    {
+      "id": "2025_midterm_004",
+      "ok": true,
+      "combined_score": 0.65,
+      "code_keywords": {
+        "required": [
+          "rand",
+          "srand",
+          "scanf",
+          "printf",
+          "array"
+        ],
+        "found": [
+          "rand",
+          "srand",
+          "scanf",
+          "printf"
+        ],
+        "missing": [
+          "array"
+        ],
+        "score": 0.8
+      },
+      "output_literals": {
+        "expected": [
+          "Numbers",
+          "win",
+          "points",
+          "Pick"
+        ],
+        "found": [
+          "Numbers",
+          "Pick"
+        ],
+        "missing": [
+          "win",
+          "points"
+        ],
+        "score": 0.5
+      }
+    },
+    {
+      "id": "2025_midterm_001",
+      "ok": true,
+      "combined_score": 0.5,
+      "code_keywords": {
+        "required": [
+          "for",
+          "printf",
+          "double"
+        ],
+        "found": [
+          "for",
+          "printf",
+          "double"
+        ],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "0.607"
+        ],
+        "found": [],
+        "missing": [
+          "0.607"
+        ],
+        "score": 0.0
+      }
+    },
+    {
+      "id": "2025_midterm_002",
+      "ok": false,
+      "combined_score": 0.334,
+      "code_keywords": {
+        "required": [
+          "for",
+          "printf",
+          "nested loop"
+        ],
+        "found": [
+          "for",
+          "printf"
+        ],
+        "missing": [
+          "nested loop"
+        ],
+        "score": 0.667
+      },
+      "output_literals": {
+        "expected": [
+          "3",
+          "2 2",
+          "11111",
+          "222",
+          "3"
+        ],
+        "found": [],
+        "missing": [
+          "3",
+          "2 2",
+          "11111",
+          "222",
+          "3"
+        ],
+        "score": 0.0
+      }
+    },
+    {
+      "id": "2025_midterm_003",
+      "ok": true,
+      "combined_score": 0.75,
+      "code_keywords": {
+        "required": [
+          "sqrt",
+          "area",
+          "triangle",
+          "printf"
+        ],
+        "found": [
+          "sqrt",
+          "area",
+          "triangle",
+          "printf"
+        ],
+        "missing": [],
+        "score": 1.0
+      },
+      "output_literals": {
+        "expected": [
+          "area",
+          "6.000"
+        ],
+        "found": [
+          "area"
+        ],
+        "missing": [
+          "6.000"
+        ],
+        "score": 0.5
+      }
+    }
+  ]
+}

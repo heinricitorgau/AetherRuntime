@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>c-exam1-programming-2021</title>
+</head>
+
+<body>
+    <p>C Programming Exam I - 3A Student No:
+        Name:</p>
+    <p>Part 3: Program (80 points)</p>
+    <p>1. (12 points) Write a program that reads n and calculates the sum of the following series: 1</p>
+    <p>3 −2</p>
+    <p>7 + 6</p>
+    <p>13 . . .
+        n!
+        n2+n+1. A possible
+        run may look like:
+        Enter n: 11
+        f(11) = 270944.7015728441</p>
+    <p>2. (16 points) Write a program that reads n and generates an arrow as follows:
+        Enter n: 3
+        3
+        2 2
+        12321
+        2
+        1</p>
+    <p>(a −c)2 + (b −d)2.</p>
+    <p>3. (26 points) Write a program with the following functions. Hint: The distance of (a, b) and (c, d) is
+        p</p>
+    <p>(a) (4 points) A function that passes the coeﬃcients of a line ax + by = c and returns the area formed by the
+        line,
+        x-axis, and y-axis. Hint: When y = 0, x = c</p>
+    <p>a. When x = 0, y = c</p>
+    <p>b
+        (b) (5 points) A function that passes the coeﬃcients of a line ax + by = c and a point (x, y) and returns the
+        distance
+        the point to the line. Hint: The distance of a point (x0, y0) to a line ax + by = c is |ax0+by0−c|
+        √</p>
+    <p>a2+b2
+        .</p>
+    <p>(c) (8 points) A function that passes three points and returns the area of the triangle formed by the three
+        points. If
+        the triangle cannot be formed, return 0. Hint: The area of a triangle is
+        p</p>
+    <p>s(s −a)(s −b)(s −c) where s = a+b+c</p>
+    <p>2
+        .
+        (d) (5 points) A function that passes two points and shows the line passing these two points in the form of ax +
+        by =
+        c. Hint: The line passing (a, b) and (c, d) is (b - d)x + (c - a)y = bc - ad.
+        (e) (4 points) Write the main function that reads the parabola and a point and use the above functions.</p>
+    <p>A possible run could look like as follows:
+        Enter a line ax + by = c and a point (x, y): 3 4 12 0 0
+        The area formed by 3.000000x + 4.000000y = 12.000000, x-axis, and y-axis is 6.000000.
+        The distance from (0.000000, 0.000000) to 3.000000x + 4.000000y = 12.000000 is 2.400000.
+        Enter 3 points: 0 0 0 3 4 0
+        The area formed by (0.000000, 0.000000, 0.000000, 3.000000, 4.000000, 0.000000) is 6.000000.
+        The line passing (0.000000, 0.000000) and (0.000000, 3.000000) is x = 0.000000.
+        The line passing (0.000000, 3.000000) and (4.000000, 0.000000) is 3.000000x + 4.000000y = 12.000000.
+        The line passing (4.000000, 0.000000) and (0.000000, 0.000000) is y = 0.000000.</p>
+    <p>4. (26 points) Write a program that simulates a guessing game. The initial point for the player is 0.</p>
+    <p>(a) (5 points) Each time you choose among 6 possible guesses. The left table shows the game board. The right
+        table
+        shows the risk-winning rates. as shown below:</p>
+    <p>Choice
+        Risk:Winning
+        Odd|Even
+        1:2
+        Low|Middle|High
+        1:3
+        Number
+        1:12
+        For example, you guess a middle number and your points at risk are 20. If you guess right, you’ll get 60 points.
+        (b) (5 points) The program will generate a random number between 1 and 12.
+        (c) (10 points) Each correct guess will be rewarded with points based on how many of your current points you
+        risked.
+        (d) (2 points) The player can choose to continue to play.
+        (e) (4 points) If the player quit the game, print the winning or loosing points of the player.</p>
+    <p>Low
+        1
+        2
+        3
+        4
+        Middle
+        5
+        6
+        7
+        8
+        High
+        9
+        10
+        11
+        12</p>
+    <p>A possible run could look like as follows:
+        ==============================================================
+        Guesses Choices: O-Odd E-Even L-Low M-Middle H-High N-Number
+        ==============================================================
+        Enter your choice: O
+        Point at risk: 20
+        The winning number is 12. You lost 20 points.
+        Your point: -20
+        Continue (Y/N)? Y
+        ==============================================================
+        Enter your choice: N
+        Enter your guessing number: 8
+        Point at risk: 10
+        The winning number is 8. You won 120 points.
+        Your point: 90
+        Continue (Y/N)? N
+        ==============================================================
+        Total number of guesses: 2 Your point: 90</p>
+</body>
+
+</html>

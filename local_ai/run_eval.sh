@@ -39,6 +39,9 @@ if ! PYTHON_BIN="$(find_python)"; then
     fail "python3 not found"
 fi
 
+export PYTHONUTF8=1
+export PYTHONIOENCODING=utf-8
+
 header "C Exam Offline Evaluation Pack"
 
 # Parse arguments
@@ -47,6 +50,7 @@ USE_PROXY_AI=0
 FILTER=""
 OUTPUT=""
 ANSWERS_DIR=""
+TIMEOUT_SECONDS=""
 
 while [[ "$#" -gt 0 ]]; do
     case "$1" in
@@ -75,6 +79,11 @@ while [[ "$#" -gt 0 ]]; do
             info "Using answer files from: $ANSWERS_DIR"
             shift 2
             ;;
+        --timeout-seconds)
+            TIMEOUT_SECONDS="$2"
+            info "Per-case timeout: ${TIMEOUT_SECONDS}s"
+            shift 2
+            ;;
         --help|-h)
             cat <<EOF
 Usage: bash local_ai/run_eval.sh [options]
@@ -86,9 +95,11 @@ Options:
   --answers-dir DIR     Use DIR/<case_id>.c answers instead of the model.
   --filter TEXT         Run cases whose id, filename, year, or topic matches TEXT.
   --output FILE         Write eval_report.json to FILE.
+  --timeout-seconds N   Hard per-case wall-clock timeout (default: adaptive by model size).
 
 Example:
   bash local_ai/run_eval.sh --use-proxy-ai --filter 2025
+  bash local_ai/run_eval.sh --use-ai --filter 2025 --timeout-seconds 180
 EOF
             exit 0
             ;;
@@ -98,6 +109,10 @@ EOF
             ;;
     esac
 done
+
+if [[ -n "$TIMEOUT_SECONDS" ]]; then
+    export CLAW_EVAL_CASE_TIMEOUT_SECONDS="$TIMEOUT_SECONDS"
+fi
 
 # Build eval runner command
 eval_cmd=("$PYTHON_BIN" "$SCRIPT_DIR/eval_runner.py")
@@ -132,6 +147,9 @@ cleanup_proxy_ai() {
         kill "$OLLAMA_PID" 2>/dev/null || true
         info "ollama stopped"
     fi
+    printf "\n  Log hints (run after stopping):\n"
+    printf "    tail -120 /tmp/claw-eval-proxy.log\n"
+    printf "    tail -40 /tmp/claw-eval-ollama.log\n"
 }
 
 if [[ "$USE_PROXY_AI" -eq 1 ]]; then
@@ -201,13 +219,15 @@ if [[ "$USE_PROXY_AI" -eq 1 ]]; then
         done
     fi
 
-    trap cleanup_proxy_ai EXIT INT TERM
+    trap cleanup_proxy_ai EXIT INT TERM HUP
 
     info "Using proxy sync AI mode"
     info "Proxy URL: $PROXY_URL"
     info "Model: $PROXY_MODEL"
 
     export CLAW_MODEL="$PROXY_MODEL"
+    export CLAW_EVAL_USE_PROXY_AI=1
+    export CLAW_PROXY_URL="$PROXY_URL"
     eval_cmd+=(--use-proxy-ai)
     eval_cmd+=(--proxy-url "$PROXY_URL")
     eval_cmd+=(--proxy-model "$PROXY_MODEL")
@@ -215,6 +235,8 @@ fi
 
 # Run evaluation
 header "Running Evaluation"
+printf "  If one case appears stuck for too long, press Ctrl+C.\n"
+printf "  Partial report may not be complete.\n\n"
 "${eval_cmd[@]}"
 
 ok "Evaluation complete"

@@ -1,0 +1,124 @@
+{
+  "timestamp": "2026-05-14T09:44:55+00:00",
+  "threshold": 60,
+  "accepted_ids": [
+    "2021_exam1_001",
+    "2021_exam1_002",
+    "2021_exam1_003",
+    "2022_exam1_001",
+    "2022_exam1_002",
+    "2022_exam1_003",
+    "2022_exam1_004",
+    "2023_exam1_001",
+    "2023_exam1_002",
+    "2024_exam1_001",
+    "2024_exam1_002",
+    "2024_exam1_003",
+    "2025_midterm_001",
+    "2025_midterm_002",
+    "2025_midterm_003",
+    "2025_midterm_004"
+  ],
+  "counts": {
+    "train": 24,
+    "val": 7,
+    "test": 10
+  },
+  "detail": [
+    {
+      "id": "2023_exam1_001",
+      "score": 93,
+      "accepted": true
+    },
+    {
+      "id": "2024_exam1_001",
+      "score": 93,
+      "accepted": true
+    },
+    {
+      "id": "2021_exam1_001",
+      "score": 91,
+      "accepted": true
+    },
+    {
+      "id": "2022_exam1_003",
+      "score": 90,
+      "accepted": true
+    },
+    {
+      "id": "2021_exam1_003",
+      "score": 86,
+      "accepted": true
+    },
+    {
+      "id": "2021_exam1_002",
+      "score": 86,
+      "accepted": true
+    },
+    {
+      "id": "2024_exam1_002",
+      "score": 85,
+      "accepted": true
+    },
+    {
+      "id": "2023_exam1_002",
+      "score": 83,
+      "accepted": true
+    },
+    {
+      "id": "2025_midterm_003",
+      "score": 81,
+      "accepted": true
+    },
+    {
+      "id": "2024_exam1_003",
+      "score": 75,
+      "accepted": true
+    },
+    {
+      "id": "2022_exam1_002",
+      "score": 72,
+      "accepted": true
+    },
+    {
+      "id": "2025_midterm_002",
+      "score": 72,
+      "accepted": true
+    },
+    {
+      "id": "2022_exam1_004",
+      "score": 68,
+      "accepted": true
+    },
+    {
+      "id": "2025_midterm_004",
+      "score": 65,
+      "accepted": true
+    },
+    {
+      "id": "2022_exam1_001",
+      "score": 63,
+      "accepted": true
+    },
+    {
+      "id": "2025_midterm_001",
+      "score": 63,
+      "accepted": true
+    },
+    {
+      "id": "2023_exam1_004",
+      "score": 30,
+      "accepted": false
+    },
+    {
+      "id": "2021_exam1_004",
+      "score": 28,
+      "accepted": false
+    },
+    {
+      "id": "2023_exam1_003",
+      "score": 24,
+      "accepted": false
+    }
+  ]
+}

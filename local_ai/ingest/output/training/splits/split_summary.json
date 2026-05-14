@@ -1,0 +1,29 @@
+{
+  "input": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\combined.jsonl",
+  "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\splits",
+  "split_years": {
+    "train": [
+      2021,
+      2022,
+      2023
+    ],
+    "val": [
+      2024
+    ],
+    "test": [
+      2025
+    ]
+  },
+  "counts": {
+    "train": 27,
+    "val": 7,
+    "test": 10
+  },
+  "answered": {
+    "train": 12,
+    "val": 3,
+    "test": 4
+  },
+  "total": 44,
+  "ready_for_sft": true
+}
