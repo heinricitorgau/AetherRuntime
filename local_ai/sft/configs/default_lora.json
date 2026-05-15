@@ -1,0 +1,16 @@
+{
+  "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj", "k_proj", "v_proj", "o_proj",
+    "gate_proj", "up_proj", "down_proj"
+  ],
+  "batch_size": 1,
+  "grad_accum": 4,
+  "learning_rate": 2e-4,
+  "warmup_steps": 2,
+  "max_seq_len": 1024,
+  "_note": "RTX 4060 8GB — fp16/bf16 auto-selected at runtime"
+}

@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-15T09:00:47+00:00",
+  "success": false,
+  "status": "failed",
+  "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+  "dataset": "local_ai\\training_quality\\reports\\sft_chatml.jsonl",
+  "limit": 8,
+  "epochs": 1,
+  "output_dir": "local_ai\\sft\\artifacts\\test_lora",
+  "error": "element 0 of tensors does not require grad and does not have a grad_fn",
+  "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\local_ai\\sft\\train_lora.py\", line 347, in _run_training\n    train_result = trainer.train()\n                   ^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Lib\\site-packages\\transformers\\trainer.py\", line 2245, in train\n    return inner_training_loop(\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Lib\\site-packages\\transformers\\trainer.py\", line 2560, in _inner_training_loop\n    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Lib\\site-packages\\transformers\\trainer.py\", line 3782, in training_step\n    self.accelerator.backward(loss, **kwargs)\n  File \"C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Lib\\site-packages\\accelerate\\accelerator.py\", line 2454, in backward\n    loss.backward(**kwargs)\n  File \"C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Lib\\site-packages\\torch\\_tensor.py\", line 626, in backward\n    torch.autograd.backward(\n  File \"C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Lib\\site-packages\\torch\\autograd\\__init__.py\", line 347, in backward\n    _engine_run_backward(\n  File \"C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Lib\\site-packages\\torch\\autograd\\graph.py\", line 823, in _engine_run_backward\n    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: element 0 of tensors does not require grad and does not have a grad_fn\n",
+  "elapsed_s": 1369.7
+}

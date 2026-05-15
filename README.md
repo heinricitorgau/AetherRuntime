@@ -252,6 +252,64 @@ powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --answers-dir C
 
 `--use-proxy-ai` 直接呼叫 proxy `/v1/messages`（stream=false），不依賴 claw 串流，Windows 下更穩定。`--use-ai` 透過 `run.sh` 呼叫 claw，Windows 上串流輸出相容性目前不穩定。報告包含 `answer_source`、`used_fallback`、`model_score`、`pipeline_score`、`compile_pass`、`model_compile_pass`、`run_pass`、`keyword_pass`、`structure_pass`。`model_score` 只衡量模型實際輸出的 C code；`pipeline_score` 則包含 fallback scaffold 後的 pipeline 韌性，目前定位是 smoke test，不取代人工閱卷。
 
+## 重新開始一輪 Benchmark 實驗
+
+每次要對模型跑新一輪評測時，依序執行以下步驟。
+
+**第 1 步 — 確認 Ollama 與模型已載入**
+
+```powershell
+ollama list
+```
+
+若模型不在清單內，先拉取：
+
+```powershell
+ollama pull qwen2.5-coder:3b
+```
+
+**第 2 步 — 啟動 proxy（開新 terminal，保持運行）**
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+```
+
+**第 3 步 — 驗證 proxy 有回應**
+
+```powershell
+python local_ai/proxy.py --smoke-test
+```
+
+**第 4 步 — 跑 baseline（給一個可追蹤的 run ID）**
+
+```powershell
+python local_ai/benchmark/run_baseline.py --strict-code-only --run-id baseline_qwen3b_v1
+```
+
+**第 5 步 — 分析 token 浪費情況**
+
+```powershell
+python local_ai/benchmark/report_analysis.py --run-id baseline_qwen3b_v1
+```
+
+**第 6 步 — 查看報告**
+
+```text
+local_ai/benchmark/reports/runs/baseline_qwen3b_v1/report.md
+local_ai/benchmark/reports/runs/baseline_qwen3b_v1/analysis_report.md
+```
+
+Fine-tune 之後，用新 run ID 重跑第 4–5 步，再比較兩輪結果：
+
+```powershell
+python local_ai/benchmark/scoring.py --compare baseline_qwen3b_v1 lora_v1
+python local_ai/benchmark/report_analysis.py --compare baseline_qwen3b_v1 lora_v1
+```
+
+完整 benchmark 說明請看 [`local_ai/benchmark/README.md`](./local_ai/benchmark/README.md)。
+
+---
+
 ## Offline USB Workflow
 
 1. Prepare the bundle on an online machine.

@@ -324,6 +324,58 @@ Checks that the response is a complete program:
 
 ---
 
+## Golden Baseline
+
+A golden baseline is a locked, deterministic reference run. Once a model's output is stable
+(consistent scores across multiple runs), lock it so every future run compares against a fixed floor.
+
+### What is a golden baseline?
+
+The golden baseline records the exact pre-fine-tune, pre-change performance of a specific
+model + prompt configuration. It is not updated automatically — only when you explicitly
+decide a new run should become the reference.
+
+### Why it matters before fine-tuning
+
+Without a golden baseline:
+- You cannot tell whether SFT improved the model or just shifted it
+- You cannot detect compile-rate regressions introduced by fine-tuning
+- You cannot prove the fine-tune was worth the training cost
+
+### How to lock a baseline
+
+    python local_ai/benchmark/lock_golden_baseline.py --run-id strict_20260515_043031
+
+Writes `golden/golden_baseline.json`. Running this again overwrites the previous golden.
+
+### How to compare a run against the golden
+
+    python local_ai/benchmark/compare_against_golden.py --run-id strict_20260515_050000
+
+Writes `reports/runs/<run_id>/comparison_report.md` and `comparison_report.json`.
+
+Every `run_baseline.py` run also auto-compares against `golden/golden_baseline.json`
+(if it exists) and prints the verdict at the end of the run:
+
+    [golden] matches golden  (golden: 4/4  78.5pts  ref=strict_20260515_043031)
+    [golden] regression detected  (golden: 4/4  78.5pts  ref=strict_20260515_043031)
+    [golden] improvement detected  (golden: 4/4  78.5pts  ref=strict_20260515_043031)
+
+### Regression and improvement thresholds
+
+| Signal | Condition |
+|--------|-----------|
+| regression | accepted drops, OR avg_score drops > 1.0pt, OR timeout_rate rises |
+| improvement | accepted rises, OR avg_score rises > 1.0pt |
+| matches golden | all metrics within tolerance |
+
+### File layout
+
+    golden/
+      golden_baseline.json    locked reference metrics (committed to repo)
+
+---
+
 ## Comparing Baseline vs Fine-tuned Model
 
     # Step 1: establish baseline before fine-tuning

@@ -171,26 +171,34 @@ def compute_analysis(records: list[dict]) -> dict:
     expl_chars_list  = [r["explanation_chars"] for r in per_case]
     code_ratio_list  = [r["code_ratio"] for r in per_case]
 
+    explanation_waste_signal_count = sum(
+        1 for r in per_case if r["explanation_ratio"] > 0.3
+    )
+    markdown_heading_count = sum(r["md_lines"] for r in per_case)
+
     return {
-        "cases_analysed":          n,
-        "timeout_count":           _count("timed_out"),
-        "timeout_rate":            _rate("timed_out"),
-        "empty_response_count":    _count("empty"),
-        "fence_usage_count":       _count("has_fence"),
-        "fence_usage_rate":        _rate("has_fence"),
-        "truncation_count":        _count("truncated"),
-        "truncation_rate":         _rate("truncated"),
-        "chinese_text_count":      _count("has_cjk"),
-        "chinese_text_rate":       _rate("has_cjk"),
-        "avg_response_chars":      _avg("total_chars"),
-        "avg_code_chars":          _avg("code_chars"),
-        "avg_explanation_chars":   _avg("explanation_chars"),
-        "avg_code_ratio":          round(sum(code_ratio_list) / n, 3),
-        "avg_explanation_ratio":   round(1.0 - sum(code_ratio_list) / n, 3),
-        "avg_markdown_ratio":      round(sum(r["markdown_ratio"] for r in per_case) / n, 3),
-        "min_response_chars":      min(total_chars_list),
-        "max_response_chars":      max(total_chars_list),
-        "per_case":                per_case,
+        "cases_analysed":                 n,
+        "timeout_count":                  _count("timed_out"),
+        "timeout_rate":                   _rate("timed_out"),
+        "empty_response_count":           _count("empty"),
+        "fence_usage_count":              _count("has_fence"),
+        "fence_usage_rate":               _rate("has_fence"),
+        "truncation_count":               _count("truncated"),
+        "truncation_rate":                _rate("truncated"),
+        "chinese_text_count":             _count("has_cjk"),
+        "chinese_text_rate":              _rate("has_cjk"),
+        "explanation_waste_signal_count": explanation_waste_signal_count,
+        "explanation_waste_signal_rate":  round(explanation_waste_signal_count / n, 3),
+        "markdown_heading_count":         markdown_heading_count,
+        "avg_response_chars":             _avg("total_chars"),
+        "avg_code_chars":                 _avg("code_chars"),
+        "avg_explanation_chars":          _avg("explanation_chars"),
+        "avg_code_ratio":                 round(sum(code_ratio_list) / n, 3),
+        "avg_explanation_ratio":          round(1.0 - sum(code_ratio_list) / n, 3),
+        "avg_markdown_ratio":             round(sum(r["markdown_ratio"] for r in per_case) / n, 3),
+        "min_response_chars":             min(total_chars_list),
+        "max_response_chars":             max(total_chars_list),
+        "per_case":                       per_case,
     }
 
 
@@ -232,6 +240,8 @@ def write_analysis_markdown(analysis: dict, meta: dict, path: Path) -> None:
     a(f"| Truncated code | {analysis.get('truncation_count', 0)} | {analysis.get('truncation_rate', 0):.0%} |")
     a(f"| Used ```c fence | {analysis.get('fence_usage_count', 0)} | {analysis.get('fence_usage_rate', 0):.0%} |")
     a(f"| Contains CJK text | {analysis.get('chinese_text_count', 0)} | {analysis.get('chinese_text_rate', 0):.0%} |")
+    a(f"| Explanation waste (>30% prose) | {analysis.get('explanation_waste_signal_count', 0)} | {analysis.get('explanation_waste_signal_rate', 0):.0%} |")
+    a(f"| Markdown heading lines (total) | {analysis.get('markdown_heading_count', 0)} | — |")
     a("")
     a("## Per-Case Detail")
     a("")
@@ -370,6 +380,8 @@ def main() -> None:
     print(f"  truncation rate:    {analysis.get('truncation_rate', 0):.0%}  ({analysis.get('truncation_count', 0)} cases)")
     print(f"  CJK text rate:      {analysis.get('chinese_text_rate', 0):.0%}  ({analysis.get('chinese_text_count', 0)} cases)")
     print(f"  fence usage:        {analysis.get('fence_usage_rate', 0):.0%}")
+    print(f"  expl. waste signals:{analysis.get('explanation_waste_signal_count', 0)} cases  (>30% prose)")
+    print(f"  markdown headings:  {analysis.get('markdown_heading_count', 0)} lines total")
     run_dir = REPORTS_DIR / "runs" / run_id
     print(f"\nReport: {run_dir / 'analysis_report.md'}")
 

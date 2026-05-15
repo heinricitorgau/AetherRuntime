@@ -144,7 +144,12 @@ def write_markdown(report: dict, path: Path) -> None:
     a(f"**Run ID**: `{report.get('run_id', '?')}`  ")
     a(f"**Model**: `{meta.get('model', report.get('model', '?'))}`  ")
     a(f"**Timestamp**: {report.get('timestamp', '?')}  ")
-    a(f"**Prompt file**: `{Path(meta.get('system_prompt','?')[:60]).name if meta.get('system_prompt') else '?'}`")
+    a(f"**Prompt file**: `{Path(meta.get('system_prompt','?')[:60]).name if meta.get('system_prompt') else '?'}`  ")
+    _mode = "strict_code_only" if meta.get("strict_code_only") else "default"
+    _ver  = meta.get("strict_prompt_version") or ""
+    a(f"**Mode**: {_mode}{(' (' + _ver + ')') if _ver else ''}  ")
+    a(f"**max_tokens**: {meta.get('max_tokens', '?')}  ")
+    a(f"**temperature**: {meta.get('temperature', '?')}")
     a("")
     a("---")
     a("")
@@ -279,12 +284,12 @@ def compare_runs(run_ids: list[str]) -> None:
 
     # Header
     col_w = 22
-    header = f"{'Metric':<22}" + "".join(f"  {r['_run_id']:<18}" for r in reports)
+    header = f"{'Metric':<{col_w}}" + "".join(f"  {r['_run_id']:<18}" for r in reports)
     print(header)
     print("-" * len(header))
 
     for key, label in rate_keys:
-        row = f"{label:<22}"
+        row = f"{label:<{col_w}}"
         for rep in reports:
             val = rep.get("rates", {}).get(key, 0.0)
             row += f"  {val:>6.0%}            "

@@ -1,0 +1,396 @@
+{
+  "cases_run": 4,
+  "accepted": 3,
+  "average_score": 68.5,
+  "min_score": 27,
+  "max_score": 100,
+  "rates": {
+    "proxy_pass_rate": 1.0,
+    "truncation_pass_rate": 1.0,
+    "compile_pass_rate": 0.75,
+    "runtime_pass_rate": 0.5,
+    "semantic_pass_rate": 1.0,
+    "keyword_pass_rate": 1.0,
+    "accepted_rate": 0.75
+  },
+  "score_distribution": {
+    "90-100": 1,
+    "70-89": 2,
+    "60-69": 0,
+    "0-59": 1
+  },
+  "by_topic": {
+    "Game Simulation - Even/Odd Guessing": {
+      "count": 1,
+      "accepted": 0,
+      "avg_score": 27.0
+    },
+    "Geometry - Triangle Enumeration": {
+      "count": 1,
+      "accepted": 1,
+      "avg_score": 100.0
+    },
+    "Pattern Generation": {
+      "count": 1,
+      "accepted": 1,
+      "avg_score": 77.0
+    },
+    "Series Calculation": {
+      "count": 1,
+      "accepted": 1,
+      "avg_score": 70.0
+    }
+  },
+  "by_difficulty": {
+    "medium": {
+      "count": 4,
+      "accepted": 3,
+      "avg_score": 68.5
+    }
+  },
+  "latency_ms": {
+    "avg": 16367,
+    "min": 6759,
+    "max": 21476
+  },
+  "run_id": "baseline_20260515_041608",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-05-15T04:17:18+00:00",
+  "meta": {
+    "run_id": "baseline_20260515_041608",
+    "model": "qwen2.5-coder:3b",
+    "proxy_url": "http://127.0.0.1:8082",
+    "max_tokens": 768,
+    "temperature": 0.0,
+    "strict_code_only": false,
+    "prompt_profile": "default",
+    "strict_prompt_version": null,
+    "geometry_seed_applied": false,
+    "geometry_seed_version": null,
+    "timeout": 180,
+    "run_timeout": 8,
+    "system_prompt": "You are a C programming assistant. Output exactly one complete C99 program. Do not explain.",
+    "compiler": "C:\\msys64\\ucrt64\\bin\\cc.EXE",
+    "tasks_total": 4,
+    "skip_compile": false
+  },
+  "results": [
+    {
+      "id": "2025_midterm_001",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-05-15T04:16:27+00:00",
+      "latency_ms": 16460,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main() {\n    int n;\n    double sum = 0.0;\n\n    printf(\"Enter an integer n: \");\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        double numerator = 2 * i + 1;\n        double denominator = i * i - 1;\n        double term = numerator / denominator;\n\n        if (i % 2 != 0) {\n            sum += term;\n        } else {\n            sum -= term;\n        }\n    }\n\n    printf(\"The sum of the series is: %.6f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": false,
+          "timed_out": false,
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "0.607"
+          ],
+          "output_head": "Enter an integer n: The sum of the series is: inf"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [
+            "for",
+            "printf",
+            "double"
+          ],
+          "missing": []
+        }
+      },
+      "score": 70,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 0
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Series Calculation",
+        "difficulty": "medium",
+        "points": 12,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "strict_code_only": false,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "2025_midterm_002",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-05-15T04:16:34+00:00",
+      "latency_ms": 6759,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main() {\n    int n;\n    \n    // Read integer n from user\n    printf(\"Enter an integer n (1 to 10): \");\n    scanf(\"%d\", &n);\n    \n    // Validate input\n    if (n < 1 || n > 10) {\n        printf(\"Invalid input. Please enter a number between 1 and 10.\\n\");\n        return 1;\n    }\n    \n    // Generate expanding triangle pattern\n    for (int i = 1; i <= n; i++) {\n        // Print leading spaces\n        for (int j = n - i; j > 0; j--) {\n            printf(\" \");\n        }\n        \n        // Print digits\n        for (int k = 0; k < i; k++) {\n            printf(\"%d\", i);\n        }\n        \n        // Move to the next line\n        printf(\"\\n\");\n    }\n    \n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 0.4,
+          "found": [
+            "3",
+            "3"
+          ],
+          "missing": [
+            "2 2",
+            "11111",
+            "222"
+          ],
+          "output_head": "Enter an integer n (1 to 10):   1\n 22\n333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 0.667,
+          "found": [
+            "for",
+            "printf"
+          ],
+          "missing": [
+            "nested loop"
+          ]
+        }
+      },
+      "score": 77,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 10,
+        "compile": 40,
+        "runtime": 12
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Pattern Generation",
+        "difficulty": "medium",
+        "points": 13,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "strict_code_only": false,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "2025_midterm_003",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-05-15T04:16:57+00:00",
+      "latency_ms": 21476,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\n// Function to calculate the distance between two points\ndouble distance(double x1, double y1, double x2, double y2) {\n    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));\n}\n\n// Function to check if three points are collinear\nint isCollinear(double x1, double y1, double x2, double y2, double x3, double y3) {\n    return (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) == 0;\n}\n\n// Function to calculate the area of a triangle using Heron's formula\ndouble heronsFormula(double side1, double side2, double side3) {\n    double s = (side1 + side2 + side3) / 2.0;\n    return sqrt(s * (s - side1) * (s - side2) * (s - side3));\n}\n\nint main() {\n    // Read coordinates of 4 points\n    double x[4], y[4];\n    printf(\"Enter the coordinates of 4 points: \");\n    for (int i = 0; i < 4; i++) {\n        scanf(\"%lf %lf\", &x[i], &y[i]);\n    }\n\n    // Generate all 3-point combinations\n    for (int i = 0; i < 4; i++) {\n        for (int j = i + 1; j < 4; j++) {\n            for (int k = j + 1; k < 4; k++) {\n                double side1 = distance(x[i], y[i], x[j], y[j]);\n                double side2 = distance(x[j], y[j], x[k], y[k]);\n                double side3 = distance(x[k], y[k], x[i], y[i]);\n\n                // Check if points are collinear\n                if (isCollinear(x[i], y[i], x[j], y[j], x[k], y[k])) {\n                    printf(\"Collinear: %lf, %lf, %lf\\n\", x[i], y[i], x[j]);\n                    continue;\n                }\n\n                // Calculate area using Heron's formula\n                double area = heronsFormula(side1, side2, side3);\n                printf(\"Area of triangle (%.3lf, %.3lf), (%.3lf, %.3lf), (%.3lf, %.3lf): %.3lf\\n\", \n                       x[i], y[i], x[j], y[j], x[k], y[k], area);\n            }\n        }\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "area",
+            "6.000"
+          ],
+          "missing": [],
+          "output_head": "Enter the coordinates of 4 points: Area of triangle (0.000, 0.000), (0.000, 3.000), (4.000, 0.000): 6.000\nArea of triangle (0.000, 0.000), (0.000, 3.000), (4.000, 3.000): 6.000\nArea of triangle (0.000, 0.000), (4.000, 0.000), (4.000, 3.000): 6.000\nArea of triangle (0.000, 3.000), (4.000, 0.000), (4.000, 3.000): 6.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [
+            "sqrt",
+            "area",
+            "triangle",
+            "printf"
+          ],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Geometry - Triangle Enumeration",
+        "difficulty": "medium",
+        "points": 17,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "strict_code_only": false,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "2025_midterm_004",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-05-15T04:17:18+00:00",
+      "latency_ms": 20773,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\n#define NUM_NUMBERS 5\n\nvoid generateRandomNumbers(int numbers[]) {\n    for (int i = 0; i < NUM_NUMBERS; i++) {\n        do {\n            numbers[i] = rand() % 10 + 1;\n        } while (i > 0 && numbers[i] == numbers[i - 1]);\n    }\n}\n\nvoid displayNumbers(int numbers[]) {\n    for (int i = 0; i < NUM_NUMBERS; i++) {\n        printf(\"* \");\n    }\n    printf(\"\\n\");\n}\n\nvoid playGame() {\n    int numbers[NUM_NUMBERS];\n    generateRandomNumbers(numbers);\n\n    int guessedPositions[NUM_NUMBERS] = {0};\n    int score = 0;\n\n    while (1) {\n        displayNumbers(numbers);\n        printf(\"Pick a position (1-%d): \", NUM_NUMBERS);\n        int position;\n        scanf(\"%d\", &position);\n\n        if (position < 1 || position > NUM_NUMBERS) {\n            printf(\"Invalid position. Please try again.\\n\");\n            continue;\n        }\n\n        guessedPositions[position - 1] = 1;\n\n        printf(\"Guess even or odd (E/O): \");\n        char guess;\n        scanf(\" %c\", &guess);\n\n        if ((numbers[position - 1] % 2 == 0 && guess == 'E') || \n            (numbers[position - 1] % 2 != 0 && guess == 'O')) {\n            score += 5;\n            printf(\"Correct! You win 5 points.\\n\");\n            numbers[position - 1] = -1; // Mark as revealed\n        } else {\n            printf(\"Incorrect. Try again.\\n\");\n        }\n\n        int allRevealed = 1;\n        for (int i = 0; i < NUM_NUMBERS; i++) {\n            if (!guessedPositions[i]) {\n                allRevealed = 0;\n                break;\n            }\n        }\n\n        if (allRevealed) {\n            printf(\"All numbers revealed!\\n\");\n            printf(\"Final score: %d\\n\", score);\n            break;\n        }\n    }\n}\n\nint main() {\n    srand(time(NULL));\n    playGame();\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": false,
+          "message": "compile error (1 errors)",
+          "errors": [
+            "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_5r6h5mjb\\2025_midterm_004.c:71:11: error: implicit declaration of function 'time' [-Wimplicit-function-declaration]"
+          ],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": false,
+          "timed_out": false,
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "Numbers",
+            "win",
+            "points",
+            "Pick"
+          ],
+          "output_head": "",
+          "note": "not run (compile failed or no compiler)"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [
+            "time() used but #include <time.h> not found",
+            "array[i-1] accessed in loop starting from i=0 — potential out-of-bounds at first iteration",
+            "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
+          ],
+          "errors": [],
+          "risk_score": 0.24
+        },
+        "keyword": {
+          "passed": true,
+          "score": 0.8,
+          "found": [
+            "rand",
+            "srand",
+            "scanf",
+            "printf"
+          ],
+          "missing": [
+            "array"
+          ]
+        }
+      },
+      "score": 27,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 12,
+        "compile": 0,
+        "runtime": 0
+      },
+      "accepted": false,
+      "task_meta": {
+        "topic": "Game Simulation - Even/Odd Guessing",
+        "difficulty": "medium",
+        "points": 23,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "strict_code_only": false,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    }
+  ]
+}

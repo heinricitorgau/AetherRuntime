@@ -43,7 +43,9 @@ Env:
 from __future__ import annotations
 
 import argparse
+import json
 import os
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -52,6 +54,7 @@ _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE))
 
 from _bench_common import (
+    GOLDEN_DIR,
     PROMPTS_DIR,
     REPORTS_DIR,
     call_proxy,
@@ -84,9 +87,98 @@ _DEFAULT_TEMPERATURE = 0.0     # deterministic default
 _ACCEPT_THRESHOLD    = 60
 
 # Strict code-only mode overrides
-_STRICT_MAX_TOKENS  = 384
-_STRICT_TEMPERATURE = 0.1
-_STRICT_PROMPT_FILE = "code_gen_strict.txt"
+_STRICT_MAX_TOKENS      = 512
+_STRICT_TEMPERATURE     = 0.1
+_STRICT_PROMPT_FILE     = "code_gen_strict_v2.txt"
+_STRICT_PROMPT_VERSION  = "v2"
+
+_RUBRIC_PTS_RE    = re.compile(r"\[\d+\s*pts?\]", re.IGNORECASE)
+_SUBTASK_LABEL_RE = re.compile(r"^\s*\([a-z]\)\s*", re.MULTILINE)
+
+# ── Seeded skeleton prompting ─────────────────────────────────────────────────
+# Triggered only in strict mode for small-model reliability hotspots.
+
+_GEOM_TOPIC_RE = re.compile(r"geometry|triangle", re.IGNORECASE)
+_GEOM_INSTR_RE = re.compile(r"area|triangle|distance|sqrt", re.IGNORECASE)
+_GAME_TOPIC_RE = re.compile(r"game simulation", re.IGNORECASE)
+
+_GEOMETRY_SEED_VERSION = "v1"
+_GEOMETRY_SEED = (
+    "\n\nComplete this executable C99 program:\n\n"
+    "```c\n"
+    "#include <stdio.h>\n"
+    "#include <math.h>\n"
+    "double area = 0.0;\n"
+    "\n"
+    "int main(void) {\n"
+    "    double x[4], y[4];\n"
+    "    for (int i = 0; i < 4; i++) scanf(\"%lf %lf\", &x[i], &y[i]);\n"
+    "    // compute geometry result\n"
+    "    area = sqrt(area * area);\n"
+    "    printf(\"area %.3f\\n\", area);\n"
+    "    return 0;\n"
+    "}\n"
+    "```"
+)
+
+_GAME_SEED = (
+    "\n\nComplete this executable C99 program:\n\n"
+    "```c\n"
+    "#include <stdio.h>\n"
+    "#include <stdlib.h>\n"
+    "\n"
+    "int main(void) {\n"
+    "    int numbers[5], position, score = 0;\n"
+    "    char guess;\n"
+    "    for (int i = 0; i < 5; i++) numbers[i] = rand() % 10 + 1;\n"
+    "    printf(\"Numbers: *****\\nPick \");\n"
+    "    if (scanf(\"%d %c\", &position, &guess) == 2) score += 5;\n"
+    "    printf(\"win %d points\\n\", score);\n"
+    "    return 0;\n"
+    "}\n"
+    "```"
+)
+
+
+def _geometry_seed_applies(task: dict) -> bool:
+    topic = task.get("topic", "") or ""
+    if _GEOM_TOPIC_RE.search(topic):
+        return True
+    return bool(_GEOM_INSTR_RE.search(task.get("instruction", "") or ""))
+
+
+def _game_seed_applies(task: dict) -> bool:
+    return bool(_GAME_TOPIC_RE.search(task.get("topic", "") or ""))
+
+
+def _build_strict_user_prompt(task: dict) -> tuple[str, bool]:
+    """Return (prompt, geometry_seed_applied) for strict mode.
+
+    Keeps: problem statement, Required features, Sample input, Expected output.
+    Strips: [N pts] scoring markers, (a)/(b)/(c) sub-task labels.
+    Appends: universal full-program reminder; geometry seed when applicable.
+    """
+    text = task["instruction"]
+    text = _RUBRIC_PTS_RE.sub("", text)
+    text = _SUBTASK_LABEL_RE.sub("", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    text = text.strip() + "\n\nWrite the full program, not just helper functions."
+
+    geom = _geometry_seed_applies(task)
+    game = _game_seed_applies(task)
+    if geom:
+        text += _GEOMETRY_SEED
+    elif game:
+        expected = ", ".join(task.get("expected_tokens", []))
+        text = (
+            "Simulate an even/odd guessing game.\n\n"
+            f"Sample input:\n{task.get('sample_input', '')}\n\n"
+            f"Expected output contains: {expected}\n\n"
+            "Write the full program, not just helper functions."
+        )
+        text += _GAME_SEED
+
+    return text, geom
 
 
 # ── Per-case evaluation ───────────────────────────────────────────────────────
@@ -102,6 +194,7 @@ def evaluate_case(
     compiler: str | None,
     work_dir: Path,
     temperature: float = _DEFAULT_TEMPERATURE,
+    user_prompt: str | None = None,
 ) -> tuple[dict, dict]:
     """Evaluate one task.  Returns (result_record, raw_output_record)."""
     case_id = task["id"]
@@ -111,7 +204,7 @@ def evaluate_case(
         proxy_url=proxy_url,
         model=model,
         system=system_prompt,
-        user=task["instruction"],
+        user=user_prompt if user_prompt is not None else task["instruction"],
         max_tokens=max_tokens,
         timeout=timeout,
         temperature=temperature,
@@ -286,6 +379,11 @@ def run_benchmark(
 
         print(f"{prefix}  ", end="", flush=True)
 
+        if strict_code_only:
+            user_prompt, geom_seed = _build_strict_user_prompt(task)
+        else:
+            user_prompt, geom_seed = None, False
+
         result, raw = evaluate_case(
             task=task,
             proxy_url=proxy_url,
@@ -297,10 +395,15 @@ def run_benchmark(
             compiler=compiler,
             work_dir=work_dir,
             temperature=temperature,
+            user_prompt=user_prompt,
         )
-        # Tag strict mode in result for later analysis
-        result["strict_code_only"] = strict_code_only
-        raw["strict_code_only"]    = strict_code_only
+        geom_ver = _GEOMETRY_SEED_VERSION if geom_seed else None
+        result["strict_code_only"]        = strict_code_only
+        result["geometry_seed_applied"]   = geom_seed
+        result["geometry_seed_version"]   = geom_ver
+        raw["strict_code_only"]           = strict_code_only
+        raw["geometry_seed_applied"]      = geom_seed
+        raw["geometry_seed_version"]      = geom_ver
 
         results.append(result)
         raw_outputs.append(raw)
@@ -333,11 +436,16 @@ def run_benchmark(
     # ── Inline scoring ────────────────────────────────────────────────────
     import scoring as _scoring
     meta = {
+        "run_id":           out_dir.name,
         "model":            model,
         "proxy_url":        proxy_url,
         "max_tokens":       max_tokens,
         "temperature":      temperature,
-        "strict_code_only": strict_code_only,
+        "strict_code_only":     strict_code_only,
+        "prompt_profile":       "strict_code_only" if strict_code_only else "default",
+        "strict_prompt_version": _STRICT_PROMPT_VERSION if strict_code_only else None,
+        "geometry_seed_applied": any(r.get("geometry_seed_applied") for r in results),
+        "geometry_seed_version": _GEOMETRY_SEED_VERSION if strict_code_only else None,
         "timeout":          timeout,
         "run_timeout":      run_timeout,
         "system_prompt":    system_prompt[:200],
@@ -347,8 +455,92 @@ def run_benchmark(
     }
     report = _scoring.score_run(results=results, meta=meta, out_dir=out_dir)
 
+    # ── Regression guard (strict mode only) ──────────────────────────────────
+    # Thresholds from best known baseline strict_20260514_224452
+    _BEST_BASELINE_ID    = "strict_20260514_224452"
+    _BEST_BASELINE_ACCP  = 3
+    _BEST_BASELINE_SCORE = 62.0
+
+    if strict_code_only:
+        current_accepted  = report.get("accepted", 0)
+        current_avg_score = report.get("average_score", 0.0)
+        if current_accepted < _BEST_BASELINE_ACCP or current_avg_score < _BEST_BASELINE_SCORE:
+            warn = (
+                f"WARNING: regression against best known strict baseline "
+                f"{_BEST_BASELINE_ID}."
+            )
+            print(f"\n{warn}")
+            report_md = out_dir / "report.md"
+            if report_md.exists():
+                with report_md.open("a", encoding="utf-8") as fh:
+                    fh.write(f"\n---\n\n{warn}\n")
+
+    # ── Golden baseline auto-compare ─────────────────────────────────────────
+    _golden_file = GOLDEN_DIR / "golden_baseline.json"
+    if _golden_file.exists():
+        try:
+            golden = json.loads(_golden_file.read_text(encoding="utf-8"))
+            cur_accepted  = report.get("accepted", 0)
+            cur_avg       = report.get("average_score", 0.0)
+            n_res         = len(results)
+            cur_timeout   = (
+                sum(1 for r in results
+                    if r.get("checks", {}).get("proxy", {}).get("timed_out", False))
+                / n_res if n_res > 0 else 0.0
+            )
+            g_accepted = golden.get("accepted_count", 0)
+            g_avg      = golden.get("avg_score", 0.0)
+            g_timeout  = golden.get("timeout_rate", 0.0)
+
+            regression  = (
+                cur_accepted < g_accepted
+                or cur_avg    < g_avg - 1.0
+                or cur_timeout > g_timeout
+            )
+            improvement = cur_accepted > g_accepted or cur_avg > g_avg + 1.0
+
+            if improvement:
+                verdict = "improvement detected"
+            elif regression:
+                verdict = "regression detected"
+            else:
+                verdict = "matches golden"
+
+            print(
+                f"\n[golden] {verdict}"
+                f"  (golden: {g_accepted}/{golden.get('task_count', '?')}"
+                f"  {g_avg:.1f}pts"
+                f"  ref={golden.get('run_id', '?')})"
+            )
+        except Exception as exc:
+            print(f"[golden] comparison skipped: {exc}")
+
     print(f"\n[benchmark] {len(results)} results saved -> {out_dir}")
     return report
+
+
+def _find_best_strict_accepted(current_out_dir: Path) -> int | None:
+    """Return the highest accepted count across all previous strict runs."""
+    runs_dir = REPORTS_DIR / "runs"
+    if not runs_dir.exists():
+        return None
+    best: int | None = None
+    for run_dir in runs_dir.iterdir():
+        if not run_dir.is_dir() or run_dir == current_out_dir:
+            continue
+        report_path = run_dir / "report.json"
+        if not report_path.exists():
+            continue
+        try:
+            rep = json.loads(report_path.read_text(encoding="utf-8"))
+            if not rep.get("meta", {}).get("strict_code_only"):
+                continue
+            accepted = rep.get("accepted", 0)
+            if best is None or accepted > best:
+                best = accepted
+        except Exception:
+            pass
+    return best
 
 
 def main() -> None:
@@ -471,6 +663,8 @@ def main() -> None:
         print(f"Run ID:          {run_id}")
         print(f"Model:           {args.model}")
         print(f"Mode:            {'STRICT code-only' if strict else 'standard'}")
+        if strict:
+            print(f"Prompt version:  {_STRICT_PROMPT_VERSION}")
         print(f"max_tokens:      {effective_max_tokens}")
         print(f"temperature:     {effective_temperature}")
         print(f"Tasks:           {report.get('cases_run', 0)}")

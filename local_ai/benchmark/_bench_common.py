@@ -33,6 +33,7 @@ BENCHMARK_ROOT = Path(__file__).resolve().parent
 LOCAL_AI_ROOT  = BENCHMARK_ROOT.parent
 REPORTS_DIR    = BENCHMARK_ROOT / "reports"
 PROMPTS_DIR    = BENCHMARK_ROOT / "prompts"
+GOLDEN_DIR     = BENCHMARK_ROOT / "golden"
 
 # Make training_quality importable for static_analysis
 _TQ_DIR = str(LOCAL_AI_ROOT / "training_quality")

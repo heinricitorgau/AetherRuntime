@@ -31,7 +31,22 @@
       "Bash(python package_sft_dataset.py --input reports/semantic_accepted_filled.jsonl)",
       "Bash(python local_ai/benchmark/benchmark_cases.py --list)",
       "Bash(python local_ai/benchmark/run_baseline.py --dry-run --filter 2021)",
-      "Bash(python local_ai/benchmark/scoring.py --help)"
+      "Bash(python local_ai/benchmark/scoring.py --help)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\\\\local_ai\" -Recurse -Force -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object FullName)",
+      "Bash(python local_ai/training_quality/sft_readiness_check.py)",
+      "Bash(python -c \"import torch; print\\(torch.__version__\\); print\\(torch.cuda.is_available\\(\\)\\)\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\\\\local_ai\\\\sft\\\\configs\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\\\\local_ai\\\\sft\\\\artifacts\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\\\\local_ai\\\\sft\\\\reports\")",
+      "Bash(python \"c:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\\\\local_ai\\\\sft\\\\train_lora.py\" --help)",
+      "Bash(python \"c:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\\\\local_ai\\\\sft\\\\evaluate_lora.py\" --help)",
+      "Bash(Get-ChildItem -Recurse \"c:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\\\\local_ai\\\\sft\")",
+      "Bash(python local_ai/sft/train_lora.py --dataset local_ai/training_quality/reports/sft_chatml.jsonl --limit 8 --epochs 1 --output-dir local_ai/sft/artifacts/test_lora)",
+      "Bash(echo \"EXIT CODE: $?\")",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(python local_ai/sft/train_lora.py --help)",
+      "Bash(python -X faulthandler local_ai/sft/train_lora.py --dataset local_ai/training_quality/reports/sft_chatml.jsonl --limit 8 --epochs 1 --output-dir local_ai/sft/artifacts/test_lora)"
     ]
   }
 }

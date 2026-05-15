@@ -1,0 +1,140 @@
+{
+  "cases_run": 1,
+  "accepted": 1,
+  "average_score": 100.0,
+  "min_score": 100,
+  "max_score": 100,
+  "rates": {
+    "proxy_pass_rate": 1.0,
+    "truncation_pass_rate": 1.0,
+    "compile_pass_rate": 1.0,
+    "runtime_pass_rate": 1.0,
+    "semantic_pass_rate": 1.0,
+    "keyword_pass_rate": 1.0,
+    "accepted_rate": 1.0
+  },
+  "score_distribution": {
+    "90-100": 1,
+    "70-89": 0,
+    "60-69": 0,
+    "0-59": 0
+  },
+  "by_topic": {
+    "Geometry - Triangle Enumeration": {
+      "count": 1,
+      "accepted": 1,
+      "avg_score": 100.0
+    }
+  },
+  "by_difficulty": {
+    "medium": {
+      "count": 1,
+      "accepted": 1,
+      "avg_score": 100.0
+    }
+  },
+  "latency_ms": {
+    "avg": 16296,
+    "min": 16296,
+    "max": 16296
+  },
+  "run_id": "strict_20260514_232044",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-05-14T23:21:01+00:00",
+  "meta": {
+    "run_id": "strict_20260514_232044",
+    "model": "qwen2.5-coder:3b",
+    "proxy_url": "http://127.0.0.1:8082",
+    "max_tokens": 512,
+    "temperature": 0.1,
+    "strict_code_only": true,
+    "prompt_profile": "strict_code_only",
+    "strict_prompt_version": "v2",
+    "geometry_seed_applied": true,
+    "geometry_seed_version": "v1",
+    "timeout": 180,
+    "run_timeout": 8,
+    "system_prompt": "You are a competitive programming code generator.\n\nRules:\n* Output exactly ONE complete compilable C99 program.\n* Do not explain.\n* Do not add markdown headings.\n* Do not add Chinese text.\n* Do not ad",
+    "compiler": "C:\\msys64\\ucrt64\\bin\\cc.EXE",
+    "tasks_total": 1,
+    "skip_compile": false
+  },
+  "results": [
+    {
+      "id": "2025_midterm_003",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-05-14T23:21:01+00:00",
+      "latency_ms": 16296,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x[4], y[4];\n    double a, b, c, s, area = 0.0;\n\n    // Read coordinates of 4 points\n    for (int i = 0; i < 4; i++) scanf(\"%lf %lf\", &x[i], &y[i]);\n\n    // Generate all combinations of 3 points\n    for (int i = 0; i < 3; i++) {\n        for (int j = i + 1; j < 4; j++) {\n            for (int k = j + 1; k < 4; k++) {\n                // Calculate the lengths of the sides of the triangle\n                a = sqrt(pow(x[j] - x[i], 2) + pow(y[j] - y[i], 2));\n                b = sqrt(pow(x[k] - x[j], 2) + pow(y[k] - y[j], 2));\n                c = sqrt(pow(x[i] - x[k], 2) + pow(y[i] - y[k], 2));\n\n                // Check if the points are collinear\n                if (a + b <= c || a + c <= b || b + c <= a) {\n                    printf(\"collinear\\n\");\n                    continue;\n                }\n\n                // Calculate the semi-perimeter of the triangle\n                s = (a + b + c) / 2.0;\n\n                // Calculate the area using Heron's formula\n                area = sqrt(s * (s - a) * (s - b) * (s - c));\n\n                // Display the area if the triangle can be formed\n                printf(\"area %.3f\\n\", area);\n            }\n        }\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "area",
+            "6.000"
+          ],
+          "missing": [],
+          "output_head": "area 6.000\narea 6.000\narea 6.000\narea 6.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [
+            "sqrt",
+            "area",
+            "triangle",
+            "printf"
+          ],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Geometry - Triangle Enumeration",
+        "difficulty": "medium",
+        "points": 17,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v1"
+    }
+  ]
+}

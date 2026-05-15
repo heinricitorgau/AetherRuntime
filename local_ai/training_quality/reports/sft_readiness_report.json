@@ -1,0 +1,106 @@
+{
+  "timestamp": "2026-05-15T06:01:36+00:00",
+  "ready_for_sft": true,
+  "dataset_checks": {
+    "passed": true,
+    "checks": {
+      "semantic_accepted_filled.jsonl": {
+        "passed": true,
+        "detail": "found"
+      },
+      "sft_chatml.jsonl": {
+        "passed": true,
+        "detail": "found"
+      },
+      "sft_alpaca.jsonl": {
+        "passed": true,
+        "detail": "found"
+      },
+      "sft_instruction_output.jsonl": {
+        "passed": true,
+        "detail": "found"
+      },
+      "_count_source": "sft_package_summary.json",
+      "total_records": {
+        "passed": true,
+        "detail": "41 (need >= 40)"
+      },
+      "code_generation": {
+        "passed": true,
+        "detail": "16 (need >= 16)"
+      },
+      "concept_summary": {
+        "passed": true,
+        "detail": "25 (need >= 25)"
+      }
+    }
+  },
+  "semantic_checks": {
+    "passed": true,
+    "checks": {
+      "semantic_rejected": {
+        "passed": true,
+        "detail": "0 rejected (need 0)"
+      },
+      "semantic_accepted": {
+        "passed": true,
+        "detail": "16"
+      },
+      "checked": {
+        "passed": true,
+        "detail": "16"
+      }
+    }
+  },
+  "benchmark_checks": {
+    "passed": true,
+    "checks": {
+      "golden_exists": {
+        "passed": true,
+        "detail": "ref=strict_20260515_052032"
+      },
+      "accepted_all": {
+        "passed": true,
+        "detail": "4/4 (need all)"
+      },
+      "avg_score_ge_80": {
+        "passed": true,
+        "detail": "84.2 (need >= 80)"
+      },
+      "compile_100pct": {
+        "passed": true,
+        "detail": "100% (need 100%)"
+      },
+      "semantic_100pct": {
+        "passed": true,
+        "detail": "100% (need 100%)"
+      },
+      "timeout_zero": {
+        "passed": true,
+        "detail": "0% (need 0%)"
+      }
+    }
+  },
+  "reproducibility_checks": {
+    "passed": true,
+    "checks": {
+      "latest_comparison": {
+        "passed": true,
+        "detail": "verdict=matches_golden  run=strict_20260515_043031"
+      }
+    }
+  },
+  "documentation_checks": {
+    "passed": true,
+    "checks": {
+      "README.md": {
+        "passed": true,
+        "detail": "found"
+      },
+      "DATASET_CARD.md": {
+        "passed": true,
+        "detail": "found"
+      }
+    }
+  }
+}
