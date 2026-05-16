@@ -148,6 +148,13 @@ function Get-AdaptiveTimeouts($sizeClass) {
     }
 }
 
+function Get-ModelTimeoutOverrides($modelName) {
+    if ($modelName.ToLowerInvariant() -eq "qwen2.5-coder:3b") {
+        return @{ Full = 300; FirstToken = 90 }
+    }
+    return $null
+}
+
 function Get-BundledModelManifestPath($bundledOllamaHome, $model) {
     $modelName = $model.Split(":", 2)[0]
     $baseDir = Join-Path $bundledOllamaHome ("models/manifests/registry.ollama.ai/library/" + $modelName)
@@ -234,6 +241,10 @@ if ($clawStreamTest) {
 
 $sizeClass = Get-ModelSizeClass $model
 $timeouts = Get-AdaptiveTimeouts $sizeClass
+$modelTimeouts = Get-ModelTimeoutOverrides $model
+if ($null -ne $modelTimeouts) {
+    $timeouts = $modelTimeouts
+}
 if (-not $env:CLAW_OLLAMA_TIMEOUT_SECONDS) {
     $env:CLAW_OLLAMA_TIMEOUT_SECONDS = $timeouts.Full.ToString()
 }

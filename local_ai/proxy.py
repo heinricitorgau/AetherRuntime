@@ -19,10 +19,12 @@ import json
 import os
 import re
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
 import time
+import traceback
 import uuid
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.error import HTTPError, URLError
@@ -49,8 +51,11 @@ except ImportError:  # pragma: no cover - package import path used by tests
 DEFAULT_PORT = 8082
 DEFAULT_OLLAMA_URL = "http://localhost:11434"
 DEFAULT_MODEL = "qwen2.5-coder:1.5b"
-DEFAULT_OLLAMA_TIMEOUT = 60
-DEFAULT_FIRST_TOKEN_TIMEOUT = 15
+DEFAULT_OLLAMA_TIMEOUT = 300
+DEFAULT_FIRST_TOKEN_TIMEOUT = 90
+BENCHMARK_SAFE_MODELS: dict[str, tuple[int, int]] = {
+    "qwen2.5-coder:3b": (300, 90),
+}
 DEFAULT_MAX_REPAIR_RETRIES = 1
 HEARTBEAT_INTERVAL = 5
 _DEBUG = os.environ.get("CLAW_DEBUG", "").strip() in ("1", "true", "yes")
@@ -541,15 +546,52 @@ def _request_ollama_completion(
         },
         method="POST",
     )
+    _log_outbound_request(
+        path="sync:/v1/chat/completions",
+        model=str(non_streaming_payload.get("model", "")),
+        stream=False,
+        request_timeout=timeout,
+        first_token_timeout=None,
+    )
+    request_start = time.monotonic()
+    sys.stderr.write(f"[proxy-debug] request_start={request_start:.6f} path=sync:/v1/chat/completions\n")
     try:
-        with _no_proxy_opener.open(openai_req, timeout=timeout) as resp:
-            raw_resp = resp.read()
-        if _DEBUG:
-            sys.stderr.write(f"[proxy:debug] ollama /v1 raw response (first 500): {raw_resp[:500]!r}\n")
-        return json.loads(raw_resp)
+        resp = _no_proxy_opener.open(openai_req, timeout=timeout)
     except HTTPError as exc:
         if exc.code != 404:
             raise
+        resp = None
+    except (URLError, TimeoutError, socket.timeout) as exc:
+        sys.stderr.write(
+            "[proxy-timeout] kind=connection_open\n"
+            f"effective_request_timeout={timeout}\n"
+            "effective_first_token_timeout=None\n"
+            f"exception={exc!r}\n"
+            f"{traceback.format_exc()}\n"
+        )
+        raise
+    if resp is not None:
+        with resp:
+            _log_response_socket_timeout(resp, path="sync:/v1/chat/completions")
+            try:
+                raw_resp = resp.read()
+            except (TimeoutError, socket.timeout) as exc:
+                sys.stderr.write(
+                    "[proxy-timeout] kind=full_response_read\n"
+                    f"effective_request_timeout={timeout}\n"
+                    "effective_first_token_timeout=None\n"
+                    f"exception={exc!r}\n"
+                    f"{traceback.format_exc()}\n"
+                )
+                raise
+        request_end = time.monotonic()
+        sys.stderr.write(
+            f"[proxy-debug] request_end={request_end:.6f} "
+            f"elapsed={request_end - request_start:.3f}s path=sync:/v1/chat/completions\n"
+        )
+        if _DEBUG:
+            sys.stderr.write(f"[proxy:debug] ollama /v1 raw response (first 500): {raw_resp[:500]!r}\n")
+        return json.loads(raw_resp)
 
     api_payload = _ollama_api_chat_payload(non_streaming_payload)
     api_req = Request(
@@ -558,8 +600,44 @@ def _request_ollama_completion(
         headers={"Content-Type": "application/json"},
         method="POST",
     )
-    with _no_proxy_opener.open(api_req, timeout=timeout) as resp:
-        raw_resp = resp.read()
+    _log_outbound_request(
+        path="sync:/api/chat",
+        model=str(non_streaming_payload.get("model", "")),
+        stream=False,
+        request_timeout=timeout,
+        first_token_timeout=None,
+    )
+    request_start = time.monotonic()
+    sys.stderr.write(f"[proxy-debug] request_start={request_start:.6f} path=sync:/api/chat\n")
+    try:
+        resp = _no_proxy_opener.open(api_req, timeout=timeout)
+    except (URLError, TimeoutError, socket.timeout) as exc:
+        sys.stderr.write(
+            "[proxy-timeout] kind=connection_open\n"
+            f"effective_request_timeout={timeout}\n"
+            "effective_first_token_timeout=None\n"
+            f"exception={exc!r}\n"
+            f"{traceback.format_exc()}\n"
+        )
+        raise
+    with resp:
+        _log_response_socket_timeout(resp, path="sync:/api/chat")
+        try:
+            raw_resp = resp.read()
+        except (TimeoutError, socket.timeout) as exc:
+            sys.stderr.write(
+                "[proxy-timeout] kind=full_response_read\n"
+                f"effective_request_timeout={timeout}\n"
+                "effective_first_token_timeout=None\n"
+                f"exception={exc!r}\n"
+                f"{traceback.format_exc()}\n"
+            )
+            raise
+    request_end = time.monotonic()
+    sys.stderr.write(
+        f"[proxy-debug] request_end={request_end:.6f} "
+        f"elapsed={request_end - request_start:.3f}s path=sync:/api/chat\n"
+    )
     if _DEBUG:
         sys.stderr.write(f"[proxy:debug] ollama /api/chat raw response (first 500): {raw_resp[:500]!r}\n")
     ollama_data = json.loads(raw_resp)
@@ -582,7 +660,28 @@ def _open_ollama_stream(
         },
         method="POST",
     )
-    return _no_proxy_opener.open(req, timeout=timeout)
+    _log_outbound_request(
+        path="stream:/v1/chat/completions",
+        model=str(streaming_payload.get("model", "")),
+        stream=True,
+        request_timeout=timeout,
+        first_token_timeout=timeout,
+    )
+    request_start = time.monotonic()
+    sys.stderr.write(f"[proxy-debug] request_start={request_start:.6f} path=stream:/v1/chat/completions\n")
+    try:
+        response = _no_proxy_opener.open(req, timeout=timeout)
+    except (URLError, TimeoutError, socket.timeout) as exc:
+        sys.stderr.write(
+            "[proxy-timeout] kind=connection_open\n"
+            f"effective_request_timeout={timeout}\n"
+            f"effective_first_token_timeout={timeout}\n"
+            f"exception={exc!r}\n"
+            f"{traceback.format_exc()}\n"
+        )
+        raise
+    _log_response_socket_timeout(response, path="stream:/v1/chat/completions")
+    return response
 
 
 def _set_socket_timeout(response, timeout: float):
@@ -590,8 +689,52 @@ def _set_socket_timeout(response, timeout: float):
         sock = getattr(getattr(response, "fp", None), "raw", None)
         if sock and hasattr(sock, "_sock"):
             sock._sock.settimeout(timeout)
+            sys.stderr.write(
+                f"[proxy-debug] socket.settimeout={timeout} "
+                f"socket_timeout_after={sock._sock.gettimeout()}\n"
+            )
     except Exception:
-        pass
+        sys.stderr.write(
+            f"[proxy-debug] socket.settimeout failed timeout={timeout}\n"
+            f"{traceback.format_exc()}\n"
+        )
+
+
+def _response_socket_timeout(response) -> object:
+    try:
+        sock = getattr(getattr(response, "fp", None), "raw", None)
+        if sock and hasattr(sock, "_sock"):
+            return sock._sock.gettimeout()
+    except Exception:
+        return "unavailable"
+    return "unavailable"
+
+
+def _log_response_socket_timeout(response, path: str) -> None:
+    sys.stderr.write(
+        f"[proxy-debug] urllib_timeout_object={_response_socket_timeout(response)!r} "
+        f"path={path}\n"
+    )
+
+
+def _log_outbound_request(
+    *,
+    path: str,
+    model: str,
+    stream: bool,
+    request_timeout: int,
+    first_token_timeout: int | None,
+) -> None:
+    sys.stderr.write(
+        "[proxy-debug]\n"
+        f"request_timeout={request_timeout}\n"
+        f"first_token_timeout={first_token_timeout}\n"
+        f"stream={stream}\n"
+        f"path={path}\n"
+        f"model={model}\n"
+        f"socket_default_timeout={socket.getdefaulttimeout()!r}\n"
+        f"urllib_timeout_arg={request_timeout}\n"
+    )
 
 
 def _repair_c_response(
@@ -601,23 +744,54 @@ def _repair_c_response(
     ollama_url: str,
     timeout: int = DEFAULT_OLLAMA_TIMEOUT,
 ) -> dict:
+    repair_flow_start = time.monotonic()
     current_response = initial_response
     max_attempts = int(os.environ.get("CLAW_MAX_REPAIR_RETRIES", str(DEFAULT_MAX_REPAIR_RETRIES)))
     best_response = current_response
     best_check = {"ok": False, "score": -1.0, "issues": [], "suggestions": []}
-    for _ in range(max_attempts + 1):
+    sys.stderr.write(
+        f"[proxy-repair] flow_start={repair_flow_start:.6f} "
+        f"max_repair_retries={max_attempts}\n"
+    )
+    for attempt_index in range(max_attempts + 1):
+        attempt_label = "initial" if attempt_index == 0 else f"repair_{attempt_index}"
+        attempt_start = time.monotonic()
+        sys.stderr.write(
+            f"[proxy-repair] attempt_start={attempt_start:.6f} "
+            f"attempt={attempt_label}\n"
+        )
         content_text = current_response.get("choices", [{}])[0].get("message", {}).get("content", "")
         check = check_c_answer(content_text, user_text)
+        attempt_end = time.monotonic()
+        sys.stderr.write(
+            f"[proxy-repair] attempt_end={attempt_end:.6f} "
+            f"attempt={attempt_label} elapsed={attempt_end - attempt_start:.3f}s "
+            f"ok={check.get('ok')} score={check.get('score', 0)} "
+            f"issues={len(check.get('issues', []))} suggestions={len(check.get('suggestions', []))}\n"
+        )
+        sys.stderr.write(
+            f"[proxy-repair] issues={json.dumps(check.get('issues', []), ensure_ascii=False)} "
+            f"suggestions={json.dumps(check.get('suggestions', []), ensure_ascii=False)} "
+            f"attempt={attempt_label}\n"
+        )
         if check.get("score", 0) >= best_check.get("score", 0):
             best_response = current_response
             best_check = check
         if check.get("ok"):
+            flow_end = time.monotonic()
+            sys.stderr.write(
+                f"[proxy-repair] flow_end={flow_end:.6f} "
+                f"elapsed={flow_end - repair_flow_start:.3f}s result=accepted "
+                f"attempt={attempt_label}\n"
+            )
             return current_response
-        if _ >= max_attempts:
+        if attempt_index >= max_attempts:
             break
 
-        if _DEBUG:
-            sys.stderr.write(f"[proxy:debug] retry #{_+1} reason=checker failed (score={check.get('score', 0)})\n")
+        sys.stderr.write(
+            f"[proxy-repair] retry_scheduled next_attempt=repair_{attempt_index + 1} "
+            f"reason=checker_failed score={check.get('score', 0)}\n"
+        )
 
         repair_messages = list(oai_payload.get("messages", []))
         repair_messages.append({"role": "assistant", "content": content_text})
@@ -640,6 +814,12 @@ def _repair_c_response(
         message["content"] = append_checker_warnings(content_text, best_check)
         choice["message"] = message
         best_response["choices"][0] = choice
+    flow_end = time.monotonic()
+    sys.stderr.write(
+        f"[proxy-repair] flow_end={flow_end:.6f} "
+        f"elapsed={flow_end - repair_flow_start:.3f}s result=best_effort "
+        f"score={best_check.get('score', 0)}\n"
+    )
     return best_response
 
 
@@ -835,6 +1015,10 @@ def stream_openai_to_anthropic(ollama_response, model: str, first_token_timeout:
             if msg_content:
                 if t_first_token is None:
                     t_first_token = time.monotonic()
+                    sys.stderr.write(
+                        f"[proxy-debug] first_token_received={t_first_token:.6f} "
+                        f"elapsed={t_first_token - t_start:.3f}s path=stream\n"
+                    )
                     _set_socket_timeout(ollama_response, full_timeout)
                 output_tokens += 1
                 total_chars += len(msg_content)
@@ -858,6 +1042,10 @@ def stream_openai_to_anthropic(ollama_response, model: str, first_token_timeout:
         if text_delta:
             if t_first_token is None:
                 t_first_token = time.monotonic()
+                sys.stderr.write(
+                    f"[proxy-debug] first_token_received={t_first_token:.6f} "
+                    f"elapsed={t_first_token - t_start:.3f}s path=stream\n"
+                )
                 _set_socket_timeout(ollama_response, full_timeout)
             output_tokens += 1
             total_chars += len(text_delta)
@@ -875,6 +1063,11 @@ def stream_openai_to_anthropic(ollama_response, model: str, first_token_timeout:
         if debug_chunks:
             sys.stderr.write(f"[proxy:debug] first {len(debug_chunks)} emitted text chunks: {debug_chunks!r}\n")
         sys.stderr.write(f"[proxy:debug] stream metrics - first token latency: {latency:.1f}s, total duration: {duration:.1f}s, total chars: {total_chars}\n")
+    request_end = time.monotonic()
+    sys.stderr.write(
+        f"[proxy-debug] request_end={request_end:.6f} "
+        f"elapsed={request_end - t_start:.3f}s path=stream\n"
+    )
         
     if total_chars == 0:
         sys.stderr.write("[proxy] empty stream response — Ollama returned no text\n")
@@ -990,6 +1183,24 @@ class ProxyHandler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
             self.end_headers()
             self.wfile.write(json.dumps({"status": "ok", "model": self.local_model}).encode())
+        elif self.path == "/config":
+            body = json.dumps(
+                {
+                    "model": self.local_model,
+                    "full_timeout": self.ollama_timeout,
+                    "first_token_timeout": self.first_token_timeout,
+                    "configured_full_timeout": self.ollama_timeout,
+                    "effective_request_timeout": self.ollama_timeout,
+                    "effective_first_token_timeout": self.first_token_timeout,
+                    "stream_mode": False,
+                    "force_non_stream": os.environ.get("CLAW_FORCE_NON_STREAM", "") == "1",
+                }
+            ).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
         else:
             self.send_error(404)
 
@@ -1069,7 +1280,10 @@ class ProxyHandler(BaseHTTPRequestHandler):
         latest_user_text = _latest_user_text(body)
         oai_payload = anthropic_to_openai(body, self.ollama_model, self.default_system_prompt)
         requested_language = _detect_programming_language(latest_user_text)
-        needs_c_repair = (requested_language == "c") and not self.smoke_test
+        skip_repair = bool(body.get("claw_skip_repair", False))
+        needs_c_repair = (requested_language == "c") and not self.smoke_test and not skip_repair
+        if skip_repair:
+            sys.stderr.write("[proxy-repair] skipped reason=request_flag\n")
 
         try:
             if streaming:
@@ -1090,6 +1304,13 @@ class ProxyHandler(BaseHTTPRequestHandler):
             reason = getattr(exc, "reason", exc)
             if isinstance(reason, (TimeoutError, OSError)) and "timed out" in str(reason).lower():
                 sys.stderr.write(
+                    "[proxy-timeout] kind=connection_or_full_response\n"
+                    f"effective_request_timeout={self.ollama_timeout}\n"
+                    f"effective_first_token_timeout={self.first_token_timeout}\n"
+                    f"exception={exc!r}\n"
+                    f"{traceback.format_exc()}\n"
+                )
+                sys.stderr.write(
                     f"[proxy] request timed out after {self.ollama_timeout}s"
                     f" (model={self.ollama_model}, url={self.ollama_url})"
                     f" — increase CLAW_OLLAMA_TIMEOUT_SECONDS or use a smaller model\n"
@@ -1108,6 +1329,13 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 502, f"Ollama 回應 HTTP {exc.code}：{exc.reason or '未知錯誤'}"
             )
         except TimeoutError as exc:
+            sys.stderr.write(
+                "[proxy-timeout] kind=direct_timeout\n"
+                f"effective_request_timeout={self.ollama_timeout}\n"
+                f"effective_first_token_timeout={self.first_token_timeout}\n"
+                f"exception={exc!r}\n"
+                f"{traceback.format_exc()}\n"
+            )
             sys.stderr.write(f"[proxy] direct TimeoutError caught: {exc}\n")
             self._send_json_error(
                 504, f"Ollama request timed out directly (TimeoutError)"
@@ -1136,11 +1364,16 @@ class ProxyHandler(BaseHTTPRequestHandler):
             self._send_json_error(502, "empty model response")
             return
         body_bytes = json.dumps(result).encode()
-        self.send_response(200)
-        self.send_header("Content-Type", "application/json")
-        self.send_header("Content-Length", str(len(body_bytes)))
-        self.end_headers()
-        self.wfile.write(body_bytes)
+        try:
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body_bytes)))
+            self.end_headers()
+            self.wfile.write(body_bytes)
+        except (BrokenPipeError, ConnectionAbortedError) as exc:
+            sys.stderr.write(
+                f"[proxy] client disconnected before sync response write completed: {exc}\n"
+            )
 
     def _write_sse_chunk(self, chunk: bytes) -> None:
         self.wfile.write(chunk)
@@ -1233,7 +1466,14 @@ class ProxyHandler(BaseHTTPRequestHandler):
                         buffered_chunks.append(chunk)
                         if b"content_block_delta" in chunk:
                             break
-                except (FirstTokenTimeoutError, TimeoutError) as exc:
+                except (FirstTokenTimeoutError, TimeoutError, socket.timeout) as exc:
+                    sys.stderr.write(
+                        "[proxy-timeout] kind=first_token\n"
+                        f"effective_request_timeout={self.ollama_timeout}\n"
+                        f"effective_first_token_timeout={self.first_token_timeout}\n"
+                        f"exception={exc!r}\n"
+                        f"{traceback.format_exc()}\n"
+                    )
                     sys.stderr.write(f"[proxy] first-token timeout: {exc}\n")
                     self._send_json_error(502, "model produced no tokens before first-token timeout")
                     return
@@ -1262,6 +1502,13 @@ class ProxyHandler(BaseHTTPRequestHandler):
             # 收工，並把錯誤寫到 stderr 給離線 log 追查。
             is_timeout = isinstance(exc, (TimeoutError, OSError)) and "timed out" in str(exc).lower()
             if is_timeout:
+                sys.stderr.write(
+                    "[proxy-timeout] kind=mid_stream_full_response\n"
+                    f"effective_request_timeout={self.ollama_timeout}\n"
+                    f"effective_first_token_timeout={self.first_token_timeout}\n"
+                    f"exception={exc!r}\n"
+                    f"{traceback.format_exc()}\n"
+                )
                 sys.stderr.write(
                     f"[proxy] mid-stream timeout after {self.ollama_timeout}s"
                     f" (model={self.ollama_model})"
@@ -1301,6 +1548,13 @@ def _resolve_ollama_url() -> str:
     return DEFAULT_OLLAMA_URL
 
 
+def _default_timeouts_for_model(model: str) -> tuple[int, int]:
+    return BENCHMARK_SAFE_MODELS.get(
+        model.strip().lower(),
+        (DEFAULT_OLLAMA_TIMEOUT, DEFAULT_FIRST_TOKEN_TIMEOUT),
+    )
+
+
 # ── 主程式 ────────────────────────────────────────────────────────────────────
 
 def wait_for_ollama(ollama_url: str, timeout: int = 30) -> bool:
@@ -1336,15 +1590,23 @@ def main() -> None:
     ollama_url = _normalize_url(args.ollama_url) if args.ollama_url else _resolve_ollama_url()
     port = args.port if args.port is not None else int(os.environ.get("CLAW_PROXY_PORT", str(DEFAULT_PORT)))
     ollama_model = args.ollama_model or model
+    default_ollama_timeout, default_first_token_timeout = _default_timeouts_for_model(model)
     try:
-        ollama_timeout = int(os.environ.get("CLAW_OLLAMA_TIMEOUT_SECONDS", str(DEFAULT_OLLAMA_TIMEOUT)))
+        ollama_timeout = int(
+            os.environ.get("CLAW_OLLAMA_TIMEOUT_SECONDS", str(default_ollama_timeout))
+        )
     except ValueError:
-        ollama_timeout = DEFAULT_OLLAMA_TIMEOUT
+        ollama_timeout = default_ollama_timeout
         
     try:
-        first_token_timeout = args.first_token_timeout or int(os.environ.get("CLAW_FIRST_TOKEN_TIMEOUT_SECONDS", str(DEFAULT_FIRST_TOKEN_TIMEOUT)))
+        first_token_timeout = args.first_token_timeout or int(
+            os.environ.get(
+                "CLAW_FIRST_TOKEN_TIMEOUT_SECONDS",
+                str(default_first_token_timeout),
+            )
+        )
     except ValueError:
-        first_token_timeout = DEFAULT_FIRST_TOKEN_TIMEOUT
+        first_token_timeout = default_first_token_timeout
 
     ProxyHandler.ollama_url = ollama_url
     ProxyHandler.local_model = model

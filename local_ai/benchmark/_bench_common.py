@@ -90,6 +90,7 @@ def call_proxy(
     max_tokens: int,
     timeout: int,
     temperature: float = 0.0,
+    skip_repair: bool = False,
 ) -> tuple[str, str | None, int]:
     """Return (text, error_message, latency_ms). error_message is None on success."""
     payload = json.dumps({
@@ -98,6 +99,7 @@ def call_proxy(
         "temperature": temperature,
         "system":      system,
         "messages":    [{"role": "user", "content": user}],
+        "claw_skip_repair": skip_repair,
     }).encode("utf-8")
 
     req = urllib.request.Request(
@@ -114,6 +116,8 @@ def call_proxy(
         parts = body.get("content", [])
         text = "".join(b.get("text", "") for b in parts if b.get("type") == "text")
         return text.strip(), None, latency_ms
+    except urllib.error.HTTPError as exc:
+        return "", f"proxy HTTP error: HTTP {exc.code} {exc.reason}", 0
     except urllib.error.URLError as exc:
         return "", f"proxy unreachable: {exc}", 0
     except Exception as exc:

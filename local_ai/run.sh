@@ -93,6 +93,20 @@ get_adaptive_timeout_first() {
     esac
 }
 
+get_model_timeout_full() {
+    case "${1,,}" in
+        qwen2.5-coder:3b) echo 300 ;;
+        *) echo "" ;;
+    esac
+}
+
+get_model_timeout_first() {
+    case "${1,,}" in
+        qwen2.5-coder:3b) echo 90 ;;
+        *) echo "" ;;
+    esac
+}
+
 default_model="qwen2.5-coder:1.5b"
 if [[ -f "$MANIFEST_PATH" ]]; then
     manifest_model="$(awk -F= '/^model=/{print $2}' "$MANIFEST_PATH" | tail -n 1)"
@@ -157,11 +171,13 @@ if [[ "$CLAW_STREAM_TEST" -eq 1 ]]; then
 fi
 
 SIZE_CLASS="$(get_model_size_class "$MODEL")"
+MODEL_TIMEOUT_FULL="$(get_model_timeout_full "$MODEL")"
+MODEL_TIMEOUT_FIRST="$(get_model_timeout_first "$MODEL")"
 if [[ -z "${CLAW_OLLAMA_TIMEOUT_SECONDS:-}" ]]; then
-    export CLAW_OLLAMA_TIMEOUT_SECONDS="$(get_adaptive_timeout_full "$SIZE_CLASS")"
+    export CLAW_OLLAMA_TIMEOUT_SECONDS="${MODEL_TIMEOUT_FULL:-$(get_adaptive_timeout_full "$SIZE_CLASS")}"
 fi
 if [[ -z "${CLAW_FIRST_TOKEN_TIMEOUT_SECONDS:-}" ]]; then
-    export CLAW_FIRST_TOKEN_TIMEOUT_SECONDS="$(get_adaptive_timeout_first "$SIZE_CLASS")"
+    export CLAW_FIRST_TOKEN_TIMEOUT_SECONDS="${MODEL_TIMEOUT_FIRST:-$(get_adaptive_timeout_first "$SIZE_CLASS")}"
 fi
 
 PROXY_PID=""

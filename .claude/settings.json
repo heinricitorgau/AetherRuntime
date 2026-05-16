@@ -46,7 +46,11 @@
       "Bash(echo \"EXIT CODE: $?\")",
       "Bash(echo \"EXIT: $?\")",
       "Bash(python local_ai/sft/train_lora.py --help)",
-      "Bash(python -X faulthandler local_ai/sft/train_lora.py --dataset local_ai/training_quality/reports/sft_chatml.jsonl --limit 8 --epochs 1 --output-dir local_ai/sft/artifacts/test_lora)"
+      "Bash(python -X faulthandler local_ai/sft/train_lora.py --dataset local_ai/training_quality/reports/sft_chatml.jsonl --limit 8 --epochs 1 --output-dir local_ai/sft/artifacts/test_lora)",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('local_ai/sft/train_lora.py', encoding='utf-8'\\).read\\(\\)\\); print\\('syntax OK'\\)\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\\\\local_ai\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(python3 -m json.tool)"
     ]
   }
 }

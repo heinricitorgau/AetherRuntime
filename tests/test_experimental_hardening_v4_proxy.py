@@ -356,6 +356,20 @@ class EndToEndProxy(unittest.TestCase):
             data = json.loads(resp.read())
         self.assertEqual(data["status"], "ok")
 
+    def test_config_endpoint(self):
+        with urllib.request.urlopen(
+            f"http://127.0.0.1:{self.proxy_port}/config", timeout=2
+        ) as resp:
+            data = json.loads(resp.read())
+        self.assertEqual(data["model"], "qwen2.5-coder:14b")
+        self.assertEqual(data["full_timeout"], 300)
+        self.assertEqual(data["first_token_timeout"], 90)
+        self.assertEqual(data["configured_full_timeout"], 300)
+        self.assertEqual(data["effective_request_timeout"], 300)
+        self.assertEqual(data["effective_first_token_timeout"], 90)
+        self.assertFalse(data["stream_mode"])
+        self.assertFalse(data["force_non_stream"])
+
     def test_non_stream_chinese(self):
         resp = self._post(
             "/v1/messages",

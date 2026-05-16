@@ -150,6 +150,8 @@ def write_markdown(report: dict, path: Path) -> None:
     a(f"**Mode**: {_mode}{(' (' + _ver + ')') if _ver else ''}  ")
     a(f"**max_tokens**: {meta.get('max_tokens', '?')}  ")
     a(f"**temperature**: {meta.get('temperature', '?')}")
+    a(f"**proxy full timeout**: {meta.get('proxy_timeout_full', '?')}  ")
+    a(f"**proxy first-token timeout**: {meta.get('proxy_timeout_first_token', '?')}")
     a("")
     a("---")
     a("")
@@ -240,6 +242,8 @@ def score_run(results: list[dict], meta: dict, out_dir: Path) -> dict:
         "run_id":    meta.get("run_id", "?"),
         "model":     meta.get("model", "?"),
         "timestamp": now_iso(),
+        "proxy_timeout_full": meta.get("proxy_timeout_full"),
+        "proxy_timeout_first_token": meta.get("proxy_timeout_first_token"),
         "meta":      meta,
         "results":   results,
     }

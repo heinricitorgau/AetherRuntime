@@ -246,6 +246,7 @@ bundled local model
 | 模型名稱 | Size Class | RAM 需求 | 啟動速度 | 預設 Timeout | 建議用途 |
 |---|---|---|---|---|---|
 | `qwen2.5-coder:1.5b` (預設) | small | ~2 GB | 快 | 60s / 15s | 基礎測試、除錯 (Smoke Tests) |
+| `qwen2.5-coder:3b` | small | ~3 GB | benchmark | 300s / 90s | benchmark / strict-code-only safe default |
 | `qwen2.5-coder:7b` | medium | ~5 GB | 中等 | 180s / 30s | 平衡效能與品質 (無 GPU 亦可) |
 | `qwen2.5-coder:14b` | large | ~10 GB | 慢 (CPU) | 300s / 60s | 高品質程式碼生成 (建議有 GPU) |
 
@@ -261,6 +262,24 @@ bash local_ai/run.sh --smoke-test
 Windows:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --smoke-test
+```
+
+### Windows benchmark startup
+
+PowerShell:
+
+```powershell
+$env:CLAW_MODEL="qwen2.5-coder:3b"
+powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1
+```
+
+`qwen2.5-coder:3b` now automatically uses `CLAW_OLLAMA_TIMEOUT_SECONDS=300`
+and `CLAW_FIRST_TOKEN_TIMEOUT_SECONDS=90` unless those variables were set manually.
+From another terminal:
+
+```powershell
+curl http://127.0.0.1:8082/config
+python local_ai/benchmark/run_baseline.py --strict-code-only
 ```
 
 `--smoke-test` 會強制使用最小的 `1.5b` 模型、**極短的 Timeout**（full=60s、first-token=15s）、關閉修復流程，並固定送出一個簡單的英文 prompt。

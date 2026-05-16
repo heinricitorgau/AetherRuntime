@@ -5,14 +5,14 @@ This is a tiny overfit test — NOT production training.
 Purpose: verify that train -> save adapter -> load adapter -> inference works end-to-end.
 
 Usage:
-  python local_ai/sft/train_lora.py \
+  python -X faulthandler local_ai/sft/train_lora.py \
       --dataset local_ai/training_quality/reports/sft_chatml.jsonl \
       --limit 8 \
       --epochs 1 \
       --output-dir local_ai/sft/artifacts/test_lora
 
 Required packages:
-  pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+  pip install torch --index-url https://download.pytorch.org/whl/cu124
   pip install transformers peft accelerate sentencepiece safetensors
 """
 from __future__ import annotations
@@ -26,9 +26,7 @@ import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 
-import torch  # type: ignore[import-not-found]
-
-# Env-var guards
+# ── Env guards (set before any HF library loads) ──────────────────────────────
 os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 os.environ.setdefault("TRANSFORMERS_NO_ADVISORY_WARNINGS", "1")
 
@@ -104,17 +102,14 @@ def _validate_args(args: argparse.Namespace) -> None:
 # ── Dependency check ──────────────────────────────────────────────────────────
 
 def _check_deps() -> None:
-    missing = []
-    for pkg in ("torch", "transformers", "peft", "accelerate"):
-        # Use find_spec so we don't accidentally load the stubs above
-        import importlib.util
-        if importlib.util.find_spec(pkg) is None:
-            missing.append(pkg)
+    import importlib.util
+    missing = [p for p in ("torch", "transformers", "peft", "accelerate")
+               if importlib.util.find_spec(p) is None]
     if missing:
         print(f"[train] ERROR: missing packages: {', '.join(missing)}",
               file=sys.stderr, flush=True)
         print("[train] Install with:", file=sys.stderr, flush=True)
-        print("  pip install torch --index-url https://download.pytorch.org/whl/cu121",
+        print("  pip install torch --index-url https://download.pytorch.org/whl/cu124",
               file=sys.stderr, flush=True)
         non_torch = [p for p in missing if p != "torch"]
         if non_torch:
@@ -122,91 +117,90 @@ def _check_deps() -> None:
         sys.exit(1)
 
 
-# ── JsonlDataset ──────────────────────────────────────────────────────────────
+# ── Dataset ───────────────────────────────────────────────────────────────────
 
-class JsonlDataset(torch.utils.data.Dataset):
-    """Loads sft_chatml.jsonl, tokenizes, stores tensors."""
+def _build_dataset(path: Path, tokenizer, limit: int | None):
+    """Return a torch.utils.data.Dataset built from sft_chatml.jsonl.
 
-    def __init__(self, items: list[dict]) -> None:
-        self._items = items
+    Defined as a factory so JsonlDataset is declared inside _run_training()
+    after torch is imported — avoiding any module-level torch dependency.
+    Called from _run_training() only.
+    """
+    import torch  # already imported by caller; this is just a local alias
 
-    def __len__(self) -> int:
-        return len(self._items)
+    class JsonlDataset(torch.utils.data.Dataset):
+        """Loads, tokenizes, and stores all examples as tensors at init time."""
 
-    def __getitem__(self, idx: int) -> dict:
-        return self._items[idx]
+        def __init__(self) -> None:
+            self._items: list[dict] = []
+            _log("loading jsonl dataset ...")
+            with path.open(encoding="utf-8") as fh:
+                for raw in fh:
+                    raw = raw.strip()
+                    if not raw:
+                        continue
+                    obj = json.loads(raw)
+                    messages = obj.get("messages", [])
+                    if not messages:
+                        continue
+                    text: str = tokenizer.apply_chat_template(
+                        messages, tokenize=False, add_generation_prompt=False
+                    )
+                    self._tokenize_and_append(text)
+                    if limit and len(self._items) >= limit:
+                        break
 
+            if not self._items:
+                raise RuntimeError(f"no training examples found in {path}")
 
-def _make_jsonl_dataset(
-    path: Path,
-    tokenizer: object,
-    limit: int | None,
-    max_len: int,
-) -> JsonlDataset:
-    """Load, apply chat template, tokenize, return JsonlDataset."""
-    items: list[dict] = []
-    with path.open(encoding="utf-8") as fh:
-        for raw in fh:
-            raw = raw.strip()
-            if not raw:
-                continue
-            obj = json.loads(raw)
-            messages = obj.get("messages", [])
-            if not messages:
-                continue
-            text: str = tokenizer.apply_chat_template(  # type: ignore[union-attr]
-                messages, tokenize=False, add_generation_prompt=False
-            )
-            enc = tokenizer(  # type: ignore[operator]
+        def _tokenize_and_append(self, text: str) -> None:
+            enc = tokenizer(
                 text,
                 truncation=True,
-                max_length=max_len,
+                max_length=_MAX_SEQ_LEN,
                 padding=False,
                 return_tensors=None,
             )
             ids  = enc["input_ids"]
             mask = enc["attention_mask"]
-            items.append({
+            self._items.append({
                 "input_ids":      torch.tensor(ids,  dtype=torch.long),
                 "attention_mask": torch.tensor(mask, dtype=torch.long),
-                "labels":         torch.tensor(ids,  dtype=torch.long),  # causal LM
+                "labels":         torch.tensor(ids,  dtype=torch.long),
             })
-            if limit and len(items) >= limit:
-                break
 
-    if not items:
-        raise RuntimeError(f"no training examples found in {path}")
+        def __len__(self) -> int:
+            return len(self._items)
 
-    return JsonlDataset(items)
+        def __getitem__(self, index: int) -> dict:
+            return self._items[index]
+
+    return JsonlDataset()
 
 
-# ── Padding collator (no external deps) ──────────────────────────────────────
+# ── Padding collator ──────────────────────────────────────────────────────────
 
 class _PadCollator:
-    """Pad a batch to the longest sequence using only torch primitives."""
+    """Pad a batch to the longest sequence. Pure torch, no external deps."""
 
     def __init__(self, pad_token_id: int) -> None:
         self.pad_id = pad_token_id
 
     def __call__(self, batch: list[dict]) -> dict:
-        import torch  # type: ignore[import-not-found]  # noqa: PLC0415
+        import torch
 
         max_len = max(item["input_ids"].shape[0] for item in batch)
-        input_ids_out, mask_out, labels_out = [], [], []
+        ids_out, mask_out, labels_out = [], [], []
         for item in batch:
-            n   = item["input_ids"].shape[0]
-            pad = max_len - n
-            input_ids_out.append(
-                torch.nn.functional.pad(item["input_ids"],      (0, pad), value=self.pad_id)
-            )
+            pad = max_len - item["input_ids"].shape[0]
+            ids_out.append(
+                torch.nn.functional.pad(item["input_ids"],      (0, pad), value=self.pad_id))
             mask_out.append(
-                torch.nn.functional.pad(item["attention_mask"], (0, pad), value=0)
-            )
+                torch.nn.functional.pad(item["attention_mask"], (0, pad), value=0))
             labels_out.append(
-                torch.nn.functional.pad(item["labels"],         (0, pad), value=-100)
-            )
+                torch.nn.functional.pad(item["labels"],         (0, pad), value=-100))
         return {
-            "input_ids":      torch.stack(input_ids_out),
+            "input_ids":      torch.stack(ids_out),
             "attention_mask": torch.stack(mask_out),
             "labels":         torch.stack(labels_out),
         }
@@ -221,7 +215,6 @@ def _run_training(args: argparse.Namespace) -> None:
     report_dir.mkdir(parents=True, exist_ok=True)
 
     t_start = time.monotonic()
-
     report: dict = {
         "timestamp":  _now(),
         "success":    False,
@@ -235,67 +228,50 @@ def _run_training(args: argparse.Namespace) -> None:
     _write_report(report, report_dir)
 
     try:
-        # ── Imports ───────────────────────────────────────────────────────────
-        _log("importing torch / peft / transformers ...")
-        import torch  # type: ignore[import-not-found]  # noqa: PLC0415
-        from peft import LoraConfig, TaskType, get_peft_model  # type: ignore[import-not-found]  # noqa: PLC0415
-        from transformers import (  # type: ignore[import-not-found]  # noqa: PLC0415
-            AutoModelForCausalLM,
-            AutoTokenizer,
-            Trainer,
-            TrainingArguments,
-        )
-        _log("imports OK")
+        import torch
+        from peft import LoraConfig, TaskType, get_peft_model
+        from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
 
-        # ── CUDA ──────────────────────────────────────────────────────────────
+        # ── CUDA / dtype ──────────────────────────────────────────────────────
         device = "cuda" if torch.cuda.is_available() else "cpu"
         if device == "cuda":
             props = torch.cuda.get_device_properties(0)
             dtype: torch.dtype = torch.bfloat16 if props.major >= 8 else torch.float16
-            total_mb = props.total_memory // (1024 ** 2)
-            alloc_mb = torch.cuda.memory_allocated(0) // (1024 ** 2)
-            _log(f"CUDA: {torch.cuda.get_device_name(0)}")
-            _log(f"CUDA memory: {alloc_mb} MB allocated / {total_mb} MB total")
+            _log(f"CUDA: {torch.cuda.get_device_name(0)}"
+                 f"  {torch.cuda.memory_allocated(0) // (1024**2)} MB /"
+                 f" {props.total_memory // (1024**2)} MB")
         else:
             dtype = torch.float32
             _log("WARNING: no CUDA — CPU training will be very slow")
-
         _log(f"device={device}  dtype={dtype}")
 
         # ── Tokenizer ─────────────────────────────────────────────────────────
-        _log(f"loading tokenizer ({args.model}) ...")
+        _log("loading tokenizer ...")
         tokenizer = AutoTokenizer.from_pretrained(
-            args.model,
-            trust_remote_code=True,
-            padding_side="right",
+            args.model, trust_remote_code=True, padding_side="right"
         )
         if tokenizer.pad_token is None:
             tokenizer.pad_token = tokenizer.eos_token
-        _log(f"tokenizer loaded  vocab_size={tokenizer.vocab_size}")
+        _log(f"tokenizer OK  vocab_size={tokenizer.vocab_size}")
 
         # ── Dataset ───────────────────────────────────────────────────────────
-        _log(f"loading jsonl dataset ({args.dataset}) ...")
         _log("tokenizing ...")
-        dataset = _make_jsonl_dataset(
-            Path(args.dataset), tokenizer, args.limit, _MAX_SEQ_LEN
-        )
+        dataset = _build_dataset(Path(args.dataset), tokenizer, args.limit)
         lens = [item["input_ids"].shape[0] for item in dataset]
         _log(f"{len(dataset)} examples  seq_len min={min(lens)} max={max(lens)}")
 
         # ── Base model ────────────────────────────────────────────────────────
-        if device == "cuda":
-            _log(f"CUDA before model load: {torch.cuda.memory_allocated(0) // (1024**2)} MB")
-
-        _log(f"loading model ({args.model}) ...")
+        _log("loading model ...")
         load_kw: dict = {"trust_remote_code": True, "torch_dtype": dtype}
         if device == "cuda":
             load_kw["device_map"] = "auto"
-
         model = AutoModelForCausalLM.from_pretrained(args.model, **load_kw)
         model.config.use_cache = False
-
+        # Required for gradient checkpointing with PEFT — must be called on
+        # the base model before get_peft_model wraps it.
+        model.enable_input_require_grads()
         if device == "cuda":
-            _log(f"CUDA after model load: {torch.cuda.memory_allocated(0) // (1024**2)} MB")
+            _log(f"model loaded  CUDA: {torch.cuda.memory_allocated(0) // (1024**2)} MB")
 
         # ── LoRA ──────────────────────────────────────────────────────────────
         _log("applying LoRA ...")
@@ -313,9 +289,6 @@ def _run_training(args: argparse.Namespace) -> None:
 
         # ── Trainer ───────────────────────────────────────────────────────────
         _log("building trainer ...")
-        fp16 = dtype == torch.float16
-        bf16 = dtype == torch.bfloat16
-
         training_args = TrainingArguments(
             output_dir=str(output_dir),
             num_train_epochs=args.epochs,
@@ -323,8 +296,8 @@ def _run_training(args: argparse.Namespace) -> None:
             gradient_accumulation_steps=_GRAD_ACCUM,
             learning_rate=_LEARNING_RATE,
             warmup_steps=_WARMUP_STEPS,
-            fp16=fp16,
-            bf16=bf16,
+            bf16=(dtype == torch.bfloat16),
+            fp16=(dtype == torch.float16),
             gradient_checkpointing=True,
             logging_steps=1,
             save_strategy="no",
@@ -333,23 +306,21 @@ def _run_training(args: argparse.Namespace) -> None:
             report_to="none",
             no_cuda=(device == "cpu"),
         )
-
-        collator = _PadCollator(pad_token_id=tokenizer.pad_token_id)
-        trainer  = Trainer(
+        trainer = Trainer(
             model=model,
             args=training_args,
             train_dataset=dataset,
-            data_collator=collator,
+            data_collator=_PadCollator(pad_token_id=tokenizer.pad_token_id),
         )
 
         # ── Train ─────────────────────────────────────────────────────────────
         _log("starting training ...")
-        train_result = trainer.train()
-        loss = train_result.training_loss
+        result = trainer.train()
+        loss   = result.training_loss
         _log(f"training finished  loss={loss:.4f}")
 
         # ── Save adapter ──────────────────────────────────────────────────────
-        _log(f"saving adapter to {output_dir} ...")
+        _log("saving adapter ...")
         model.save_pretrained(str(output_dir))
         tokenizer.save_pretrained(str(output_dir))
 
@@ -376,22 +347,23 @@ def _run_training(args: argparse.Namespace) -> None:
         print(f"  report     → {report_dir / 'train_report.json'}", flush=True)
         print(flush=True)
         print("Next step:", flush=True)
-        print(f'  python local_ai/sft/evaluate_lora.py --adapter "{output_dir}" \\',
-              flush=True)
+        print(f'  python local_ai/sft/evaluate_lora.py --adapter "{output_dir}" \\', flush=True)
         print('      --prompt "Write a C program that prints Hello."', flush=True)
 
     except Exception as exc:
-        elapsed = time.monotonic() - t_start
-        tb_str  = traceback.format_exc()
-        report["success"]   = False
-        report["status"]    = "failed"
-        report["error"]     = str(exc)
-        report["traceback"] = tb_str
-        report["elapsed_s"] = round(elapsed, 1)
-        report_path = _write_report(report, report_dir)
+        elapsed  = time.monotonic() - t_start
+        tb_str   = traceback.format_exc()
+        report.update({
+            "success":    False,
+            "status":     "failed",
+            "error":      str(exc),
+            "traceback":  tb_str,
+            "elapsed_s":  round(elapsed, 1),
+        })
+        _write_report(report, report_dir)
         print(f"\n[train] FAILED after {elapsed:.1f}s", file=sys.stderr, flush=True)
         print(tb_str, file=sys.stderr, flush=True)
-        print(f"[train] report → {report_path}", file=sys.stderr, flush=True)
+        print(f"[train] report → {report_dir / 'train_report.json'}", file=sys.stderr, flush=True)
         sys.exit(1)
 
 
@@ -418,11 +390,10 @@ def main() -> None:
         print(f"\n[train] FATAL: {exc}", file=sys.stderr, flush=True)
         print(tb_str, file=sys.stderr, flush=True)
         try:
-            report_dir = _HERE / "reports"
             _write_report(
                 {"timestamp": _now(), "success": False, "status": "fatal",
                  "error": str(exc), "traceback": tb_str},
-                report_dir,
+                _HERE / "reports",
             )
         except Exception:
             pass

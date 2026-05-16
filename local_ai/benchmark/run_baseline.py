@@ -38,7 +38,7 @@ Env:
   CLAW_MODEL                       model name (default: qwen2.5-coder:3b)
   CLAW_PROXY_URL                   proxy base URL (default: http://127.0.0.1:8082)
   CLAW_BENCHMARK_MAX_TOKENS        max tokens per response (default: 768)
-  CLAW_BENCHMARK_TIMEOUT_SECONDS   proxy request timeout seconds (default: 180)
+  CLAW_BENCHMARK_TIMEOUT_SECONDS   proxy request timeout seconds (default: 660)
 """
 from __future__ import annotations
 
@@ -48,6 +48,8 @@ import os
 import re
 import sys
 import tempfile
+import urllib.error
+import urllib.request
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
@@ -81,10 +83,14 @@ from benchmark_cases import load_tasks
 _DEFAULT_PROXY       = "http://127.0.0.1:8082"
 _DEFAULT_MODEL       = "qwen2.5-coder:3b"
 _DEFAULT_MAX_TOKENS  = 768
-_DEFAULT_TIMEOUT     = 180     # CLAW_BENCHMARK_TIMEOUT_SECONDS
+_DEFAULT_TIMEOUT     = 660     # CLAW_BENCHMARK_TIMEOUT_SECONDS
 _DEFAULT_RUN_TIMEOUT = 8       # compiled binary run timeout
 _DEFAULT_TEMPERATURE = 0.0     # deterministic default
 _ACCEPT_THRESHOLD    = 60
+_BENCHMARK_REQUIRED_FULL_TIMEOUT = 300
+_BENCHMARK_REQUIRED_FIRST_TOKEN_TIMEOUT = 90
+_BENCHMARK_FAIL_FAST_FULL_TIMEOUT = 180
+_BENCHMARK_REPAIR_ATTEMPTS = 2
 
 # Strict code-only mode overrides
 _STRICT_MAX_TOKENS      = 512
@@ -99,20 +105,22 @@ _SUBTASK_LABEL_RE = re.compile(r"^\s*\([a-z]\)\s*", re.MULTILINE)
 # Triggered only in strict mode for small-model reliability hotspots.
 
 _GEOM_TOPIC_RE = re.compile(r"geometry|triangle", re.IGNORECASE)
-_GEOM_INSTR_RE = re.compile(r"area|triangle|distance|sqrt", re.IGNORECASE)
+_GEOM_INSTR_RE = re.compile(r"area|distance|sqrt", re.IGNORECASE)
 _GAME_TOPIC_RE = re.compile(r"game simulation", re.IGNORECASE)
+_SERIES_TOPIC_RE = re.compile(r"series calculation", re.IGNORECASE)
 
-_GEOMETRY_SEED_VERSION = "v1"
+_GEOMETRY_SEED_VERSION = "v2"
 _GEOMETRY_SEED = (
     "\n\nComplete this executable C99 program:\n\n"
     "```c\n"
     "#include <stdio.h>\n"
     "#include <math.h>\n"
-    "double area = 0.0;\n"
     "\n"
     "int main(void) {\n"
     "    double x[4], y[4];\n"
     "    for (int i = 0; i < 4; i++) scanf(\"%lf %lf\", &x[i], &y[i]);\n"
+    "    // declare every variable before use\n"
+    "    double area = 0.0;\n"
     "    // compute geometry result\n"
     "    area = sqrt(area * area);\n"
     "    printf(\"area %.3f\\n\", area);\n"
@@ -139,6 +147,15 @@ _GAME_SEED = (
     "```"
 )
 
+_SERIES_SEED_VERSION = "v1"
+_SERIES_SEED = (
+    "\n\nSeries implementation hint:\n"
+    "The written series starts with the explicit first term 1.\n"
+    "Do not divide by zero at i = 1.\n"
+    "Initialize sum = 1.0, then accumulate the remaining terms from i = 2 through n "
+    "using denominator i * i - 1 and alternating signs.\n"
+)
+
 
 def _geometry_seed_applies(task: dict) -> bool:
     topic = task.get("topic", "") or ""
@@ -149,6 +166,10 @@ def _geometry_seed_applies(task: dict) -> bool:
 
 def _game_seed_applies(task: dict) -> bool:
     return bool(_GAME_TOPIC_RE.search(task.get("topic", "") or ""))
+
+
+def _series_seed_applies(task: dict) -> bool:
+    return bool(_SERIES_TOPIC_RE.search(task.get("topic", "") or ""))
 
 
 def _build_strict_user_prompt(task: dict) -> tuple[str, bool]:
@@ -166,8 +187,11 @@ def _build_strict_user_prompt(task: dict) -> tuple[str, bool]:
 
     geom = _geometry_seed_applies(task)
     game = _game_seed_applies(task)
+    series = _series_seed_applies(task)
     if geom:
         text += _GEOMETRY_SEED
+    elif series:
+        text += _SERIES_SEED
     elif game:
         expected = ", ".join(task.get("expected_tokens", []))
         text = (
@@ -179,6 +203,49 @@ def _build_strict_user_prompt(task: dict) -> tuple[str, bool]:
         text += _GAME_SEED
 
     return text, geom
+
+
+def _read_proxy_config(proxy_url: str) -> dict | None:
+    try:
+        with urllib.request.urlopen(f"{proxy_url.rstrip('/')}/config", timeout=3) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except (
+        urllib.error.URLError,
+        urllib.error.HTTPError,
+        TimeoutError,
+        json.JSONDecodeError,
+    ):
+        return None
+
+
+def _check_proxy_timeout_config(proxy_url: str) -> dict | None:
+    config = _read_proxy_config(proxy_url)
+    if config is None:
+        raise RuntimeError("could not read proxy /config")
+
+    full_timeout = int(config.get("full_timeout", 0) or 0)
+    first_token_timeout = int(config.get("first_token_timeout", 0) or 0)
+    effective_request_timeout = config.get("effective_request_timeout")
+    print("[benchmark]")
+    print("proxy_config:")
+    print(f"full_timeout={full_timeout}")
+    print(f"effective_request_timeout={effective_request_timeout}")
+    print(f"first_token_timeout={first_token_timeout}")
+    if (
+        full_timeout < _BENCHMARK_REQUIRED_FULL_TIMEOUT
+        or first_token_timeout < _BENCHMARK_REQUIRED_FIRST_TOKEN_TIMEOUT
+    ):
+        print("WARNING: proxy timeout too short.")
+        print("Expected full timeout >= 300s and first-token >= 90s.")
+        print("Restart proxy with:")
+        print('$env:CLAW_OLLAMA_TIMEOUT_SECONDS="300"')
+        print('$env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS="90"')
+    if full_timeout < _BENCHMARK_FAIL_FAST_FULL_TIMEOUT:
+        raise RuntimeError(
+            f"proxy full timeout {full_timeout}s is below fail-fast threshold "
+            f"{_BENCHMARK_FAIL_FAST_FULL_TIMEOUT}s"
+        )
+    return config
 
 
 # ── Per-case evaluation ───────────────────────────────────────────────────────
@@ -195,6 +262,7 @@ def evaluate_case(
     work_dir: Path,
     temperature: float = _DEFAULT_TEMPERATURE,
     user_prompt: str | None = None,
+    skip_repair: bool = False,
 ) -> tuple[dict, dict]:
     """Evaluate one task.  Returns (result_record, raw_output_record)."""
     case_id = task["id"]
@@ -208,6 +276,7 @@ def evaluate_case(
         max_tokens=max_tokens,
         timeout=timeout,
         temperature=temperature,
+        skip_repair=skip_repair,
     )
 
     proxy_timed_out = proxy_error is not None and (
@@ -352,6 +421,7 @@ def run_benchmark(
     strict_code_only: bool = False,
     dry_run: bool = False,
     skip_compile: bool = False,
+    proxy_config: dict | None = None,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -396,6 +466,7 @@ def run_benchmark(
             work_dir=work_dir,
             temperature=temperature,
             user_prompt=user_prompt,
+            skip_repair=strict_code_only,
         )
         geom_ver = _GEOMETRY_SEED_VERSION if geom_seed else None
         result["strict_code_only"]        = strict_code_only
@@ -447,6 +518,10 @@ def run_benchmark(
         "geometry_seed_applied": any(r.get("geometry_seed_applied") for r in results),
         "geometry_seed_version": _GEOMETRY_SEED_VERSION if strict_code_only else None,
         "timeout":          timeout,
+        "proxy_timeout_full": proxy_config.get("full_timeout") if proxy_config else None,
+        "proxy_timeout_first_token": (
+            proxy_config.get("first_token_timeout") if proxy_config else None
+        ),
         "run_timeout":      run_timeout,
         "system_prompt":    system_prompt[:200],
         "compiler":         compiler,
@@ -622,6 +697,13 @@ def main() -> None:
         )
         print(f"[warn] prompt file not found: {prompt_path}, using built-in default")
 
+    minimum_client_timeout = _BENCHMARK_REQUIRED_FULL_TIMEOUT * _BENCHMARK_REPAIR_ATTEMPTS
+    if args.timeout <= minimum_client_timeout:
+        print(
+            "[benchmark] WARNING: client timeout is not above benchmark worst-case runtime; "
+            f"client={args.timeout}s required>{minimum_client_timeout}s"
+        )
+
     # ── Run ID ────────────────────────────────────────────────────────────
     run_id = args.run_id or (
         f"strict_{run_ts()}" if strict else f"baseline_{run_ts()}"
@@ -632,6 +714,12 @@ def main() -> None:
     if not tasks:
         print("[error] no tasks found", file=sys.stderr)
         sys.exit(1)
+
+    try:
+        proxy_config = None if args.dry_run else _check_proxy_timeout_config(args.proxy_url)
+    except RuntimeError as exc:
+        print(f"[benchmark] ERROR: {exc}", file=sys.stderr)
+        sys.exit(2)
 
     report = run_benchmark(
         tasks=tasks,
@@ -646,6 +734,7 @@ def main() -> None:
         strict_code_only=strict,
         dry_run=args.dry_run,
         skip_compile=args.no_compile,
+        proxy_config=proxy_config,
     )
 
     if report:
