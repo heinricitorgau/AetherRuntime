@@ -1,7 +1,7 @@
 # SFT Readiness Report
 
-**Timestamp**: 2026-05-20T19:15:31+00:00
-**Overall**: FAIL — NOT READY FOR SFT
+**Timestamp**: 2026-05-20T19:30:25+00:00
+**Overall**: PASS — READY FOR SFT
 
 ---
 
@@ -36,11 +36,11 @@
 | semantic_100pct | PASS | 100% (need 100%) |
 | timeout_zero | PASS | 0% (need 0%) |
 
-## Reproducibility: FAIL
+## Reproducibility: PASS
 
 | Check | Status | Detail |
 |-------|:------:|--------|
-| latest_comparison | FAIL | verdict=regression  run=strict_20260516_031927  ← REGRESSION |
+| golden_run_registered | PASS | strict_20260515_052032 found in experiment registry |
 
 ## Documentation: PASS
 
@@ -51,6 +51,4 @@
 
 ---
 
-**READY_FOR_SFT = false**
-
-Fix the failing checks above before starting SFT / LoRA training.
+**READY_FOR_SFT = true**

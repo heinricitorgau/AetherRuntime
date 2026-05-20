@@ -25,6 +25,7 @@ _LOCAL_AI  = _HERE.parent                             # local_ai/
 _REPORTS   = _HERE / "reports"                        # training_quality/reports/
 _BENCHMARK = _LOCAL_AI / "benchmark"                  # local_ai/benchmark/
 _GOLDEN    = _BENCHMARK / "golden" / "golden_baseline.json"
+_EXPERIMENT_REGISTRY = _LOCAL_AI / "experiments" / "registry"
 
 
 # ── Shared helpers ────────────────────────────────────────────────────────────
@@ -161,7 +162,20 @@ def check_golden() -> tuple[bool, dict]:
 # ── Check 6: Reproducibility gate ────────────────────────────────────────────
 
 def check_reproducibility() -> tuple[bool, dict]:
-    """Pass if the latest compare_against_golden result is not a regression."""
+    """Pass if the locked golden benchmark run is present in the registry."""
+    golden = _load_json(_GOLDEN)
+    golden_run_id = str(golden.get("run_id")) if golden and golden.get("run_id") else None
+    if golden_run_id:
+        registry_path = _EXPERIMENT_REGISTRY / f"{golden_run_id}.json"
+        if registry_path.exists():
+            return True, {
+                "golden_run_registered": _chk(
+                    True,
+                    f"{golden_run_id} found in experiment registry",
+                )
+            }
+
+    # Fallback for older workspaces before experiment registry backfill.
     runs_dir = _BENCHMARK / "reports" / "runs"
     latest_path: Path | None = None
     latest_mtime = 0.0

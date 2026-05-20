@@ -7,3 +7,19 @@ archive/
 .claude/sessions/
 .claw/
 local_ai/runtime/
+
+# Local/offline runtime bundles
+usb_export/
+local_ai/runtime/
+*.gguf
+*.safetensors
+*.bin
+local_ai/sft/artifacts/
+
+# Local runtime/model artifacts
+usb_export/
+local_ai/runtime/
+local_ai/sft/artifacts/
+*.gguf
+*.safetensors
+*.bin

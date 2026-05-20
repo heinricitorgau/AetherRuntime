@@ -1,9 +1,20 @@
 {
-  "experiment_count": 1,
+  "experiment_count": 58,
   "by_type": {
-    "benchmark": 1
+    "golden_comparison": 1,
+    "benchmark": 57
   },
   "latest_runs": [
+    {
+      "run_id": "golden_compare_strict_20260515_052032",
+      "timestamp": "2026-05-20T19:29:21+00:00",
+      "run_type": "golden_comparison",
+      "avg_score": 84.2,
+      "accepted": 4,
+      "benchmark_profile": null,
+      "model_profile": null,
+      "adapter_path": null
+    },
     {
       "run_id": "geometry_toolkit_probe_v1",
       "timestamp": "2026-05-20T18:51:57+00:00",
@@ -12,6 +23,86 @@
       "accepted": 0,
       "benchmark_profile": null,
       "model_profile": null,
+      "adapter_path": null
+    },
+    {
+      "run_id": "prompt_probe_exam2_v2",
+      "timestamp": "2026-05-17T21:02:31+00:00",
+      "run_type": "benchmark",
+      "avg_score": 48.3,
+      "accepted": 1,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": null
+    },
+    {
+      "run_id": "strict_20260517_201150",
+      "timestamp": "2026-05-17T20:41:55+00:00",
+      "run_type": "benchmark",
+      "avg_score": 48.9,
+      "accepted": 8,
+      "benchmark_profile": "c_exam2_all_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": null
+    },
+    {
+      "run_id": "strict_20260517_192837",
+      "timestamp": "2026-05-17T19:32:56+00:00",
+      "run_type": "benchmark",
+      "avg_score": 83.2,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": null
+    },
+    {
+      "run_id": "strict_20260517_184737",
+      "timestamp": "2026-05-17T19:06:58+00:00",
+      "run_type": "benchmark",
+      "avg_score": 17.5,
+      "accepted": 1,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": null
+    },
+    {
+      "run_id": "strict_20260517_183413",
+      "timestamp": "2026-05-17T18:39:15+00:00",
+      "run_type": "benchmark",
+      "avg_score": 85.2,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": null
+    },
+    {
+      "run_id": "strict_20260516_090613",
+      "timestamp": "2026-05-16T09:12:20+00:00",
+      "run_type": "benchmark",
+      "avg_score": 83.2,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": null
+    },
+    {
+      "run_id": "strict_20260516_084819",
+      "timestamp": "2026-05-16T08:53:06+00:00",
+      "run_type": "benchmark",
+      "avg_score": 85.2,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": null
+    },
+    {
+      "run_id": "strict_20260516_083819",
+      "timestamp": "2026-05-16T08:44:01+00:00",
+      "run_type": "benchmark",
+      "avg_score": 66.8,
+      "accepted": 3,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
       "adapter_path": null
     }
   ]

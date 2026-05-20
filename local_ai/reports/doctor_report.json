@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-05-20T19:15:19+00:00",
-  "status": "WARN",
+  "timestamp": "2026-05-20T19:30:25+00:00",
+  "status": "PASS",
   "success": true,
   "args": {
     "profile": null,
@@ -9,15 +9,15 @@
     "proxy_url": "http://127.0.0.1:8082"
   },
   "summary": {
-    "pass": 17,
-    "warn": 1,
+    "pass": 18,
+    "warn": 0,
     "fail": 0
   },
   "checks": [
     {
       "name": "python_version",
       "status": "PASS",
-      "detail": "3.12.10 (C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe)",
+      "detail": "3.12.10 (C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe)",
       "fix": "",
       "metadata": {}
     },
@@ -133,7 +133,7 @@
       "fix": "",
       "metadata": {
         "report": {
-          "timestamp": "2026-05-20T19:15:19+00:00",
+          "timestamp": "2026-05-20T19:30:25+00:00",
           "success": true,
           "checked": {
             "models": 1,
@@ -174,9 +174,9 @@
     },
     {
       "name": "sft_readiness",
-      "status": "WARN",
-      "detail": "SFT readiness: FAIL | READY_FOR_SFT = false |  | Report: C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\training_quality\\reports\\sft_readiness_report.md",
-      "fix": "Fix failing SFT readiness sections before LoRA training.",
+      "status": "PASS",
+      "detail": "SFT readiness: PASS | READY_FOR_SFT = true |  | Report: C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\training_quality\\reports\\sft_readiness_report.md",
+      "fix": "",
       "metadata": {
         "report": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\training_quality\\reports\\sft_readiness_report.json"
       }

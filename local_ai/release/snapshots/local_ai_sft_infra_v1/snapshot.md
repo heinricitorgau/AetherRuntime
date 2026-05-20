@@ -1,7 +1,7 @@
 # local_ai_sft_infra_v1
 
-Generated: 2026-05-20T19:12:28+00:00  
-Git commit: 90283aa  
+Generated: 2026-05-20T19:30:37+00:00  
+Git commit: dac5aac  
 Python: 3.12.10  
 CUDA: True  
 GPU: NVIDIA GeForce RTX 4060 Laptop GPU
@@ -18,21 +18,23 @@ GPU: NVIDIA GeForce RTX 4060 Laptop GPU
 ## Verified Capabilities
 
 - Config validation: PASS
-- Doctor status: WARN
-- Experiment registry entries: 1
+- Doctor status: PASS
+- Experiment registry entries: 58
 
 ## Current Best Benchmark
 
 - Golden baseline run: strict_20260515_052032
+- Golden run registered: True
 - Golden accepted: 4
 - Golden average score: 84.2
-- Leaderboard top run: geometry_toolkit_probe_v1
-- Leaderboard top avg score: 0.0
+- Leaderboard top run: strict_20260514_232044
+- Leaderboard top avg score: 100.0
 
 ## SFT / LoRA Status
 
-- READY_FOR_SFT: False
-- SFT summary: {"ready_for_sft": false, "timestamp": "2026-05-20T18:40:52+00:00", "dataset_passed": true, "semantic_passed": true, "benchmark_passed": true, "reproducibility_passed": false, "documentation_passed": true}
+- READY_FOR_SFT: True
+- Reproducibility: PASS
+- SFT summary: {"ready_for_sft": true, "timestamp": "2026-05-20T19:30:25+00:00", "dataset_passed": true, "semantic_passed": true, "benchmark_passed": true, "reproducibility_passed": true, "documentation_passed": true}
 
 ## How To Reproduce
 
@@ -46,8 +48,7 @@ python local_ai/release/snapshot.py --name local_ai_sft_infra_v1
 
 ## Known Limitations
 
-- Doctor status is WARN.
-- SFT readiness is not currently PASS; check reproducibility gate.
+- No missing reports detected in this snapshot.
 
 ## Next Recommended Work
 

@@ -1,0 +1,41 @@
+{
+  "run_id": "baseline_20260514_202204",
+  "timestamp": "2026-05-14T20:23:04+00:00",
+  "run_type": "benchmark",
+  "model_profile": "qwen3b_local",
+  "benchmark_profile": null,
+  "training_job": null,
+  "adapter_path": null,
+  "accepted": 0,
+  "avg_score": 0.0,
+  "compile_rate": 0.0,
+  "runtime_rate": 0.0,
+  "semantic_rate": 0.0,
+  "timeout_rate": 1.0,
+  "git_commit": "c4a8207",
+  "python_version": "3.12.10",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+  "model": "qwen2.5-coder:3b",
+  "dataset_profile": null,
+  "cases_run": 1,
+  "keyword_rate": 0.0,
+  "strict_code_only": null,
+  "prompt_profile": null,
+  "strict_prompt_version": null,
+  "backfilled_from": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\baseline_20260514_202204\\report.json",
+  "linked_reports": {
+    "run_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\baseline_20260514_202204\\report.json",
+    "run_report_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\baseline_20260514_202204\\report.md",
+    "results_jsonl": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\baseline_20260514_202204\\results.jsonl",
+    "raw_outputs_jsonl": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\baseline_20260514_202204\\raw_outputs.jsonl"
+  },
+  "config_profiles": {
+    "benchmark": null,
+    "model": "qwen3b_local",
+    "dataset": null,
+    "prompt": null,
+    "strict_prompt_version": null
+  }
+}

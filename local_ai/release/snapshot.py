@@ -163,6 +163,13 @@ def _sft_summary(readiness: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _golden_run_registered(golden: dict[str, Any]) -> bool:
+    run_id = golden.get("run_id")
+    if not run_id:
+        return False
+    return (REGISTRY_DIR / f"{run_id}.json").exists()
+
+
 def _doctor_status(doctor: dict[str, Any]) -> str:
     if not doctor:
         return "WARN"
@@ -203,6 +210,10 @@ def _snapshot_json(
         "config_validation_status": "PASS" if config.get("success") else "WARN",
         "doctor_status": _doctor_status(doctor),
         "ready_for_sft": sft.get("ready_for_sft"),
+        "reproducibility_status": (
+            "PASS" if sft.get("reproducibility_checks", {}).get("passed") else "FAIL"
+        ),
+        "golden_run_registered": _golden_run_registered(golden),
         "golden_baseline_run_id": golden.get("run_id"),
         "golden_avg_score": golden.get("avg_score"),
         "golden_accepted": golden.get("accepted_count"),
@@ -242,6 +253,7 @@ def _snapshot_markdown(snapshot: dict[str, Any], summaries: dict[str, Any]) -> s
         "## Current Best Benchmark",
         "",
         f"- Golden baseline run: {snapshot.get('golden_baseline_run_id')}",
+        f"- Golden run registered: {snapshot.get('golden_run_registered')}",
         f"- Golden accepted: {snapshot.get('golden_accepted')}",
         f"- Golden average score: {snapshot.get('golden_avg_score')}",
         f"- Leaderboard top run: {top.get('run_id') if isinstance(top, dict) else 'none'}",
@@ -250,6 +262,7 @@ def _snapshot_markdown(snapshot: dict[str, Any], summaries: dict[str, Any]) -> s
         "## SFT / LoRA Status",
         "",
         f"- READY_FOR_SFT: {snapshot.get('ready_for_sft')}",
+        f"- Reproducibility: {snapshot.get('reproducibility_status')}",
         f"- SFT summary: {json.dumps(summaries.get('sft', {}), ensure_ascii=False)}",
         "",
         "## How To Reproduce",

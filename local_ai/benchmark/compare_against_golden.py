@@ -20,9 +20,12 @@ import sys
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
+_REPO_ROOT = _HERE.parent.parent
+sys.path.insert(0, str(_REPO_ROOT))
 sys.path.insert(0, str(_HERE))
 
 from _bench_common import GOLDEN_DIR, REPORTS_DIR, now_iso, write_json
+from local_ai.experiments.register_run import register_run
 
 GOLDEN_FILE = GOLDEN_DIR / "golden_baseline.json"
 
@@ -186,6 +189,43 @@ def write_markdown(comp: dict, path: Path) -> None:
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
+def _register_comparison(comp: dict, run_dir: Path) -> None:
+    try:
+        metrics = comp.get("metrics", {})
+        current = {key: value.get("current") for key, value in metrics.items()}
+        registered = register_run(
+            {
+                "run_id": f"golden_compare_{comp.get('current_run_id')}",
+                "timestamp": comp.get("timestamp"),
+                "run_type": "golden_comparison",
+                "benchmark_profile": None,
+                "model_profile": None,
+                "accepted": current.get("accepted_count"),
+                "avg_score": current.get("avg_score"),
+                "compile_rate": current.get("compile_pass_rate"),
+                "runtime_rate": current.get("runtime_pass_rate"),
+                "semantic_rate": current.get("semantic_pass_rate"),
+                "keyword_rate": current.get("keyword_pass_rate"),
+                "timeout_rate": current.get("timeout_rate"),
+                "golden_run_id": comp.get("golden_run_id"),
+                "current_run_id": comp.get("current_run_id"),
+                "verdict": comp.get("verdict"),
+                "regression": comp.get("regression"),
+                "improvement": comp.get("improvement"),
+                "metrics": metrics,
+                "linked_reports": {
+                    "comparison_report_json": str(run_dir / "comparison_report.json"),
+                    "comparison_report_md": str(run_dir / "comparison_report.md"),
+                    "current_report_json": str(run_dir / "report.json"),
+                    "golden_baseline_json": str(GOLDEN_FILE),
+                },
+            }
+        )
+        print(f"[experiments] registered run_id={registered['run_id']}")
+    except Exception as exc:
+        print(f"[experiments] WARNING: could not register golden comparison: {exc}", file=sys.stderr)
+
+
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -203,6 +243,7 @@ def main() -> None:
 
     write_markdown(comp, md_path)
     write_json(comp, json_path)
+    _register_comparison(comp, run_dir)
 
     m = comp["metrics"]
     print(f"\nGolden comparison: {args.run_id}")

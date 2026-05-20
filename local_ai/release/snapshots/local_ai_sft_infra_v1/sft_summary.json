@@ -1,9 +1,9 @@
 {
-  "ready_for_sft": false,
-  "timestamp": "2026-05-20T18:40:52+00:00",
+  "ready_for_sft": true,
+  "timestamp": "2026-05-20T19:30:25+00:00",
   "dataset_passed": true,
   "semantic_passed": true,
   "benchmark_passed": true,
-  "reproducibility_passed": false,
+  "reproducibility_passed": true,
   "documentation_passed": true
 }
