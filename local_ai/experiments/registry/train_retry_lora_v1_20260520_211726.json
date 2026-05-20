@@ -1,0 +1,38 @@
+{
+  "run_id": "train_retry_lora_v1_20260520_211726",
+  "timestamp": "2026-05-20T21:17:26+00:00",
+  "run_type": "train",
+  "model_profile": "qwen3b_local",
+  "benchmark_profile": null,
+  "training_job": "retry_lora_v1",
+  "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_lora_v1",
+  "accepted": null,
+  "avg_score": null,
+  "compile_rate": null,
+  "runtime_rate": null,
+  "semantic_rate": null,
+  "timeout_rate": null,
+  "git_commit": "cca4f69",
+  "python_version": "3.12.10",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+  "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+  "dataset_profile": "retry_sft_v1",
+  "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\analysis\\reports\\retry_sft_chatml.jsonl",
+  "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_lora_v1",
+  "epochs": 2,
+  "limit": null,
+  "train_loss": 1.599808,
+  "elapsed_s": 309.3,
+  "success": true,
+  "linked_reports": {
+    "train_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\train_report.json",
+    "adapter_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_lora_v1"
+  },
+  "config_profiles": {
+    "training_job": "retry_lora_v1",
+    "model": "qwen3b_local",
+    "dataset": "retry_sft_v1"
+  }
+}

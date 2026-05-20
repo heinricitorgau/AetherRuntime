@@ -14,5 +14,10 @@
     "path": "local_ai/ingest/output/exam2/training/code_generation.jsonl",
     "format": "jsonl",
     "type": "benchmark"
+  },
+  "retry_sft_v1": {
+    "path": "local_ai/analysis/reports/retry_sft_chatml.jsonl",
+    "format": "chatml",
+    "type": "sft"
   }
 }

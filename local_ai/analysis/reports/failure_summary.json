@@ -1,0 +1,109 @@
+{
+  "failure_analysis": {
+    "total_failures": 75,
+    "avg_score_on_failures": 7.93,
+    "check_pass_rates": {
+      "proxy": 0.4267,
+      "truncation": 0.36,
+      "structure": 0.36,
+      "compile": 0.0,
+      "runtime": 0.0,
+      "semantic": 0.36,
+      "keyword": 0.1867
+    },
+    "primary_failure_counts": {
+      "truncation": 43,
+      "missing_entrypoint": 18,
+      "hallucinated_function": 9,
+      "syntax_error": 5
+    },
+    "multi_label_counts": {
+      "truncation": 48,
+      "partial_generation": 43,
+      "missing_entrypoint": 19,
+      "hallucinated_function": 12,
+      "syntax_error": 5,
+      "array_bounds": 1
+    },
+    "top_failing_topics": {
+      "Geometry - Triangle Enumeration": 28,
+      "Game Simulation - Even/Odd Guessing": 17,
+      "Series Calculation": 9,
+      "Pattern Generation": 9,
+      "Geometry Toolkit": 5,
+      "Nearest Pair of Points": 2,
+      "Random Walk Board": 2,
+      "Guessing Board Game": 1,
+      "Harmonic Prefix Array": 1,
+      "Board Game": 1
+    },
+    "failures_by_year": {
+      "2021": 3,
+      "2022": 4,
+      "2023": 3,
+      "2024": 2,
+      "2025": 63
+    },
+    "failures_by_model": {
+      "qwen2.5-coder:3b": 75
+    },
+    "top_topic_primary_breakdown": {
+      "Geometry - Triangle Enumeration": {
+        "truncation": 12,
+        "missing_entrypoint": 11,
+        "hallucinated_function": 5
+      },
+      "Game Simulation - Even/Odd Guessing": {
+        "truncation": 11,
+        "syntax_error": 4,
+        "hallucinated_function": 1,
+        "missing_entrypoint": 1
+      },
+      "Series Calculation": {
+        "truncation": 9
+      },
+      "Pattern Generation": {
+        "truncation": 9
+      },
+      "Geometry Toolkit": {
+        "missing_entrypoint": 3,
+        "truncation": 2
+      },
+      "Nearest Pair of Points": {
+        "hallucinated_function": 2
+      },
+      "Random Walk Board": {
+        "missing_entrypoint": 2
+      },
+      "Guessing Board Game": {
+        "syntax_error": 1
+      },
+      "Harmonic Prefix Array": {
+        "hallucinated_function": 1
+      },
+      "Board Game": {
+        "missing_entrypoint": 1
+      }
+    }
+  },
+  "experiment_analysis": {
+    "total_experiments": 58,
+    "avg_compile_rate": 0.6006,
+    "avg_runtime_rate": 0.4508,
+    "avg_timeout_rate": 0.1853,
+    "avg_score": 53.0
+  },
+  "taxonomy_used": [
+    "syntax_error",
+    "runtime_error",
+    "truncation",
+    "logic_error",
+    "missing_entrypoint",
+    "partial_generation",
+    "hallucinated_function",
+    "algorithm_mismatch",
+    "geometry_reasoning",
+    "array_bounds",
+    "io_format_error"
+  ]
+}
