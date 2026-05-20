@@ -1,0 +1,12 @@
+{
+  "total_records": 20,
+  "eval_cases": 16,
+  "pdf_chunks": 4,
+  "answered": 0,
+  "output_dir": "local_ai\\ingest\\output\\exam2\\training",
+  "files": {
+    "code_generation": "local_ai\\ingest\\output\\exam2\\training\\code_generation.jsonl",
+    "pdf_chunks": "local_ai\\ingest\\output\\exam2\\training\\pdf_chunks.jsonl",
+    "combined": "local_ai\\ingest\\output\\exam2\\training\\combined.jsonl"
+  }
+}

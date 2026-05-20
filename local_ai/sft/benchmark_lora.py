@@ -31,6 +31,7 @@ os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 os.environ.setdefault("TRANSFORMERS_NO_ADVISORY_WARNINGS", "1")
 
 _HERE        = Path(__file__).resolve().parent        # local_ai/sft/
+_REPO_ROOT   = _HERE.parent.parent
 _BENCH_DIR   = _HERE.parent / "benchmark"             # local_ai/benchmark/
 _PROMPTS_DIR = _BENCH_DIR / "prompts"
 _SFT_REPORTS = _HERE / "reports"
@@ -38,6 +39,20 @@ _SFT_REPORTS = _HERE / "reports"
 _DEFAULT_MODEL      = "Qwen/Qwen2.5-Coder-3B-Instruct"
 _DEFAULT_MAX_TOKENS = 384
 _ACCEPTED_THRESHOLD = 60
+_VERBOSE = False
+
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from local_ai.shared.config_loader import (
+    ConfigError,
+    format_config_error,
+    load_benchmark_profile,
+    load_config,
+    load_dataset_profile,
+    load_model_profile,
+)
+from local_ai.experiments.register_run import register_run
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -47,7 +62,8 @@ def _now() -> str:
 
 
 def _log(msg: str) -> None:
-    print(f"[compare] {msg}", flush=True)
+    if _VERBOSE:
+        print(f"[compare] {msg}", flush=True)
 
 
 def _write_file(content: str | dict, path: Path) -> None:
@@ -55,6 +71,71 @@ def _write_file(content: str | dict, path: Path) -> None:
     if isinstance(content, dict):
         content = json.dumps(content, indent=2, ensure_ascii=False)
     path.write_text(content, encoding="utf-8")
+
+
+def _timeout_rate(results: list[dict]) -> float:
+    if not results:
+        return 0.0
+    timed_out = 0
+    for result in results:
+        checks = result.get("checks", {})
+        if (
+            checks.get("proxy", {}).get("timed_out")
+            or checks.get("runtime", {}).get("timed_out")
+        ):
+            timed_out += 1
+    return round(timed_out / len(results), 3)
+
+
+def _register_compare_experiment(
+    *,
+    comparison: dict,
+    out_dir: Path,
+    ts: str,
+    benchmark_profile_name: str | None,
+    model_profile_name: str | None,
+    dataset_profile_name: str | None,
+) -> None:
+    try:
+        lora = comparison.get("lora", {})
+        lora_rates = lora.get("rates", {})
+        registered = register_run(
+            {
+                "run_id": f"compare_lora_{Path(str(comparison.get('adapter', 'adapter'))).name}_{ts}",
+                "run_type": "compare_lora",
+                "model_profile": model_profile_name,
+                "model": comparison.get("model"),
+                "benchmark_profile": benchmark_profile_name,
+                "dataset_profile": dataset_profile_name,
+                "adapter_path": comparison.get("adapter"),
+                "accepted": lora.get("accepted"),
+                "cases_run": comparison.get("tasks"),
+                "avg_score": lora.get("avg_score"),
+                "compile_rate": lora_rates.get("compile_pass_rate"),
+                "runtime_rate": lora_rates.get("runtime_pass_rate"),
+                "semantic_rate": lora_rates.get("semantic_pass_rate"),
+                "keyword_rate": lora_rates.get("keyword_pass_rate"),
+                "timeout_rate": _timeout_rate(comparison.get("lora_results", [])),
+                "verdict": comparison.get("verdict"),
+                "base": comparison.get("base"),
+                "lora": comparison.get("lora"),
+                "deltas": comparison.get("deltas"),
+                "linked_reports": {
+                    "comparison_report_json": str(out_dir / "comparison_report.json"),
+                    "comparison_report_md": str(out_dir / "comparison_report.md"),
+                    "timestamped_json": str(out_dir / f"comparison_{ts}.json"),
+                    "timestamped_md": str(out_dir / f"comparison_{ts}.md"),
+                },
+                "config_profiles": {
+                    "benchmark": benchmark_profile_name,
+                    "model": model_profile_name,
+                    "dataset": dataset_profile_name,
+                },
+            }
+        )
+        print(f"[experiments] registered run_id={registered['run_id']}", flush=True)
+    except Exception as exc:
+        print(f"[experiments] WARNING: could not register compare_lora run: {exc}", file=sys.stderr, flush=True)
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
@@ -65,6 +146,8 @@ def _parse_args() -> argparse.Namespace:
     )
     p.add_argument("--adapter",    required=True,
                    help="Path to LoRA adapter directory")
+    p.add_argument("--benchmark",  default=None,
+                   help="Benchmark profile name from config/benchmarks.json")
     p.add_argument("--model",      default=None,
                    help="Base model ID (auto-detected from adapter_config.json)")
     p.add_argument("--source",     default="test",
@@ -76,6 +159,8 @@ def _parse_args() -> argparse.Namespace:
                    help=f"Max new tokens per response (default: {_DEFAULT_MAX_TOKENS})")
     p.add_argument("--out-dir",    default=None,
                    help=f"Output directory (default: {_SFT_REPORTS})")
+    p.add_argument("--verbose",    action="store_true",
+                   help="Show detailed progress logs")
     return p.parse_args()
 
 
@@ -478,6 +563,23 @@ def _run(args: argparse.Namespace) -> None:
     from _bench_common import find_compiler  # type: ignore[import-not-found]
     from benchmark_cases import load_tasks   # type: ignore[import-not-found]
 
+    benchmark_source = args.source
+    benchmark_profile_name = args.benchmark
+    model_profile_name = None
+    dataset_profile_name = None
+    if args.benchmark:
+        benchmark = load_benchmark_profile(args.benchmark)
+        model_profile_name = str(benchmark["model"])
+        dataset_profile_name = str(benchmark["dataset"])
+        dataset = load_dataset_profile(str(benchmark["dataset"]))
+        model = load_model_profile(str(benchmark["model"]))
+        prompt_profiles = load_config("benchmark_profiles")
+        prompt_profile = prompt_profiles.get(str(benchmark["prompt_profile"]), {})
+        benchmark_source = str(dataset["path"])
+        if args.model is None:
+            args.model = str(model["hf_model"])
+        args.max_tokens = int(prompt_profile.get("max_tokens", model["max_tokens"]))
+
     adapter_dir = Path(args.adapter)
     if not adapter_dir.exists():
         _log(f"ERROR: adapter not found: {adapter_dir}")
@@ -496,7 +598,7 @@ def _run(args: argparse.Namespace) -> None:
     _log(f"max_tokens = {args.max_tokens}")
 
     # ── Tasks ─────────────────────────────────────────────────────────────────
-    tasks = load_tasks(source=args.source)
+    tasks = load_tasks(source=benchmark_source)
     if args.limit:
         tasks = tasks[: args.limit]
     _log(f"tasks      = {len(tasks)}")
@@ -607,6 +709,14 @@ def _run(args: argparse.Namespace) -> None:
     _write_file(md_text,    out_dir / f"comparison_{ts}.md")
     _write_file(comparison, out_dir / "comparison_report.json")
     _write_file(md_text,    out_dir / "comparison_report.md")
+    _register_compare_experiment(
+        comparison=comparison,
+        out_dir=out_dir,
+        ts=ts,
+        benchmark_profile_name=benchmark_profile_name,
+        model_profile_name=model_profile_name,
+        dataset_profile_name=dataset_profile_name,
+    )
 
     # ── Summary ───────────────────────────────────────────────────────────────
     _log("done")
@@ -623,19 +733,24 @@ def _run(args: argparse.Namespace) -> None:
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 def main() -> None:
+    global _VERBOSE
     args: argparse.Namespace | None = None
     try:
         args = _parse_args()
+        _VERBOSE = args.verbose
 
-        _log(f"adapter    = {args.adapter}")
-        _log(f"source     = {args.source}")
-        _log(f"limit      = {args.limit}")
-        _log(f"max_tokens = {args.max_tokens}")
+        print(
+            f"[compare] adapter={args.adapter} benchmark={args.benchmark or args.source}",
+            flush=True,
+        )
 
         _run(args)
 
     except SystemExit:
         raise
+    except ConfigError as exc:
+        print(f"\n{format_config_error(exc)}", file=sys.stderr, flush=True)
+        sys.exit(1)
     except Exception as exc:
         tb_str = traceback.format_exc()
         print(f"\n[compare] FAILED: {exc}", file=sys.stderr, flush=True)

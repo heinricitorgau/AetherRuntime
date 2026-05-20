@@ -52,7 +52,7 @@ _SOURCES: dict[str, Path] = {
     ),
 }
 
-_EVAL_CASES_DIR = LOCAL_AI_ROOT / "eval_cases" / "c_exam"
+_EVAL_CASES_ROOT = LOCAL_AI_ROOT / "eval_cases"
 
 # ── Eval-case keyword lookup ──────────────────────────────────────────────────
 
@@ -63,14 +63,16 @@ def _keywords_for(case_id: str) -> list[str]:
     """Return required C keywords from the eval case JSON.  Empty list on miss."""
     if case_id in _KEYWORD_CACHE:
         return _KEYWORD_CACHE[case_id]
-    if _EVAL_CASES_DIR.exists():
-        for path in _EVAL_CASES_DIR.glob("*.json"):
+    if _EVAL_CASES_ROOT.exists():
+        for path in _EVAL_CASES_ROOT.rglob("*.json"):
             try:
-                d = json.loads(path.read_text(encoding="utf-8"))
-                if d.get("id") == case_id:
-                    kw = d.get("checker_rules", {}).get("keywords", [])
-                    _KEYWORD_CACHE[case_id] = kw
-                    return kw
+                payload = json.loads(path.read_text(encoding="utf-8"))
+                cases = payload if isinstance(payload, list) else [payload]
+                for d in cases:
+                    if d.get("id") == case_id:
+                        kw = d.get("checker_rules", {}).get("keywords", [])
+                        _KEYWORD_CACHE[case_id] = kw
+                        return kw
             except Exception:
                 pass
     _KEYWORD_CACHE[case_id] = []

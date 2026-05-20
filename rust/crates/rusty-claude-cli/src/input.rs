@@ -282,7 +282,9 @@ impl LineEditor {
 }
 
 fn normalize_multiline_submission(line: String) -> String {
-    line.replace("\\\n", "\n")
+    line.replace("\r\n", "\n")
+        .replace('\r', "\n")
+        .replace("\\\n", "\n")
 }
 
 fn slash_command_prefix(line: &str, pos: usize) -> Option<&str> {
@@ -422,5 +424,12 @@ mod tests {
     fn normalize_multiline_submission_removes_continuation_markers() {
         let normalized = normalize_multiline_submission("line one\\\nline two".to_string());
         assert_eq!(normalized, "line one\nline two");
+    }
+
+    #[test]
+    fn normalize_multiline_submission_preserves_pasted_windows_lines() {
+        let normalized =
+            normalize_multiline_submission("line one\r\nline two\r\nline three".to_string());
+        assert_eq!(normalized, "line one\nline two\nline three");
     }
 }

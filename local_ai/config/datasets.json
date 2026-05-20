@@ -1,0 +1,18 @@
+{
+  "c_exam_sft_v1": {
+    "path": "local_ai/training_quality/reports/sft_chatml.jsonl",
+    "format": "chatml",
+    "type": "sft",
+    "records": 41
+  },
+  "c_exam_test_2025": {
+    "path": "local_ai/ingest/output/training/splits/test_code_generation.jsonl",
+    "format": "jsonl",
+    "type": "benchmark"
+  },
+  "c_exam2_benchmark_all": {
+    "path": "local_ai/ingest/output/exam2/training/code_generation.jsonl",
+    "format": "jsonl",
+    "type": "benchmark"
+  }
+}

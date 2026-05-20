@@ -256,6 +256,15 @@ powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --answers-dir C
 
 每次要對模型跑新一輪評測時，依序執行以下步驟。
 
+若要使用 SFT / benchmark Python 環境，先在 PowerShell 啟用虛擬環境：
+
+```powershell
+Set-Location C:\Users\User\OneDrive\Desktop\research-claw-code
+.\.venv-sft\Scripts\Activate.ps1
+```
+
+成功後命令列前面會出現 `(.venv-sft)`。
+
 **第 1 步 — 確認 Ollama 與模型已載入**
 
 ```powershell

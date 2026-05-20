@@ -1,0 +1,38 @@
+{
+  "release_name": "local_ai_sft_infra_v1",
+  "timestamp": "2026-05-20T19:12:28+00:00",
+  "git_commit": "90283aa",
+  "python_version": "3.12.10",
+  "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "config_validation_status": "PASS",
+  "doctor_status": "WARN",
+  "ready_for_sft": false,
+  "golden_baseline_run_id": "strict_20260515_052032",
+  "golden_avg_score": 84.2,
+  "golden_accepted": 4,
+  "latest_leaderboard_top": {
+    "rank": 1,
+    "run_id": "geometry_toolkit_probe_v1",
+    "run_type": "benchmark",
+    "model_profile": null,
+    "benchmark_profile": null,
+    "adapter_path": null,
+    "accepted": 0,
+    "cases_run": 2,
+    "avg_score": 0.0,
+    "compile_rate": 0.0,
+    "runtime_rate": 0.0,
+    "semantic_rate": 0.0,
+    "keyword_rate": 0.0,
+    "timeout_rate": 0.0,
+    "timestamp": "2026-05-20T18:51:57+00:00",
+    "registry_file": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\geometry_toolkit_probe_v1.json"
+  },
+  "experiment_count": 1,
+  "known_limitations": [
+    "Doctor status is WARN.",
+    "SFT readiness is not currently PASS; check reproducibility gate."
+  ]
+}

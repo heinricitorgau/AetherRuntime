@@ -1,0 +1,11 @@
+{
+  "_comment": "Reserved timeout profiles for future migration. Phase 1 does not wire these into runtime behavior.",
+  "benchmark_qwen3b": {
+    "full_timeout": 300,
+    "first_token_timeout": 90
+  },
+  "smoke_test": {
+    "full_timeout": 60,
+    "first_token_timeout": 15
+  }
+}

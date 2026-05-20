@@ -1,0 +1,33 @@
+{
+  "run_id": "geometry_toolkit_probe_v1",
+  "timestamp": "2026-05-20T18:51:57+00:00",
+  "run_type": "benchmark",
+  "model_profile": null,
+  "benchmark_profile": null,
+  "training_job": null,
+  "adapter_path": null,
+  "accepted": 0,
+  "avg_score": 0.0,
+  "compile_rate": 0.0,
+  "runtime_rate": 0.0,
+  "semantic_rate": 0.0,
+  "timeout_rate": 0.0,
+  "git_commit": "90283aa",
+  "python_version": "3.12.10",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+  "model": "qwen2.5-coder:3b",
+  "cases_run": 2,
+  "keyword_rate": 0.0,
+  "linked_reports": {
+    "baseline_report_json": "local_ai\\benchmark\\reports\\baseline_report.json",
+    "baseline_report_md": "local_ai/benchmark/reports/baseline_report.md"
+  },
+  "config_profiles": {
+    "benchmark": null,
+    "model": null,
+    "dataset": null
+  },
+  "backfilled_from": "local_ai\\benchmark\\reports\\baseline_report.json"
+}

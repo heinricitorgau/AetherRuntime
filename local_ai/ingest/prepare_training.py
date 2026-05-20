@@ -112,8 +112,11 @@ def _alpaca_record(
 
 # ── Source 1: eval cases ───────────────────────────────────────────────────
 
-def load_eval_cases(answers_dir: Path | None = None) -> list[dict[str, Any]]:
-    cases_dir = _eval_cases_dir()
+def load_eval_cases(
+    answers_dir: Path | None = None,
+    cases_dir: Path | None = None,
+) -> list[dict[str, Any]]:
+    cases_dir = cases_dir or _eval_cases_dir()
     if not cases_dir.exists():
         print(f"Warning: eval cases dir not found: {cases_dir}", file=sys.stderr)
         return []
@@ -121,47 +124,49 @@ def load_eval_cases(answers_dir: Path | None = None) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for path in sorted(cases_dir.glob("*.json")):
         try:
-            case = json.loads(path.read_text(encoding="utf-8"))
+            payload = json.loads(path.read_text(encoding="utf-8"))
         except Exception as exc:
             print(f"  skip {path.name}: {exc}", file=sys.stderr)
             continue
+        cases = payload if isinstance(payload, list) else [payload]
 
-        case_id = case.get("id", path.stem)
-        instruction = _build_instruction(case)
+        for case in cases:
+            case_id = case.get("id", path.stem)
+            instruction = _build_instruction(case)
 
-        # Try to load reference answer (.c file) if answers_dir is given
-        output = ""
-        if answers_dir:
-            answer_path = answers_dir / f"{case_id}.c"
-            if answer_path.exists():
-                code = answer_path.read_text(encoding="utf-8", errors="replace").strip()
-                output = f"```c\n{code}\n```"
+            # Try to load reference answer (.c file) if answers_dir is given
+            output = ""
+            if answers_dir:
+                answer_path = answers_dir / f"{case_id}.c"
+                if answer_path.exists():
+                    code = answer_path.read_text(encoding="utf-8", errors="replace").strip()
+                    output = f"```c\n{code}\n```"
 
-        meta = {
-            "year":       case.get("year"),
-            "exam":       case.get("exam"),
-            "topic":      case.get("topic"),
-            "difficulty": case.get("difficulty"),
-            "points":     case.get("points"),
-            "source_file": path.name,
-        }
+            meta = {
+                "year":       case.get("year"),
+                "exam":       case.get("exam"),
+                "topic":      case.get("topic"),
+                "difficulty": case.get("difficulty"),
+                "points":     case.get("points"),
+                "source_file": path.name,
+            }
 
-        records.append(_alpaca_record(
-            record_id=case_id,
-            instruction=instruction,
-            output=output,
-            meta=meta,
-            source="eval_case",
-            record_type="code_generation",
-        ))
+            records.append(_alpaca_record(
+                record_id=case_id,
+                instruction=instruction,
+                output=output,
+                meta=meta,
+                source="eval_case",
+                record_type="code_generation",
+            ))
 
     return records
 
 
 # ── Source 2: PDF chunks ───────────────────────────────────────────────────
 
-def load_pdf_chunks() -> list[dict[str, Any]]:
-    chunks_dir = _chunks_dir()
+def load_pdf_chunks(chunks_dir: Path | None = None) -> list[dict[str, Any]]:
+    chunks_dir = chunks_dir or _chunks_dir()
     records: list[dict[str, Any]] = []
 
     for path in sorted(chunks_dir.glob("*.chunks.json")):
@@ -266,14 +271,17 @@ def _print_stats(
 
 def prepare_training(
     answers_dir: Path | None = None,
+    eval_cases_dir: Path | None = None,
+    chunks_dir: Path | None = None,
+    output_dir: Path | None = None,
     stats_only: bool = False,
 ) -> dict[str, Any]:
     print("Loading eval cases...", file=sys.stderr)
-    eval_records = load_eval_cases(answers_dir)
+    eval_records = load_eval_cases(answers_dir, eval_cases_dir)
     print(f"  {len(eval_records)} eval cases loaded", file=sys.stderr)
 
     print("Loading PDF chunks...", file=sys.stderr)
-    chunk_records = load_pdf_chunks()
+    chunk_records = load_pdf_chunks(chunks_dir)
     print(f"  {len(chunk_records)} chunks loaded", file=sys.stderr)
 
     _print_stats(eval_records, chunk_records)
@@ -281,7 +289,8 @@ def prepare_training(
     if stats_only:
         return {"eval": len(eval_records), "chunks": len(chunk_records)}
 
-    out_dir = _training_dir()
+    out_dir = output_dir or _training_dir()
+    out_dir.mkdir(parents=True, exist_ok=True)
 
     code_gen_path = out_dir / "code_generation.jsonl"
     _write_jsonl(eval_records, code_gen_path)
@@ -329,10 +338,28 @@ def main() -> None:
         action="store_true",
         help="Print statistics only, do not write files",
     )
+    parser.add_argument(
+        "--eval-cases-dir",
+        help="Optional eval-case directory (default: eval_cases/c_exam)",
+    )
+    parser.add_argument(
+        "--chunks-dir",
+        help="Optional chunks directory (default: ingest/output)",
+    )
+    parser.add_argument(
+        "--output-dir",
+        help="Optional training output directory (default: ingest/output/training)",
+    )
     args = parser.parse_args()
 
     answers_dir = Path(args.fill_answers) if args.fill_answers else None
-    result = prepare_training(answers_dir=answers_dir, stats_only=args.stats)
+    result = prepare_training(
+        answers_dir=answers_dir,
+        eval_cases_dir=Path(args.eval_cases_dir) if args.eval_cases_dir else None,
+        chunks_dir=Path(args.chunks_dir) if args.chunks_dir else None,
+        output_dir=Path(args.output_dir) if args.output_dir else None,
+        stats_only=args.stats,
+    )
     if not args.stats:
         print(json.dumps(result, ensure_ascii=False, indent=2))
 

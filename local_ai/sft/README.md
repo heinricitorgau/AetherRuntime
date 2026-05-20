@@ -43,6 +43,16 @@ pip install transformers peft accelerate sentencepiece safetensors
 
 ## Quick Start
 
+### Configured job
+
+```powershell
+python local_ai/sft/train_lora.py --job tiny_lora_test
+```
+
+The job name resolves through `local_ai/config/training_jobs.json`, so swapping
+dataset, model, output directory, or LoRA settings can be done in JSON without
+changing Python code.
+
 ### Step 1 — Tiny overfit test (8 examples, 1 epoch)
 
 ```powershell

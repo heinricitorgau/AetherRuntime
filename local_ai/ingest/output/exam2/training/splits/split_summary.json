@@ -1,0 +1,29 @@
+{
+  "input": "local_ai\\ingest\\output\\exam2\\training\\combined.jsonl",
+  "output_dir": "local_ai\\ingest\\output\\exam2\\training\\splits",
+  "split_years": {
+    "train": [
+      2021,
+      2022,
+      2023
+    ],
+    "val": [
+      2024
+    ],
+    "test": [
+      2025
+    ]
+  },
+  "counts": {
+    "train": 15,
+    "val": 5,
+    "test": 0
+  },
+  "answered": {
+    "train": 0,
+    "val": 0,
+    "test": 0
+  },
+  "total": 20,
+  "ready_for_sft": false
+}

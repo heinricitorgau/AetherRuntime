@@ -50,7 +50,11 @@
       "Bash(python -c \"import ast; ast.parse\\(open\\('local_ai/sft/train_lora.py', encoding='utf-8'\\).read\\(\\)\\); print\\('syntax OK'\\)\")",
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\\\\local_ai\" -Directory)",
       "Bash(Select-Object Name)",
-      "Bash(python3 -m json.tool)"
+      "Bash(python3 -m json.tool)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\User\\\\OneDrive\\\\Desktop\\\\research-claw-code\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Bash(grep -E \"^d|\\\\.py$\")"
     ]
   }
 }

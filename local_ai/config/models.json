@@ -1,0 +1,18 @@
+{
+  "qwen3b_local": {
+    "hf_model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+    "ollama_model": "qwen2.5-coder:3b",
+    "dtype": "bf16",
+    "max_tokens": 512,
+    "temperature": 0.1,
+    "lora_target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  }
+}

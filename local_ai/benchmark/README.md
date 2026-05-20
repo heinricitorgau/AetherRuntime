@@ -213,6 +213,13 @@ If gcc is not found, compile and runtime checks are skipped (structure, semantic
 
 ## Quick Start
 
+Configured benchmark:
+
+    python local_ai/benchmark/run_baseline.py --benchmark c_exam2_all_strict_seeded
+
+The benchmark name resolves through `local_ai/config/benchmarks.json`; changing
+task set, model, or prompt profile can be done through JSON profiles.
+
 Terminal 1 (start proxy):
 
     cd local_ai
@@ -220,11 +227,14 @@ Terminal 1 (start proxy):
 
 Terminal 2 (run benchmark):
 
-    # Standard run (2025 test set, all 4 tasks)
+    # Standard run (legacy 2025 test set, all 4 tasks)
     python local_ai/benchmark/run_baseline.py
 
-    # Strict code-only run (recommended for 3b models)
+    # Strict code-only run on the legacy 2025 test set
     python local_ai/benchmark/run_baseline.py --strict-code-only
+
+    # Configured exam-II benchmark (2021-2024, all 16 tasks)
+    python local_ai/benchmark/run_baseline.py --benchmark c_exam2_all_strict_seeded
 
     # Give the run a name to track it
     python local_ai/benchmark/run_baseline.py --run-id baseline_3b

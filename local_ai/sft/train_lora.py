@@ -43,8 +43,21 @@ _GRAD_ACCUM          = 4
 _LEARNING_RATE       = 2e-4
 _WARMUP_STEPS        = 2
 _MAX_SEQ_LEN         = 1024
+_VERBOSE             = False
 
 _HERE = Path(__file__).resolve().parent
+_REPO_ROOT = _HERE.parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from local_ai.shared.config_loader import (
+    ConfigError,
+    format_config_error,
+    load_dataset_profile,
+    load_model_profile,
+    load_training_job,
+)
+from local_ai.experiments.register_run import register_run
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -54,7 +67,8 @@ def _now() -> str:
 
 
 def _log(msg: str) -> None:
-    print(f"[train] {msg}", flush=True)
+    if _VERBOSE:
+        print(f"[train] {msg}", flush=True)
 
 
 def _write_report(report: dict, report_dir: Path) -> Path:
@@ -64,30 +78,96 @@ def _write_report(report: dict, report_dir: Path) -> Path:
     return path
 
 
+def _register_train_experiment(args: argparse.Namespace, report: dict, report_path: Path) -> None:
+    try:
+        output_dir = Path(args.output_dir)
+        registered = register_run(
+            {
+                "run_id": f"train_{output_dir.name}_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}",
+                "run_type": "train",
+                "model_profile": getattr(args, "model_profile_name", None),
+                "model": args.model,
+                "training_job": args.job,
+                "dataset_profile": getattr(args, "dataset_profile_name", None),
+                "dataset_path": str(Path(args.dataset)),
+                "adapter_path": str(output_dir),
+                "output_dir": str(output_dir),
+                "epochs": args.epochs,
+                "limit": args.limit,
+                "train_loss": report.get("train_loss"),
+                "elapsed_s": report.get("elapsed_s"),
+                "success": report.get("success"),
+                "linked_reports": {
+                    "train_report_json": str(report_path),
+                    "adapter_dir": str(output_dir),
+                },
+                "config_profiles": {
+                    "training_job": args.job,
+                    "model": getattr(args, "model_profile_name", None),
+                    "dataset": getattr(args, "dataset_profile_name", None),
+                },
+            }
+        )
+        print(f"[experiments] registered run_id={registered['run_id']}", flush=True)
+    except Exception as exc:
+        print(f"[experiments] WARNING: could not register train run: {exc}", file=sys.stderr, flush=True)
+
+
 # ── Arg parsing ───────────────────────────────────────────────────────────────
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Minimal LoRA fine-tuning — overfit sanity check only"
     )
-    parser.add_argument("--dataset",    required=True,
+    parser.add_argument("--job",
+                        help="Training job profile name from config/training_jobs.json")
+    parser.add_argument("--dataset",
                         help="Path to sft_chatml.jsonl")
     parser.add_argument("--limit",      type=int, default=None,
                         help="Max examples to load (default: all)")
     parser.add_argument("--epochs",     type=int, default=1,
                         help="Training epochs (default: 1)")
-    parser.add_argument("--output-dir", required=True,
+    parser.add_argument("--output-dir",
                         help="Directory to save LoRA adapter")
     parser.add_argument("--model",      default=_DEFAULT_MODEL,
                         help=f"Base model ID (default: {_DEFAULT_MODEL})")
+    parser.add_argument("--verbose", action="store_true",
+                        help="Show detailed progress logs")
     return parser.parse_args()
+
+
+def _apply_job_config(args: argparse.Namespace) -> argparse.Namespace:
+    args.model_profile_name = None
+    args.dataset_profile_name = None
+    if not args.job:
+        return args
+    job = load_training_job(args.job)
+    args.model_profile_name = str(job["model"])
+    args.dataset_profile_name = str(job["dataset"])
+    model = load_model_profile(str(job["model"]))
+    dataset = load_dataset_profile(str(job["dataset"]))
+    lora = job.get("lora", {})
+    args.dataset = str(dataset["path"])
+    args.output_dir = str(job["output_dir"])
+    args.epochs = int(job["epochs"])
+    args.limit = job.get("limit")
+    args.model = str(model["hf_model"])
+    args.lora_r = int(lora.get("r", _LORA_R))
+    args.lora_alpha = int(lora.get("alpha", _LORA_ALPHA))
+    args.lora_dropout = float(lora.get("dropout", _LORA_DROPOUT))
+    args.lora_target_modules = list(model.get("lora_target_modules", _LORA_TARGET_MODULES))
+    return args
 
 
 # ── Validation ────────────────────────────────────────────────────────────────
 
 def _validate_args(args: argparse.Namespace) -> None:
     errors: list[str] = []
-    if not Path(args.dataset).exists():
+    if not args.dataset:
+        errors.append("--dataset is required unless --job is provided")
+    if not args.output_dir:
+        errors.append("--output-dir is required unless --job is provided")
+    if args.dataset and not Path(args.dataset).exists():
         errors.append(f"--dataset not found: {args.dataset}")
     if args.limit is not None and args.limit < 1:
         errors.append("--limit must be >= 1")
@@ -277,10 +357,10 @@ def _run_training(args: argparse.Namespace) -> None:
         _log("applying LoRA ...")
         lora_cfg = LoraConfig(
             task_type=TaskType.CAUSAL_LM,
-            r=_LORA_R,
-            lora_alpha=_LORA_ALPHA,
-            lora_dropout=_LORA_DROPOUT,
-            target_modules=_LORA_TARGET_MODULES,
+            r=getattr(args, "lora_r", _LORA_R),
+            lora_alpha=getattr(args, "lora_alpha", _LORA_ALPHA),
+            lora_dropout=getattr(args, "lora_dropout", _LORA_DROPOUT),
+            target_modules=getattr(args, "lora_target_modules", _LORA_TARGET_MODULES),
             bias="none",
             inference_mode=False,
         )
@@ -331,14 +411,15 @@ def _run_training(args: argparse.Namespace) -> None:
             "device":         device,
             "dtype":          str(dtype),
             "examples":       len(dataset),
-            "lora_r":         _LORA_R,
-            "lora_alpha":     _LORA_ALPHA,
-            "lora_dropout":   _LORA_DROPOUT,
-            "target_modules": _LORA_TARGET_MODULES,
+            "lora_r":         getattr(args, "lora_r", _LORA_R),
+            "lora_alpha":     getattr(args, "lora_alpha", _LORA_ALPHA),
+            "lora_dropout":   getattr(args, "lora_dropout", _LORA_DROPOUT),
+            "target_modules": getattr(args, "lora_target_modules", _LORA_TARGET_MODULES),
             "train_loss":     round(loss, 6),
             "elapsed_s":      round(elapsed, 1),
         })
-        _write_report(report, report_dir)
+        report_path = _write_report(report, report_dir)
+        _register_train_experiment(args, report, report_path)
 
         _log("done")
         print(f"  adapter    → {output_dir}", flush=True)
@@ -370,21 +451,26 @@ def _run_training(args: argparse.Namespace) -> None:
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 def main() -> None:
+    global _VERBOSE
     try:
-        args = _parse_args()
+        args = _apply_job_config(_parse_args())
+        _VERBOSE = args.verbose
         _validate_args(args)
 
-        _log(f"dataset    = {args.dataset}")
-        _log(f"limit      = {args.limit}")
-        _log(f"epochs     = {args.epochs}")
-        _log(f"output_dir = {args.output_dir}")
-        _log(f"model      = {args.model}")
+        print(
+            f"[train] model={args.model} dataset={args.dataset} "
+            f"epochs={args.epochs} limit={args.limit}",
+            flush=True,
+        )
 
         _check_deps()
         _run_training(args)
 
     except SystemExit:
         raise
+    except ConfigError as exc:
+        print(format_config_error(exc), file=sys.stderr, flush=True)
+        sys.exit(1)
     except Exception as exc:
         tb_str = traceback.format_exc()
         print(f"\n[train] FATAL: {exc}", file=sys.stderr, flush=True)

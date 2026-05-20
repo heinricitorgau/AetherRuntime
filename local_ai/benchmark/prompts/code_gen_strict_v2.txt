@@ -17,3 +17,5 @@ You must include:
 * return 0 at the end of main
 
 Never output helper functions only.
+If you use malloc/free, include <stdlib.h>. If you use DBL_MAX, include <float.h>.
+For multi-part problems, include the complete main flow, not just helper functions.

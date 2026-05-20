@@ -1,0 +1,24 @@
+{
+  "c_exam_2025_strict_seeded": {
+    "dataset": "c_exam_test_2025",
+    "model": "qwen3b_local",
+    "prompt_profile": "strict_code_only_v2_seeded",
+    "scoring": {
+      "compile": true,
+      "runtime": true,
+      "semantic": true,
+      "keyword": true
+    }
+  },
+  "c_exam2_all_strict_seeded": {
+    "dataset": "c_exam2_benchmark_all",
+    "model": "qwen3b_local",
+    "prompt_profile": "strict_code_only_v2_seeded",
+    "scoring": {
+      "compile": true,
+      "runtime": true,
+      "semantic": true,
+      "keyword": true
+    }
+  }
+}

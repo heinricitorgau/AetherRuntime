@@ -1,0 +1,2 @@
+{"id": "2022_exam2_002", "model": "qwen2.5-coder:3b", "timestamp": "2026-05-17T21:09:33+00:00", "latency_ms": 0, "raw_response": "", "proxy_error": "Remote end closed connection without response", "strict_code_only": true, "geometry_seed_applied": true, "geometry_seed_version": "v1"}
+{"id": "2023_exam2_002", "model": "qwen2.5-coder:3b", "timestamp": "2026-05-17T21:14:33+00:00", "latency_ms": 0, "raw_response": "", "proxy_error": "Remote end closed connection without response", "strict_code_only": true, "geometry_seed_applied": true, "geometry_seed_version": "v1"}

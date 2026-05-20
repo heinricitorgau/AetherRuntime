@@ -1,0 +1,27 @@
+{
+  "_comment": "Per-model defaults. benchmark_profiles.json may override these for specific run modes.",
+  "qwen2.5-coder:1.5b": {
+    "max_tokens": 384,
+    "temperature": 0.1,
+    "ollama_timeout_seconds": 300,
+    "first_token_timeout_seconds": 90
+  },
+  "qwen2.5-coder:3b": {
+    "max_tokens": 768,
+    "temperature": 0.0,
+    "ollama_timeout_seconds": 300,
+    "first_token_timeout_seconds": 90
+  },
+  "qwen2.5-coder:7b": {
+    "max_tokens": 768,
+    "temperature": 0.0,
+    "ollama_timeout_seconds": 480,
+    "first_token_timeout_seconds": 120
+  },
+  "qwen2.5-coder:14b": {
+    "max_tokens": 768,
+    "temperature": 0.0,
+    "ollama_timeout_seconds": 600,
+    "first_token_timeout_seconds": 150
+  }
+}

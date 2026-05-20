@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>c-exam2-programming-2021</title>
+    <style>
+body {
+    margin: 0;
+    background: #f3f4f6;
+    color: #111827;
+    font-family: Arial, "Noto Sans TC", sans-serif;
+}
+main {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 20px 32px;
+}
+h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+.page {
+    margin-bottom: 20px;
+    padding: 28px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.page h2 {
+    margin-top: 0;
+    font-size: 16px;
+    color: #4b5563;
+}
+pre {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    line-height: 1.55;
+    font-family: "Courier New", monospace;
+    font-size: 15px;
+}
+
+    </style>
+</head>
+<body>
+    <main>
+        <h1>c-exam2-programming-2021</h1>
+        <section class="page">
+            <h2>第 1 頁</h2>
+            <pre>C Programming Exam II-3A Student No: Name:
+Part 3: Program (86 points)
+1. (a) (6 points) Write a function that passes n and returns the sum from 2
+2 to n2+1
+n+1 ( 2
+2 + 5
+3 + · · · + n2+1
+n+1 ).
+(b) (5 points) Write a function that passes an array and n and calls the above function to generate an array of the size n
+and whose element i is the sum from 1 to i2+1
+i+1 .
+(c) (3 points) Write the main function that reads n, uses the above two functions, and generates the array.
+A possible run may look like:
+Enter n: 10
+1.000000 2.666667 5.166667 8.566667 12.900000 18.185714 24.435714 31.657937 39.857937 49.039755
+2. (20 points) Write a program to calculate the phone fee. The fare rate for a telephone company is as follows:
+Time 8:00 - 23:00 23:00 - 8:00
+Rate 4.8/minute 4.2/minute
+(a) (6 points) Read the phone number and starting time and ending time of the phone call. The input ends with #.
+(b) (8 points) Calculate the fee for each phone call and print the phone number, ordinary and discount durations, and fee.
+(c) (6 points) Calculate the fee for each phone and print the phone number, number of phone calls, total duration of
+ordinary fee, total duration of discount fee, and total fee.
+A possible run may look like:
+Enter: 0912-168168 22:58 23:04
+Enter: 0912-168168 23:55 00:20
+Enter: 0911-123123 07:40 08:30
+Enter: #
+Phone Number Ordinary Discount Fee
+0912-168168 2 4 26.4
+0912-168168 0 25 105.0
+0911-123123 20 30 222.0
+Phone number No. of Calls Ordinary Discount Fee
+0912-168168 2 2 29 131.4
+0911-123123 1 20 30 222.0
+3. (24 points) Write a program for points.
+(a) (2 points) Declare an array of points using a two dimensional array such as points[][2].
+(b) (5 points) Write a function that reads an array of points of (x, y).
+(c) (5 points) Write a function that prints the array of points.
+(d) (8 points) Write a function that passes an array of points and returns nearest distance of two points and print these
+two points.
+(e) (4 points) Write the main function to use the above functions.
+A possible run may look like:
+Enter numbers of points: 5
+Enter points: -1 2 3 6 -3 -5 -1 0 10 -24
+The points are: (-1.0000, 2.0000), (3.0000, 6.0000), (-3.0000, -5.0000), (-1.0000, 0.0000), (10.0000, -24.0000).
+(-1.0000, 2.0000) and (-1.0000, 0.0000) has the nearest distance and the distance is 2.0000000000.
+4. (28 points) Create a guessing number game.
+(a) (5 points) Read n and generate a board of n by 2n and randomly ﬁll the diﬀerent even numbers from 2 to 2n 2.
+(b) (5 points) The player and the computer take turns to pick two numbers. The numbers cannot be retaken.
+(c) (6 points) The numbers are hidden at ﬁrst and exposed after the player picks the numbers.
+(d) (4 points) The one who has the larger sum wins the total point.
+(e) (4 points) The player can decide to stop or continue the game.
+(f) (4 points) Once the game is over, show the total points for the player and the computer and annouce the winner.
+A sample run may look like:
+Enter n: 2
+* * * *
+* * * *
+Your picks: 1 2 2 4
+* 8 * 12
+* * 6 16
+Player’s numbers: 8 16 Computer’s numbers: 6 12
+The player has 24 (8 + 16) points and the computer has 18 (6 + 12) points. The player wins 42 points.
+Your picks: 1 1 2 2
+10 8 4 12
+14 2 6 16
+The player has 12 (10 + 2) points and the computer has 18 (4 + 14) points. The computer wins 30 points.
+The player has total 42 points. The computer has total 30 points. The player is the winner.
+1</pre>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,84 @@
+{
+  "timestamp": "2026-05-20T19:04:54+00:00",
+  "base_run_id": "geometry_toolkit_probe_v1",
+  "new_run_id": "geometry_toolkit_probe_v1",
+  "verdict": "no_change",
+  "changed_fields": [],
+  "improved_fields": [],
+  "regressed_fields": [],
+  "unavailable_fields": [],
+  "metrics": {
+    "accepted": {
+      "base": 0,
+      "new": 0,
+      "delta": 0.0,
+      "direction": "higher",
+      "change": "no_change",
+      "changed": false
+    },
+    "avg_score": {
+      "base": 0.0,
+      "new": 0.0,
+      "delta": 0.0,
+      "direction": "higher",
+      "change": "no_change",
+      "changed": false
+    },
+    "compile_rate": {
+      "base": 0.0,
+      "new": 0.0,
+      "delta": 0.0,
+      "direction": "higher",
+      "change": "no_change",
+      "changed": false
+    },
+    "runtime_rate": {
+      "base": 0.0,
+      "new": 0.0,
+      "delta": 0.0,
+      "direction": "higher",
+      "change": "no_change",
+      "changed": false
+    },
+    "semantic_rate": {
+      "base": 0.0,
+      "new": 0.0,
+      "delta": 0.0,
+      "direction": "higher",
+      "change": "no_change",
+      "changed": false
+    },
+    "keyword_rate": {
+      "base": 0.0,
+      "new": 0.0,
+      "delta": 0.0,
+      "direction": "higher",
+      "change": "no_change",
+      "changed": false
+    },
+    "timeout_rate": {
+      "base": 0.0,
+      "new": 0.0,
+      "delta": 0.0,
+      "direction": "lower",
+      "change": "no_change",
+      "changed": false
+    }
+  },
+  "base": {
+    "run_type": "benchmark",
+    "model_profile": null,
+    "benchmark_profile": null,
+    "adapter_path": null,
+    "timestamp": "2026-05-20T18:51:57+00:00",
+    "registry_file": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\geometry_toolkit_probe_v1.json"
+  },
+  "new": {
+    "run_type": "benchmark",
+    "model_profile": null,
+    "benchmark_profile": null,
+    "adapter_path": null,
+    "timestamp": "2026-05-20T18:51:57+00:00",
+    "registry_file": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\geometry_toolkit_probe_v1.json"
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "timestamp": "2026-05-20T19:15:19+00:00",
+  "status": "WARN",
+  "success": true,
+  "args": {
+    "profile": null,
+    "benchmark": "c_exam_2025_strict_seeded",
+    "training_job": null,
+    "proxy_url": "http://127.0.0.1:8082"
+  },
+  "summary": {
+    "pass": 17,
+    "warn": 1,
+    "fail": 0
+  },
+  "checks": [
+    {
+      "name": "python_version",
+      "status": "PASS",
+      "detail": "3.12.10 (C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe)",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "import_torch",
+      "status": "PASS",
+      "detail": "torch import available",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "cuda_available",
+      "status": "PASS",
+      "detail": "CUDA available",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "gpu",
+      "status": "PASS",
+      "detail": "NVIDIA GeForce RTX 4060 Laptop GPU (8.0 GB VRAM)",
+      "fix": "",
+      "metadata": {
+        "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "vram_gb": 8.0
+      }
+    },
+    {
+      "name": "import_transformers",
+      "status": "PASS",
+      "detail": "transformers import available",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "import_peft",
+      "status": "PASS",
+      "detail": "peft import available",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "unwanted_datasets",
+      "status": "PASS",
+      "detail": "datasets not installed",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "unwanted_pyarrow",
+      "status": "PASS",
+      "detail": "pyarrow not installed",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "c_compiler",
+      "status": "PASS",
+      "detail": "C:\\msys64\\ucrt64\\bin\\cc.EXE",
+      "fix": "",
+      "metadata": {
+        "compiler": "C:\\msys64\\ucrt64\\bin\\cc.EXE"
+      }
+    },
+    {
+      "name": "ollama_binary",
+      "status": "PASS",
+      "detail": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\runtime\\bin\\ollama.exe",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "proxy_health",
+      "status": "PASS",
+      "detail": "http://127.0.0.1:8082/health ok",
+      "fix": "",
+      "metadata": {
+        "response": {
+          "status": "ok",
+          "model": "qwen2.5-coder:3b"
+        }
+      }
+    },
+    {
+      "name": "proxy_config",
+      "status": "PASS",
+      "detail": "full_timeout=300s first_token_timeout=90s",
+      "fix": "",
+      "metadata": {
+        "response": {
+          "model": "qwen2.5-coder:3b",
+          "full_timeout": 300,
+          "first_token_timeout": 90,
+          "configured_full_timeout": 300,
+          "effective_request_timeout": 300,
+          "effective_first_token_timeout": 90,
+          "stream_mode": false,
+          "force_non_stream": false
+        }
+      }
+    },
+    {
+      "name": "proxy_timeout",
+      "status": "PASS",
+      "detail": "benchmark timeout ok: full=300s first_token=90s",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "config_registry",
+      "status": "PASS",
+      "detail": "profile registry valid (0 issues)",
+      "fix": "",
+      "metadata": {
+        "report": {
+          "timestamp": "2026-05-20T19:15:19+00:00",
+          "success": true,
+          "checked": {
+            "models": 1,
+            "datasets": 3,
+            "benchmarks": 2,
+            "training_jobs": 2,
+            "runtime_profiles": 1
+          },
+          "issue_count": 0,
+          "issues": []
+        }
+      }
+    },
+    {
+      "name": "golden_baseline",
+      "status": "PASS",
+      "detail": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\golden\\golden_baseline.json ref=strict_20260515_052032 tasks=4",
+      "fix": "",
+      "metadata": {
+        "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\golden\\golden_baseline.json"
+      }
+    },
+    {
+      "name": "benchmark_profile",
+      "status": "PASS",
+      "detail": "c_exam_2025_strict_seeded: model=qwen3b_local dataset=c_exam_test_2025",
+      "fix": "",
+      "metadata": {
+        "profile": "c_exam_2025_strict_seeded"
+      }
+    },
+    {
+      "name": "dataset_path:c_exam_test_2025",
+      "status": "PASS",
+      "detail": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\splits\\test_code_generation.jsonl",
+      "fix": "",
+      "metadata": {}
+    },
+    {
+      "name": "sft_readiness",
+      "status": "WARN",
+      "detail": "SFT readiness: FAIL | READY_FOR_SFT = false |  | Report: C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\training_quality\\reports\\sft_readiness_report.md",
+      "fix": "Fix failing SFT readiness sections before LoRA training.",
+      "metadata": {
+        "report": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\training_quality\\reports\\sft_readiness_report.json"
+      }
+    }
+  ]
+}

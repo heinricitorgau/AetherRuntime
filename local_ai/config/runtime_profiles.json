@@ -1,0 +1,8 @@
+{
+  "qwen3b_benchmark": {
+    "ollama_timeout_seconds": 300,
+    "first_token_timeout_seconds": 90,
+    "proxy_port": 8082,
+    "ollama_port": 11435
+  }
+}

@@ -53,6 +53,8 @@ import urllib.request
 from pathlib import Path
 
 _HERE = Path(__file__).resolve().parent
+_REPO_ROOT = _HERE.parent.parent
+sys.path.insert(0, str(_REPO_ROOT))
 sys.path.insert(0, str(_HERE))
 
 from _bench_common import (
@@ -77,6 +79,15 @@ from _bench_common import (
     write_jsonl,
 )
 from benchmark_cases import load_tasks
+from local_ai.shared.config_loader import (
+    ConfigError,
+    format_config_error,
+    load_benchmark_profile,
+    load_config,
+    load_dataset_profile,
+    load_model_profile,
+)
+from local_ai.experiments.register_run import register_run
 
 # ── Defaults (match env var names in spec) ───────────────────────────────────
 
@@ -108,6 +119,70 @@ _GEOM_TOPIC_RE = re.compile(r"geometry|triangle", re.IGNORECASE)
 _GEOM_INSTR_RE = re.compile(r"area|distance|sqrt", re.IGNORECASE)
 _GAME_TOPIC_RE = re.compile(r"game simulation", re.IGNORECASE)
 _SERIES_TOPIC_RE = re.compile(r"series calculation", re.IGNORECASE)
+
+
+def _timeout_rate(results: list[dict]) -> float:
+    if not results:
+        return 0.0
+    timed_out = 0
+    for result in results:
+        checks = result.get("checks", {})
+        if (
+            checks.get("proxy", {}).get("timed_out")
+            or checks.get("runtime", {}).get("timed_out")
+        ):
+            timed_out += 1
+    return round(timed_out / len(results), 3)
+
+
+def _register_benchmark_experiment(
+    *,
+    run_id: str,
+    report: dict,
+    out_dir: Path,
+    benchmark_profile_name: str | None,
+    model_profile_name: str | None,
+    dataset_profile_name: str | None,
+) -> None:
+    try:
+        rates = report.get("rates", {})
+        meta = report.get("meta", {})
+        registered = register_run(
+            {
+                "run_id": run_id,
+                "run_type": "benchmark",
+                "model_profile": model_profile_name,
+                "model": meta.get("model"),
+                "benchmark_profile": benchmark_profile_name,
+                "dataset_profile": dataset_profile_name,
+                "accepted": report.get("accepted"),
+                "cases_run": report.get("cases_run"),
+                "avg_score": report.get("average_score"),
+                "compile_rate": rates.get("compile_pass_rate"),
+                "runtime_rate": rates.get("runtime_pass_rate"),
+                "semantic_rate": rates.get("semantic_pass_rate"),
+                "keyword_rate": rates.get("keyword_pass_rate"),
+                "timeout_rate": _timeout_rate(report.get("results", [])),
+                "linked_reports": {
+                    "run_report_json": str(out_dir / "report.json"),
+                    "run_report_md": str(out_dir / "report.md"),
+                    "baseline_report_json": str(REPORTS_DIR / "baseline_report.json"),
+                    "baseline_report_md": str(REPORTS_DIR / "baseline_report.md"),
+                    "results_jsonl": str(out_dir / "results.jsonl"),
+                    "raw_outputs_jsonl": str(out_dir / "raw_outputs.jsonl"),
+                },
+                "config_profiles": {
+                    "benchmark": benchmark_profile_name,
+                    "model": model_profile_name,
+                    "dataset": dataset_profile_name,
+                    "prompt": meta.get("prompt_profile"),
+                    "strict_prompt_version": meta.get("strict_prompt_version"),
+                },
+            }
+        )
+        print(f"[experiments] registered run_id={registered['run_id']}")
+    except Exception as exc:
+        print(f"[experiments] WARNING: could not register benchmark run: {exc}", file=sys.stderr)
 
 _GEOMETRY_SEED_VERSION = "v2"
 _GEOMETRY_SEED = (
@@ -226,11 +301,6 @@ def _check_proxy_timeout_config(proxy_url: str) -> dict | None:
     full_timeout = int(config.get("full_timeout", 0) or 0)
     first_token_timeout = int(config.get("first_token_timeout", 0) or 0)
     effective_request_timeout = config.get("effective_request_timeout")
-    print("[benchmark]")
-    print("proxy_config:")
-    print(f"full_timeout={full_timeout}")
-    print(f"effective_request_timeout={effective_request_timeout}")
-    print(f"first_token_timeout={first_token_timeout}")
     if (
         full_timeout < _BENCHMARK_REQUIRED_FULL_TIMEOUT
         or first_token_timeout < _BENCHMARK_REQUIRED_FIRST_TOKEN_TIMEOUT
@@ -422,6 +492,7 @@ def run_benchmark(
     dry_run: bool = False,
     skip_compile: bool = False,
     proxy_config: dict | None = None,
+    verbose: bool = False,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -433,13 +504,15 @@ def run_benchmark(
 
     total = len(tasks)
     mode_tag = "STRICT" if strict_code_only else "standard"
-    print(f"\n[benchmark] model={model}  tasks={total}  mode={mode_tag}")
-    print(f"[benchmark] proxy={proxy_url}  max_tokens={max_tokens}  timeout={timeout}s  temp={temperature}")
-    print(f"[benchmark] compiler={'none (skip)' if skip_compile else (compiler or 'NOT FOUND')}")
-    print(f"[benchmark] out_dir={out_dir}")
+    print(f"[benchmark] model={model} tasks={total} mode={mode_tag}")
+    if verbose:
+        print(f"[benchmark] proxy={proxy_url}  max_tokens={max_tokens}  timeout={timeout}s  temp={temperature}")
+        print(f"[benchmark] compiler={'none (skip)' if skip_compile else (compiler or 'NOT FOUND')}")
+        print(f"[benchmark] out_dir={out_dir}")
     if not compiler and not skip_compile:
         print("[benchmark] WARNING: no C compiler found — compile/runtime checks disabled")
-    print()
+    if verbose:
+        print()
 
     for i, task in enumerate(tasks, 1):
         prefix = f"[{i:02d}/{total}] {task['id']}"
@@ -447,7 +520,7 @@ def run_benchmark(
             print(f"{prefix}  [dry-run]")
             continue
 
-        print(f"{prefix}  ", end="", flush=True)
+        print(f"{prefix}  ...", end="", flush=True)
 
         if strict_code_only:
             user_prompt, geom_seed = _build_strict_user_prompt(task)
@@ -488,7 +561,10 @@ def run_benchmark(
         t   = "T" if chk.get("truncation",{}).get("passed") else "-"
         score = result["score"]
         lat   = result["latency_ms"]
-        print(f"[{p}{c}{r}{s}{k}{t}] score={score:3d}  {lat}ms")
+        if verbose:
+            print(f"\r{prefix}  [{p}{c}{r}{s}{k}{t}] score={score:3d}  {lat}ms")
+        else:
+            print(f"\r{prefix}  [{p}{c}{r}{s}{k}{t}] score={score:3d}")
 
     if dry_run:
         print(f"\n[benchmark] dry-run: {total} tasks listed, no API calls made")
@@ -536,7 +612,7 @@ def run_benchmark(
     _BEST_BASELINE_ACCP  = 3
     _BEST_BASELINE_SCORE = 62.0
 
-    if strict_code_only:
+    if strict_code_only and len(tasks) == 4:
         current_accepted  = report.get("accepted", 0)
         current_avg_score = report.get("average_score", 0.0)
         if current_accepted < _BEST_BASELINE_ACCP or current_avg_score < _BEST_BASELINE_SCORE:
@@ -567,26 +643,34 @@ def run_benchmark(
             g_avg      = golden.get("avg_score", 0.0)
             g_timeout  = golden.get("timeout_rate", 0.0)
 
-            regression  = (
-                cur_accepted < g_accepted
-                or cur_avg    < g_avg - 1.0
-                or cur_timeout > g_timeout
-            )
-            improvement = cur_accepted > g_accepted or cur_avg > g_avg + 1.0
-
-            if improvement:
-                verdict = "improvement detected"
-            elif regression:
-                verdict = "regression detected"
+            golden_task_count = golden.get("task_count")
+            if golden_task_count != len(results):
+                print(
+                    "\n[golden] comparison skipped"
+                    f"  (task_count mismatch: current={len(results)}"
+                    f" golden={golden_task_count})"
+                )
             else:
-                verdict = "matches golden"
+                regression  = (
+                    cur_accepted < g_accepted
+                    or cur_avg    < g_avg - 1.0
+                    or cur_timeout > g_timeout
+                )
+                improvement = cur_accepted > g_accepted or cur_avg > g_avg + 1.0
 
-            print(
-                f"\n[golden] {verdict}"
-                f"  (golden: {g_accepted}/{golden.get('task_count', '?')}"
-                f"  {g_avg:.1f}pts"
-                f"  ref={golden.get('run_id', '?')})"
-            )
+                if improvement:
+                    verdict = "improvement detected"
+                elif regression:
+                    verdict = "regression detected"
+                else:
+                    verdict = "matches golden"
+
+                print(
+                    f"\n[golden] {verdict}"
+                    f"  (golden: {g_accepted}/{golden_task_count}"
+                    f"  {g_avg:.1f}pts"
+                    f"  ref={golden.get('run_id', '?')})"
+                )
         except Exception as exc:
             print(f"[golden] comparison skipped: {exc}")
 
@@ -621,6 +705,11 @@ def _find_best_strict_accepted(current_out_dir: Path) -> int | None:
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Benchmark a model against C code generation tasks"
+    )
+    parser.add_argument(
+        "--benchmark",
+        default=None,
+        help="Benchmark profile name from config/benchmarks.json",
     )
     parser.add_argument(
         "--model",
@@ -668,7 +757,39 @@ def main() -> None:
         help="Override temperature (default: 0.0 standard, 0.1 strict)")
     parser.add_argument("--no-compile", action="store_true")
     parser.add_argument("--dry-run",    action="store_true")
+    parser.add_argument("--verbose",    action="store_true",
+        help="Show detailed per-case and runtime diagnostics")
     args = parser.parse_args()
+
+    benchmark_profile = None
+    benchmark_profile_name = args.benchmark
+    model_profile_name = None
+    dataset_profile_name = None
+    dataset_source = args.source
+    prompt_profile = None
+    if args.benchmark:
+        try:
+            benchmark_profile = load_benchmark_profile(args.benchmark)
+            model_profile_name = str(benchmark_profile["model"])
+            dataset_profile_name = str(benchmark_profile["dataset"])
+            dataset_profile = load_dataset_profile(str(benchmark_profile["dataset"]))
+            model_profile = load_model_profile(str(benchmark_profile["model"]))
+            prompt_profile = str(benchmark_profile["prompt_profile"])
+            prompt_profiles = load_config("benchmark_profiles")
+            configured_prompt = prompt_profiles.get(prompt_profile, {})
+            dataset_source = str(dataset_profile["path"])
+            args.model = str(model_profile["ollama_model"])
+            args.max_tokens = int(configured_prompt.get("max_tokens", model_profile["max_tokens"]))
+            if args.temperature is None:
+                args.temperature = float(
+                    configured_prompt.get("temperature", model_profile["temperature"])
+                )
+            args.strict_code_only = prompt_profile.startswith("strict_code_only")
+            if not args.prompt_file and configured_prompt.get("prompt_file"):
+                args.prompt_file = str(PROMPTS_DIR / configured_prompt["prompt_file"])
+        except ConfigError as exc:
+            print(format_config_error(exc), file=sys.stderr)
+            sys.exit(2)
 
     # ── Resolve strict-mode overrides ────────────────────────────────────
     strict = args.strict_code_only
@@ -710,7 +831,7 @@ def main() -> None:
     )
     out_dir = REPORTS_DIR / "runs" / run_id
 
-    tasks = load_tasks(source=args.source, filter_ids=args.filter)
+    tasks = load_tasks(source=dataset_source, filter_ids=args.filter)
     if not tasks:
         print("[error] no tasks found", file=sys.stderr)
         sys.exit(1)
@@ -735,6 +856,7 @@ def main() -> None:
         dry_run=args.dry_run,
         skip_compile=args.no_compile,
         proxy_config=proxy_config,
+        verbose=args.verbose,
     )
 
     if report:
@@ -748,27 +870,21 @@ def main() -> None:
         write_jsonl(failed_all, REPORTS_DIR / "failed_cases.jsonl")
 
         r = report.get("rates", {})
-        print(f"\n{'='*60}")
-        print(f"Run ID:          {run_id}")
-        print(f"Model:           {args.model}")
-        print(f"Mode:            {'STRICT code-only' if strict else 'standard'}")
-        if strict:
-            print(f"Prompt version:  {_STRICT_PROMPT_VERSION}")
-        print(f"max_tokens:      {effective_max_tokens}")
-        print(f"temperature:     {effective_temperature}")
-        print(f"Tasks:           {report.get('cases_run', 0)}")
-        print(f"  compile:       {r.get('compile_pass_rate', 0):.0%}")
-        print(f"  runtime:       {r.get('runtime_pass_rate', 0):.0%}")
-        print(f"  semantic:      {r.get('semantic_pass_rate', 0):.0%}")
-        print(f"  keyword:       {r.get('keyword_pass_rate', 0):.0%}")
-        print(f"  not-truncated: {r.get('truncation_pass_rate', 0):.0%}")
-        print(f"  avg score:     {report.get('average_score', 0):.1f}/100")
-        print(f"  accepted:      {report.get('accepted', 0)}/{report.get('cases_run', 0)}")
-        print(f"{'='*60}")
-        print(f"\nReports: {REPORTS_DIR / 'baseline_report.md'}")
-        print(f"Run dir: {out_dir}")
-        if strict:
-            print(f"\nTip: python local_ai/benchmark/report_analysis.py --run-id {run_id}")
+        print(
+            f"[benchmark] done run_id={run_id} accepted={report.get('accepted', 0)}/"
+            f"{report.get('cases_run', 0)} avg_score={report.get('average_score', 0):.1f} "
+            f"report={REPORTS_DIR / 'baseline_report.md'}"
+        )
+        _register_benchmark_experiment(
+            run_id=run_id,
+            report=report,
+            out_dir=out_dir,
+            benchmark_profile_name=benchmark_profile_name,
+            model_profile_name=model_profile_name,
+            dataset_profile_name=dataset_profile_name,
+        )
+        if args.verbose:
+            print(f"Run dir: {out_dir}")
 
 
 if __name__ == "__main__":

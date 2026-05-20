@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-05-15T06:01:36+00:00",
-  "ready_for_sft": true,
+  "timestamp": "2026-05-20T19:15:31+00:00",
+  "ready_for_sft": false,
   "dataset_checks": {
     "passed": true,
     "checks": {
@@ -82,11 +82,11 @@
     }
   },
   "reproducibility_checks": {
-    "passed": true,
+    "passed": false,
     "checks": {
       "latest_comparison": {
-        "passed": true,
-        "detail": "verdict=matches_golden  run=strict_20260515_043031"
+        "passed": false,
+        "detail": "verdict=regression  run=strict_20260516_031927  ← REGRESSION"
       }
     }
   },

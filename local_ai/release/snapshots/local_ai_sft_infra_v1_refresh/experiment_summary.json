@@ -1,0 +1,18 @@
+{
+  "experiment_count": 1,
+  "by_type": {
+    "benchmark": 1
+  },
+  "latest_runs": [
+    {
+      "run_id": "geometry_toolkit_probe_v1",
+      "timestamp": "2026-05-20T18:51:57+00:00",
+      "run_type": "benchmark",
+      "avg_score": 0.0,
+      "accepted": 0,
+      "benchmark_profile": null,
+      "model_profile": null,
+      "adapter_path": null
+    }
+  ]
+}
