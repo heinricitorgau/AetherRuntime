@@ -26,16 +26,17 @@
       ],
       "built": true,
       "built_at": "2026-05-21T15:25:04+00:00",
-      "trained": false,
-      "trained_at": null,
-      "benchmarked": false,
-      "benchmarked_at": null,
-      "adapter_path": null,
+      "trained": true,
+      "trained_at": "2026-05-21T15:55:57+00:00",
+      "benchmarked": true,
+      "benchmarked_at": "2026-05-21T15:58:16+00:00",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_round_2",
       "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_2\\retry_chatml.jsonl",
       "records_total": 5,
       "records_valid": 5,
-      "best_score": null,
-      "regression": null
+      "best_score": 61.0,
+      "regression": "no_change",
+      "train_loss": 1.501977
     },
     "round_3": {
       "focus_categories": [
@@ -43,7 +44,7 @@
         "algorithm_mismatch"
       ],
       "built": true,
-      "built_at": "2026-05-21T15:25:04+00:00",
+      "built_at": "2026-05-21T15:51:18+00:00",
       "trained": false,
       "trained_at": null,
       "benchmarked": false,

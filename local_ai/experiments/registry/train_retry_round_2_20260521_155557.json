@@ -1,0 +1,38 @@
+{
+  "run_id": "train_retry_round_2_20260521_155557",
+  "timestamp": "2026-05-21T15:55:57+00:00",
+  "run_type": "train",
+  "model_profile": null,
+  "benchmark_profile": null,
+  "training_job": null,
+  "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_round_2",
+  "accepted": null,
+  "avg_score": null,
+  "compile_rate": null,
+  "runtime_rate": null,
+  "semantic_rate": null,
+  "timeout_rate": null,
+  "git_commit": "ea7bc3c",
+  "python_version": "3.12.10",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+  "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+  "dataset_profile": null,
+  "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_2\\retry_chatml.jsonl",
+  "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_round_2",
+  "epochs": 1,
+  "limit": null,
+  "train_loss": 1.501977,
+  "elapsed_s": 116.2,
+  "success": true,
+  "linked_reports": {
+    "train_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\train_report.json",
+    "adapter_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_round_2"
+  },
+  "config_profiles": {
+    "training_job": null,
+    "model": null,
+    "dataset": null
+  }
+}

@@ -6,10 +6,10 @@
     "lora": {"r": 8, "alpha": 16, "dropout": 0.05}
   },
   "round_2": {
-    "description": "Hallucinated functions and syntax errors — compiler-level failures (12% + 7% of failures)",
+    "description": "Hallucinated functions and syntax errors — compiler-level failures (12% + 7% of failures). epochs=1 + higher dropout prevents overfitting on small dataset (5 records); overfitting with epochs=2 caused compile regression on unrelated tasks.",
     "focus": ["hallucinated_function", "syntax_error"],
-    "epochs": 2,
-    "lora": {"r": 8, "alpha": 16, "dropout": 0.05}
+    "epochs": 1,
+    "lora": {"r": 8, "alpha": 16, "dropout": 0.10}
   },
   "round_3": {
     "description": "Geometry reasoning and algorithm mismatch — hard logic failures requiring deeper reasoning",

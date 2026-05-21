@@ -190,6 +190,26 @@ def _apply_round_config(args: argparse.Namespace) -> argparse.Namespace:
               file=sys.stderr)
         sys.exit(1)
 
+    # Count non-empty lines to catch 0-record rounds before loading the model
+    record_count = sum(
+        1 for line in chatml_path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    )
+    if record_count == 0:
+        print(f"[train] ERROR: round '{args.round}' has 0 training records.",
+              file=sys.stderr)
+        print(f"  The round was built but no corrected_output exists for its focus categories.",
+              file=sys.stderr)
+        print(f"  Fix:", file=sys.stderr)
+        focus = round_def.get("focus", [])
+        print(f"    1. Add failures with failure_type in {focus} to retry_training_dataset.jsonl",
+              file=sys.stderr)
+        print(f"    2. python local_ai/analysis/generate_retry_answers.py "
+              f"--round {args.round} --ollama-direct", file=sys.stderr)
+        print(f"    3. python local_ai/retry/build_retry_round.py "
+              f"--round {args.round} --force", file=sys.stderr)
+        sys.exit(1)
+
     lora = round_def.get("lora", {})
     args.dataset               = str(chatml_path)
     args.output_dir            = str(_REPO_ROOT / "local_ai" / "sft" / "artifacts" /

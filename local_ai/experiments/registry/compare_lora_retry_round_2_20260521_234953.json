@@ -1,0 +1,70 @@
+{
+  "run_id": "compare_lora_retry_round_2_20260521_234953",
+  "timestamp": "2026-05-21T15:49:53+00:00",
+  "run_type": "compare_lora",
+  "model_profile": "qwen3b_local",
+  "benchmark_profile": "c_exam_2025_strict_seeded",
+  "training_job": null,
+  "adapter_path": "local_ai\\sft\\artifacts\\retry_round_2",
+  "accepted": 2,
+  "avg_score": 46.5,
+  "compile_rate": 0.5,
+  "runtime_rate": 0.25,
+  "semantic_rate": 1.0,
+  "timeout_rate": 0.0,
+  "git_commit": "ea7bc3c",
+  "python_version": "3.12.10",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "python_executable": "C:\\Users\\User\\onedrive\\desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+  "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+  "dataset_profile": "c_exam_test_2025",
+  "cases_run": 4,
+  "keyword_rate": 0.75,
+  "verdict": "regression",
+  "base": {
+    "accepted": 3,
+    "avg_score": 61.0,
+    "rates": {
+      "proxy_pass_rate": 1.0,
+      "truncation_pass_rate": 1.0,
+      "compile_pass_rate": 0.75,
+      "runtime_pass_rate": 0.5,
+      "semantic_pass_rate": 1.0,
+      "keyword_pass_rate": 0.75,
+      "accepted_rate": 0.75
+    }
+  },
+  "lora": {
+    "accepted": 2,
+    "avg_score": 46.5,
+    "rates": {
+      "proxy_pass_rate": 1.0,
+      "truncation_pass_rate": 1.0,
+      "compile_pass_rate": 0.5,
+      "runtime_pass_rate": 0.25,
+      "semantic_pass_rate": 1.0,
+      "keyword_pass_rate": 0.75,
+      "accepted_rate": 0.5
+    }
+  },
+  "deltas": {
+    "accepted": -1,
+    "avg_score": -14.5,
+    "compile_pass_rate": -0.25,
+    "runtime_pass_rate": -0.25,
+    "semantic_pass_rate": 0.0,
+    "keyword_pass_rate": 0.0
+  },
+  "linked_reports": {
+    "comparison_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\comparison_report.json",
+    "comparison_report_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\comparison_report.md",
+    "timestamped_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\comparison_20260521_234953.json",
+    "timestamped_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\comparison_20260521_234953.md"
+  },
+  "config_profiles": {
+    "benchmark": "c_exam_2025_strict_seeded",
+    "model": "qwen3b_local",
+    "dataset": "c_exam_test_2025"
+  }
+}
