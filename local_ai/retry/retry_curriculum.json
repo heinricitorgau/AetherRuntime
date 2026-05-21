@@ -1,0 +1,26 @@
+{
+  "round_1": {
+    "description": "Truncation and missing entrypoint — most common failure classes (57% + 24% of failures)",
+    "focus": ["truncation", "missing_entrypoint"],
+    "epochs": 2,
+    "lora": {"r": 8, "alpha": 16, "dropout": 0.05}
+  },
+  "round_2": {
+    "description": "Hallucinated functions and syntax errors — compiler-level failures (12% + 7% of failures)",
+    "focus": ["hallucinated_function", "syntax_error"],
+    "epochs": 2,
+    "lora": {"r": 8, "alpha": 16, "dropout": 0.05}
+  },
+  "round_3": {
+    "description": "Geometry reasoning and algorithm mismatch — hard logic failures requiring deeper reasoning",
+    "focus": ["geometry_reasoning", "algorithm_mismatch"],
+    "epochs": 3,
+    "lora": {"r": 16, "alpha": 32, "dropout": 0.05}
+  },
+  "round_4": {
+    "description": "Runtime errors and I/O format errors — output correctness failures",
+    "focus": ["runtime_error", "io_format_error"],
+    "epochs": 2,
+    "lora": {"r": 8, "alpha": 16, "dropout": 0.05}
+  }
+}

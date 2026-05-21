@@ -36,16 +36,19 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-_HERE = Path(__file__).resolve().parent
-_LOCAL_AI = _HERE.parent
-if str(_LOCAL_AI.parent) not in sys.path:
-    sys.path.insert(0, str(_LOCAL_AI.parent))
+_HERE      = Path(__file__).resolve().parent
+_LOCAL_AI  = _HERE.parent
+_REPO_ROOT = _LOCAL_AI.parent
+
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 from local_ai.shared.jsonl import read_jsonl, write_jsonl
 from local_ai.analysis.package_retry_dataset import validate_c
 
-RETRY_DATASET = _HERE / "reports" / "retry_training_dataset.jsonl"
-NEEDS_FILE    = _HERE / "reports" / "retry_needs_correction.jsonl"
+RETRY_DATASET    = _HERE / "reports" / "retry_training_dataset.jsonl"
+NEEDS_FILE       = _HERE / "reports" / "retry_needs_correction.jsonl"
+_CURRICULUM_PATH = _LOCAL_AI / "retry" / "retry_curriculum.json"
 
 _DEFAULT_PROXY       = "http://127.0.0.1:8082"
 _DEFAULT_OLLAMA_URL  = "http://127.0.0.1:11434"
@@ -251,6 +254,10 @@ def _parse_args() -> argparse.Namespace:
                    help="Skip records that already have a corrected_output")
     p.add_argument("--dry-run",        action="store_true",
                    help="Print prompts without calling proxy or Ollama")
+    p.add_argument("--round",          default=None, metavar="NAME",
+                   help="Retry curriculum round (e.g. round_1). "
+                        "Only records whose failure_type matches that round's focus "
+                        "categories will be processed.")
     return p.parse_args()
 
 
@@ -269,6 +276,26 @@ def main() -> None:
         r for r in all_records
         if not args.skip_existing or not (r.get("corrected_output") or "").strip()
     ]
+
+    # --round: restrict to records matching that round's focus categories
+    if args.round:
+        if not _CURRICULUM_PATH.exists():
+            print(f"[gen_answers] ERROR: curriculum not found: {_CURRICULUM_PATH}", file=sys.stderr)
+            sys.exit(1)
+        import json as _json
+        curriculum = _json.loads(_CURRICULUM_PATH.read_text(encoding="utf-8"))
+        round_def  = curriculum.get(args.round)
+        if round_def is None:
+            avail = ", ".join(sorted(curriculum))
+            print(f"[gen_answers] ERROR: unknown round '{args.round}'. Available: {avail}",
+                  file=sys.stderr)
+            sys.exit(1)
+        focus = set(round_def.get("focus", []))
+        before = len(to_process)
+        to_process = [r for r in to_process if r.get("failure_type") in focus]
+        print(f"[gen_answers] --round {args.round}: focus={sorted(focus)}  "
+              f"{before} → {len(to_process)} records after filter")
+
     print(f"[gen_answers] {len(to_process)} records to process")
 
     if args.dry_run:

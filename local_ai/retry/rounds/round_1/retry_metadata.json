@@ -1,0 +1,18 @@
+{
+  "round_name": "round_1",
+  "focus_categories": [
+    "truncation",
+    "missing_entrypoint"
+  ],
+  "description": "Truncation and missing entrypoint — most common failure classes (57% + 24% of failures)",
+  "source_failures": 12,
+  "selected_records": 7,
+  "needs_correction": 0,
+  "epochs": 2,
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "dropout": 0.05
+  },
+  "generated_at": "2026-05-21T15:24:44+00:00"
+}

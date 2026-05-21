@@ -1,0 +1,77 @@
+{
+  "rounds": {
+    "round_1": {
+      "focus_categories": [
+        "truncation",
+        "missing_entrypoint"
+      ],
+      "built": true,
+      "built_at": "2026-05-21T15:24:44+00:00",
+      "trained": true,
+      "trained_at": "2026-05-21T15:27:38+00:00",
+      "benchmarked": true,
+      "benchmarked_at": "2026-05-21T15:33:30+00:00",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_round_1",
+      "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_1\\retry_chatml.jsonl",
+      "records_total": 7,
+      "records_valid": 7,
+      "best_score": 61.0,
+      "regression": "no_change",
+      "train_loss": 1.810746
+    },
+    "round_2": {
+      "focus_categories": [
+        "hallucinated_function",
+        "syntax_error"
+      ],
+      "built": true,
+      "built_at": "2026-05-21T15:25:04+00:00",
+      "trained": false,
+      "trained_at": null,
+      "benchmarked": false,
+      "benchmarked_at": null,
+      "adapter_path": null,
+      "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_2\\retry_chatml.jsonl",
+      "records_total": 5,
+      "records_valid": 5,
+      "best_score": null,
+      "regression": null
+    },
+    "round_3": {
+      "focus_categories": [
+        "geometry_reasoning",
+        "algorithm_mismatch"
+      ],
+      "built": true,
+      "built_at": "2026-05-21T15:25:04+00:00",
+      "trained": false,
+      "trained_at": null,
+      "benchmarked": false,
+      "benchmarked_at": null,
+      "adapter_path": null,
+      "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_3\\retry_chatml.jsonl",
+      "records_total": 0,
+      "records_valid": 0,
+      "best_score": null,
+      "regression": null
+    },
+    "round_4": {
+      "focus_categories": [
+        "runtime_error",
+        "io_format_error"
+      ],
+      "built": true,
+      "built_at": "2026-05-21T15:25:04+00:00",
+      "trained": false,
+      "trained_at": null,
+      "benchmarked": false,
+      "benchmarked_at": null,
+      "adapter_path": null,
+      "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_4\\retry_chatml.jsonl",
+      "records_total": 0,
+      "records_valid": 0,
+      "best_score": null,
+      "regression": null
+    }
+  }
+}

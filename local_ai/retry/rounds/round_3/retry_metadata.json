@@ -1,0 +1,18 @@
+{
+  "round_name": "round_3",
+  "focus_categories": [
+    "geometry_reasoning",
+    "algorithm_mismatch"
+  ],
+  "description": "Geometry reasoning and algorithm mismatch — hard logic failures requiring deeper reasoning",
+  "source_failures": 12,
+  "selected_records": 0,
+  "needs_correction": 0,
+  "epochs": 3,
+  "lora": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.05
+  },
+  "generated_at": "2026-05-21T15:25:04+00:00"
+}

@@ -45,8 +45,10 @@ _WARMUP_STEPS        = 2
 _MAX_SEQ_LEN         = 1024
 _VERBOSE             = False
 
-_HERE = Path(__file__).resolve().parent
+_HERE      = Path(__file__).resolve().parent
 _REPO_ROOT = _HERE.parent.parent
+_RETRY_DIR = _HERE.parent / "retry"   # local_ai/retry/
+
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
@@ -133,6 +135,10 @@ def _parse_args() -> argparse.Namespace:
                         help=f"Base model ID (default: {_DEFAULT_MODEL})")
     parser.add_argument("--verbose", action="store_true",
                         help="Show detailed progress logs")
+    parser.add_argument("--round", default=None, metavar="NAME",
+                        help="Retry curriculum round (e.g. round_1). "
+                             "Auto-sets --dataset and --output-dir from the round definition. "
+                             "Mutually exclusive with --job.")
     return parser.parse_args()
 
 
@@ -157,6 +163,62 @@ def _apply_job_config(args: argparse.Namespace) -> argparse.Namespace:
     args.lora_dropout = float(lora.get("dropout", _LORA_DROPOUT))
     args.lora_target_modules = list(model.get("lora_target_modules", _LORA_TARGET_MODULES))
     return args
+
+
+# ── Round config (retry curriculum) ──────────────────────────────────────────
+
+def _apply_round_config(args: argparse.Namespace) -> argparse.Namespace:
+    """Resolve dataset / output-dir / LoRA config from retry_curriculum.json for --round."""
+    curriculum_path = _RETRY_DIR / "retry_curriculum.json"
+    if not curriculum_path.exists():
+        print(f"[train] ERROR: curriculum not found: {curriculum_path}", file=sys.stderr)
+        sys.exit(1)
+    curriculum = json.loads(curriculum_path.read_text(encoding="utf-8"))
+    round_def  = curriculum.get(args.round)
+    if round_def is None:
+        avail = ", ".join(sorted(curriculum))
+        print(f"[train] ERROR: unknown round '{args.round}'. Available: {avail}",
+              file=sys.stderr)
+        sys.exit(1)
+
+    round_dir   = _RETRY_DIR / "rounds" / args.round
+    chatml_path = round_dir / "retry_chatml.jsonl"
+    if not chatml_path.exists():
+        print(f"[train] ERROR: round '{args.round}' not built yet: {chatml_path}",
+              file=sys.stderr)
+        print(f"  Run: python local_ai/retry/build_retry_round.py --round {args.round}",
+              file=sys.stderr)
+        sys.exit(1)
+
+    lora = round_def.get("lora", {})
+    args.dataset               = str(chatml_path)
+    args.output_dir            = str(_REPO_ROOT / "local_ai" / "sft" / "artifacts" /
+                                     f"retry_{args.round}")
+    args.epochs                = int(round_def.get("epochs", 2))
+    args.limit                 = None
+    args.lora_r                = int(lora.get("r",       _LORA_R))
+    args.lora_alpha            = int(lora.get("alpha",   _LORA_ALPHA))
+    args.lora_dropout          = float(lora.get("dropout", _LORA_DROPOUT))
+    args.lora_target_modules   = list(_LORA_TARGET_MODULES)
+    args.job                   = None
+    args.model_profile_name    = None
+    args.dataset_profile_name  = None
+    return args
+
+
+def _update_round_registry(round_name: str, updates: dict) -> None:
+    """Merge *updates* into the round_registry entry for *round_name*."""
+    registry_path = _RETRY_DIR / "round_registry.json"
+    if not registry_path.exists():
+        return
+    try:
+        data = json.loads(registry_path.read_text(encoding="utf-8"))
+        data.setdefault("rounds", {}).setdefault(round_name, {}).update(updates)
+        registry_path.write_text(
+            json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+    except Exception as exc:
+        print(f"[train] WARNING: could not update round registry: {exc}", file=sys.stderr)
 
 
 # ── Validation ────────────────────────────────────────────────────────────────
@@ -421,15 +483,32 @@ def _run_training(args: argparse.Namespace) -> None:
         report_path = _write_report(report, report_dir)
         _register_train_experiment(args, report, report_path)
 
+        # Update round registry if this was a --round training run
+        if getattr(args, "round", None):
+            _update_round_registry(args.round, {
+                "trained":     True,
+                "trained_at":  _now(),
+                "adapter_path": str(output_dir),
+                "train_loss":  round(loss, 6),
+            })
+
         _log("done")
-        print(f"  adapter    → {output_dir}", flush=True)
+        print(f"  adapter    >> {output_dir}", flush=True)
         print(f"  train_loss = {loss:.4f}", flush=True)
         print(f"  elapsed    = {elapsed:.0f}s", flush=True)
-        print(f"  report     → {report_dir / 'train_report.json'}", flush=True)
+        print(f"  report     >> {report_dir / 'train_report.json'}", flush=True)
         print(flush=True)
-        print("Next step:", flush=True)
-        print(f'  python local_ai/sft/evaluate_lora.py --adapter "{output_dir}" \\', flush=True)
-        print('      --prompt "Write a C program that prints Hello."', flush=True)
+        if getattr(args, "round", None):
+            print("Next step:", flush=True)
+            print(f'  python local_ai/sft/benchmark_lora.py '
+                  f'--benchmark c_exam_2025_strict_seeded '
+                  f'--adapter "{output_dir}" '
+                  f'--round {args.round}', flush=True)
+        else:
+            print("Next step:", flush=True)
+            print(f'  python local_ai/sft/evaluate_lora.py --adapter "{output_dir}" \\',
+                  flush=True)
+            print('      --prompt "Write a C program that prints Hello."', flush=True)
 
     except Exception as exc:
         elapsed  = time.monotonic() - t_start
@@ -444,7 +523,7 @@ def _run_training(args: argparse.Namespace) -> None:
         _write_report(report, report_dir)
         print(f"\n[train] FAILED after {elapsed:.1f}s", file=sys.stderr, flush=True)
         print(tb_str, file=sys.stderr, flush=True)
-        print(f"[train] report → {report_dir / 'train_report.json'}", file=sys.stderr, flush=True)
+        print(f"[train] report >> {report_dir / 'train_report.json'}", file=sys.stderr, flush=True)
         sys.exit(1)
 
 
@@ -453,7 +532,22 @@ def _run_training(args: argparse.Namespace) -> None:
 def main() -> None:
     global _VERBOSE
     try:
-        args = _apply_job_config(_parse_args())
+        args = _parse_args()
+
+        # --round and --job are mutually exclusive
+        if getattr(args, "round", None) and args.job:
+            print("[train] ERROR: --round and --job are mutually exclusive", file=sys.stderr)
+            sys.exit(1)
+
+        if getattr(args, "round", None):
+            args = _apply_round_config(args)
+        elif args.job:
+            args = _apply_job_config(args)
+        else:
+            # Direct --dataset / --output-dir; ensure profile names are set
+            args.model_profile_name   = None
+            args.dataset_profile_name = None
+
         _VERBOSE = args.verbose
         _validate_args(args)
 

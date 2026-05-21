@@ -1,0 +1,18 @@
+{
+  "round_name": "round_2",
+  "focus_categories": [
+    "hallucinated_function",
+    "syntax_error"
+  ],
+  "description": "Hallucinated functions and syntax errors — compiler-level failures (12% + 7% of failures)",
+  "source_failures": 12,
+  "selected_records": 5,
+  "needs_correction": 0,
+  "epochs": 2,
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "dropout": 0.05
+  },
+  "generated_at": "2026-05-21T15:25:04+00:00"
+}

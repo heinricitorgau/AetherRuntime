@@ -35,6 +35,7 @@ _REPO_ROOT   = _HERE.parent.parent
 _BENCH_DIR   = _HERE.parent / "benchmark"             # local_ai/benchmark/
 _PROMPTS_DIR = _BENCH_DIR / "prompts"
 _SFT_REPORTS = _HERE / "reports"
+_RETRY_DIR   = _HERE.parent / "retry"                 # local_ai/retry/
 
 _DEFAULT_MODEL      = "Qwen/Qwen2.5-Coder-3B-Instruct"
 _DEFAULT_MAX_TOKENS = 384
@@ -161,7 +162,38 @@ def _parse_args() -> argparse.Namespace:
                    help=f"Output directory (default: {_SFT_REPORTS})")
     p.add_argument("--verbose",    action="store_true",
                    help="Show detailed progress logs")
+    p.add_argument("--round",      default=None, metavar="NAME",
+                   help="Retry curriculum round (e.g. round_1). "
+                        "Records retry_round and focus_categories in comparison output "
+                        "and updates round_registry.json after benchmarking.")
     return p.parse_args()
+
+
+def _load_round_focus(round_name: str) -> list[str]:
+    """Return focus categories for *round_name* from retry_curriculum.json."""
+    curriculum_path = _RETRY_DIR / "retry_curriculum.json"
+    if not curriculum_path.exists():
+        return []
+    try:
+        curriculum = json.loads(curriculum_path.read_text(encoding="utf-8"))
+        return list(curriculum.get(round_name, {}).get("focus", []))
+    except Exception:
+        return []
+
+
+def _update_round_registry(round_name: str, updates: dict) -> None:
+    """Merge *updates* into the round_registry entry for *round_name*."""
+    registry_path = _RETRY_DIR / "round_registry.json"
+    if not registry_path.exists():
+        return
+    try:
+        data = json.loads(registry_path.read_text(encoding="utf-8"))
+        data.setdefault("rounds", {}).setdefault(round_name, {}).update(updates)
+        registry_path.write_text(
+            json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+    except Exception as exc:
+        print(f"[compare] WARNING: could not update round registry: {exc}", file=sys.stderr)
 
 
 # ── Model / adapter resolution ────────────────────────────────────────────────
@@ -396,9 +428,9 @@ def _run_pass(
 
         chk   = rec["checks"]
         flags = (
-            f"compile={'✓' if chk['compile']['passed'] else '✗'}"
-            f"  runtime={'✓' if chk['runtime']['passed'] else '✗'}"
-            f"  semantic={'✓' if chk['semantic']['passed'] else '✗'}"
+            f"compile={'ok' if chk['compile']['passed'] else 'no'}"
+            f"  runtime={'ok' if chk['runtime']['passed'] else 'no'}"
+            f"  semantic={'ok' if chk['semantic']['passed'] else 'no'}"
             f"  score={rec['score']}"
             f"  {'ACCEPTED' if rec['accepted'] else 'rejected'}"
         )
@@ -594,7 +626,7 @@ def _run(args: argparse.Namespace) -> None:
 
     _log(f"model      = {model_id}")
     _log(f"adapter    = {adapter_dir}")
-    _log(f"compiler   = {compiler or 'NOT FOUND — compile/runtime skipped'}")
+    _log(f"compiler   = {compiler or 'NOT FOUND - compile/runtime skipped'}")
     _log(f"max_tokens = {args.max_tokens}")
 
     # ── Tasks ─────────────────────────────────────────────────────────────────
@@ -699,6 +731,13 @@ def _run(args: argparse.Namespace) -> None:
         "lora_results": lora_results,
     }
 
+    # Attach retry-round metadata when --round is given
+    round_focus: list[str] = []
+    if args.round:
+        round_focus = _load_round_focus(args.round)
+        comparison["retry_round"]       = args.round
+        comparison["focus_categories"]  = round_focus
+
     # ── Write reports ─────────────────────────────────────────────────────────
     md_text = _build_markdown(
         base_m, lora_m, base_results, lora_results, tasks, model_id, adapter_dir
@@ -718,16 +757,28 @@ def _run(args: argparse.Namespace) -> None:
         dataset_profile_name=dataset_profile_name,
     )
 
+    # Update round registry when --round is given
+    if args.round:
+        _update_round_registry(args.round, {
+            "benchmarked":     True,
+            "benchmarked_at":  _now(),
+            "best_score":      round(ls, 2),
+            "regression":      verdict,
+            "adapter_path":    str(adapter_dir),
+        })
+
     # ── Summary ───────────────────────────────────────────────────────────────
     _log("done")
+    if args.round:
+        print(f"\n  retry_round = {args.round}  focus={round_focus}", flush=True)
     print(f"\n  verdict     = {verdict}", flush=True)
     print(f"  accepted    base={ba}/{n}  lora={la}/{n}  delta={la-ba:+d}", flush=True)
     print(f"  avg score   base={bs:.1f}  lora={ls:.1f}  delta={ls-bs:+.1f}", flush=True)
     print(f"  compile     base={_pct(br.get('compile_pass_rate',0))}  lora={_pct(lr.get('compile_pass_rate',0))}  delta={_pct(lr.get('compile_pass_rate',0)-br.get('compile_pass_rate',0))}", flush=True)
     print(f"  runtime     base={_pct(br.get('runtime_pass_rate',0))}  lora={_pct(lr.get('runtime_pass_rate',0))}  delta={_pct(lr.get('runtime_pass_rate',0)-br.get('runtime_pass_rate',0))}", flush=True)
     print(f"  semantic    base={_pct(br.get('semantic_pass_rate',0))}  lora={_pct(lr.get('semantic_pass_rate',0))}", flush=True)
-    print(f"\n  report  → {out_dir / 'comparison_report.md'}", flush=True)
-    print(f"  report  → {out_dir / 'comparison_report.json'}", flush=True)
+    print(f"\n  report  >> {out_dir / 'comparison_report.md'}", flush=True)
+    print(f"  report  >> {out_dir / 'comparison_report.json'}", flush=True)
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
@@ -739,8 +790,10 @@ def main() -> None:
         args = _parse_args()
         _VERBOSE = args.verbose
 
+        round_suffix = f" round={args.round}" if args.round else ""
         print(
-            f"[compare] adapter={args.adapter} benchmark={args.benchmark or args.source}",
+            f"[compare] adapter={args.adapter} benchmark={args.benchmark or args.source}"
+            f"{round_suffix}",
             flush=True,
         )
 
