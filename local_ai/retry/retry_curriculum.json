@@ -22,5 +22,14 @@
     "focus": ["runtime_error", "io_format_error"],
     "epochs": 2,
     "lora": {"r": 8, "alpha": 16, "dropout": 0.05}
+  },
+  "round_geometry_v1": {
+    "description": "Geometry task direct retry — targets 2025_midterm_003 (Triangle Enumeration, score=15). Topic-filtered from benchmark failed_cases.jsonl + global dataset. Strict validation: requires scanf + printf. r=16 for deeper geometry reasoning.",
+    "focus": ["geometry_reasoning", "hallucinated_function", "missing_entrypoint"],
+    "target_topics": ["Geometry", "Triangle"],
+    "output_dir": "local_ai/retry/rounds/round_geometry_v1",
+    "training_output_dir": "local_ai/sft/artifacts/retry_geometry_v1",
+    "epochs": 5,
+    "lora": {"r": 16, "alpha": 32, "dropout": 0.05}
   }
 }

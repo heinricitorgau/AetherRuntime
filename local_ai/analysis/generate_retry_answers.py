@@ -236,6 +236,18 @@ def _extract_c(text: str) -> str:
     return text.strip()
 
 
+# ── geometry validator ────────────────────────────────────────────────────────
+
+def _validate_c_geometry(code: str) -> list[str]:
+    """Stricter validator for geometry rounds: also requires scanf and printf."""
+    violations = validate_c(code)
+    if "scanf" not in code:
+        violations.append("missing scanf (geometry tasks require reading float/int input)")
+    if "printf" not in code:
+        violations.append("missing printf (geometry tasks require formatted output)")
+    return violations
+
+
 # ── main ──────────────────────────────────────────────────────────────────────
 
 def _parse_args() -> argparse.Namespace:
@@ -264,37 +276,61 @@ def _parse_args() -> argparse.Namespace:
 def main() -> None:
     args = _parse_args()
 
-    if not RETRY_DATASET.exists():
-        print(f"[gen_answers] ERROR: {RETRY_DATASET} not found. Run generate_retry_dataset.py first.")
-        sys.exit(1)
+    # ── Resolve source dataset (round-local or global) ────────────────────────
+    round_def        = None
+    use_round_local  = False
+    dataset_path     = RETRY_DATASET   # default: global
 
-    all_records = read_jsonl(RETRY_DATASET)
-    print(f"[gen_answers] Loaded {len(all_records)} records from retry_training_dataset.jsonl")
-
-    # Determine which records need correction
-    to_process = [
-        r for r in all_records
-        if not args.skip_existing or not (r.get("corrected_output") or "").strip()
-    ]
-
-    # --round: restrict to records matching that round's focus categories
     if args.round:
         if not _CURRICULUM_PATH.exists():
             print(f"[gen_answers] ERROR: curriculum not found: {_CURRICULUM_PATH}", file=sys.stderr)
             sys.exit(1)
-        import json as _json
-        curriculum = _json.loads(_CURRICULUM_PATH.read_text(encoding="utf-8"))
+        curriculum = json.loads(_CURRICULUM_PATH.read_text(encoding="utf-8"))
         round_def  = curriculum.get(args.round)
         if round_def is None:
             avail = ", ".join(sorted(curriculum))
             print(f"[gen_answers] ERROR: unknown round '{args.round}'. Available: {avail}",
                   file=sys.stderr)
             sys.exit(1)
-        focus = set(round_def.get("focus", []))
+        # If the round has its own retry_dataset.jsonl, use round-local mode
+        _round_local = _LOCAL_AI / "retry" / "rounds" / args.round / "retry_dataset.jsonl"
+        if _round_local.exists():
+            use_round_local = True
+            dataset_path    = _round_local
+            print(f"[gen_answers] --round {args.round}: round-local dataset: {_round_local}")
+        else:
+            print(f"[gen_answers] --round {args.round}: round-local not found, using global dataset")
+
+    if not dataset_path.exists():
+        print(f"[gen_answers] ERROR: {dataset_path} not found. "
+              f"Run generate_retry_dataset.py (or build_retry_round.py --round ...) first.",
+              file=sys.stderr)
+        sys.exit(1)
+
+    all_records = read_jsonl(dataset_path)
+    label_src   = "round-local retry_dataset.jsonl" if use_round_local \
+                  else "retry_training_dataset.jsonl"
+    print(f"[gen_answers] Loaded {len(all_records)} records from {label_src}")
+
+    # ── Filter records to process ─────────────────────────────────────────────
+    to_process = [
+        r for r in all_records
+        if not args.skip_existing or not (r.get("corrected_output") or "").strip()
+    ]
+
+    # In global mode with --round, further restrict to focus categories
+    if args.round and not use_round_local and round_def:
+        focus  = set(round_def.get("focus", []))
         before = len(to_process)
         to_process = [r for r in to_process if r.get("failure_type") in focus]
         print(f"[gen_answers] --round {args.round}: focus={sorted(focus)}  "
-              f"{before} → {len(to_process)} records after filter")
+              f"{before} >> {len(to_process)} records after filter")
+
+    # ── Validator ─────────────────────────────────────────────────────────────
+    # Use strict geometry validator if the round has target_topics
+    use_strict = bool(round_def and round_def.get("target_topics"))
+    if use_strict:
+        print(f"[gen_answers] Strict validator active (requires scanf + printf)")
 
     print(f"[gen_answers] {len(to_process)} records to process")
 
@@ -309,10 +345,8 @@ def main() -> None:
     print(f"[gen_answers] Using {mode} backend")
 
     # Warm up the model — the first Ollama call loads the model into VRAM (60-120s).
-    # Subsequent calls are fast (3-10s each).  Fire a tiny warm-up before the real loop
-    # so the per-record timeout budget is not consumed by cold-start.
     if args.ollama_direct:
-        print("[gen_answers] Warming up model (first call loads VRAM) …", end="", flush=True)
+        print("[gen_answers] Warming up model (first call loads VRAM) ...", end="", flush=True)
         t0 = time.time()
         _ = _call_ollama_direct(
             args.ollama_url, args.model,
@@ -320,7 +354,6 @@ def main() -> None:
             max_tokens=20, timeout=args.timeout,
         )
         print(f" {time.time()-t0:.1f}s  (model warm)")
-
 
     # index by (task_id, model) for in-place update
     index: dict[tuple, dict] = {}
@@ -341,8 +374,8 @@ def main() -> None:
             continue
 
         repair_prompt = _build_repair_prompt(record)
-        label = "ollama" if args.ollama_direct else "proxy"
-        print(f"  calling {label} …", end="", flush=True)
+        lbl = "ollama" if args.ollama_direct else "proxy"
+        print(f"  calling {lbl} ...", end="", flush=True)
         t0 = time.time()
         if args.ollama_direct:
             raw = _call_ollama_direct(
@@ -356,7 +389,7 @@ def main() -> None:
         print(f" {elapsed:.1f}s")
 
         if not raw:
-            print(f"  [FAIL] empty response from proxy")
+            print(f"  [FAIL] empty response from {lbl}")
             fail_count += 1
             continue
 
@@ -366,10 +399,10 @@ def main() -> None:
             fail_count += 1
             continue
 
-        violations = validate_c(code)
+        violations = _validate_c_geometry(code) if use_strict else validate_c(code)
         if violations:
             print(f"  [WARN] validation failed: {violations}")
-            print(f"  keeping output anyway (will be filtered by package_retry_dataset.py)")
+            print(f"  keeping output anyway (will be filtered by package step)")
 
         # Update record in-place
         key = (task_id, record.get("meta", {}).get("model", ""))
@@ -378,15 +411,20 @@ def main() -> None:
             index[key]["correction_violations"] = violations
         ok_count += 1
         short = code[:80].replace("\n", " ")
-        print(f"  [OK]  {len(code)} chars  violations={violations}  preview: {short}…")
+        print(f"  [OK]  {len(code)} chars  violations={violations}  preview: {short}...")
 
-    # Write back updated dataset
+    # ── Write back ────────────────────────────────────────────────────────────
     updated = list(index.values())
-    write_jsonl(RETRY_DATASET, updated)
+    write_jsonl(dataset_path, updated)
 
     print(f"\n[gen_answers] Done.  ok={ok_count}  skip={skip_count}  fail={fail_count}")
-    print(f"  Updated: {RETRY_DATASET}")
-    print(f"\n  Run package_retry_dataset.py to rebuild retry_sft_chatml.jsonl")
+    print(f"  Updated: {dataset_path}")
+
+    if use_round_local:
+        print(f"\n  Next step -- package the round dataset:")
+        print(f"  python local_ai/analysis/package_retry_dataset.py --round {args.round}")
+    else:
+        print(f"\n  Run package_retry_dataset.py to rebuild retry_sft_chatml.jsonl")
 
 
 if __name__ == "__main__":

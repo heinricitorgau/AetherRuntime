@@ -44,7 +44,7 @@
         "algorithm_mismatch"
       ],
       "built": true,
-      "built_at": "2026-05-21T15:51:18+00:00",
+      "built_at": "2026-05-21T16:02:46+00:00",
       "trained": false,
       "trained_at": null,
       "benchmarked": false,
@@ -73,6 +73,31 @@
       "records_valid": 0,
       "best_score": null,
       "regression": null
+    },
+    "round_geometry_v1": {
+      "focus_categories": [
+        "geometry_reasoning",
+        "hallucinated_function",
+        "missing_entrypoint"
+      ],
+      "built": true,
+      "built_at": "2026-05-21T16:21:56+00:00",
+      "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_geometry_v1\\retry_chatml.jsonl",
+      "records_total": 3,
+      "records_valid": 0,
+      "training_output_dir": "local_ai/sft/artifacts/retry_geometry_v1",
+      "target_topics": [
+        "Geometry",
+        "Triangle"
+      ],
+      "trained": true,
+      "trained_at": "2026-05-21T17:01:11+00:00",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v1",
+      "train_loss": 0.817823,
+      "benchmarked": true,
+      "benchmarked_at": "2026-05-21T17:26:26+00:00",
+      "best_score": 84.2,
+      "regression": "improvement"
     }
   }
 }

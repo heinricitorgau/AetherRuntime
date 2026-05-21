@@ -62,11 +62,11 @@
 
 ## Experiment Registry Summary
 
-- Total experiments: 67
-- Avg compile rate:  55.0%
-- Avg runtime rate:  40.9%
-- Avg timeout rate:  16.0%
-- Avg score:         48.4104
+- Total experiments: 69
+- Avg compile rate:  54.5%
+- Avg runtime rate:  40.4%
+- Avg timeout rate:  15.6%
+- Avg score:         47.8913
 
 ## Top Topic × Primary Failure Breakdown
 

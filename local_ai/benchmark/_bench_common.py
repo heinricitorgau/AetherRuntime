@@ -144,8 +144,7 @@ def extract_c(text: str) -> tuple[str, str]:
             elif ch == "}":
                 depth -= 1
                 if depth == 0 and i > 0:
-                    end = i + 1
-                    break
+                    end = i + 1  # record but keep scanning for later functions/main
         if end > 0:
             return snippet[:end].strip(), "heuristic"
     return text.strip(), "none"

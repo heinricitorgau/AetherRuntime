@@ -16,6 +16,7 @@ ChatML format is identical to local_ai/training_quality/reports/sft_chatml.jsonl
 """
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -62,7 +63,17 @@ def validate_c(code: str) -> list[str]:
         violations.append(f"unbalanced braces ({opens} open, {closes} close)")
     # Must not be just the bad_output (check it's not a tiny fragment)
     if len(code.strip()) < 50:
-        violations.append("code too short (< 50 chars) — likely a fragment")
+        violations.append("code too short (< 50 chars) -- likely a fragment")
+    return violations
+
+
+def _validate_c_strict(code: str) -> list[str]:
+    """Stricter validator for geometry rounds: also requires scanf and printf."""
+    violations = validate_c(code)
+    if "scanf" not in code:
+        violations.append("missing scanf (geometry tasks require reading float/int input)")
+    if "printf" not in code:
+        violations.append("missing printf (geometry tasks require formatted output)")
     return violations
 
 
@@ -89,9 +100,111 @@ def _build_user_msg(record: dict) -> str:
     return "\n".join(parts)
 
 
+# ── CLI ───────────────────────────────────────────────────────────────────────
+
+def _parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(
+        description="Package retry training records into SFT ChatML format",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  Global (legacy):          python local_ai/analysis/package_retry_dataset.py\n"
+            "  Round-local (geometry):   python local_ai/analysis/package_retry_dataset.py "
+            "--round round_geometry_v1\n"
+        ),
+    )
+    p.add_argument("--round", default=None, metavar="NAME",
+                   help="Retry curriculum round. Reads from "
+                        "local_ai/retry/rounds/<round>/retry_dataset.jsonl and writes "
+                        "retry_chatml.jsonl to the same directory.")
+    return p.parse_args()
+
+
 # ── main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
+    args = _parse_args()
+
+    # ── Round-local mode ──────────────────────────────────────────────────────
+    if args.round:
+        _retry_dir  = Path(__file__).resolve().parent.parent / "retry"
+        round_dir   = _retry_dir / "rounds" / args.round
+        source_path = round_dir / "retry_dataset.jsonl"
+        chatml_path = round_dir / "retry_chatml.jsonl"
+        needs_path  = round_dir / "retry_needs_correction.jsonl"
+
+        if not source_path.exists():
+            print(f"[package] ERROR: {source_path} not found.")
+            print(f"  Run: python local_ai/retry/build_retry_round.py --round {args.round}")
+            sys.exit(1)
+
+        # Detect geometry / strict validator from curriculum
+        curriculum_path = _retry_dir / "retry_curriculum.json"
+        use_strict      = False
+        if curriculum_path.exists():
+            curriculum = json.loads(curriculum_path.read_text(encoding="utf-8"))
+            round_def  = curriculum.get(args.round, {})
+            use_strict = bool(round_def.get("target_topics"))
+
+        validator = _validate_c_strict if use_strict else validate_c
+
+        records = read_jsonl(source_path)
+        print(f"[package] --round {args.round}: loaded {len(records)} records")
+        if use_strict:
+            print(f"[package] Strict validator active (requires scanf + printf)")
+
+        chatml_records: list[dict] = []
+        needs_correction: list[dict] = []
+
+        for r in records:
+            corrected = (r.get("corrected_output") or "").strip()
+            if not corrected:
+                needs_correction.append(r)
+                continue
+            violations = validator(corrected)
+            if violations:
+                print(f"  [skip] {r.get('meta', {}).get('task_id', '?')} -- "
+                      f"corrected_output invalid: {violations}")
+                needs_correction.append(r)
+                continue
+            meta = r.get("meta", {})
+            chatml_records.append({
+                "messages": [
+                    {"role": "system",    "content": _SYSTEM},
+                    {"role": "user",      "content": _build_user_msg(r)},
+                    {"role": "assistant", "content": corrected},
+                ],
+                "metadata": {
+                    "id":           meta.get("task_id", ""),
+                    "type":         "retry_code_generation",
+                    "source":       f"retry_sft_{args.round}",
+                    "failure_type": r.get("failure_type", ""),
+                    "round":        args.round,
+                    "year":         meta.get("year", 0),
+                    "topic":        meta.get("topic", ""),
+                    "score_before": meta.get("score", 0),
+                },
+            })
+
+        round_dir.mkdir(parents=True, exist_ok=True)
+        write_jsonl(chatml_path, chatml_records)
+        write_jsonl(needs_path,  needs_correction)
+
+        print(f"\n[package] Round '{args.round}' packaged:")
+        print(f"  retry_chatml.jsonl:           {len(chatml_records)} training records")
+        print(f"  retry_needs_correction.jsonl: {len(needs_correction)} records")
+        print(f"  Output: {round_dir}")
+
+        if needs_correction:
+            print(f"\n  {len(needs_correction)} record(s) still need corrected_output.")
+            print(f"  Run: python local_ai/analysis/generate_retry_answers.py "
+                  f"--round {args.round} --ollama-direct")
+        if chatml_records:
+            print(f"\nNext step:")
+            print(f"  python local_ai/sft/train_lora.py --round {args.round}")
+        return
+
+    # ── Global (legacy) mode ──────────────────────────────────────────────────
     if not RETRY_DATASET.exists():
         print(f"[package] ERROR: {RETRY_DATASET} not found. Run generate_retry_dataset.py first.")
         sys.exit(1)
@@ -99,27 +212,27 @@ def main() -> None:
     records = read_jsonl(RETRY_DATASET)
     print(f"[package] Loaded {len(records)} retry records")
 
-    chatml_records: list[dict] = []
-    needs_correction: list[dict] = []
+    chatml_records_g: list[dict] = []
+    needs_correction_g: list[dict] = []
 
     for r in records:
         corrected = (r.get("corrected_output") or "").strip()
 
         if not corrected:
-            needs_correction.append(r)
+            needs_correction_g.append(r)
             continue
 
         violations = validate_c(corrected)
         if violations:
-            print(f"  [skip] {r.get('meta', {}).get('task_id', '?')} — "
+            print(f"  [skip] {r.get('meta', {}).get('task_id', '?')} -- "
                   f"corrected_output invalid: {violations}")
-            needs_correction.append(r)
+            needs_correction_g.append(r)
             continue
 
         user_msg = _build_user_msg(r)
         meta = r.get("meta", {})
 
-        chatml_records.append({
+        chatml_records_g.append({
             "messages": [
                 {"role": "system",    "content": _SYSTEM},
                 {"role": "user",      "content": user_msg},
@@ -137,18 +250,18 @@ def main() -> None:
         })
 
     OUTPUT_CHATML.parent.mkdir(parents=True, exist_ok=True)
-    write_jsonl(OUTPUT_CHATML, chatml_records)
-    write_jsonl(OUTPUT_NEEDS,  needs_correction)
+    write_jsonl(OUTPUT_CHATML, chatml_records_g)
+    write_jsonl(OUTPUT_NEEDS,  needs_correction_g)
 
     print(f"\n[package] Results:")
-    print(f"  retry_sft_chatml.jsonl      : {len(chatml_records)} records")
-    print(f"  retry_needs_correction.jsonl: {len(needs_correction)} records")
+    print(f"  retry_sft_chatml.jsonl      : {len(chatml_records_g)} records")
+    print(f"  retry_needs_correction.jsonl: {len(needs_correction_g)} records")
     print(f"  Output : {OUTPUT_CHATML}")
     print(f"  Needs correction: {OUTPUT_NEEDS}")
 
-    if needs_correction:
+    if needs_correction_g:
         print(f"\n[package] Run generate_retry_answers.py to produce corrected_output for "
-              f"{len(needs_correction)} remaining records, then re-run this script.")
+              f"{len(needs_correction_g)} remaining records, then re-run this script.")
 
 
 if __name__ == "__main__":

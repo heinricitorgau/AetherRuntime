@@ -156,8 +156,8 @@ def _parse_args() -> argparse.Namespace:
                    help="Task source (default: test)")
     p.add_argument("--limit",      type=int, default=None,
                    help="Max tasks to evaluate (default: all)")
-    p.add_argument("--max-tokens", type=int, default=_DEFAULT_MAX_TOKENS,
-                   help=f"Max new tokens per response (default: {_DEFAULT_MAX_TOKENS})")
+    p.add_argument("--max-tokens", type=int, default=None,
+                   help=f"Max new tokens per response (default: from benchmark profile, or {_DEFAULT_MAX_TOKENS})")
     p.add_argument("--out-dir",    default=None,
                    help=f"Output directory (default: {_SFT_REPORTS})")
     p.add_argument("--verbose",    action="store_true",
@@ -610,7 +610,10 @@ def _run(args: argparse.Namespace) -> None:
         benchmark_source = str(dataset["path"])
         if args.model is None:
             args.model = str(model["hf_model"])
-        args.max_tokens = int(prompt_profile.get("max_tokens", model["max_tokens"]))
+        if args.max_tokens is None:  # --max-tokens not explicitly supplied; use profile value
+            args.max_tokens = int(prompt_profile.get("max_tokens", model["max_tokens"]))
+    if args.max_tokens is None:
+        args.max_tokens = _DEFAULT_MAX_TOKENS
 
     adapter_dir = Path(args.adapter)
     if not adapter_dir.exists():

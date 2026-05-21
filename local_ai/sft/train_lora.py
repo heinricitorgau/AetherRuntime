@@ -212,8 +212,13 @@ def _apply_round_config(args: argparse.Namespace) -> argparse.Namespace:
 
     lora = round_def.get("lora", {})
     args.dataset               = str(chatml_path)
-    args.output_dir            = str(_REPO_ROOT / "local_ai" / "sft" / "artifacts" /
-                                     f"retry_{args.round}")
+    # Support training_output_dir override from curriculum (e.g. retry_geometry_v1)
+    _tgt = round_def.get("training_output_dir")
+    if _tgt:
+        args.output_dir = str(_REPO_ROOT / _tgt)
+    else:
+        args.output_dir = str(_REPO_ROOT / "local_ai" / "sft" / "artifacts" /
+                              f"retry_{args.round}")
     args.epochs                = int(round_def.get("epochs", 2))
     args.limit                 = None
     args.lora_r                = int(lora.get("r",       _LORA_R))

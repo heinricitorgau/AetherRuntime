@@ -2,7 +2,7 @@
   "_comment": "Reserved benchmark profiles for future migration. Phase 1 does not change benchmark behavior.",
   "strict_code_only_v2_seeded": {
     "temperature": 0.1,
-    "max_tokens": 512,
+    "max_tokens": 768,
     "prompt_file": "code_gen_strict_v2.txt",
     "timeout_profile": "benchmark_qwen3b",
     "description": "Strict code-only seeded benchmark profile"
