@@ -1,0 +1,32 @@
+{
+  "goldens": [
+    {
+      "id": "2025_midterm_003",
+      "source_task": "Geometry - Triangle Enumeration",
+      "golden_file": "2025_midterm_003_golden.c",
+      "failure_categories": [
+        "hallucinated_function",
+        "geometry_reasoning",
+        "missing_entrypoint"
+      ],
+      "description": "Read 4 points, enumerate C(4,3)=4 triangles, Heron's formula, collinear check. Output contains 'area' and '6.000'.",
+      "sample_input": "0 0 0 3 4 0 4 3",
+      "expected_tokens": [
+        "area",
+        "6.000"
+      ],
+      "expected_keywords": [
+        "sqrt",
+        "area",
+        "triangle",
+        "printf"
+      ],
+      "compile_verified": true,
+      "runtime_verified": true,
+      "created_by": "human-curated",
+      "created_at": "2026-05-23T04:48:00+08:00",
+      "verified_at": "2026-05-22T20:51:00+00:00",
+      "notes": "Replaces AI-generated corrections that had nested functions inside main() and missing math.h. Functions are defined outside main() per C99 standard."
+    }
+  ]
+}

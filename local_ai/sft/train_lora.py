@@ -471,7 +471,7 @@ def _run_training(args: argparse.Namespace) -> None:
             remove_unused_columns=False,
             dataloader_num_workers=0,
             report_to="none",
-            no_cuda=(device == "cpu"),
+            use_cpu=(device == "cpu"),
         )
         trainer = Trainer(
             model=model,

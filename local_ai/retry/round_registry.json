@@ -81,7 +81,7 @@
         "missing_entrypoint"
       ],
       "built": true,
-      "built_at": "2026-05-21T16:21:56+00:00",
+      "built_at": "2026-05-22T20:23:17+00:00",
       "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_geometry_v1\\retry_chatml.jsonl",
       "records_total": 3,
       "records_valid": 0,
@@ -91,9 +91,9 @@
         "Triangle"
       ],
       "trained": true,
-      "trained_at": "2026-05-21T17:01:11+00:00",
-      "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v1",
-      "train_loss": 0.817823,
+      "trained_at": "2026-05-22T20:53:18+00:00",
+      "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v1",
+      "train_loss": 1.349341,
       "benchmarked": true,
       "benchmarked_at": "2026-05-21T17:26:26+00:00",
       "best_score": 84.2,

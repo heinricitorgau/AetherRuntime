@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-21T16:56:03+00:00",
+  "timestamp": "2026-05-22T20:52:40+00:00",
   "success": true,
   "status": "success",
   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
@@ -9,7 +9,7 @@
   "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v1",
   "device": "cuda",
   "dtype": "torch.bfloat16",
-  "examples": 12,
+  "examples": 2,
   "lora_r": 16,
   "lora_alpha": 32,
   "lora_dropout": 0.05,
@@ -22,6 +22,6 @@
     "up_proj",
     "down_proj"
   ],
-  "train_loss": 0.817823,
-  "elapsed_s": 308.7
+  "train_loss": 1.349341,
+  "elapsed_s": 37.8
 }

@@ -1,0 +1,339 @@
+{
+  "timestamp": "2026-05-22T13:45:23+00:00",
+  "meta": {
+    "run_id": "improve_20260522_101826",
+    "model": "qwen2.5-coder:3b",
+    "proxy_url": "http://127.0.0.1:8082",
+    "source": "test",
+    "filter": [
+      "2025"
+    ],
+    "max_tokens": 768,
+    "temperature": 0.1,
+    "timeout": 660,
+    "run_timeout": 8,
+    "max_repairs": 2,
+    "prompt_file": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\prompts\\code_gen_strict_v2.txt",
+    "compiler": "C:\\msys64\\ucrt64\\bin\\cc.EXE",
+    "started_at": "2026-05-22T10:18:26+00:00"
+  },
+  "cases_seen": 4,
+  "accepted": 3,
+  "average_best_score": 61.25,
+  "best": [
+    {
+      "id": "2025_midterm_001",
+      "timestamp": "2026-05-22T13:41:46+00:00",
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main() {\n    int n;\n    double sum = 0.0;\n\n    printf(\"Enter an integer n: \");\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        double numerator = 2 * i + 1;\n        double denominator = i * i - 1;\n        double term = numerator / denominator;\n\n        if (i % 2 != 0) {\n            sum += term;\n        } else {\n            sum -= term;\n        }\n    }\n\n    printf(\"The sum of the series is: %.6f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": false,
+          "timed_out": false,
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "0.607"
+          ],
+          "output_head": "Enter an integer n: The sum of the series is: inf"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [
+            "for",
+            "printf",
+            "double"
+          ],
+          "missing": []
+        },
+        "proxy": {
+          "passed": true,
+          "note": "ok"
+        }
+      },
+      "score": 70,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 0
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Series Calculation",
+        "difficulty": "medium",
+        "points": 12,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "model": "qwen2.5-coder:3b",
+      "iteration": 89,
+      "repair_attempt": 0,
+      "latency_ms": 65719
+    },
+    {
+      "id": "2025_midterm_002",
+      "timestamp": "2026-05-22T13:42:46+00:00",
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    \n    // Read integer n\n    scanf(\"%d\", &n);\n    \n    // Generate expanding triangle pattern\n    for (int i = 1; i <= n; ++i) {\n        // Print leading spaces\n        for (int j = n - i; j > 0; --j) {\n            printf(\" \");\n        }\n        \n        // Print digits\n        for (int k = 0; k < i; ++k) {\n            printf(\"%d\", i);\n        }\n        \n        // Move to the next line\n        printf(\"\\n\");\n    }\n    \n    return 0;\n}",
+      "checks": {
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 0.4,
+          "found": [
+            "3",
+            "3"
+          ],
+          "missing": [
+            "2 2",
+            "11111",
+            "222"
+          ],
+          "output_head": "1\n 22\n333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 0.667,
+          "found": [
+            "for",
+            "printf"
+          ],
+          "missing": [
+            "nested loop"
+          ]
+        },
+        "proxy": {
+          "passed": true,
+          "note": "ok"
+        }
+      },
+      "score": 77,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 10,
+        "compile": 40,
+        "runtime": 12
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Pattern Generation",
+        "difficulty": "medium",
+        "points": 13,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "model": "qwen2.5-coder:3b",
+      "iteration": 90,
+      "repair_attempt": 0,
+      "latency_ms": 59422
+    },
+    {
+      "id": "2025_midterm_003",
+      "timestamp": "2026-05-22T13:45:23+00:00",
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\n#define EPSILON 1e-9\n\ntypedef struct {\n    double x;\n    double y;\n} Point;\n\ndouble distance(Point a, Point b) {\n    return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));\n}\n\nint collinear(Point p1, Point p2, Point p3) {\n    double d1 = distance(p1, p2);\n    double d2 = distance(p2, p3);\n    double d3 = distance(p3, p1);\n\n    return abs(d1 + d2 - d3) < EPSILON || abs(d1 + d3 - d2) < EPSILON || abs(d2 + d3 - d1) < EPSILON;\n}\n\ndouble heronsFormula(Point a, Point b, Point c) {\n    double s = (distance(a, b) + distance(b, c) + distance(c, a)) / 2.0;\n    return sqrt(s * (s - distance(a, b)) * (s - distance(b, c)) * (s - distance(c, a)));\n}\n\nint main() {\n    Point points[4];\n    for (int i = 0; i < 4; i++) {\n        scanf(\"%lf %lf\", &points[i].x, &points[i].y);\n    }\n\n    int count = 0;\n    for (int i = 0; i < 4; i++) {\n        for (int j = i + 1; j < 4; j++) {\n            for (int k = j + 1; k < 4; k++) {\n                if (!collinear(points[i], points[j], points[k])) {\n                    double area = heronsFormula(points[i], points[j], points[k]);\n                    printf(\"%.3f\\n\", area);\n                    count++;\n                }\n            }\n        }\n    }\n\n    return 0;\n}",
+      "checks": {
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": false,
+          "message": "compile error (1 errors)",
+          "errors": [
+            "C:\\Users\\User\\AppData\\Local\\Temp\\continuous_improve_lcw3fwjd\\2025_midterm_003.c:12:12: error: implicit declaration of function 'sqrt' [-Wimplicit-function-declaration]"
+          ],
+          "warnings": [
+            "C:\\Users\\User\\AppData\\Local\\Temp\\continuous_improve_lcw3fwjd\\2025_midterm_003.c:12:12: warning: incompatible implicit declaration of built-in function 'sqrt' [-Wbuiltin-declaration-mismatch]",
+            "C:\\Users\\User\\AppData\\Local\\Temp\\continuous_improve_lcw3fwjd\\2025_midterm_003.c:25:12: warning: incompatible implicit declaration of built-in function 'sqrt' [-Wbuiltin-declaration-mismatch]"
+          ]
+        },
+        "runtime": {
+          "passed": false,
+          "timed_out": false,
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "area",
+            "6.000"
+          ],
+          "output_head": "",
+          "note": "not run (compile failed or no compiler)"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 0.75,
+          "found": [
+            "sqrt",
+            "area",
+            "printf"
+          ],
+          "missing": [
+            "triangle"
+          ]
+        },
+        "proxy": {
+          "passed": true,
+          "note": "ok"
+        }
+      },
+      "score": 26,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 11,
+        "compile": 0,
+        "runtime": 0
+      },
+      "accepted": false,
+      "task_meta": {
+        "topic": "Geometry - Triangle Enumeration",
+        "difficulty": "medium",
+        "points": 17,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "model": "qwen2.5-coder:3b",
+      "iteration": 91,
+      "repair_attempt": 0,
+      "latency_ms": 157405
+    },
+    {
+      "id": "2025_midterm_004",
+      "timestamp": "2026-05-22T13:40:39+00:00",
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main(void) {\n    int numbers[5];\n    for (int i = 0; i < 5; i++) {\n        do {\n            numbers[i] = rand() % 10 + 1;\n        } while (i > 0 && numbers[i] == numbers[i - 1]);\n    }\n\n    char hiddenNumbers[6]; // Include space for null terminator\n    for (int i = 0; i < 5; i++) {\n        hiddenNumbers[i * 2] = '*';\n        hiddenNumbers[i * 2 + 1] = ' ';\n    }\n    hiddenNumbers[10] = '\\0';\n\n    int score = 0;\n    char positions[6]; // Include space for null terminator\n    for (int i = 0; i < 5; i++) {\n        printf(\"Number %d: \", i + 1);\n        scanf(\"%s\", positions);\n\n        if ((positions[i * 2] == 'E' || positions[i * 2] == 'O') && numbers[i] % 2 == (positions[i * 2] - 'E')) {\n            score += 5;\n            hiddenNumbers[i * 2] = numbers[i];\n        }\n\n        printf(\"Hidden Numbers: %s\\n\", hiddenNumbers);\n    }\n\n    printf(\"Final Score: %d\\n\", score);\n\n    return 0;\n}",
+      "checks": {
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 0.25,
+          "found": [
+            "Numbers"
+          ],
+          "missing": [
+            "win",
+            "points",
+            "Pick"
+          ],
+          "output_head": "Number 1: Hidden Numbers: * * * * * \nNumber 2: Hidden Numbers: * * * * * \nNumber 3: Hidden Numbers: * * * * * \nNumber 4: Hidden Numbers: * * * * * \nNumber 5: Hidden Numbers: * * * * * \nFinal Score: 0"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [
+            "rand() used without srand() — results will not be random",
+            "array[i-1] accessed in loop starting from i=0 — potential out-of-bounds at first iteration",
+            "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
+          ],
+          "errors": [],
+          "risk_score": 0.24
+        },
+        "keyword": {
+          "passed": true,
+          "score": 0.6,
+          "found": [
+            "rand",
+            "scanf",
+            "printf"
+          ],
+          "missing": [
+            "srand",
+            "array"
+          ]
+        },
+        "proxy": {
+          "passed": true,
+          "note": "ok"
+        }
+      },
+      "score": 72,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 9,
+        "compile": 40,
+        "runtime": 8
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Game Simulation - Even/Odd Guessing",
+        "difficulty": "medium",
+        "points": 23,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "model": "qwen2.5-coder:3b",
+      "iteration": 88,
+      "repair_attempt": 0,
+      "latency_ms": 117187
+    }
+  ]
+}

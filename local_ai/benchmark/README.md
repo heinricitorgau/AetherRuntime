@@ -266,6 +266,23 @@ After the run:
     # List available tasks
     python local_ai/benchmark/benchmark_cases.py --list
 
+    # Keep generating, checking, and repairing answers until Ctrl+C
+    powershell -ExecutionPolicy Bypass -File .\local_ai\run_continuous_improve.ps1 --source test --filter 2025
+
+    # If proxy/Ollama are already running, call the Python runner directly
+    python local_ai/benchmark/continuous_improve.py --source accepted --model qwen2.5-coder:3b
+
+Continuous improvement writes partial results after every attempt:
+
+    local_ai/benchmark/reports/runs/improve_<timestamp>/
+      raw_outputs.jsonl       full model responses
+      attempts.jsonl          every scored generation/repair attempt
+      best_cases.jsonl        best answer seen per case
+      report.json             current aggregate best-score summary
+
+Press `Ctrl+C` at any time; the runner rewrites `best_cases.jsonl` and `report.json`
+before exiting.
+
 ---
 
 ## Score Formula

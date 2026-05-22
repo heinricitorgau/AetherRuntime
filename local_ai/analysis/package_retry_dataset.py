@@ -128,6 +128,7 @@ def main() -> None:
     # ── Round-local mode ──────────────────────────────────────────────────────
     if args.round:
         _retry_dir  = Path(__file__).resolve().parent.parent / "retry"
+        _goldens_dir = Path(__file__).resolve().parent.parent / "goldens"
         round_dir   = _retry_dir / "rounds" / args.round
         source_path = round_dir / "retry_dataset.jsonl"
         chatml_path = round_dir / "retry_chatml.jsonl"
@@ -148,6 +149,23 @@ def main() -> None:
 
         validator = _validate_c_strict if use_strict else validate_c
 
+        # ── Load golden files ─────────────────────────────────────────────────
+        goldens: dict[str, str] = {}  # task_id -> golden code
+        if _goldens_dir.exists():
+            for cat_dir in sorted(_goldens_dir.iterdir()):
+                if not cat_dir.is_dir() or cat_dir.name in ("reports", "__pycache__"):
+                    continue
+                for c_file in sorted(cat_dir.glob("*_golden.c")):
+                    file_id = c_file.stem.replace("_golden", "")
+                    try:
+                        code = c_file.read_text(encoding="utf-8")
+                        goldens[file_id] = code
+                    except Exception:
+                        pass
+            if goldens:
+                print(f"[package] Loaded {len(goldens)} golden file(s): "
+                      f"{sorted(goldens.keys())}")
+
         records = read_jsonl(source_path)
         print(f"[package] --round {args.round}: loaded {len(records)} records")
         if use_strict:
@@ -155,16 +173,27 @@ def main() -> None:
 
         chatml_records: list[dict] = []
         needs_correction: list[dict] = []
+        golden_used = 0
 
         for r in records:
-            corrected = (r.get("corrected_output") or "").strip()
+            task_id = r.get("meta", {}).get("task_id", "")
+
+            # Prefer golden over AI-generated corrected_output
+            golden_code = goldens.get(task_id)
+            if golden_code:
+                corrected = golden_code
+                print(f"  [golden] {task_id} -- using verified golden repair")
+                golden_used += 1
+            else:
+                corrected = (r.get("corrected_output") or "").strip()
+
             if not corrected:
                 needs_correction.append(r)
                 continue
             violations = validator(corrected)
             if violations:
-                print(f"  [skip] {r.get('meta', {}).get('task_id', '?')} -- "
-                      f"corrected_output invalid: {violations}")
+                source_label = "golden" if golden_code else "corrected_output"
+                print(f"  [skip] {task_id} -- {source_label} invalid: {violations}")
                 needs_correction.append(r)
                 continue
             meta = r.get("meta", {})
@@ -183,6 +212,7 @@ def main() -> None:
                     "year":         meta.get("year", 0),
                     "topic":        meta.get("topic", ""),
                     "score_before": meta.get("score", 0),
+                    "golden":       bool(golden_code),
                 },
             })
 
@@ -193,6 +223,8 @@ def main() -> None:
         print(f"\n[package] Round '{args.round}' packaged:")
         print(f"  retry_chatml.jsonl:           {len(chatml_records)} training records")
         print(f"  retry_needs_correction.jsonl: {len(needs_correction)} records")
+        if golden_used:
+            print(f"  golden repairs used:          {golden_used}")
         print(f"  Output: {round_dir}")
 
         if needs_correction:

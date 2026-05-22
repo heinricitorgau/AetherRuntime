@@ -1,0 +1,17 @@
+{
+  "run_id": "improve_20260522_101826",
+  "model": "qwen2.5-coder:3b",
+  "proxy_url": "http://127.0.0.1:8082",
+  "source": "test",
+  "filter": [
+    "2025"
+  ],
+  "max_tokens": 768,
+  "temperature": 0.1,
+  "timeout": 660,
+  "run_timeout": 8,
+  "max_repairs": 2,
+  "prompt_file": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\prompts\\code_gen_strict_v2.txt",
+  "compiler": "C:\\msys64\\ucrt64\\bin\\cc.EXE",
+  "started_at": "2026-05-22T10:18:26+00:00"
+}

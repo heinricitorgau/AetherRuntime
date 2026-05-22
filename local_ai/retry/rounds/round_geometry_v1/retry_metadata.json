@@ -14,11 +14,11 @@
   "source_failures": 3,
   "selected_records": 0,
   "needs_correction": 3,
-  "epochs": 2,
+  "epochs": 5,
   "lora": {
     "r": 16,
     "alpha": 32,
     "dropout": 0.05
   },
-  "generated_at": "2026-05-21T16:21:56+00:00"
+  "generated_at": "2026-05-22T20:23:17+00:00"
 }

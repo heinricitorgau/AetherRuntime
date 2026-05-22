@@ -267,9 +267,12 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--dry-run",        action="store_true",
                    help="Print prompts without calling proxy or Ollama")
     p.add_argument("--round",          default=None, metavar="NAME",
-                   help="Retry curriculum round (e.g. round_1). "
-                        "Only records whose failure_type matches that round's focus "
-                        "categories will be processed.")
+                    help="Retry curriculum round (e.g. round_1). "
+                         "Only records whose failure_type matches that round's focus "
+                         "categories will be processed.")
+    p.add_argument("--prefer-goldens", action="store_true",
+                    help="Skip generation for tasks that already have a golden repair "
+                         "file in local_ai/goldens/.")
     return p.parse_args()
 
 
@@ -331,6 +334,26 @@ def main() -> None:
     use_strict = bool(round_def and round_def.get("target_topics"))
     if use_strict:
         print(f"[gen_answers] Strict validator active (requires scanf + printf)")
+
+    # ── Golden skip ───────────────────────────────────────────────────────────
+    golden_ids: set[str] = set()
+    if args.prefer_goldens:
+        _goldens_dir = _LOCAL_AI / "goldens"
+        if _goldens_dir.exists():
+            for cat_dir in sorted(_goldens_dir.iterdir()):
+                if not cat_dir.is_dir() or cat_dir.name in ("reports", "__pycache__"):
+                    continue
+                for c_file in cat_dir.glob("*_golden.c"):
+                    golden_ids.add(c_file.stem.replace("_golden", ""))
+        if golden_ids:
+            before = len(to_process)
+            to_process = [
+                r for r in to_process
+                if r.get("meta", {}).get("task_id", "") not in golden_ids
+            ]
+            skipped = before - len(to_process)
+            print(f"[gen_answers] --prefer-goldens: skipped {skipped} task(s) "
+                  f"with golden files: {sorted(golden_ids)}")
 
     print(f"[gen_answers] {len(to_process)} records to process")
 
