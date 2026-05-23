@@ -179,3 +179,40 @@ you can decide whether the candidate is safe to promote.
 For detailed per-task benchmark comparison, continue to use the benchmark
 comparison tools under `local_ai/benchmark/`. The experiment registry is the
 index layer; scoring and detailed diff logic stay in the benchmark subsystem.
+
+## Adapter Promotion Governance
+
+LoRA adapters are not promoted directly from a successful training run. They are
+classified after a base-vs-adapter benchmark comparison:
+
+```powershell
+python local_ai/sft/promote_adapter.py --adapter local_ai/sft/artifacts/<adapter> --comparison local_ai/sft/reports/comparison_report.json
+```
+
+The policy records one of four statuses:
+
+- `promote`: positive average score delta, no accepted/compile/runtime/semantic regression, and no per-task drop worse than the guardrail.
+- `safe_no_change`: accepted/compile/runtime/semantic guardrails hold and the average score is effectively unchanged. This is safe to keep available, but it is not made default.
+- `ablation_only`: useful for analysis, but not eligible for default use because it regresses average score, runtime, or a task-level guardrail.
+- `reject`: failed core guardrails such as accepted, compile, semantic, severe runtime collapse, or a very large task drop.
+
+Rejected and ablation adapters are kept because they are research evidence:
+they document failure modes, prevent repeated experiments, and make future
+adapter routing or ablation analysis reproducible. The governance scripts never
+delete adapter artifacts.
+
+List the current adapter registry without opening JSON files:
+
+```powershell
+python local_ai/sft/list_adapters.py
+python local_ai/sft/list_adapters.py --status safe_no_change
+python local_ai/sft/list_adapters.py --format markdown
+python local_ai/sft/list_adapters.py --format json
+```
+
+The summary reports are written to:
+
+```text
+local_ai/sft/reports/adapter_registry_summary.json
+local_ai/sft/reports/adapter_registry_summary.md
+```

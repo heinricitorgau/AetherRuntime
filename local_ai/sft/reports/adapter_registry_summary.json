@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-05-23T18:31:56+00:00",
+  "default_adapter_selected": false,
+  "status_filter": null,
+  "count": 1,
+  "adapters": [
+    {
+      "status": "safe_no_change",
+      "adapter": "retry_geometry_v3_guarded",
+      "adapter_path": "local_ai/sft/artifacts/retry_geometry_v3_guarded",
+      "avg_delta": 0.0,
+      "runtime_delta": 0.0,
+      "accepted_delta": 0,
+      "comparison_run": "compare_lora_retry_geometry_v3_guarded_20260524_021509",
+      "notes": "no material aggregate change and all guardrails held",
+      "timestamp": "2026-05-23T18:25:57+00:00"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-05-23T18:25:57+00:00",
+  "adapter_path": "local_ai/sft/artifacts/retry_geometry_v3_guarded",
+  "status": "safe_no_change",
+  "reason": "no material aggregate change and all guardrails held",
+  "metrics": {
+    "accepted_delta": 0,
+    "avg_score_delta": 0.0,
+    "compile_delta": 0.0,
+    "runtime_delta": 0.0,
+    "semantic_delta": 0.0,
+    "keyword_delta": 0.0,
+    "min_task_delta": 0.0
+  },
+  "largest_drop": {
+    "id": "2025_midterm_001",
+    "base_score": 70.0,
+    "lora_score": 70.0,
+    "delta": 0.0,
+    "base_runtime_pass": false,
+    "lora_runtime_pass": false
+  },
+  "comparison_run_id": "compare_lora_retry_geometry_v3_guarded_20260524_021509",
+  "comparison_path": "local_ai\\sft\\reports\\comparison_report.json",
+  "registry_updated": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\adapters\\safe_adapters.json",
+  "promotion_decision": "recorded_safe_no_change"
+}
