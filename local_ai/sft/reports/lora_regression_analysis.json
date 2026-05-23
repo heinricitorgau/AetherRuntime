@@ -1,0 +1,312 @@
+{
+  "generated_at": "2026-05-23T18:15:20+00:00",
+  "source_report": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\comparison_report.json",
+  "report_summary": {
+    "timestamp": "2026-05-23T18:15:09+00:00",
+    "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+    "adapter": "local_ai\\sft\\artifacts\\retry_geometry_v3_guarded",
+    "tasks": 4,
+    "verdict": "no_change",
+    "base": {
+      "accepted": 4,
+      "avg_score": 78.5,
+      "rates": {
+        "proxy_pass_rate": 1.0,
+        "truncation_pass_rate": 1.0,
+        "compile_pass_rate": 1.0,
+        "runtime_pass_rate": 0.75,
+        "semantic_pass_rate": 1.0,
+        "keyword_pass_rate": 1.0,
+        "accepted_rate": 1.0
+      }
+    },
+    "lora": {
+      "accepted": 4,
+      "avg_score": 78.5,
+      "rates": {
+        "proxy_pass_rate": 1.0,
+        "truncation_pass_rate": 1.0,
+        "compile_pass_rate": 1.0,
+        "runtime_pass_rate": 0.75,
+        "semantic_pass_rate": 1.0,
+        "keyword_pass_rate": 1.0,
+        "accepted_rate": 1.0
+      }
+    },
+    "deltas": {
+      "accepted": 0,
+      "avg_score": 0.0,
+      "compile_pass_rate": 0.0,
+      "runtime_pass_rate": 0.0,
+      "semantic_pass_rate": 0.0,
+      "keyword_pass_rate": 0.0
+    },
+    "avg_delta_from_task_scores": 0.0
+  },
+  "tasks": [
+    {
+      "id": "2025_midterm_001",
+      "topic": "Series Calculation",
+      "base_score": 70,
+      "lora_score": 70,
+      "delta": 0,
+      "avg_score_contribution": 0.0,
+      "compile_pass_base": true,
+      "compile_pass_lora": true,
+      "compile_pass_delta": 0,
+      "runtime_pass_base": false,
+      "runtime_pass_lora": false,
+      "runtime_pass_delta": 0,
+      "runtime_match_ratio_base": 0.0,
+      "runtime_match_ratio_lora": 0.0,
+      "semantic_pass_base": true,
+      "semantic_pass_lora": true,
+      "semantic_pass_delta": 0,
+      "keyword_pass_base": true,
+      "keyword_pass_lora": true,
+      "keyword_pass_delta": 0,
+      "keyword_score_base": 1.0,
+      "keyword_score_lora": 1.0,
+      "missing_tokens": {
+        "base_missing": [
+          "0.607"
+        ],
+        "lora_missing": [
+          "0.607"
+        ],
+        "new_missing": [],
+        "resolved_missing": [],
+        "base_found": [],
+        "lora_found": []
+      },
+      "missing_tokens_increased": false,
+      "base_output_head": "inf",
+      "lora_output_head": "inf",
+      "regressed": false,
+      "regression_reasons": []
+    },
+    {
+      "id": "2025_midterm_002",
+      "topic": "Pattern Generation",
+      "base_score": 77,
+      "lora_score": 77,
+      "delta": 0,
+      "avg_score_contribution": 0.0,
+      "compile_pass_base": true,
+      "compile_pass_lora": true,
+      "compile_pass_delta": 0,
+      "runtime_pass_base": true,
+      "runtime_pass_lora": true,
+      "runtime_pass_delta": 0,
+      "runtime_match_ratio_base": 0.4,
+      "runtime_match_ratio_lora": 0.4,
+      "semantic_pass_base": true,
+      "semantic_pass_lora": true,
+      "semantic_pass_delta": 0,
+      "keyword_pass_base": true,
+      "keyword_pass_lora": true,
+      "keyword_pass_delta": 0,
+      "keyword_score_base": 0.667,
+      "keyword_score_lora": 0.667,
+      "missing_tokens": {
+        "base_missing": [
+          "11111",
+          "2 2",
+          "222"
+        ],
+        "lora_missing": [
+          "11111",
+          "2 2",
+          "222"
+        ],
+        "new_missing": [],
+        "resolved_missing": [],
+        "base_found": [
+          "3",
+          "3"
+        ],
+        "lora_found": [
+          "3",
+          "3"
+        ]
+      },
+      "missing_tokens_increased": false,
+      "base_output_head": "1  \n 22 \n333",
+      "lora_output_head": "1  \n 22 \n333",
+      "regressed": false,
+      "regression_reasons": []
+    },
+    {
+      "id": "2025_midterm_003",
+      "topic": "Geometry - Triangle Enumeration",
+      "base_score": 85,
+      "lora_score": 85,
+      "delta": 0,
+      "avg_score_contribution": 0.0,
+      "compile_pass_base": true,
+      "compile_pass_lora": true,
+      "compile_pass_delta": 0,
+      "runtime_pass_base": true,
+      "runtime_pass_lora": true,
+      "runtime_pass_delta": 0,
+      "runtime_match_ratio_base": 0.5,
+      "runtime_match_ratio_lora": 0.5,
+      "semantic_pass_base": true,
+      "semantic_pass_lora": true,
+      "semantic_pass_delta": 0,
+      "keyword_pass_base": true,
+      "keyword_pass_lora": true,
+      "keyword_pass_delta": 0,
+      "keyword_score_base": 1.0,
+      "keyword_score_lora": 1.0,
+      "missing_tokens": {
+        "base_missing": [
+          "area"
+        ],
+        "lora_missing": [
+          "area"
+        ],
+        "new_missing": [],
+        "resolved_missing": [],
+        "base_found": [
+          "6.000"
+        ],
+        "lora_found": [
+          "6.000"
+        ]
+      },
+      "missing_tokens_increased": false,
+      "base_output_head": "Enter 4 coordinate pairs (x1 y1 x2 y2 x3 y3 x4 y4): 6.000\n6.000\n6.000\n6.000",
+      "lora_output_head": "Enter 4 coordinate pairs (x1 y1 x2 y2 x3 y3 x4 y4): 6.000\n6.000\n6.000\n6.000",
+      "regressed": false,
+      "regression_reasons": []
+    },
+    {
+      "id": "2025_midterm_004",
+      "topic": "Game Simulation - Even/Odd Guessing",
+      "base_score": 82,
+      "lora_score": 82,
+      "delta": 0,
+      "avg_score_contribution": 0.0,
+      "compile_pass_base": true,
+      "compile_pass_lora": true,
+      "compile_pass_delta": 0,
+      "runtime_pass_base": true,
+      "runtime_pass_lora": true,
+      "runtime_pass_delta": 0,
+      "runtime_match_ratio_base": 0.5,
+      "runtime_match_ratio_lora": 0.5,
+      "semantic_pass_base": true,
+      "semantic_pass_lora": true,
+      "semantic_pass_delta": 0,
+      "keyword_pass_base": true,
+      "keyword_pass_lora": true,
+      "keyword_pass_delta": 0,
+      "keyword_score_base": 0.8,
+      "keyword_score_lora": 0.8,
+      "missing_tokens": {
+        "base_missing": [
+          "points",
+          "win"
+        ],
+        "lora_missing": [
+          "points",
+          "win"
+        ],
+        "new_missing": [],
+        "resolved_missing": [],
+        "base_found": [
+          "Numbers",
+          "Pick"
+        ],
+        "lora_found": [
+          "Numbers",
+          "Pick"
+        ]
+      },
+      "missing_tokens_increased": false,
+      "base_output_head": "Numbers: 1 * 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 1 3 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 1 3 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 1 3 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 1 3 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nFinal Score: 25",
+      "lora_output_head": "Numbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nFinal Score: 0",
+      "regressed": false,
+      "regression_reasons": []
+    }
+  ],
+  "regression_tasks": [],
+  "score_regression_tasks": [],
+  "largest_score_drop": {
+    "id": "2025_midterm_001",
+    "topic": "Series Calculation",
+    "base_score": 70,
+    "lora_score": 70,
+    "delta": 0,
+    "avg_score_contribution": 0.0,
+    "compile_pass_base": true,
+    "compile_pass_lora": true,
+    "compile_pass_delta": 0,
+    "runtime_pass_base": false,
+    "runtime_pass_lora": false,
+    "runtime_pass_delta": 0,
+    "runtime_match_ratio_base": 0.0,
+    "runtime_match_ratio_lora": 0.0,
+    "semantic_pass_base": true,
+    "semantic_pass_lora": true,
+    "semantic_pass_delta": 0,
+    "keyword_pass_base": true,
+    "keyword_pass_lora": true,
+    "keyword_pass_delta": 0,
+    "keyword_score_base": 1.0,
+    "keyword_score_lora": 1.0,
+    "missing_tokens": {
+      "base_missing": [
+        "0.607"
+      ],
+      "lora_missing": [
+        "0.607"
+      ],
+      "new_missing": [],
+      "resolved_missing": [],
+      "base_found": [],
+      "lora_found": []
+    },
+    "missing_tokens_increased": false,
+    "base_output_head": "inf",
+    "lora_output_head": "inf",
+    "regressed": false,
+    "regression_reasons": []
+  },
+  "interference_assessment": {
+    "adapter_is_geometry_retry": true,
+    "verdict": "no_task_level_regression_detected",
+    "geometry_regression_task_ids": [],
+    "non_geometry_regression_task_ids": [],
+    "runtime_pass_to_fail_task_ids": [],
+    "summary": "The adapter preserves compile, semantic, and keyword checks but changes runtime behavior. The largest drop is on a geometry task, which is direct evidence that retry_geometry_v1 is not safe to promote as-is."
+  },
+  "retention_recommendation": {
+    "keep_for_production_or_default": true,
+    "keep_for_analysis_only": false,
+    "recommendation": "Adapter is acceptable to retain as a candidate."
+  },
+  "next_training_strategy": [
+    {
+      "action": "lower_epochs",
+      "reason": "The adapter preserved syntax but changed runtime behavior, a classic overfit signal."
+    },
+    {
+      "action": "lower_learning_rate",
+      "reason": "Reduce behavioral drift while still nudging geometry repairs."
+    },
+    {
+      "action": "lower_lora_rank",
+      "reason": "Constrain adapter capacity so a tiny repair set cannot dominate general task behavior."
+    },
+    {
+      "action": "mix_base_sft_samples",
+      "reason": "Blend neutral base examples to preserve non-target runtime behavior."
+    },
+    {
+      "action": "add_anti_regression_examples",
+      "reason": "Include tasks 2025_midterm_001/002/004 and the base-passing geometry behavior as guardrails."
+    }
+  ]
+}

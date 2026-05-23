@@ -27,5 +27,32 @@
       "alpha": 16,
       "dropout": 0.05
     }
+  },
+  "retry_geometry_v2": {
+    "model": "qwen3b_local",
+    "dataset": "retry_geometry_v2",
+    "output_dir": "local_ai/sft/artifacts/retry_geometry_v2",
+    "epochs": 2,
+    "learning_rate": 0.00005,
+    "anti_regression_samples": true,
+    "lora": {
+      "r": 4,
+      "alpha": 8,
+      "dropout": 0.05
+    }
+  },
+  "retry_geometry_v3_guarded": {
+    "model": "qwen3b_local",
+    "dataset": "retry_geometry_v3_guarded",
+    "output_dir": "local_ai/sft/artifacts/retry_geometry_v3_guarded",
+    "epochs": 1,
+    "learning_rate": 0.000025,
+    "anti_regression_samples": true,
+    "game_golden_guard": true,
+    "lora": {
+      "r": 4,
+      "alpha": 8,
+      "dropout": 0.05
+    }
   }
 }

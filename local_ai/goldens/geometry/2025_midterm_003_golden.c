@@ -1,4 +1,4 @@
-/* 2025_midterm_003 — Geometry - Triangle Enumeration
+/* 2025_midterm_003 - Geometry - Triangle Enumeration
  *
  * Golden repair: human-curated, compile-verified, runtime-verified.
  *
@@ -11,19 +11,16 @@
 #include <stdio.h>
 #include <math.h>
 
-/* Distance between two points */
 double distance(double x1, double y1, double x2, double y2) {
     return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
-/* Check if three points are collinear using cross-product area test */
 int isCollinear(double x1, double y1, double x2, double y2,
                 double x3, double y3) {
     double cross = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2);
     return fabs(cross) < 1e-9;
 }
 
-/* Area of a triangle using Heron's formula */
 double triangleArea(double a, double b, double c) {
     double s = (a + b + c) / 2.0;
     return sqrt(s * (s - a) * (s - b) * (s - c));
@@ -32,12 +29,10 @@ double triangleArea(double a, double b, double c) {
 int main(void) {
     double x[4], y[4];
 
-    /* (a) Read 4 coordinate pairs */
     for (int i = 0; i < 4; i++) {
         scanf("%lf %lf", &x[i], &y[i]);
     }
 
-    /* (b) Enumerate all C(4,3) = 4 combinations of 3 points */
     for (int i = 0; i < 4; i++) {
         for (int j = i + 1; j < 4; j++) {
             for (int k = j + 1; k < 4; k++) {

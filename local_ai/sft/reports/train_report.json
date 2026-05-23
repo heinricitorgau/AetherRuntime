@@ -1,17 +1,18 @@
 {
-  "timestamp": "2026-05-22T20:52:40+00:00",
+  "timestamp": "2026-05-23T18:12:01+00:00",
   "success": true,
   "status": "success",
   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
-  "dataset": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_geometry_v1\\retry_chatml.jsonl",
+  "dataset": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_geometry_v3_guarded\\retry_chatml.jsonl",
   "limit": null,
-  "epochs": 5,
-  "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v1",
+  "epochs": 1,
+  "learning_rate": 2.5e-05,
+  "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v3_guarded",
   "device": "cuda",
   "dtype": "torch.bfloat16",
-  "examples": 2,
-  "lora_r": 16,
-  "lora_alpha": 32,
+  "examples": 4,
+  "lora_r": 4,
+  "lora_alpha": 8,
   "lora_dropout": 0.05,
   "target_modules": [
     "q_proj",
@@ -22,6 +23,6 @@
     "up_proj",
     "down_proj"
   ],
-  "train_loss": 1.349341,
-  "elapsed_s": 37.8
+  "train_loss": 1.35682,
+  "elapsed_s": 18.6
 }

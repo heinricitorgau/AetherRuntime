@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""validate_goldens.py — compile and validate all golden C files.
+"""validate_goldens.py - compile and validate all golden C files.
 
 Checks:
   1. Contains #include
@@ -12,8 +12,8 @@ Checks:
   8. Runtime output matches expected_tokens (if sample_input provided)
 
 Reads:
-  local_ai/goldens/<category>/  — golden .c files
-  local_ai/goldens/<category>/<category>_manifest.json — metadata
+  local_ai/goldens/<category>/  - golden .c files
+  local_ai/goldens/<category>/<category>_manifest.json - metadata
 
 Writes:
   local_ai/goldens/reports/golden_validation_report.md
@@ -58,14 +58,18 @@ def _find_compiler() -> str | None:
 
 # ── Static validation ────────────────────────────────────────────────────────
 
-def _validate_static(code: str) -> list[str]:
+def _validate_static(code: str, manifest: dict | None = None) -> list[str]:
     """Return list of violation strings; empty = valid."""
     violations: list[str] = []
+    manifest = manifest or {}
 
     if "#include" not in code:
         violations.append("missing #include")
-    if not re.search(r"\bint\s+main\s*\(", code):
-        violations.append("missing int main")
+    for include in manifest.get("required_includes", []):
+        if include not in code:
+            violations.append(f"missing required include: {include}")
+    if not re.search(r"\bint\s+main\s*\(\s*void\s*\)", code):
+        violations.append("missing int main(void)")
     if "return 0" not in code and "return(0)" not in code:
         violations.append("missing return 0")
 
@@ -124,15 +128,14 @@ def _check_nested_functions(code: str, violations: list[str]) -> None:
 def _compile_check(
     source_path: Path, compiler: str, work_dir: Path
 ) -> dict:
-    """Compile with gcc -std=c99 -Wall -Werror. Return {ok, errors, warnings, exe}."""
+    """Compile with gcc -std=c99 -Wall. Return {ok, errors, warnings, exe}."""
     exe_path = work_dir / source_path.stem
     if sys.platform == "win32":
         exe_path = exe_path.with_suffix(".exe")
 
     cmd = [
         compiler, "-std=c99", "-Wall", "-Wno-unused-result",
-        "-lm",
-        str(source_path), "-o", str(exe_path),
+        str(source_path), "-o", str(exe_path), "-lm",
     ]
     try:
         result = subprocess.run(
@@ -162,7 +165,7 @@ def _runtime_check(
     try:
         result = subprocess.run(
             [exe_path],
-            input=sample_input,
+            input=sample_input if sample_input.endswith("\n") else sample_input + "\n",
             capture_output=True, text=True, timeout=10,
         )
     except subprocess.TimeoutExpired:
@@ -279,10 +282,10 @@ def _build_report(results: list[dict], compiler: str | None) -> str:
     a("|----|----------|:------:|:-------:|:-------:|:------:|")
 
     for r in results:
-        s_icon = "✓" if r["static_ok"] else "✗"
-        c_icon = "✓" if r["compile_ok"] else ("—" if not compiler else "✗")
-        r_icon = "✓" if r["runtime_ok"] else ("—" if not r.get("runtime_ran") else "✗")
-        status = "✓ PASS" if r["all_ok"] else "✗ FAIL"
+        s_icon = "PASS" if r["static_ok"] else "FAIL"
+        c_icon = "PASS" if r["compile_ok"] else ("SKIP" if not compiler else "FAIL")
+        r_icon = "PASS" if r["runtime_ok"] else ("SKIP" if not r.get("runtime_ran") else "FAIL")
+        status = "PASS" if r["all_ok"] else "FAIL"
         a(f"| {r['id']} | {r['category']} | {s_icon} | {c_icon} | {r_icon} | {status} |")
 
     a("")
@@ -291,7 +294,7 @@ def _build_report(results: list[dict], compiler: str | None) -> str:
     for r in results:
         if r["all_ok"]:
             continue
-        a(f"### {r['id']} — FAILED")
+        a(f"### {r['id']} - FAILED")
         a("")
         if r["static_violations"]:
             a("**Static violations:**")
@@ -327,7 +330,7 @@ def main() -> None:
 
     compiler = _find_compiler()
     if not compiler:
-        print("[validate] WARNING: no C compiler found — compile/runtime checks skipped",
+        print("[validate] WARNING: no C compiler found - compile/runtime checks skipped",
               file=sys.stderr)
 
     goldens = _discover_goldens(args.category)
@@ -355,10 +358,10 @@ def main() -> None:
             code = filepath.read_text(encoding="utf-8")
 
             # 1. Static validation
-            static_v = _validate_static(code)
+            static_v = _validate_static(code, manifest)
             static_ok = len(static_v) == 0
             if not static_ok:
-                print(f"    static: FAIL — {static_v}")
+                print(f"    static: FAIL - {static_v}")
             else:
                 print(f"    static: OK")
 
@@ -374,7 +377,7 @@ def main() -> None:
                 if compile_ok:
                     print(f"    compile: OK")
                 else:
-                    print(f"    compile: FAIL — {compile_errors}")
+                    print(f"    compile: FAIL - {compile_errors}")
 
             # 3. Runtime
             runtime_ok   = False
@@ -392,15 +395,15 @@ def main() -> None:
                 runtime_out  = rr.get("output", "")
                 runtime_miss = rr.get("missing", [])
                 if runtime_ok:
-                    print(f"    runtime: OK — found {rr['found']}")
+                    print(f"    runtime: OK - found {rr['found']}")
                 else:
-                    print(f"    runtime: FAIL — missing {runtime_miss}")
+                    print(f"    runtime: FAIL - missing {runtime_miss}")
                     if runtime_out:
                         print(f"    output:  {runtime_out[:200]}")
 
             all_ok = static_ok and compile_ok and (runtime_ok if runtime_ran else True)
             status = "PASS" if all_ok else "FAIL"
-            print(f"    → {status}")
+            print(f"    -> {status}")
             print()
 
             results.append({

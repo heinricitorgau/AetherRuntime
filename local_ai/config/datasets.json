@@ -19,5 +19,22 @@
     "path": "local_ai/analysis/reports/retry_sft_chatml.jsonl",
     "format": "chatml",
     "type": "sft"
+  },
+  "retry_geometry_v2": {
+    "path": "local_ai/retry/rounds/round_geometry_v2/retry_chatml.jsonl",
+    "format": "chatml",
+    "type": "sft",
+    "records": 4,
+    "anti_regression_samples": true,
+    "mixed_round": true
+  },
+  "retry_geometry_v3_guarded": {
+    "path": "local_ai/retry/rounds/round_geometry_v3_guarded/retry_chatml.jsonl",
+    "format": "chatml",
+    "type": "sft",
+    "records": 4,
+    "anti_regression_samples": true,
+    "game_golden_guard": true,
+    "mixed_round": true
   }
 }

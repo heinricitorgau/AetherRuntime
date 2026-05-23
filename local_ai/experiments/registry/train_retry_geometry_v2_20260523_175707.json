@@ -1,0 +1,39 @@
+{
+  "run_id": "train_retry_geometry_v2_20260523_175707",
+  "timestamp": "2026-05-23T17:57:07+00:00",
+  "run_type": "train",
+  "model_profile": "qwen3b_local",
+  "benchmark_profile": null,
+  "training_job": "retry_geometry_v2",
+  "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v2",
+  "accepted": null,
+  "avg_score": null,
+  "compile_rate": null,
+  "runtime_rate": null,
+  "semantic_rate": null,
+  "timeout_rate": null,
+  "git_commit": "42dfd35",
+  "python_version": "3.12.10",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+  "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+  "dataset_profile": "retry_geometry_v2",
+  "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\retry\\rounds\\round_geometry_v2\\retry_chatml.jsonl",
+  "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v2",
+  "epochs": 2,
+  "learning_rate": 5e-05,
+  "limit": null,
+  "train_loss": 1.302681,
+  "elapsed_s": 27.7,
+  "success": true,
+  "linked_reports": {
+    "train_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\train_report.json",
+    "adapter_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v2"
+  },
+  "config_profiles": {
+    "training_job": "retry_geometry_v2",
+    "model": "qwen3b_local",
+    "dataset": "retry_geometry_v2"
+  }
+}

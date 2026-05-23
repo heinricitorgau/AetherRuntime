@@ -198,6 +198,28 @@ def _update_round_registry(round_name: str, updates: dict) -> None:
 
 # ── Model / adapter resolution ────────────────────────────────────────────────
 
+def _adapter_metadata(adapter_dir: Path) -> dict:
+    """Infer adapter/job metadata without changing benchmark scoring."""
+    adapter_name = adapter_dir.name
+    metadata = {
+        "adapter_name": adapter_name,
+        "training_job": None,
+        "anti_regression_samples": False,
+    }
+    try:
+        jobs = load_config("training_jobs")
+        adapter_norm = str(adapter_dir).replace("\\", "/").rstrip("/")
+        for name, job in jobs.items():
+            output_dir = str(job.get("output_dir", "")).replace("\\", "/").rstrip("/")
+            if output_dir == adapter_norm or Path(output_dir).name == adapter_name:
+                metadata["training_job"] = name
+                metadata["anti_regression_samples"] = bool(job.get("anti_regression_samples", False))
+                break
+    except Exception:
+        pass
+    return metadata
+
+
 def _resolve_model(adapter_dir: Path, override: str | None) -> str:
     if override:
         return override
@@ -619,6 +641,7 @@ def _run(args: argparse.Namespace) -> None:
     if not adapter_dir.exists():
         _log(f"ERROR: adapter not found: {adapter_dir}")
         sys.exit(1)
+    adapter_meta = _adapter_metadata(adapter_dir)
 
     model_id = _resolve_model(adapter_dir, args.model)
     out_dir  = Path(args.out_dir) if args.out_dir else _SFT_REPORTS
@@ -710,6 +733,15 @@ def _run(args: argparse.Namespace) -> None:
         "timestamp":  _now(),
         "model":      model_id,
         "adapter":    str(adapter_dir),
+        "adapter_name": adapter_meta["adapter_name"],
+        "training_job": adapter_meta["training_job"],
+        "anti_regression_samples": adapter_meta["anti_regression_samples"],
+        "metadata": {
+            "adapter": adapter_meta["adapter_name"],
+            "adapter_path": str(adapter_dir),
+            "training_job": adapter_meta["training_job"],
+            "anti_regression_samples": adapter_meta["anti_regression_samples"],
+        },
         "tasks":      n,
         "verdict":    verdict,
         "base": {

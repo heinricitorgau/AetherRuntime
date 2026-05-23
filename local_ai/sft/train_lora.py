@@ -95,6 +95,7 @@ def _register_train_experiment(args: argparse.Namespace, report: dict, report_pa
                 "adapter_path": str(output_dir),
                 "output_dir": str(output_dir),
                 "epochs": args.epochs,
+                "learning_rate": getattr(args, "learning_rate", _LEARNING_RATE),
                 "limit": args.limit,
                 "train_loss": report.get("train_loss"),
                 "elapsed_s": report.get("elapsed_s"),
@@ -158,6 +159,7 @@ def _apply_job_config(args: argparse.Namespace) -> argparse.Namespace:
     args.epochs = int(job["epochs"])
     args.limit = job.get("limit")
     args.model = str(model["hf_model"])
+    args.learning_rate = float(job.get("learning_rate", _LEARNING_RATE))
     args.lora_r = int(lora.get("r", _LORA_R))
     args.lora_alpha = int(lora.get("alpha", _LORA_ALPHA))
     args.lora_dropout = float(lora.get("dropout", _LORA_DROPOUT))
@@ -221,6 +223,7 @@ def _apply_round_config(args: argparse.Namespace) -> argparse.Namespace:
                               f"retry_{args.round}")
     args.epochs                = int(round_def.get("epochs", 2))
     args.limit                 = None
+    args.learning_rate         = float(round_def.get("learning_rate", _LEARNING_RATE))
     args.lora_r                = int(lora.get("r",       _LORA_R))
     args.lora_alpha            = int(lora.get("alpha",   _LORA_ALPHA))
     args.lora_dropout          = float(lora.get("dropout", _LORA_DROPOUT))
@@ -390,6 +393,7 @@ def _run_training(args: argparse.Namespace) -> None:
         "dataset":    str(Path(args.dataset)),
         "limit":      args.limit,
         "epochs":     args.epochs,
+        "learning_rate": getattr(args, "learning_rate", _LEARNING_RATE),
         "output_dir": str(output_dir),
     }
     _write_report(report, report_dir)
@@ -461,7 +465,7 @@ def _run_training(args: argparse.Namespace) -> None:
             num_train_epochs=args.epochs,
             per_device_train_batch_size=_BATCH_SIZE,
             gradient_accumulation_steps=_GRAD_ACCUM,
-            learning_rate=_LEARNING_RATE,
+            learning_rate=getattr(args, "learning_rate", _LEARNING_RATE),
             warmup_steps=_WARMUP_STEPS,
             bf16=(dtype == torch.bfloat16),
             fp16=(dtype == torch.float16),
@@ -501,6 +505,7 @@ def _run_training(args: argparse.Namespace) -> None:
             "lora_r":         getattr(args, "lora_r", _LORA_R),
             "lora_alpha":     getattr(args, "lora_alpha", _LORA_ALPHA),
             "lora_dropout":   getattr(args, "lora_dropout", _LORA_DROPOUT),
+            "learning_rate":   getattr(args, "learning_rate", _LEARNING_RATE),
             "target_modules": getattr(args, "lora_target_modules", _LORA_TARGET_MODULES),
             "train_loss":     round(loss, 6),
             "elapsed_s":      round(elapsed, 1),
@@ -572,13 +577,15 @@ def main() -> None:
             # Direct --dataset / --output-dir; ensure profile names are set
             args.model_profile_name   = None
             args.dataset_profile_name = None
+            args.learning_rate        = _LEARNING_RATE
 
         _VERBOSE = args.verbose
         _validate_args(args)
 
         print(
             f"[train] model={args.model} dataset={args.dataset} "
-            f"epochs={args.epochs} limit={args.limit}",
+            f"epochs={args.epochs} lr={getattr(args, 'learning_rate', _LEARNING_RATE)} "
+            f"limit={args.limit}",
             flush=True,
         )
 

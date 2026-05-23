@@ -43,6 +43,35 @@ _SYSTEM = (
 )
 
 
+def _load_verified_goldens(goldens_dir: Path) -> dict[str, str]:
+    """Load compile/runtime-verified golden repairs by task id."""
+    goldens: dict[str, str] = {}
+    if not goldens_dir.exists():
+        return goldens
+
+    verified_ids: set[str] = set()
+    for manifest_path in sorted(goldens_dir.glob("*/*_manifest.json")):
+        try:
+            data = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        for entry in data.get("goldens", []):
+            if entry.get("compile_verified") and entry.get("runtime_verified"):
+                verified_ids.add(str(entry.get("id", "")))
+
+    candidates = list(goldens_dir.glob("*_golden.c"))
+    candidates.extend(goldens_dir.glob("*/*_golden.c"))
+    for c_file in sorted(candidates):
+        file_id = c_file.stem.replace("_golden", "")
+        if verified_ids and file_id not in verified_ids:
+            continue
+        try:
+            goldens[file_id] = c_file.read_text(encoding="utf-8")
+        except Exception:
+            pass
+    return goldens
+
+
 # ── validator ─────────────────────────────────────────────────────────────────
 
 def _count_braces(text: str) -> tuple[int, int]:
@@ -150,21 +179,10 @@ def main() -> None:
         validator = _validate_c_strict if use_strict else validate_c
 
         # ── Load golden files ─────────────────────────────────────────────────
-        goldens: dict[str, str] = {}  # task_id -> golden code
-        if _goldens_dir.exists():
-            for cat_dir in sorted(_goldens_dir.iterdir()):
-                if not cat_dir.is_dir() or cat_dir.name in ("reports", "__pycache__"):
-                    continue
-                for c_file in sorted(cat_dir.glob("*_golden.c")):
-                    file_id = c_file.stem.replace("_golden", "")
-                    try:
-                        code = c_file.read_text(encoding="utf-8")
-                        goldens[file_id] = code
-                    except Exception:
-                        pass
-            if goldens:
-                print(f"[package] Loaded {len(goldens)} golden file(s): "
-                      f"{sorted(goldens.keys())}")
+        goldens = _load_verified_goldens(_goldens_dir)
+        if goldens:
+            print(f"[package] Loaded {len(goldens)} verified golden file(s): "
+                  f"{sorted(goldens.keys())}")
 
         records = read_jsonl(source_path)
         print(f"[package] --round {args.round}: loaded {len(records)} records")

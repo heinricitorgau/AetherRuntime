@@ -1,18 +1,9 @@
 {
-  "timestamp": "2026-05-23T18:15:09+00:00",
+  "timestamp": "2026-05-23T17:27:52+00:00",
   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
-  "adapter": "local_ai\\sft\\artifacts\\retry_geometry_v3_guarded",
-  "adapter_name": "retry_geometry_v3_guarded",
-  "training_job": "retry_geometry_v3_guarded",
-  "anti_regression_samples": true,
-  "metadata": {
-    "adapter": "retry_geometry_v3_guarded",
-    "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v3_guarded",
-    "training_job": "retry_geometry_v3_guarded",
-    "anti_regression_samples": true
-  },
+  "adapter": "local_ai\\sft\\artifacts\\retry_geometry_v1",
   "tasks": 4,
-  "verdict": "no_change",
+  "verdict": "regression",
   "base": {
     "accepted": 4,
     "avg_score": 78.5,
@@ -28,12 +19,12 @@
   },
   "lora": {
     "accepted": 4,
-    "avg_score": 78.5,
+    "avg_score": 74.0,
     "rates": {
       "proxy_pass_rate": 1.0,
       "truncation_pass_rate": 1.0,
       "compile_pass_rate": 1.0,
-      "runtime_pass_rate": 0.75,
+      "runtime_pass_rate": 0.5,
       "semantic_pass_rate": 1.0,
       "keyword_pass_rate": 1.0,
       "accepted_rate": 1.0
@@ -41,16 +32,16 @@
   },
   "deltas": {
     "accepted": 0,
-    "avg_score": 0.0,
+    "avg_score": -4.5,
     "compile_pass_rate": 0.0,
-    "runtime_pass_rate": 0.0,
+    "runtime_pass_rate": -0.25,
     "semantic_pass_rate": 0.0,
     "keyword_pass_rate": 0.0
   },
   "base_results": [
     {
       "id": "2025_midterm_001",
-      "latency_ms": 6735,
+      "latency_ms": 6953,
       "extract_method": "fence",
       "extracted_code": "#include <stdio.h>\n\nint main() {\n    int n;\n    double sum = 0.0;\n\n    // Read input\n    scanf(\"%d\", &n);\n\n    // Calculate the sum of the series\n    for (int i = 1; i <= n; i++) {\n        double numerator = 2 * i + 1;\n        double denominator = i * i - 1;\n        sum += ((i % 2 == 1) ? 1 : -1) * numerator / denominator;\n    }\n\n    // Output the result with precision\n    printf(\"%.3f\\n\", sum);\n\n    return 0;\n}",
       "checks": {
@@ -120,7 +111,7 @@
     },
     {
       "id": "2025_midterm_002",
-      "latency_ms": 6859,
+      "latency_ms": 7094,
       "extract_method": "fence",
       "extracted_code": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        // Print leading spaces\n        for (int j = 1; j <= n - i; j++) {\n            printf(\" \");\n        }\n\n        // Print digits\n        for (int k = 1; k <= i; k++) {\n            printf(\"%d\", i);\n        }\n\n        // Print trailing spaces\n        for (int j = 1; j <= n - i; j++) {\n            printf(\" \");\n        }\n\n        // Move to the next line\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
       "checks": {
@@ -196,7 +187,7 @@
     },
     {
       "id": "2025_midterm_003",
-      "latency_ms": 44187,
+      "latency_ms": 27672,
       "extract_method": "fence",
       "extracted_code": "#include <stdio.h>\n#include <math.h>\n\n// Function to calculate the distance between two points\ndouble distance(double x1, double y1, double x2, double y2) {\n    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));\n}\n\n// Function to check if three points are collinear\nint areCollinear(double x1, double y1, double x2, double y2, double x3, double y3) {\n    double d1 = distance(x1, y1, x2, y2);\n    double d2 = distance(x2, y2, x3, y3);\n    double d3 = distance(x3, y3, x1, y1);\n    return fabs(d1 + d2 - d3) < 1e-9;\n}\n\n// Function to calculate the area of a triangle using Heron's formula\ndouble heronsFormula(double a, double b, double c) {\n    double s = (a + b + c) / 2.0;\n    return sqrt(s * (s - a) * (s - b) * (s - c));\n}\n\nint main() {\n    double x1, y1, x2, y2, x3, y3, x4, y4;\n\n    // Read 4 coordinate pairs\n    printf(\"Enter 4 coordinate pairs (x1 y1 x2 y2 x3 y3 x4 y4): \");\n    scanf(\"%lf %lf %lf %lf %lf %lf %lf %lf\", &x1, &y1, &x2, &y2, &x3, &y3, &x4, &y4);\n\n    // Generate all 3-point combinations\n    for (int i = 0; i < 4; i++) {\n        for (int j = i + 1; j < 4; j++) {\n            for (int k = j + 1; k < 4; k++) {\n                double a = distance(x1, y1, x2, y2);\n                double b = distance(x2, y2, x3, y3);\n                double c = distance(x3, y3, x1, y1);\n\n                // Check if points are collinear\n                if (!areCollinear(x1, y1, x2, y2, x3, y3)) {\n                    // Calculate area using Heron's formula\n                    double area = heronsFormula(a, b, c);\n                    // Display area with 3 decimal places\n                    printf(\"%.3f\\n\", area);\n                } else {\n                    // Show message if collinear\n                    printf(\"Collinear points\\n\");\n                }\n            }\n        }\n    }\n\n    return 0;\n}",
       "checks": {
@@ -269,7 +260,7 @@
     },
     {
       "id": "2025_midterm_004",
-      "latency_ms": 17109,
+      "latency_ms": 28610,
       "extract_method": "fence",
       "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n#include <time.h>\n\nint main(void) {\n    srand(time(NULL));\n    int numbers[5], guessed[5] = {0}, score = 0;\n    \n    // Generate 5 unique random numbers between 1 and 10\n    for (int i = 0; i < 5; i++) {\n        int num;\n        do {\n            num = rand() % 10 + 1;\n        } while (num == 0 || guessed[num - 1]);\n        numbers[i] = num;\n        guessed[num - 1] = 1;\n    }\n    \n    // Game loop\n    for (int i = 0; i < 5; i++) {\n        printf(\"Numbers: \");\n        for (int j = 0; j < 5; j++) {\n            if (guessed[j]) {\n                printf(\"%d \", numbers[j]);\n            } else {\n                printf(\"* \");\n            }\n        }\n        printf(\"\\nPick position (1-5): \");\n        int pos;\n        scanf(\"%d\", &pos);\n        \n        printf(\"Guess (E for even, O for odd): \");\n        char guess;\n        scanf(\" %c\", &guess);\n        \n        if ((numbers[pos - 1] % 2 == 0 && guess == 'E') || \n            (numbers[pos - 1] % 2 != 0 && guess == 'O')) {\n            printf(\"Correct!\\n\");\n            score += 5;\n        } else {\n            printf(\"Incorrect.\\n\");\n        }\n        \n        guessed[pos - 1] = 1;\n    }\n    \n    // Display final score\n    printf(\"Final Score: %d\\n\", score);\n    \n    return 0;\n}",
       "checks": {
@@ -305,7 +296,7 @@
             "win",
             "points"
           ],
-          "output_head": "Numbers: 1 * 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 1 3 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 1 3 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 1 3 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 1 3 6 5 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nFinal Score: 25"
+          "output_head": "Numbers: 2 1 5 3 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 2 1 5 3 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 2 1 5 3 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 2 1 5 3 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nNumbers: 2 1 5 3 4 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nFinal Score: 25"
         },
         "semantic": {
           "passed": true,
@@ -351,9 +342,9 @@
   "lora_results": [
     {
       "id": "2025_midterm_001",
-      "latency_ms": 6156,
+      "latency_ms": 25093,
       "extract_method": "fence",
-      "extracted_code": "#include <stdio.h>\n\nint main() {\n    int n;\n    double sum = 0.0;\n\n    // Read input\n    scanf(\"%d\", &n);\n\n    // Calculate the sum of the series\n    for (int i = 1; i <= n; i++) {\n        double numerator = 2 * i + 1;\n        double denominator = i * i - 1;\n        sum += ((i % 2 == 1) ? 1 : -1) * numerator / denominator;\n    }\n\n    // Output the result with precision\n    printf(\"%.3f\\n\", sum);\n\n    return 0;\n}",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    double sum = 0.0;\n\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        int numerator = 2 * i + 1;\n        int denominator = i * i - 1;\n        sum += ((i % 2 == 1) ? 1 : -1) * (double)numerator / denominator;\n    }\n\n    printf(\"%.3f\\n\", sum);\n\n    return 0;\n}",
       "checks": {
         "proxy": {
           "passed": true,
@@ -421,9 +412,9 @@
     },
     {
       "id": "2025_midterm_002",
-      "latency_ms": 6875,
+      "latency_ms": 45969,
       "extract_method": "fence",
-      "extracted_code": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        // Print leading spaces\n        for (int j = 1; j <= n - i; j++) {\n            printf(\" \");\n        }\n\n        // Print digits\n        for (int k = 1; k <= i; k++) {\n            printf(\"%d\", i);\n        }\n\n        // Print trailing spaces\n        for (int j = 1; j <= n - i; j++) {\n            printf(\" \");\n        }\n\n        // Move to the next line\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        // Print leading spaces\n        for (int j = 1; j <= n - i; j++) {\n            printf(\" \");\n        }\n\n        // Print digits\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n\n        // Print trailing spaces\n        for (int j = 1; j <= n - i; j++) {\n            printf(\" \");\n        }\n\n        // Move to the next line\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
       "checks": {
         "proxy": {
           "passed": true,
@@ -497,9 +488,9 @@
     },
     {
       "id": "2025_midterm_003",
-      "latency_ms": 27578,
+      "latency_ms": 30094,
       "extract_method": "fence",
-      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\n// Function to calculate the distance between two points\ndouble distance(double x1, double y1, double x2, double y2) {\n    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));\n}\n\n// Function to check if three points are collinear\nint areCollinear(double x1, double y1, double x2, double y2, double x3, double y3) {\n    double d1 = distance(x1, y1, x2, y2);\n    double d2 = distance(x2, y2, x3, y3);\n    double d3 = distance(x3, y3, x1, y1);\n    return fabs(d1 + d2 - d3) < 1e-9;\n}\n\n// Function to calculate the area of a triangle using Heron's formula\ndouble heronsFormula(double a, double b, double c) {\n    double s = (a + b + c) / 2.0;\n    return sqrt(s * (s - a) * (s - b) * (s - c));\n}\n\nint main() {\n    double x1, y1, x2, y2, x3, y3, x4, y4;\n\n    // Read 4 coordinate pairs\n    printf(\"Enter 4 coordinate pairs (x1 y1 x2 y2 x3 y3 x4 y4): \");\n    scanf(\"%lf %lf %lf %lf %lf %lf %lf %lf\", &x1, &y1, &x2, &y2, &x3, &y3, &x4, &y4);\n\n    // Generate all 3-point combinations\n    for (int i = 0; i < 4; i++) {\n        for (int j = i + 1; j < 4; j++) {\n            for (int k = j + 1; k < 4; k++) {\n                double a = distance(x1, y1, x2, y2);\n                double b = distance(x2, y2, x3, y3);\n                double c = distance(x3, y3, x1, y1);\n\n                // Check if points are collinear\n                if (!areCollinear(x1, y1, x2, y2, x3, y3)) {\n                    // Calculate area using Heron's formula\n                    double area = heronsFormula(a, b, c);\n                    // Display area with 3 decimal places\n                    printf(\"%.3f\\n\", area);\n                } else {\n                    // Show message if collinear\n                    printf(\"Collinear points\\n\");\n                }\n            }\n        }\n    }\n\n    return 0;\n}",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\n// Function to calculate the distance between two points\ndouble distance(double x1, double y1, double x2, double y2) {\n    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));\n}\n\n// Function to check if three points are collinear\nint areCollinear(double x1, double y1, double x2, double y2, double x3, double y3) {\n    double area = 0.5 * fabs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2));\n    return area < 1e-9;\n}\n\n// Function to calculate the area of a triangle using Heron's formula\ndouble heronsFormula(double a, double b, double c) {\n    double s = (a + b + c) / 2.0;\n    return sqrt(s * (s - a) * (s - b) * (s - c));\n}\n\nint main(void) {\n    double x1, y1, x2, y2, x3, y3, x4, y4;\n\n    // Read 4 coordinate pairs\n    scanf(\"%lf %lf %lf %lf %lf %lf %lf %lf\", &x1, &y1, &x2, &y2, &x3, &y3, &x4, &y4);\n\n    // Generate all 3-point combinations\n    for (int i = 0; i < 4; i++) {\n        for (int j = i + 1; j < 4; j++) {\n            for (int k = j + 1; k < 4; k++) {\n                double a = distance(x1, y1, x2, y2);\n                double b = distance(x2, y2, x3, y3);\n                double c = distance(x3, y3, x4, y4);\n\n                // Check if points are collinear\n                if (!areCollinear(x1, y1, x2, y2, x3, y3) && !areCollinear(x2, y2, x3, y3, x4, y4) && !areCollinear(x3, y3, x4, y4, x1, y1)) {\n                    // Calculate area using Heron's formula\n                    double area = heronsFormula(a, b, c);\n                    // Display area if triangle can be formed\n                    printf(\"%.3f\\n\", area);\n                } else {\n                    // Show message if collinear (no triangle)\n                    printf(\"No triangle\\n\");\n                }\n            }\n        }\n    }\n\n    return 0;\n}",
       "checks": {
         "proxy": {
           "passed": true,
@@ -522,16 +513,15 @@
           "warnings": []
         },
         "runtime": {
-          "passed": true,
+          "passed": false,
           "timed_out": false,
-          "match_ratio": 0.5,
-          "found": [
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "area",
             "6.000"
           ],
-          "missing": [
-            "area"
-          ],
-          "output_head": "Enter 4 coordinate pairs (x1 y1 x2 y2 x3 y3 x4 y4): 6.000\n6.000\n6.000\n6.000"
+          "output_head": "4.146\n4.146\n4.146\n4.146"
         },
         "semantic": {
           "passed": true,
@@ -551,12 +541,12 @@
           "missing": []
         }
       },
-      "score": 85,
+      "score": 70,
       "score_breakdown": {
         "structure": 15,
         "keyword": 15,
         "compile": 40,
-        "runtime": 15
+        "runtime": 0
       },
       "accepted": true,
       "task_meta": {
@@ -570,9 +560,9 @@
     },
     {
       "id": "2025_midterm_004",
-      "latency_ms": 16984,
+      "latency_ms": 24890,
       "extract_method": "fence",
-      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n#include <time.h>\n\nint main(void) {\n    srand(time(NULL));\n    int numbers[5], guessed[5] = {0}, score = 0;\n    \n    // Generate 5 unique random numbers between 1 and 10\n    for (int i = 0; i < 5; i++) {\n        int num;\n        do {\n            num = rand() % 10 + 1;\n        } while (num == 0 || guessed[num - 1]);\n        numbers[i] = num;\n        guessed[num - 1] = 1;\n    }\n    \n    // Game loop\n    for (int i = 0; i < 5; i++) {\n        printf(\"Numbers: \");\n        for (int j = 0; j < 5; j++) {\n            if (guessed[j]) {\n                printf(\"%d \", numbers[j]);\n            } else {\n                printf(\"* \");\n            }\n        }\n        printf(\"\\nPick position (1-5): \");\n        int pos;\n        scanf(\"%d\", &pos);\n        \n        printf(\"Guess (E for even, O for odd): \");\n        char guess;\n        scanf(\" %c\", &guess);\n        \n        if ((numbers[pos - 1] % 2 == 0 && guess == 'E') || \n            (numbers[pos - 1] % 2 != 0 && guess == 'O')) {\n            printf(\"Correct!\\n\");\n            score += 5;\n        } else {\n            printf(\"Incorrect.\\n\");\n        }\n        \n        guessed[pos - 1] = 1;\n    }\n    \n    // Display final score\n    printf(\"Final Score: %d\\n\", score);\n    \n    return 0;\n}",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main(void) {\n    int numbers[5];\n    int revealed[5] = {0};\n    int score = 0;\n    int i, j;\n\n    // Generate 5 unique random numbers (1-10)\n    for (i = 0; i < 5; i++) {\n        do {\n            numbers[i] = rand() % 10 + 1;\n        } while (revealed[numbers[i] - 1]);\n        revealed[numbers[i] - 1] = 1;\n    }\n\n    // Game loop\n    for (i = 0; i < 5; i++) {\n        printf(\"Numbers: \");\n        for (j = 0; j < 5; j++) {\n            if (revealed[j]) {\n                printf(\"%d \", numbers[j]);\n            } else {\n                printf(\"* \");\n            }\n        }\n        printf(\"\\nPick position (1-5): \");\n        int position;\n        scanf(\"%d\", &position);\n        position--;\n\n        printf(\"Guess (E for even, O for odd): \");\n        char guess;\n        scanf(\" %c\", &guess);\n\n        if ((numbers[position] % 2 == 0 && guess == 'E') || \n            (numbers[position] % 2 != 0 && guess == 'O')) {\n            printf(\"Correct!\\n\");\n            score += 5;\n            revealed[position] = 1;\n        } else {\n            printf(\"Incorrect.\\n\");\n        }\n    }\n\n    // Display final score\n    printf(\"Final score: %d\\n\", score);\n\n    return 0;\n}",
       "checks": {
         "proxy": {
           "passed": true,
@@ -606,12 +596,12 @@
             "win",
             "points"
           ],
-          "output_head": "Numbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: * 6 5 2 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nFinal Score: 0"
+          "output_head": "Numbers: 2 8 5 * 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: 2 8 5 * 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: 2 8 5 * 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: 2 8 5 * 3 \nPick position (1-5): Guess (E for even, O for odd): Incorrect.\nNumbers: 2 8 5 * 3 \nPick position (1-5): Guess (E for even, O for odd): Correct!\nFinal score: 5"
         },
         "semantic": {
           "passed": true,
           "warnings": [
-            "array[i-1] accessed in loop starting from i=0 — potential out-of-bounds at first iteration",
+            "rand() used without srand() — results will not be random",
             "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
           ],
           "errors": [],
@@ -619,22 +609,22 @@
         },
         "keyword": {
           "passed": true,
-          "score": 0.8,
+          "score": 0.6,
           "found": [
             "rand",
-            "srand",
             "scanf",
             "printf"
           ],
           "missing": [
+            "srand",
             "array"
           ]
         }
       },
-      "score": 82,
+      "score": 79,
       "score_breakdown": {
         "structure": 15,
-        "keyword": 12,
+        "keyword": 9,
         "compile": 40,
         "runtime": 15
       },

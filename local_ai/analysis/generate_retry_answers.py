@@ -69,6 +69,28 @@ _SYSTEM = (
 )
 
 
+def _load_verified_golden_ids(goldens_dir: Path) -> set[str]:
+    """Return task ids with compile/runtime-verified golden repairs."""
+    if not goldens_dir.exists():
+        return set()
+
+    verified_ids: set[str] = set()
+    for manifest_path in sorted(goldens_dir.glob("*/*_manifest.json")):
+        try:
+            data = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        for entry in data.get("goldens", []):
+            if entry.get("compile_verified") and entry.get("runtime_verified"):
+                verified_ids.add(str(entry.get("id", "")))
+
+    file_ids = {
+        path.stem.replace("_golden", "")
+        for path in [*goldens_dir.glob("*_golden.c"), *goldens_dir.glob("*/*_golden.c")]
+    }
+    return verified_ids & file_ids if verified_ids else file_ids
+
+
 # ── prompt builder ────────────────────────────────────────────────────────────
 
 def _build_repair_prompt(record: dict) -> str:
@@ -336,15 +358,9 @@ def main() -> None:
         print(f"[gen_answers] Strict validator active (requires scanf + printf)")
 
     # ── Golden skip ───────────────────────────────────────────────────────────
-    golden_ids: set[str] = set()
     if args.prefer_goldens:
         _goldens_dir = _LOCAL_AI / "goldens"
-        if _goldens_dir.exists():
-            for cat_dir in sorted(_goldens_dir.iterdir()):
-                if not cat_dir.is_dir() or cat_dir.name in ("reports", "__pycache__"):
-                    continue
-                for c_file in cat_dir.glob("*_golden.c"):
-                    golden_ids.add(c_file.stem.replace("_golden", ""))
+        golden_ids = _load_verified_golden_ids(_goldens_dir)
         if golden_ids:
             before = len(to_process)
             to_process = [

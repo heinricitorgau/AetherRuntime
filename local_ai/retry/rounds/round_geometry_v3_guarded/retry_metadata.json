@@ -1,0 +1,54 @@
+{
+  "round": "round_geometry_v3_guarded",
+  "created_at": "2026-05-23T18:05:54+00:00",
+  "created_by": "build_mixed_retry_round.py",
+  "dataset": "local_ai/retry/rounds/round_geometry_v3_guarded/retry_chatml.jsonl",
+  "records": 4,
+  "anti_regression_samples": true,
+  "sample_roles": {
+    "anti_regression": 2,
+    "game_golden_guard": 1,
+    "geometry_golden_repair": 1
+  },
+  "balanced_geometry_candidates_found": 0,
+  "samples": [
+    {
+      "id": "2025_midterm_003",
+      "sample_role": "geometry_golden_repair",
+      "topic": "Geometry - Triangle Enumeration",
+      "year": 2025
+    },
+    {
+      "id": "2025_midterm_004",
+      "sample_role": "game_golden_guard",
+      "topic": "Game Simulation - Even/Odd Guessing",
+      "year": 2025
+    },
+    {
+      "id": "2025_midterm_001",
+      "sample_role": "anti_regression",
+      "topic": "Series Calculation",
+      "year": 2025
+    },
+    {
+      "id": "2025_midterm_002",
+      "sample_role": "anti_regression",
+      "topic": "Pattern Generation",
+      "year": 2025
+    }
+  ],
+  "training_job": "retry_geometry_v3_guarded",
+  "training_intent": "stabilize geometry retry with game runtime guard",
+  "lora": {
+    "r": 4,
+    "alpha": 8,
+    "dropout": 0.05
+  },
+  "epochs": 1,
+  "learning_rate": 2.5e-05,
+  "sources": {
+    "geometry_manifest": "local_ai/goldens/geometry/geometry_manifest.json",
+    "game_manifest": "local_ai/goldens/game/game_manifest.json",
+    "base_sft": "local_ai/training_quality/reports/sft_chatml.jsonl"
+  }
+}
