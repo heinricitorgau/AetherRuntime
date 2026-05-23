@@ -1,0 +1,111 @@
+{
+  "experiment_count": 87,
+  "by_type": {
+    "compare_lora": 14,
+    "train": 15,
+    "golden_comparison": 1,
+    "benchmark": 57
+  },
+  "latest_runs": [
+    {
+      "run_id": "compare_lora_retry_geometry_v3_guarded_20260524_021509",
+      "timestamp": "2026-05-23T18:15:09+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 78.5,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v3_guarded"
+    },
+    {
+      "run_id": "train_retry_geometry_v3_guarded_20260523_181220",
+      "timestamp": "2026-05-23T18:12:20+00:00",
+      "run_type": "train",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": "qwen3b_local",
+      "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v3_guarded"
+    },
+    {
+      "run_id": "compare_lora_retry_geometry_v2_20260524_020011",
+      "timestamp": "2026-05-23T18:00:11+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 74.8,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v2"
+    },
+    {
+      "run_id": "train_retry_geometry_v2_20260523_175707",
+      "timestamp": "2026-05-23T17:57:07+00:00",
+      "run_type": "train",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": "qwen3b_local",
+      "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v2"
+    },
+    {
+      "run_id": "compare_lora_retry_geometry_v1_20260524_012752",
+      "timestamp": "2026-05-23T17:27:52+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 74.0,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v1"
+    },
+    {
+      "run_id": "train_retry_geometry_v1_20260523_172053",
+      "timestamp": "2026-05-23T17:20:53+00:00",
+      "run_type": "train",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": null,
+      "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v1"
+    },
+    {
+      "run_id": "train_retry_geometry_v1_20260522_205318",
+      "timestamp": "2026-05-22T20:53:18+00:00",
+      "run_type": "train",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": null,
+      "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v1"
+    },
+    {
+      "run_id": "compare_lora_retry_geometry_v1_20260523_044551",
+      "timestamp": "2026-05-22T20:45:51+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 76.8,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v1"
+    },
+    {
+      "run_id": "compare_lora_retry_geometry_v1_20260522_012625",
+      "timestamp": "2026-05-21T17:26:25+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 84.2,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v1"
+    },
+    {
+      "run_id": "compare_lora_retry_geometry_v1_20260522_011901",
+      "timestamp": "2026-05-21T17:19:01+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 65.0,
+      "accepted": 3,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v1"
+    }
+  ]
+}

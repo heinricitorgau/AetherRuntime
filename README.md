@@ -1,5 +1,9 @@
 # research-claw-code
 
+This project is a local-first coding LLM evaluation and LoRA experimentation
+framework. It focuses on compile/runtime validated benchmarks, failure mining,
+retry training, and adapter governance for offline coding models.
+
 `research-claw-code` 是 `claw` CLI 的研究與本地化專案。這個 repo 主要有兩條使用路線：
 
 - **離線 bundle**：先在有網路的機器打包 `claw + Ollama + 模型`，再把整個資料夾搬到離線環境直接使用。

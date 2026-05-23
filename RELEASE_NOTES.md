@@ -1,5 +1,53 @@
 # Local AI SFT Infrastructure v1
 
+## V2 - Iterative Retry Training and Adapter Governance
+
+V2 extends the local-first evaluation stack with infrastructure for iterative
+model repair experiments. It does not claim a promoted or production-ready
+adapter; the current safe adapter is a no-change result that preserved the
+baseline guardrails.
+
+### Added
+
+- Failure mining pipeline for turning benchmark failures into retry candidates.
+- Retry dataset generation for focused LoRA repair experiments.
+- Human-curated golden repair targets for geometry runtime failures.
+- Game simulation golden guard for 2025 midterm task 004 runtime stability.
+- Anti-regression guarded training rounds:
+  - `retry_geometry_v1`: regression, retained as ablation evidence.
+  - `retry_geometry_v2`: regression, retained as ablation evidence.
+  - `retry_geometry_v3_guarded`: no_change, marked `safe_no_change`.
+- LoRA regression analysis reports for per-task score, runtime, semantic, and
+  keyword deltas.
+- Adapter promotion policy with `promote`, `safe_no_change`, `ablation_only`,
+  and `reject` statuses.
+- Adapter registry summary CLI for viewing governed adapters without opening
+  JSON files.
+
+### Current Result
+
+- `retry_geometry_v3_guarded` is classified as `safe_no_change`.
+- Accepted remains 4/4.
+- Compile, runtime, and semantic guardrails are preserved relative to the base
+  benchmark in the latest comparison report.
+- No adapter has been promoted as the default adapter yet.
+
+### Limitations
+
+- V2 provides guarded experiment tracking and evaluation, not a significantly
+  improved model.
+- The current safe adapter is no-change, not promoted.
+- Retry datasets are still small and need broader coverage before promotion
+  pressure should increase.
+
+### Next Milestone
+
+- Scale trusted retry datasets.
+- Add task-specific adapter routing for cases where one adapter is safe for a
+  subset but not suitable as a global default.
+- Keep ablation and rejected adapters in registry history to avoid repeating
+  known failure modes.
+
 ## Completed Capabilities
 
 - Local offline coding LLM runtime with Ollama and proxy
