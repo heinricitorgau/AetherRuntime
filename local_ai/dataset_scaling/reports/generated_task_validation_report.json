@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-05-23T19:26:54+00:00",
+  "input": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_tasks.jsonl",
+  "status": "PASS",
+  "records": 40,
+  "topic_counts": {
+    "game_simulation": 10,
+    "geometry": 10,
+    "pattern_generation": 10,
+    "series_calculation": 10
+  },
+  "difficulty_counts": {
+    "easy": 17,
+    "hard": 13,
+    "medium": 10
+  },
+  "topic_balanced": true,
+  "unique_ids": 40,
+  "unique_prompts": 40,
+  "duplicate_ids": false,
+  "duplicate_prompts": false,
+  "issues": []
+}

@@ -1,0 +1,993 @@
+{
+  "generated_at": "2026-05-25T17:17:07+00:00",
+  "run_id": "strict_20260523_205251",
+  "run_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\strict_20260523_205251",
+  "model": "qwen2.5-coder:3b",
+  "tasks": 40,
+  "accepted": 34,
+  "rejected": 6,
+  "avg_score": 82.5,
+  "reported_avg_score": 82.5,
+  "reported_rates": {
+    "proxy_pass_rate": 0.95,
+    "truncation_pass_rate": 0.95,
+    "compile_pass_rate": 0.85,
+    "runtime_pass_rate": 0.7,
+    "semantic_pass_rate": 0.95,
+    "keyword_pass_rate": 1.0,
+    "accepted_rate": 0.85
+  },
+  "by_topic": {
+    "game_simulation": {
+      "count": 10,
+      "accepted": 8,
+      "rejected": 2,
+      "acceptance_rate": 0.8,
+      "avg_score": 72.0,
+      "low_score_count": 2,
+      "compile_failures": 2,
+      "runtime_failures": 4,
+      "semantic_failures": 2,
+      "keyword_failures": 0
+    },
+    "geometry": {
+      "count": 10,
+      "accepted": 8,
+      "rejected": 2,
+      "acceptance_rate": 0.8,
+      "avg_score": 80.0,
+      "low_score_count": 2,
+      "compile_failures": 2,
+      "runtime_failures": 4,
+      "semantic_failures": 0,
+      "keyword_failures": 0
+    },
+    "pattern_generation": {
+      "count": 10,
+      "accepted": 10,
+      "rejected": 0,
+      "acceptance_rate": 1.0,
+      "avg_score": 92.0,
+      "low_score_count": 0,
+      "compile_failures": 0,
+      "runtime_failures": 2,
+      "semantic_failures": 0,
+      "keyword_failures": 0
+    },
+    "series_calculation": {
+      "count": 10,
+      "accepted": 8,
+      "rejected": 2,
+      "acceptance_rate": 0.8,
+      "avg_score": 86.0,
+      "low_score_count": 2,
+      "compile_failures": 2,
+      "runtime_failures": 2,
+      "semantic_failures": 0,
+      "keyword_failures": 0
+    }
+  },
+  "by_difficulty": {
+    "easy": {
+      "count": 17,
+      "accepted": 16,
+      "rejected": 1,
+      "acceptance_rate": 0.9412,
+      "avg_score": 88.82,
+      "low_score_count": 1,
+      "compile_failures": 1,
+      "runtime_failures": 3,
+      "semantic_failures": 0,
+      "keyword_failures": 0
+    },
+    "hard": {
+      "count": 13,
+      "accepted": 11,
+      "rejected": 2,
+      "acceptance_rate": 0.8462,
+      "avg_score": 83.85,
+      "low_score_count": 2,
+      "compile_failures": 2,
+      "runtime_failures": 4,
+      "semantic_failures": 0,
+      "keyword_failures": 0
+    },
+    "medium": {
+      "count": 10,
+      "accepted": 7,
+      "rejected": 3,
+      "acceptance_rate": 0.7,
+      "avg_score": 70.0,
+      "low_score_count": 3,
+      "compile_failures": 3,
+      "runtime_failures": 5,
+      "semantic_failures": 2,
+      "keyword_failures": 0
+    }
+  },
+  "failed_cases": [
+    {
+      "id": "synthetic_v3_game_simulation_001",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_game_simulation_002",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_geometry_002",
+      "topic": "geometry",
+      "difficulty": "easy",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_geometry_002.c:17:5: error: 'area' undeclared (first use in this function)",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "area",
+          "6.000"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_geometry_010",
+      "topic": "geometry",
+      "difficulty": "hard",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_geometry_010.c:17:5: error: 'area' undeclared (first use in this function)",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "area",
+          "6.000"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_series_calculation_004",
+      "topic": "series_calculation",
+      "difficulty": "hard",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_series_calculation_004.c:12:16: error: implicit declaration of function 'pow' [-Wimplicit-function-declaration]",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "result"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_series_calculation_008",
+      "topic": "series_calculation",
+      "difficulty": "medium",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_series_calculation_008.c:12:16: error: implicit declaration of function 'pow' [-Wimplicit-function-declaration]",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "result"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    }
+  ],
+  "low_score_cases": [
+    {
+      "id": "synthetic_v3_game_simulation_001",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      },
+      "classification": "model_generation_failure",
+      "evidence": [
+        "proxy/empty response prevented code extraction",
+        "structure check reported empty response",
+        "semantic errors: empty code",
+        "compile: no code extracted",
+        "missing runtime tokens: Numbers, Pick, points"
+      ]
+    },
+    {
+      "id": "synthetic_v3_game_simulation_002",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      },
+      "classification": "model_generation_failure",
+      "evidence": [
+        "proxy/empty response prevented code extraction",
+        "structure check reported empty response",
+        "semantic errors: empty code",
+        "compile: no code extracted",
+        "missing runtime tokens: Guess, number, points"
+      ]
+    },
+    {
+      "id": "synthetic_v3_geometry_002",
+      "topic": "geometry",
+      "difficulty": "easy",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_geometry_002.c:17:5: error: 'area' undeclared (first use in this function)",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "area",
+          "6.000"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      },
+      "classification": "model_generation_failure",
+      "evidence": [
+        "generated code does not compile cleanly under strict C99",
+        "compile: compile error (1 errors)",
+        "missing runtime tokens: area, 6.000"
+      ]
+    },
+    {
+      "id": "synthetic_v3_geometry_010",
+      "topic": "geometry",
+      "difficulty": "hard",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_geometry_010.c:17:5: error: 'area' undeclared (first use in this function)",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "area",
+          "6.000"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      },
+      "classification": "model_generation_failure",
+      "evidence": [
+        "generated code does not compile cleanly under strict C99",
+        "compile: compile error (1 errors)",
+        "missing runtime tokens: area, 6.000"
+      ]
+    },
+    {
+      "id": "synthetic_v3_series_calculation_004",
+      "topic": "series_calculation",
+      "difficulty": "hard",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_series_calculation_004.c:12:16: error: implicit declaration of function 'pow' [-Wimplicit-function-declaration]",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "result"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      },
+      "classification": "model_generation_failure",
+      "evidence": [
+        "generated code does not compile cleanly under strict C99",
+        "compile: compile error (1 errors)",
+        "missing runtime tokens: result"
+      ]
+    },
+    {
+      "id": "synthetic_v3_series_calculation_008",
+      "topic": "series_calculation",
+      "difficulty": "medium",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_series_calculation_008.c:12:16: error: implicit declaration of function 'pow' [-Wimplicit-function-declaration]",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "result"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      },
+      "classification": "model_generation_failure",
+      "evidence": [
+        "generated code does not compile cleanly under strict C99",
+        "compile: compile error (1 errors)",
+        "missing runtime tokens: result"
+      ]
+    }
+  ],
+  "compile_failures": [
+    {
+      "id": "synthetic_v3_game_simulation_001",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_game_simulation_002",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_geometry_002",
+      "topic": "geometry",
+      "difficulty": "easy",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_geometry_002.c:17:5: error: 'area' undeclared (first use in this function)",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "area",
+          "6.000"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_geometry_010",
+      "topic": "geometry",
+      "difficulty": "hard",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_geometry_010.c:17:5: error: 'area' undeclared (first use in this function)",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "area",
+          "6.000"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_series_calculation_004",
+      "topic": "series_calculation",
+      "difficulty": "hard",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_series_calculation_004.c:12:16: error: implicit declaration of function 'pow' [-Wimplicit-function-declaration]",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "result"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_series_calculation_008",
+      "topic": "series_calculation",
+      "difficulty": "medium",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_series_calculation_008.c:12:16: error: implicit declaration of function 'pow' [-Wimplicit-function-declaration]",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "result"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    }
+  ],
+  "runtime_failures": [
+    {
+      "id": "synthetic_v3_game_simulation_001",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_game_simulation_002",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_game_simulation_006",
+      "topic": "game_simulation",
+      "difficulty": "hard",
+      "score": 70.0,
+      "accepted": true,
+      "failed_checks": [
+        "runtime"
+      ],
+      "compile_error": "ok",
+      "runtime": {
+        "passed": false,
+        "timed_out": true,
+        "missing": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "timeout after 8s",
+        "note": null
+      }
+    },
+    {
+      "id": "synthetic_v3_game_simulation_010",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 70.0,
+      "accepted": true,
+      "failed_checks": [
+        "runtime"
+      ],
+      "compile_error": "ok",
+      "runtime": {
+        "passed": false,
+        "timed_out": true,
+        "missing": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "timeout after 8s",
+        "note": null
+      }
+    },
+    {
+      "id": "synthetic_v3_geometry_002",
+      "topic": "geometry",
+      "difficulty": "easy",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_geometry_002.c:17:5: error: 'area' undeclared (first use in this function)",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "area",
+          "6.000"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_geometry_003",
+      "topic": "geometry",
+      "difficulty": "medium",
+      "score": 70.0,
+      "accepted": true,
+      "failed_checks": [
+        "runtime"
+      ],
+      "compile_error": "ok",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "line",
+          "x",
+          "y"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "area 0.000",
+        "note": null
+      }
+    },
+    {
+      "id": "synthetic_v3_geometry_007",
+      "topic": "geometry",
+      "difficulty": "hard",
+      "score": 70.0,
+      "accepted": true,
+      "failed_checks": [
+        "runtime"
+      ],
+      "compile_error": "ok",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "line",
+          "x",
+          "y"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "area 0.000",
+        "note": null
+      }
+    },
+    {
+      "id": "synthetic_v3_geometry_010",
+      "topic": "geometry",
+      "difficulty": "hard",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_geometry_010.c:17:5: error: 'area' undeclared (first use in this function)",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "area",
+          "6.000"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_006",
+      "topic": "pattern_generation",
+      "difficulty": "easy",
+      "score": 70.0,
+      "accepted": true,
+      "failed_checks": [
+        "runtime"
+      ],
+      "compile_error": "ok",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "4444",
+          "333",
+          "22"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "4321\n  321\n 21\n1",
+        "note": null
+      }
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_010",
+      "topic": "pattern_generation",
+      "difficulty": "easy",
+      "score": 70.0,
+      "accepted": true,
+      "failed_checks": [
+        "runtime"
+      ],
+      "compile_error": "ok",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "4444",
+          "333",
+          "22"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "4321\n  321\n 21\n1",
+        "note": null
+      }
+    },
+    {
+      "id": "synthetic_v3_series_calculation_004",
+      "topic": "series_calculation",
+      "difficulty": "hard",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_series_calculation_004.c:12:16: error: implicit declaration of function 'pow' [-Wimplicit-function-declaration]",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "result"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_series_calculation_008",
+      "topic": "series_calculation",
+      "difficulty": "medium",
+      "score": 30.0,
+      "accepted": false,
+      "failed_checks": [
+        "compile",
+        "runtime"
+      ],
+      "compile_error": "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_kp7jvfc5\\synthetic_v3_series_calculation_008.c:12:16: error: implicit declaration of function 'pow' [-Wimplicit-function-declaration]",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "result"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    }
+  ],
+  "semantic_failures": [
+    {
+      "id": "synthetic_v3_game_simulation_001",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    },
+    {
+      "id": "synthetic_v3_game_simulation_002",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "score": 15.0,
+      "accepted": false,
+      "failed_checks": [
+        "proxy",
+        "truncation",
+        "structure",
+        "compile",
+        "runtime",
+        "semantic"
+      ],
+      "compile_error": "no code extracted",
+      "runtime": {
+        "passed": false,
+        "timed_out": false,
+        "missing": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "found": [],
+        "match_ratio": 0.0,
+        "output_head": "",
+        "note": "not run (compile failed or no compiler)"
+      }
+    }
+  ],
+  "keyword_failures": [],
+  "decisions": {
+    "isolated_evaluation": {
+      "suitable": true,
+      "answer": "Yes, with caveats. The generated benchmark is balanced across four topics and exposes useful compile/runtime gaps. Golden comparison skipping is expected because this run has 40 generated tasks while the golden baseline has 4 tasks."
+    },
+    "candidate_training_corpus": {
+      "suitable": true,
+      "answer": "generated_sft_candidate_v1 is suitable as an isolated candidate corpus only if it uses validated reference solutions, keeps these benchmark outputs out of training, and preserves a held-out generated evaluation split. Do not train on failed model outputs from this benchmark run."
+    },
+    "topics_needing_more_data_or_checker_work": [
+      "game_simulation",
+      "geometry",
+      "pattern_generation",
+      "series_calculation"
+    ],
+    "task_spec_issues": {
+      "confirmed_count": 0,
+      "checker_audit_count": 0,
+      "answer": "No confirmed task_spec_issue was detected among the six unaccepted cases. However, runtime token mismatches in geometry and pattern_generation should be audited before those exact tasks are used as promotion-quality evaluation."
+    },
+    "low_score_classification_counts": {
+      "model_generation_failure": 6
+    }
+  }
+}

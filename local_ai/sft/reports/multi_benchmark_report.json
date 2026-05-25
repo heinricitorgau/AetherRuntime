@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-05-25T18:55:31+00:00",
+  "adapter": "local_ai\\sft\\artifacts\\generated_candidate_v1",
+  "strict_benchmark": {
+    "benchmark": "c_exam_2025_strict_seeded",
+    "tasks": 4,
+    "verdict": "regression",
+    "accepted_base": 4,
+    "accepted_lora": 4,
+    "accepted_delta": 0,
+    "avg_base": 78.5,
+    "avg_lora": 74.8,
+    "avg_delta": -3.7,
+    "runtime_base": 0.75,
+    "runtime_lora": 0.5,
+    "runtime_delta": -0.25,
+    "compile_delta": 0.0,
+    "semantic_delta": 0.0,
+    "keyword_delta": 0.0,
+    "report_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_report.json"
+  },
+  "generated_benchmark": {
+    "benchmark": "generated_c_tasks_v1",
+    "tasks": 40,
+    "verdict": "regression",
+    "accepted_base": 33,
+    "accepted_lora": 32,
+    "accepted_delta": -1,
+    "avg_base": 71.2,
+    "avg_lora": 69.5,
+    "avg_delta": -1.7,
+    "runtime_base": 0.825,
+    "runtime_lora": 0.8,
+    "runtime_delta": -0.025,
+    "compile_delta": -0.025,
+    "semantic_delta": 0.0,
+    "keyword_delta": 0.0,
+    "report_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_report.json"
+  },
+  "strict_state": "regression",
+  "generated_state": "regression",
+  "decision": "regression",
+  "reasons": [
+    "both strict and generated benchmarks regress"
+  ],
+  "guardrails": {
+    "promotion_to_default": false,
+    "modifies_formal_sft_corpus": false,
+    "modifies_benchmark_scoring": false,
+    "auto_promotes_adapter": false,
+    "overwrites_existing_adapters": false
+  },
+  "raw_report_paths": {
+    "c_exam_2025_strict_seeded": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_report.json",
+    "generated_c_tasks_v1": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_report.json"
+  }
+}

@@ -1,0 +1,2031 @@
+{
+  "timestamp": "2026-05-23T19:31:28+00:00",
+  "input": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_solutions.jsonl",
+  "compiler": "C:\\msys64\\ucrt64\\bin\\cc.EXE",
+  "records": 40,
+  "accepted": 40,
+  "rejected": 0,
+  "topic_counts": {
+    "game_simulation": 10,
+    "geometry": 10,
+    "pattern_generation": 10,
+    "series_calculation": 10
+  },
+  "accepted_topic_counts": {
+    "game_simulation": 10,
+    "geometry": 10,
+    "pattern_generation": 10,
+    "series_calculation": 10
+  },
+  "rejection_reason_counts": {},
+  "results": [
+    {
+      "id": "synthetic_v3_series_calculation_001",
+      "topic": "series_calculation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_001.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "result = 1.094",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "result"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_002",
+      "topic": "series_calculation",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_002.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "sum = 130.324",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "sum"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_003",
+      "topic": "series_calculation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_003.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "result = 3.718",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "result"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_004",
+      "topic": "series_calculation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_004.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "result = -3.460",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "result"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_005",
+      "topic": "series_calculation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_005.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "result = 1.012",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "result"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_006",
+      "topic": "series_calculation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_006.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "sum = 371419.233",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "sum"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_007",
+      "topic": "series_calculation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_007.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "result = 4.821",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "result"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_008",
+      "topic": "series_calculation",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_008.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "result = -5.368",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "result"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_009",
+      "topic": "series_calculation",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_009.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "result = 0.979",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "result"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_010",
+      "topic": "series_calculation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_series_calculation_010.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "sum = 6297217376.156",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "sum"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_001",
+      "topic": "pattern_generation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_001.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "1\n22\n333",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_002",
+      "topic": "pattern_generation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_002.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "4444\n 333\n  22\n   1",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "4444",
+          "333",
+          "22"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_003",
+      "topic": "pattern_generation",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_003.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "1\n22\n333\n4444\n55555\n4444\n333\n22\n1",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_004",
+      "topic": "pattern_generation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_004.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "******\n*    *\n*    *\n*    *\n*    *\n******",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "***",
+          "*    *"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_005",
+      "topic": "pattern_generation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_005.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "1\n22\n333",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_006",
+      "topic": "pattern_generation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_006.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "4444\n 333\n  22\n   1",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "4444",
+          "333",
+          "22"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_007",
+      "topic": "pattern_generation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_007.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "1\n22\n333\n4444\n55555\n4444\n333\n22\n1",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_008",
+      "topic": "pattern_generation",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_008.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "******\n*    *\n*    *\n*    *\n*    *\n******",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "***",
+          "*    *"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_009",
+      "topic": "pattern_generation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_009.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "1\n22\n333",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_010",
+      "topic": "pattern_generation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_pattern_generation_010.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "4444\n 333\n  22\n   1",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "4444",
+          "333",
+          "22"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_001",
+      "topic": "geometry",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_001.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "distance = 5.000\nmidpoint = 1.500 2.000",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "distance",
+          "5.000"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_002",
+      "topic": "geometry",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_002.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "perimeter = 12.000\narea = 6.000",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "area",
+          "6.000"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_003",
+      "topic": "geometry",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_003.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "line: -3.000x + 4.000y = 0.000",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "line",
+          "x",
+          "y"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_004",
+      "topic": "geometry",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_004.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "collinear",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "collinear"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_005",
+      "topic": "geometry",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_005.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "distance = 5.000\nmidpoint = 1.500 2.000",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "distance",
+          "5.000"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_006",
+      "topic": "geometry",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_006.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "perimeter = 12.000\narea = 6.000",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "area",
+          "6.000"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_007",
+      "topic": "geometry",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_007.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "line: -3.000x + 4.000y = 0.000",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "line",
+          "x",
+          "y"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_008",
+      "topic": "geometry",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_008.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "collinear",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "collinear"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_009",
+      "topic": "geometry",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_009.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "distance = 5.000\nmidpoint = 1.500 2.000",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "distance",
+          "5.000"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_geometry_010",
+      "topic": "geometry",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_geometry_010.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "perimeter = 12.000\narea = 6.000",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "area",
+          "6.000"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_001",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_001.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice O, number 2\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_002",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_002.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice N, number 5\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_003",
+      "topic": "game_simulation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_003.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice 1, number 3\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "choice",
+          "score",
+          "winner"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_004",
+      "topic": "game_simulation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_004.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice 1, number 3\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "Tug",
+          "Enter",
+          "winner"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_005",
+      "topic": "game_simulation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_005.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice O, number 2\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_006",
+      "topic": "game_simulation",
+      "difficulty": "hard",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_006.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice N, number 5\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_007",
+      "topic": "game_simulation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_007.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice 1, number 3\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "choice",
+          "score",
+          "winner"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_008",
+      "topic": "game_simulation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_008.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice 1, number 3\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "Tug",
+          "Enter",
+          "winner"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_009",
+      "topic": "game_simulation",
+      "difficulty": "easy",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_009.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice O, number 2\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_010",
+      "topic": "game_simulation",
+      "difficulty": "medium",
+      "accepted": true,
+      "failure_reasons": [],
+      "structure": {
+        "passed": true,
+        "issues": [],
+        "raw": {
+          "ok": true,
+          "score": 1.0,
+          "issues": [],
+          "signals": {
+            "has_include": true,
+            "has_main": true,
+            "balanced": true,
+            "complete": true
+          }
+        }
+      },
+      "compile": {
+        "ok": true,
+        "message": "ok",
+        "errors": [],
+        "warnings": [],
+        "exe": "C:\\Users\\User\\AppData\\Local\\Temp\\generated_solution_validate_2jizljsm\\synthetic_v3_game_simulation_010.exe"
+      },
+      "runtime": {
+        "ok": true,
+        "output": "Numbers: * * * * *\nPick a number: Enter choice: Guess choice N, number 5\nTug War winner score points\nYou win 5 points. winner",
+        "timed_out": false
+      },
+      "output_tokens": {
+        "found": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "missing": [],
+        "match_ratio": 1.0
+      },
+      "semantic": {
+        "passed": true,
+        "warnings": [],
+        "errors": [],
+        "risk_score": 0.0
+      },
+      "generation_model": "template_reference_v1",
+      "generation_error": null
+    }
+  ]
+}

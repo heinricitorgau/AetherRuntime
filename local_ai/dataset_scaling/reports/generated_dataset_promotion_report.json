@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-05-25T17:25:23+00:00",
+  "dataset_id": "generated_sft_candidate_v1",
+  "status": "promote_to_candidate_training",
+  "candidate_training_ready": true,
+  "decision": "promote_to_candidate_training",
+  "reasons": [
+    "validated generated solutions meet candidate-training threshold",
+    "generated benchmark acceptance and avg_score meet gate threshold",
+    "all topic acceptance rates are >= 70%",
+    "dataset card exists and dataset config is isolated=true"
+  ],
+  "metrics": {
+    "dataset_id": "generated_sft_candidate_v1",
+    "benchmark_id": "generated_c_tasks_v1",
+    "records": 40,
+    "generated_solution_accepted": 40,
+    "generated_solution_rejected": 0,
+    "generated_solution_acceptance_rate": 1.0,
+    "benchmark_tasks": 40,
+    "benchmark_accepted": 34,
+    "benchmark_rejected": 6,
+    "benchmark_acceptance_rate": 0.85,
+    "benchmark_avg_score": 82.5,
+    "min_topic_acceptance_rate": 0.8,
+    "weak_topics": [
+      {
+        "topic": "game_simulation",
+        "acceptance_rate": 0.8,
+        "low_score_count": 2,
+        "compile_failures": 2,
+        "runtime_failures": 4
+      },
+      {
+        "topic": "geometry",
+        "acceptance_rate": 0.8,
+        "low_score_count": 2,
+        "compile_failures": 2,
+        "runtime_failures": 4
+      },
+      {
+        "topic": "pattern_generation",
+        "acceptance_rate": 1.0,
+        "low_score_count": 0,
+        "compile_failures": 0,
+        "runtime_failures": 2
+      },
+      {
+        "topic": "series_calculation",
+        "acceptance_rate": 0.8,
+        "low_score_count": 2,
+        "compile_failures": 2,
+        "runtime_failures": 2
+      }
+    ],
+    "low_score_cases": 6,
+    "compile_verified_count": 40,
+    "runtime_verified_count": 40,
+    "semantic_verified_count": 40,
+    "dataset_card_exists": true,
+    "dataset_isolated": true,
+    "benchmark_dataset_isolated": true,
+    "dataset_config_path": "local_ai/dataset_scaling/reports/generated_sft_chatml.jsonl",
+    "benchmark_dataset_config_path": "local_ai/dataset_scaling/reports/generated_benchmark_cases.jsonl",
+    "benchmark_dataset_ref": "generated_benchmark_v1",
+    "task_spec_issue_count": 0,
+    "checker_audit_count": 0,
+    "reported_task_spec_issue_answer": "No confirmed task_spec_issue was detected among the six unaccepted cases. However, runtime token mismatches in geometry and pattern_generation should be audited before those exact tasks are used as promotion-quality evaluation."
+  },
+  "risks": [
+    "Benchmark has weak or noisy topic signals; review weak_topics before promotion-quality use.",
+    "Benchmark contains 6 low-score model outputs; do not train on failed outputs.",
+    "Candidate-training-ready does not mean default corpus; keep this data isolated until guarded experiments pass."
+  ],
+  "recommended_next_action": "Create a guarded, isolated LoRA experiment using generated_sft_candidate_v1; compare against base on both generated_c_tasks_v1 and the existing strict exam benchmark before any adapter promotion.",
+  "side_effects": "reports_only"
+}

@@ -54,5 +54,17 @@
       "alpha": 8,
       "dropout": 0.05
     }
+  },
+  "generated_candidate_v1": {
+    "model": "qwen3b_local",
+    "dataset": "generated_sft_candidate_v1",
+    "output_dir": "local_ai/sft/artifacts/generated_candidate_v1",
+    "epochs": 1,
+    "learning_rate": 0.00002,
+    "lora": {
+      "r": 4,
+      "alpha": 8,
+      "dropout": 0.05
+    }
   }
 }

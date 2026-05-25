@@ -1,0 +1,18 @@
+{
+  "total_records": 40,
+  "by_topic": {
+    "game_simulation": 10,
+    "geometry": 10,
+    "pattern_generation": 10,
+    "series_calculation": 10
+  },
+  "by_difficulty": {
+    "easy": 17,
+    "hard": 13,
+    "medium": 10
+  },
+  "compile_verified_count": 40,
+  "runtime_verified_count": 40,
+  "semantic_verified_count": 40,
+  "generated_at": "2026-05-23T20:32:03+00:00"
+}

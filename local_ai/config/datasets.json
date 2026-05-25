@@ -36,5 +36,19 @@
     "anti_regression_samples": true,
     "game_golden_guard": true,
     "mixed_round": true
+  },
+  "generated_sft_candidate_v1": {
+    "path": "local_ai/dataset_scaling/reports/generated_sft_chatml.jsonl",
+    "format": "chatml",
+    "type": "sft",
+    "isolated": true,
+    "note": "Isolated candidate — do not add to training_jobs without integration review"
+  },
+  "generated_benchmark_v1": {
+    "path": "local_ai/dataset_scaling/reports/generated_benchmark_cases.jsonl",
+    "format": "jsonl",
+    "type": "benchmark",
+    "isolated": true,
+    "note": "Isolated generated benchmark — use only with generated_c_tasks_v1 benchmark profile"
   }
 }

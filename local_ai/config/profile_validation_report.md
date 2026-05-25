@@ -1,6 +1,6 @@
 # Config Profile Validation Report
 
-Generated: `2026-05-23T18:06:04+00:00`
+Generated: `2026-05-25T17:29:01+00:00`
 
 Status: **PASS**
 
@@ -9,9 +9,9 @@ Status: **PASS**
 | Registry | Count |
 |----------|------:|
 | `models` | 1 |
-| `datasets` | 6 |
-| `benchmarks` | 2 |
-| `training_jobs` | 5 |
+| `datasets` | 8 |
+| `benchmarks` | 3 |
+| `training_jobs` | 6 |
 | `runtime_profiles` | 1 |
 
 ## Issues
