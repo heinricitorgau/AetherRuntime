@@ -1,5 +1,20 @@
 # research-claw-code
 
+## System Components
+
+- **Benchmark Infrastructure**: config-driven benchmark profiles with compile,
+  runtime, semantic, and keyword validation for coding tasks.
+- **Adapter Governance**: promotion policy, adapter registries, regression
+  analysis, and safe/no-change tracking for LoRA adapters.
+- **Retry Loop**: failure mining, curated repair targets, golden examples, and
+  guarded retry datasets.
+- **Dataset Scaling**: isolated generated task assets, validation reports, and
+  synthetic benchmark stress tests.
+- **Routing Layer**: task-specific adapter routing that defaults to base and
+  only considers approved adapter statuses.
+- **Release Snapshot System**: milestone snapshots and report indexes for
+  reproducible project state.
+
 This project is a local-first coding LLM evaluation and LoRA experimentation
 framework. It focuses on compile/runtime validated benchmarks, failure mining,
 retry training, and adapter governance for offline coding models.

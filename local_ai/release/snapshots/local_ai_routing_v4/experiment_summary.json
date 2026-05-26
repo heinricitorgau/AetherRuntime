@@ -1,0 +1,111 @@
+{
+  "experiment_count": 95,
+  "by_type": {
+    "compare_lora": 19,
+    "train": 17,
+    "benchmark": 58,
+    "golden_comparison": 1
+  },
+  "latest_runs": [
+    {
+      "run_id": "compare_lora_pattern_only_candidate_v1_20260526_185825",
+      "timestamp": "2026-05-26T10:58:25+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 85.0,
+      "accepted": 10,
+      "benchmark_profile": "pattern_only_benchmark_v1",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\pattern_only_candidate_v1"
+    },
+    {
+      "run_id": "compare_lora_pattern_only_candidate_v1_20260526_185624",
+      "timestamp": "2026-05-26T10:56:24+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 69.5,
+      "accepted": 32,
+      "benchmark_profile": "generated_c_tasks_v1",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\pattern_only_candidate_v1"
+    },
+    {
+      "run_id": "compare_lora_pattern_only_candidate_v1_20260526_184132",
+      "timestamp": "2026-05-26T10:41:32+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 64.8,
+      "accepted": 3,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\pattern_only_candidate_v1"
+    },
+    {
+      "run_id": "train_pattern_only_candidate_v1_20260526_103625",
+      "timestamp": "2026-05-26T10:36:25+00:00",
+      "run_type": "train",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": "qwen3b_local",
+      "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\pattern_only_candidate_v1"
+    },
+    {
+      "run_id": "compare_lora_generated_candidate_v1_20260526_025531",
+      "timestamp": "2026-05-25T18:55:31+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 69.5,
+      "accepted": 32,
+      "benchmark_profile": "generated_c_tasks_v1",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\generated_candidate_v1"
+    },
+    {
+      "run_id": "compare_lora_generated_candidate_v1_20260526_024455",
+      "timestamp": "2026-05-25T18:44:55+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 74.8,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\generated_candidate_v1"
+    },
+    {
+      "run_id": "train_generated_candidate_v1_20260525_184159",
+      "timestamp": "2026-05-25T18:41:59+00:00",
+      "run_type": "train",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": "qwen3b_local",
+      "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\generated_candidate_v1"
+    },
+    {
+      "run_id": "strict_20260523_205251",
+      "timestamp": "2026-05-23T21:32:57+00:00",
+      "run_type": "benchmark",
+      "avg_score": 82.5,
+      "accepted": 34,
+      "benchmark_profile": "generated_c_tasks_v1",
+      "model_profile": "qwen3b_local",
+      "adapter_path": null
+    },
+    {
+      "run_id": "compare_lora_retry_geometry_v3_guarded_20260524_021509",
+      "timestamp": "2026-05-23T18:15:09+00:00",
+      "run_type": "compare_lora",
+      "avg_score": 78.5,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "qwen3b_local",
+      "adapter_path": "local_ai\\sft\\artifacts\\retry_geometry_v3_guarded"
+    },
+    {
+      "run_id": "train_retry_geometry_v3_guarded_20260523_181220",
+      "timestamp": "2026-05-23T18:12:20+00:00",
+      "run_type": "train",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": "qwen3b_local",
+      "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\retry_geometry_v3_guarded"
+    }
+  ]
+}
