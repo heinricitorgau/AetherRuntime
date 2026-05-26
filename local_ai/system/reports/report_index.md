@@ -1,15 +1,23 @@
 # Report Index
 
-Generated: `2026-05-26T11:33:41+00:00`
-Reports indexed: 505
+Generated: `2026-05-26T11:47:18+00:00`
+Reports indexed: 507
 
 | Type | Modified | Path | Tags |
 |------|----------|------|------|
-| system | 2026-05-26T11:33:14+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\system_index.json` | system |
-| system | 2026-05-26T11:33:14+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\system_index.md` | system |
-| system | 2026-05-26T11:32:44+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\architecture_map.md` | system |
-| system | 2026-05-26T11:32:44+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\report_index.json` | system |
-| system | 2026-05-26T11:32:44+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\report_index.md` | system |
+| system | 2026-05-26T11:47:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\system_index.json` | system |
+| system | 2026-05-26T11:47:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\system_index.md` | system |
+| sft | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_registry_summary.json` | adapter, sft, summary |
+| sft | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_registry_summary.md` | adapter, sft, summary |
+| routing | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\c_exam_2025_strict_seeded_routing_plan.json` | routing |
+| routing | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\c_exam_2025_strict_seeded_routing_plan.md` | routing |
+| routing | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_plan.json` | routing |
+| routing | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_plan.md` | routing |
+| system | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\architecture_map.md` | system |
+| system | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\report_index.json` | system |
+| system | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\report_index.md` | system |
+| system | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\smoke_test_report.json` | system |
+| system | 2026-05-26T11:39:59+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\smoke_test_report.md` | system |
 | release_snapshot | 2026-05-26T11:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_routing_v4\benchmark_summary.json` | benchmark, release, snapshot, summary |
 | release_snapshot | 2026-05-26T11:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_routing_v4\config_summary.json` | release, snapshot, summary |
 | release_snapshot | 2026-05-26T11:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_routing_v4\experiment_summary.json` | release, snapshot, summary |
@@ -18,10 +26,6 @@ Reports indexed: 505
 | release_snapshot | 2026-05-26T11:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_routing_v4\snapshot.md` | release, snapshot |
 | routing | 2026-05-26T11:24:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\generated_c_tasks_v1_routing_plan.json` | routing |
 | routing | 2026-05-26T11:24:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\generated_c_tasks_v1_routing_plan.md` | routing |
-| routing | 2026-05-26T11:24:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_plan.json` | routing |
-| routing | 2026-05-26T11:24:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_plan.md` | routing |
-| routing | 2026-05-26T11:24:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\c_exam_2025_strict_seeded_routing_plan.json` | routing |
-| routing | 2026-05-26T11:24:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\c_exam_2025_strict_seeded_routing_plan.md` | routing |
 | sft | 2026-05-26T11:03:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\synthetic_training_summary.json` | adapter, sft, summary |
 | sft | 2026-05-26T11:03:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\synthetic_training_summary.md` | adapter, sft, summary |
 | sft | 2026-05-26T10:58:25+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\multi_benchmark_report.json` | adapter, benchmark, sft |
@@ -77,8 +81,6 @@ Reports indexed: 505
 | release_snapshot | 2026-05-23T18:58:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_retry_loop_v2\sft_summary.json` | release, snapshot, summary |
 | release_snapshot | 2026-05-23T18:58:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_retry_loop_v2\snapshot.json` | release, snapshot |
 | release_snapshot | 2026-05-23T18:58:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_retry_loop_v2\snapshot.md` | release, snapshot |
-| sft | 2026-05-23T18:58:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_registry_summary.json` | adapter, sft, summary |
-| sft | 2026-05-23T18:58:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_registry_summary.md` | adapter, sft, summary |
 | experiment | 2026-05-23T18:58:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\experiments\reports\leaderboard.json` | experiment |
 | experiment | 2026-05-23T18:58:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\experiments\reports\leaderboard.md` | experiment |
 | sft | 2026-05-23T18:25:58+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_promotion_report.json` | adapter, promotion, sft |

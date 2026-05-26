@@ -15,6 +15,35 @@
 - **Release Snapshot System**: milestone snapshots and report indexes for
   reproducible project state.
 
+## Quick Smoke Test
+
+Run the fast infrastructure smoke test before committing:
+
+```bash
+python local_ai/system/smoke_test.py
+```
+
+The smoke test validates configs, report indexes, adapter registry summaries,
+and routing plans without running models, training adapters, calling the proxy,
+or requiring CUDA/torch.
+
+## Unified CLI
+
+Use `local_ai/cli.py` as the main developer entry point for common workflows:
+
+```bash
+python local_ai/cli.py smoke
+python local_ai/cli.py validate-config
+python local_ai/cli.py adapters
+python local_ai/cli.py routing --benchmark c_exam_2025_strict_seeded
+python local_ai/cli.py system
+python local_ai/cli.py snapshot --name local_ai_routing_v4
+```
+
+Use `--dry-run` on any subcommand to print the underlying script command without
+executing it. The CLI does not include training commands; benchmark execution is
+available only through the explicit `benchmark` subcommand.
+
 This project is a local-first coding LLM evaluation and LoRA experimentation
 framework. It focuses on compile/runtime validated benchmarks, failure mining,
 retry training, and adapter governance for offline coding models.

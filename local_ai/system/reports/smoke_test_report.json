@@ -1,0 +1,148 @@
+{
+  "timestamp": "2026-05-26T11:47:18+00:00",
+  "status": "PASS",
+  "passed": 10,
+  "failed": 0,
+  "steps": [
+    {
+      "name": "config validation",
+      "kind": "command",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "local_ai/config/validate_profiles.py"
+      ],
+      "started_at": "2026-05-26T11:47:18+00:00",
+      "finished_at": "2026-05-26T11:47:18+00:00",
+      "stdout_tail": "Config profile validation: PASS\nReport: C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\config\\profile_validation_report.md\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "config loader self-test",
+      "kind": "command",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "local_ai/shared/config_loader.py",
+        "--self-test"
+      ],
+      "started_at": "2026-05-26T11:47:18+00:00",
+      "finished_at": "2026-05-26T11:47:18+00:00",
+      "stdout_tail": "config_loader self-test: PASS\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "system index",
+      "kind": "command",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "local_ai/system/system_index.py"
+      ],
+      "started_at": "2026-05-26T11:47:18+00:00",
+      "finished_at": "2026-05-26T11:47:18+00:00",
+      "stdout_tail": "[system-index] report >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.md\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "report index",
+      "kind": "command",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "local_ai/system/build_report_index.py"
+      ],
+      "started_at": "2026-05-26T11:47:18+00:00",
+      "finished_at": "2026-05-26T11:47:18+00:00",
+      "stdout_tail": "[report-index] reports=507 >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.md\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "architecture map",
+      "kind": "command",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "local_ai/system/build_architecture_map.py"
+      ],
+      "started_at": "2026-05-26T11:47:18+00:00",
+      "finished_at": "2026-05-26T11:47:18+00:00",
+      "stdout_tail": "[architecture-map] report >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\architecture_map.md\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "adapter registry summary",
+      "kind": "command",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "local_ai/sft/list_adapters.py"
+      ],
+      "started_at": "2026-05-26T11:47:18+00:00",
+      "finished_at": "2026-05-26T11:47:18+00:00",
+      "stdout_tail": "No default adapter selected.\n\nStatus         | Adapter                   | Avg Δ | Runtime Δ | Accepted Δ | Comparison Run                                         | Notes                                               \n---------------+---------------------------+-------+-----------+------------+--------------------------------------------------------+-----------------------------------------------------\nsafe_no_change | retry_geometry_v3_guarded | +0    | +0        | +0         | compare_lora_retry_geometry_v3_guarded_20260524_021509 | no material aggregate change and all guardrails held\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "routing classifier self-test",
+      "kind": "command",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "local_ai/routing/task_classifier.py",
+        "--self-test"
+      ],
+      "started_at": "2026-05-26T11:47:18+00:00",
+      "finished_at": "2026-05-26T11:47:18+00:00",
+      "stdout_tail": "[task-classifier] self-test PASS\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "routing plan dry evaluation",
+      "kind": "command",
+      "status": "PASS",
+      "returncode": 0,
+      "command": [
+        "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+        "local_ai/routing/evaluate_routing.py",
+        "--benchmark",
+        "c_exam_2025_strict_seeded"
+      ],
+      "started_at": "2026-05-26T11:47:18+00:00",
+      "finished_at": "2026-05-26T11:47:18+00:00",
+      "stdout_tail": "[evaluate-routing] benchmark=c_exam_2025_strict_seeded tasks=4 selected={'adapter': 1, 'base': 3}\n[evaluate-routing] report >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.md\n[evaluate-routing] latest >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.md\n",
+      "stderr_tail": ""
+    },
+    {
+      "name": "generated dataset promotion report exists",
+      "kind": "file_exists",
+      "status": "PASS",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_dataset_promotion_report.json",
+      "exists": true,
+      "checked_at": "2026-05-26T11:47:18+00:00"
+    },
+    {
+      "name": "synthetic training summary exists",
+      "kind": "file_exists",
+      "status": "PASS",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\synthetic_training_summary.json",
+      "exists": true,
+      "checked_at": "2026-05-26T11:47:18+00:00"
+    }
+  ],
+  "guardrails": {
+    "runs_models": false,
+    "trains_adapters": false,
+    "calls_proxy": false,
+    "requires_cuda_or_torch": false,
+    "modifies_benchmark_scoring": false,
+    "promotes_adapters": false
+  }
+}

@@ -1,6 +1,6 @@
 # System Index
 
-Generated: `2026-05-26T11:33:41+00:00`
+Generated: `2026-05-26T11:47:18+00:00`
 
 ## Status
 
@@ -19,4 +19,4 @@ Generated: `2026-05-26T11:33:41+00:00`
 
 - Latest release snapshot: `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_routing_v4`
 - Latest benchmark: `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\baseline_report.json`
-- Latest routing report: `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\generated_c_tasks_v1_routing_plan.md`
+- Latest routing report: `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\c_exam_2025_strict_seeded_routing_plan.md`
