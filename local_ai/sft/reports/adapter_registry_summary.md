@@ -1,6 +1,6 @@
 # Adapter Registry Summary
 
-Generated: `2026-05-26T11:47:26+00:00`
+Generated: `2026-05-26T11:53:58+00:00`
 
 No default adapter selected.
 

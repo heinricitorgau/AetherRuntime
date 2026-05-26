@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-05-26T11:53:48+00:00",
-  "success": true,
+  "status": "PASS",
+  "timestamp": "2026-05-26T11:49:23+00:00",
   "checked": {
     "models": 1,
     "datasets": 10,

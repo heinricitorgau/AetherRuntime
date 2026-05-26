@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-26T11:47:18+00:00",
+  "timestamp": "2026-05-26T11:53:58+00:00",
   "config_status": "PASS",
   "doctor_status": "available",
   "benchmark_status": "available",
@@ -21,10 +21,10 @@
     "rejected_adapters": [],
     "default_selected": false
   },
-  "snapshots_count": 4,
+  "snapshots_count": 5,
   "routing_enabled": true,
   "synthetic_training_status": "synthetic_training_route_frozen",
-  "latest_release_snapshot": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_routing_v4",
+  "latest_release_snapshot": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_cli_v7",
   "latest_benchmark": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\baseline_report.json",
   "latest_routing_report": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.md"
 }

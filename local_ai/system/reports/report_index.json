@@ -1,28 +1,10 @@
 {
-  "timestamp": "2026-05-26T11:47:18+00:00",
-  "count": 507,
+  "timestamp": "2026-05-26T11:53:58+00:00",
+  "count": 513,
   "reports": [
     {
-      "report_type": "system",
-      "latest_modified": "2026-05-26T11:47:18+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.json",
-      "tags": [
-        "system"
-      ],
-      "size_bytes": 1157
-    },
-    {
-      "report_type": "system",
-      "latest_modified": "2026-05-26T11:47:18+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.md",
-      "tags": [
-        "system"
-      ],
-      "size_bytes": 778
-    },
-    {
       "report_type": "sft",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:58+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.json",
       "tags": [
         "adapter",
@@ -33,7 +15,7 @@
     },
     {
       "report_type": "sft",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:58+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.md",
       "tags": [
         "adapter",
@@ -43,8 +25,26 @@
       "size_bytes": 444
     },
     {
+      "report_type": "system",
+      "latest_modified": "2026-05-26T11:53:58+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.json",
+      "tags": [
+        "system"
+      ],
+      "size_bytes": 1153
+    },
+    {
+      "report_type": "system",
+      "latest_modified": "2026-05-26T11:53:58+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.md",
+      "tags": [
+        "system"
+      ],
+      "size_bytes": 774
+    },
+    {
       "report_type": "routing",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:49+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.json",
       "tags": [
         "routing"
@@ -53,7 +53,7 @@
     },
     {
       "report_type": "routing",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:49+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.md",
       "tags": [
         "routing"
@@ -62,7 +62,7 @@
     },
     {
       "report_type": "routing",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:49+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.json",
       "tags": [
         "routing"
@@ -71,7 +71,7 @@
     },
     {
       "report_type": "routing",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:49+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.md",
       "tags": [
         "routing"
@@ -80,7 +80,7 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:49+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\architecture_map.md",
       "tags": [
         "system"
@@ -89,25 +89,25 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:49+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.json",
       "tags": [
         "system"
       ],
-      "size_bytes": 167292
+      "size_bytes": 170049
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:49+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.md",
       "tags": [
         "system"
       ],
-      "size_bytes": 90790
+      "size_bytes": 92247
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:49+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\smoke_test_report.json",
       "tags": [
         "system"
@@ -116,12 +116,77 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T11:39:59+00:00",
+      "latest_modified": "2026-05-26T11:53:49+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\smoke_test_report.md",
       "tags": [
         "system"
       ],
       "size_bytes": 2049
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-05-26T11:49:47+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_cli_v7\\benchmark_summary.json",
+      "tags": [
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 1002
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-05-26T11:49:47+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_cli_v7\\config_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 242
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-05-26T11:49:47+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_cli_v7\\experiment_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 4083
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-05-26T11:49:47+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_cli_v7\\sft_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-05-26T11:49:47+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_cli_v7\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1354
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-05-26T11:49:47+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_cli_v7\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2199
     },
     {
       "report_type": "release_snapshot",

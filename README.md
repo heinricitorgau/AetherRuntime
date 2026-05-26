@@ -1,5 +1,40 @@
 # research-claw-code
 
+## Quick Demo
+
+```bash
+python local_ai/cli.py smoke
+python local_ai/cli.py system
+python local_ai/cli.py adapters
+python local_ai/cli.py routing --benchmark c_exam_2025_strict_seeded
+```
+
+Key docs:
+
+- `local_ai/docs/DEMO_WALKTHROUGH.md`
+- `local_ai/docs/PORTFOLIO_SUMMARY.md`
+- `local_ai/system/reports/architecture_map.md`
+
+## Current Status
+
+- V1-V7 infrastructure is complete through unified CLI and smoke validation.
+- Latest release snapshot: `local_ai_cli_v7`.
+- Smoke test status: PASS.
+- `retry_geometry_v3_guarded` is retained as `safe_no_change`.
+- No default adapter is selected.
+- Synthetic LoRA training is frozen; generated datasets remain isolated
+  evaluation and stress-test assets.
+
+## Known Limitations
+
+- No adapter is promoted as default.
+- Synthetic SFT candidates caused regression despite validated reference
+  solutions.
+- Routing currently plans adapter selection; it does not execute model
+  inference.
+- Benchmark execution still requires the local model/proxy path when explicitly
+  invoked.
+
 ## System Components
 
 - **Benchmark Infrastructure**: config-driven benchmark profiles with compile,

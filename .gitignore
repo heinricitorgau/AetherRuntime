@@ -1,10 +1,12 @@
 __pycache__/
+.venv*
 archive/
 .omx/
 .clawd-agents/
 # Claude Code local artifacts
 .claude/settings.local.json
 .claude/sessions/
+.claude/worktrees/
 .claw/
 local_ai/runtime/
 
