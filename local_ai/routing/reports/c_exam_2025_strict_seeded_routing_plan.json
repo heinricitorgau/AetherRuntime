@@ -1,0 +1,114 @@
+{
+  "timestamp": "2026-05-26T11:24:18+00:00",
+  "benchmark": "c_exam_2025_strict_seeded",
+  "benchmark_profile": {
+    "dataset": "c_exam_test_2025",
+    "model": "qwen3b_local",
+    "prompt_profile": "strict_code_only_v2_seeded",
+    "scoring": {
+      "compile": true,
+      "runtime": true,
+      "semantic": true,
+      "keyword": true
+    }
+  },
+  "tasks": 4,
+  "routing_summary": {
+    "selected_counts": {
+      "adapter": 1,
+      "base": 3
+    },
+    "topic_counts": {
+      "game_simulation": 1,
+      "geometry": 1,
+      "pattern_generation": 1,
+      "series_calculation": 1
+    },
+    "selected_base_count": 3,
+    "selected_adapter_count": 1,
+    "selected_by_topic": {
+      "game_simulation": {
+        "base": 1
+      },
+      "geometry": {
+        "adapter": 1
+      },
+      "pattern_generation": {
+        "base": 1
+      },
+      "series_calculation": {
+        "base": 1
+      }
+    },
+    "selected_by_adapter": {
+      "base": 3,
+      "retry_geometry_v3_guarded": 1
+    },
+    "rejected_adapter_count": 0,
+    "ablation_adapter_count": 0,
+    "safe_adapter_count": 1,
+    "promoted_adapter_count": 0,
+    "usable_adapters": [
+      "retry_geometry_v3_guarded"
+    ],
+    "blocked_adapters": []
+  },
+  "decisions": [
+    {
+      "task_id": "2025_midterm_001",
+      "detected_topic": "series_calculation",
+      "selected": "base",
+      "selected_model_path": "base",
+      "selected_adapter": null,
+      "selected_adapter_status": null,
+      "fallback_reason": "policy uses base",
+      "policy_rule": {
+        "use": "base"
+      }
+    },
+    {
+      "task_id": "2025_midterm_002",
+      "detected_topic": "pattern_generation",
+      "selected": "base",
+      "selected_model_path": "base",
+      "selected_adapter": null,
+      "selected_adapter_status": null,
+      "fallback_reason": "policy uses base",
+      "policy_rule": {
+        "use": "base"
+      }
+    },
+    {
+      "task_id": "2025_midterm_003",
+      "detected_topic": "geometry",
+      "selected": "adapter",
+      "selected_model_path": "local_ai/sft/artifacts/retry_geometry_v3_guarded",
+      "selected_adapter": "retry_geometry_v3_guarded",
+      "selected_adapter_status": "safe_no_change",
+      "fallback_reason": "",
+      "policy_rule": {
+        "allowed_adapters": [
+          "retry_geometry_v3_guarded"
+        ],
+        "fallback": "base",
+        "only_if_status": [
+          "safe_no_change",
+          "promote"
+        ]
+      }
+    },
+    {
+      "task_id": "2025_midterm_004",
+      "detected_topic": "game_simulation",
+      "selected": "base",
+      "selected_model_path": "base",
+      "selected_adapter": null,
+      "selected_adapter_status": null,
+      "fallback_reason": "policy uses base",
+      "policy_rule": {
+        "use": "base"
+      }
+    }
+  ],
+  "side_effects": "routing_plan_only_no_model_execution"
+}
