@@ -1,11 +1,15 @@
 $ErrorActionPreference = "Stop"
 
 function Write-Info($message) {
-    Write-Host "  -> $message" -ForegroundColor Cyan
+    if ($script:ClawRunVerbose) {
+        Write-Host "  -> $message" -ForegroundColor Cyan
+    }
 }
 
 function Write-Ok($message) {
-    Write-Host "  ok $message" -ForegroundColor Green
+    if ($script:ClawRunVerbose) {
+        Write-Host "  ok $message" -ForegroundColor Green
+    }
 }
 
 function Write-Warn($message) {
@@ -18,8 +22,10 @@ function Write-Fail($message) {
 }
 
 function Write-Header($message) {
-    Write-Host ""
-    Write-Host "== $message ==" -ForegroundColor White
+    if ($script:ClawRunVerbose) {
+        Write-Host ""
+        Write-Host "== $message ==" -ForegroundColor White
+    }
 }
 
 function Find-BinaryPath($primary, $fallbacks) {
@@ -209,6 +215,7 @@ $systemPrompt = if ($env:CLAW_SYSTEM_PROMPT) { $env:CLAW_SYSTEM_PROMPT } else { 
 $promptProfile = if ($env:CLAW_PROMPT_PROFILE) { $env:CLAW_PROMPT_PROFILE } else { "default_zh_tw" }
 $promptDir = if ($env:CLAW_PROMPT_DIR) { $env:CLAW_PROMPT_DIR } else { Join-Path $scriptDir "prompts" }
 $strictOffline = Test-Truthy $env:CLAW_STRICT_OFFLINE
+$script:ClawRunVerbose = Test-Truthy $env:CLAW_RUN_VERBOSE
 $ragQuery = ""
 
 $smokeTest = $args -contains "--smoke-test"
@@ -256,7 +263,8 @@ $proxyProcess = $null
 $ollamaProcess = $null
 
 try {
-    Write-Host @"
+    if ($script:ClawRunVerbose) {
+        Write-Host @"
    _____ _                    _       ___  ___
   / ____| |                  | |     / _ \|_ _|
  | |    | | __ ___      __   | |    | | | || |
@@ -264,26 +272,29 @@ try {
  | |____| | (_| |\ V  V /    | |___ \___/|___|
   \_____|_|\__,_| \_/\_/     |_____| offline
 "@
-    Write-Host ""
-    if ($smokeTest) {
-        Write-Host "  running lightweight offline smoke test" -ForegroundColor Green
-        Write-Host "  force non-stream: enabled" -ForegroundColor Green
+        Write-Host ""
+        if ($smokeTest) {
+            Write-Host "  running lightweight offline smoke test" -ForegroundColor Green
+            Write-Host "  force non-stream: enabled" -ForegroundColor Green
+        }
+        elseif ($clawStreamTest) {
+            Write-Host "  running claw stream compatibility test (non-stream mode)" -ForegroundColor Green
+            Write-Host "  force non-stream: enabled for claw stream compatibility test" -ForegroundColor Green
+        }
+        elseif ($isDefaultModel) { Write-Host "  default smoke-test model selected ($model)" -ForegroundColor DarkGray }
+        Write-Host "  model: $model ($sizeClass)" -ForegroundColor Cyan
+        Write-Host "  timeout: $($env:CLAW_OLLAMA_TIMEOUT_SECONDS)s (first-token: $($env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS)s)" -ForegroundColor Cyan
+        Write-Host "  perms: $permissionMode" -ForegroundColor Cyan
+        Write-Host "  proxy: http://127.0.0.1:$proxyPort" -ForegroundColor Cyan
+        Write-Host "  ollama: $ollamaUrl" -ForegroundColor Cyan
+        Write-Host "  prompt: $promptProfile" -ForegroundColor Cyan
+        if ($strictOffline) {
+            Write-Host "  strict: on" -ForegroundColor Cyan
+        }
+        Write-Host ""
+    } else {
+        Write-Host "[claw-local] starting $model via proxy :$proxyPort" -ForegroundColor Cyan
     }
-    elseif ($clawStreamTest) {
-        Write-Host "  running claw stream compatibility test (non-stream mode)" -ForegroundColor Green
-        Write-Host "  force non-stream: enabled for claw stream compatibility test" -ForegroundColor Green
-    }
-    elseif ($isDefaultModel) { Write-Host "  default smoke-test model selected ($model)" -ForegroundColor DarkGray }
-    Write-Host "  model: $model ($sizeClass)" -ForegroundColor Cyan
-    Write-Host "  timeout: $($env:CLAW_OLLAMA_TIMEOUT_SECONDS)s (first-token: $($env:CLAW_FIRST_TOKEN_TIMEOUT_SECONDS)s)" -ForegroundColor Cyan
-    Write-Host "  perms: $permissionMode" -ForegroundColor Cyan
-    Write-Host "  proxy: http://127.0.0.1:$proxyPort" -ForegroundColor Cyan
-    Write-Host "  ollama: $ollamaUrl" -ForegroundColor Cyan
-    Write-Host "  prompt: $promptProfile" -ForegroundColor Cyan
-    if ($strictOffline) {
-        Write-Host "  strict: on" -ForegroundColor Cyan
-    }
-    Write-Host ""
 
     Write-Header "preflight"
     $pythonPath = Resolve-PythonPath $runtimeDir $strictOffline
@@ -434,10 +445,12 @@ try {
     Write-Ok "proxy ready in ${proxyReadyIn}s"
 
     Write-Header "launch"
-    Write-Host "ready local AI is up. Press Ctrl+C to exit." -ForegroundColor Green
-    Write-Host "  If no new output appears for 60 seconds, press Ctrl+C to stop." -ForegroundColor DarkGray
-    Write-Host "  Cleanup will stop proxy and bundled Ollama automatically." -ForegroundColor DarkGray
-    Write-Host ""
+    Write-Host "[claw-local] ready. Press Ctrl+C to exit." -ForegroundColor Green
+    if ($script:ClawRunVerbose) {
+        Write-Host "  If no new output appears for 60 seconds, press Ctrl+C to stop." -ForegroundColor DarkGray
+        Write-Host "  Cleanup will stop proxy and bundled Ollama automatically." -ForegroundColor DarkGray
+        Write-Host ""
+    }
 
     $env:ANTHROPIC_BASE_URL = "http://127.0.0.1:$proxyPort"
     $env:ANTHROPIC_API_KEY = "local-ollama"
@@ -459,7 +472,11 @@ try {
                 Write-Host ""
                 Write-Host "Assistant: $text" -ForegroundColor Green
                 Write-Host ""
-                Write-Ok "smoke-test passed: proxy sync API returned text"
+                if ($script:ClawRunVerbose) {
+                    Write-Ok "smoke-test passed: proxy sync API returned text"
+                } else {
+                    Write-Host "[claw-local] smoke test passed" -ForegroundColor Green
+                }
                 exit 0
             } else {
                 Write-Fail "smoke-test failed: empty text returned from proxy. Raw response: $($response | ConvertTo-Json -Compress)"
@@ -506,8 +523,10 @@ try {
     $exitCode = $clawProc.ExitCode
     exit $exitCode
 } finally {
-    Write-Host ""
-    Write-Host "[claw-local] shutting down..."
+    if ($script:ClawRunVerbose) {
+        Write-Host ""
+        Write-Host "[claw-local] shutting down..."
+    }
     if ($proxyProcess -and -not $proxyProcess.HasExited) {
         Stop-Process -Id $proxyProcess.Id -Force -ErrorAction SilentlyContinue
         Write-Info "proxy stopped"
@@ -516,8 +535,12 @@ try {
         Stop-Process -Id $ollamaProcess.Id -Force -ErrorAction SilentlyContinue
         Write-Info "ollama stopped"
     }
-    Write-Host ""
-    Write-Host "  Log hints (run after stopping):" -ForegroundColor DarkGray
-    Write-Host "    Get-Content .\local_ai\runtime\logs\proxy.err.log -Tail 120" -ForegroundColor DarkGray
-    Write-Host "    Get-Content .\local_ai\runtime\logs\proxy.out.log -Tail 40" -ForegroundColor DarkGray
+    if ($script:ClawRunVerbose) {
+        Write-Host ""
+        Write-Host "  Log hints (run after stopping):" -ForegroundColor DarkGray
+        Write-Host "    Get-Content .\local_ai\runtime\logs\proxy.err.log -Tail 120" -ForegroundColor DarkGray
+        Write-Host "    Get-Content .\local_ai\runtime\logs\proxy.out.log -Tail 40" -ForegroundColor DarkGray
+    } else {
+        Write-Host "[claw-local] stopped" -ForegroundColor DarkGray
+    }
 }

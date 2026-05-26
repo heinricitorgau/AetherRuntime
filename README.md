@@ -14,6 +14,8 @@ Key docs:
 
 - `local_ai/docs/DEMO_WALKTHROUGH.md`
 - `local_ai/docs/PORTFOLIO_SUMMARY.md`
+- `docs/PROMPT_ARCHITECTURE.md`
+- `docs/PROMPT_STATE_SUMMARY.md`
 - `local_ai/demo/reports/demo_index.md`
 - `local_ai/demo/reports/demo_summary.md`
 - `local_ai/system/reports/architecture_map.md`
@@ -33,7 +35,7 @@ routing, release snapshots, benchmark reports, and the architecture map.
 
 ## Current Status
 
-- V1-V7 infrastructure is complete through unified CLI and smoke validation.
+- V1-V8 infrastructure is complete through demo platform and prompt architecture.
 - Latest release snapshot: `local_ai_cli_v7`.
 - Smoke test status: PASS.
 - `retry_geometry_v3_guarded` is retained as `safe_no_change`.
@@ -65,6 +67,9 @@ routing, release snapshots, benchmark reports, and the architecture map.
   only considers approved adapter statuses.
 - **Release Snapshot System**: milestone snapshots and report indexes for
   reproducible project state.
+- **Demo Platform**: portfolio-ready demo index, summary, and walkthrough.
+- **Prompt Architecture**: agent prompts and guardrail state summaries for
+  stable future automation.
 
 ## Quick Smoke Test
 
@@ -94,6 +99,27 @@ python local_ai/cli.py snapshot --name local_ai_routing_v4
 Use `--dry-run` on any subcommand to print the underlying script command without
 executing it. The CLI does not include training commands; benchmark execution is
 available only through the explicit `benchmark` subcommand.
+
+## Prompt Architecture
+
+Agent and automation prompts should use the current governance state:
+
+- `docs/PROMPT_ARCHITECTURE.md`
+- `docs/PROMPT_STATE_SUMMARY.md`
+
+These prompts define the project as local-first AI experimentation
+infrastructure, not a chatbot product or production inference service. They
+record active guardrails, frozen routes, stable adapters, known limitations, and
+preferred future directions.
+
+Core guardrails:
+
+- Do not run unbounded synthetic LoRA training.
+- Do not automatically promote adapters.
+- Do not modify benchmark scoring as incidental work.
+- Do not change routing policy without validation and report updates.
+- Do not use benchmark failure outputs as training targets.
+- Do not merge unvalidated generated datasets into formal SFT data.
 
 This project is a local-first coding LLM evaluation and LoRA experimentation
 framework. It focuses on compile/runtime validated benchmarks, failure mining,
