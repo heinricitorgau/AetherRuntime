@@ -1,0 +1,1410 @@
+{
+  "timestamp": "2026-05-26T10:58:25+00:00",
+  "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+  "adapter": "local_ai\\sft\\artifacts\\pattern_only_candidate_v1",
+  "adapter_name": "pattern_only_candidate_v1",
+  "training_job": "pattern_only_candidate_v1",
+  "anti_regression_samples": false,
+  "metadata": {
+    "adapter": "pattern_only_candidate_v1",
+    "adapter_path": "local_ai\\sft\\artifacts\\pattern_only_candidate_v1",
+    "training_job": "pattern_only_candidate_v1",
+    "anti_regression_samples": false
+  },
+  "tasks": 10,
+  "verdict": "no_change",
+  "base": {
+    "accepted": 10,
+    "avg_score": 85.0,
+    "rates": {
+      "proxy_pass_rate": 1.0,
+      "truncation_pass_rate": 1.0,
+      "compile_pass_rate": 1.0,
+      "runtime_pass_rate": 1.0,
+      "semantic_pass_rate": 1.0,
+      "keyword_pass_rate": 0.0,
+      "accepted_rate": 1.0
+    }
+  },
+  "lora": {
+    "accepted": 10,
+    "avg_score": 85.0,
+    "rates": {
+      "proxy_pass_rate": 1.0,
+      "truncation_pass_rate": 1.0,
+      "compile_pass_rate": 1.0,
+      "runtime_pass_rate": 1.0,
+      "semantic_pass_rate": 1.0,
+      "keyword_pass_rate": 0.0,
+      "accepted_rate": 1.0
+    }
+  },
+  "deltas": {
+    "accepted": 0,
+    "avg_score": 0.0,
+    "compile_pass_rate": 0.0,
+    "runtime_pass_rate": 0.0,
+    "semantic_pass_rate": 0.0,
+    "keyword_pass_rate": 0.0
+  },
+  "base_results": [
+    {
+      "id": "synthetic_v3_pattern_generation_001",
+      "latency_ms": 3422,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_002",
+      "latency_ms": 2906,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i > 0; i--) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "4444",
+            "333",
+            "22"
+          ],
+          "missing": [],
+          "output_head": "4444\n333\n22\n1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_003",
+      "latency_ms": 5593,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    // Print upper half of the diamond\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    // Print lower half of the diamond\n    for (int i = n - 1; i >= 1; i--) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333\n4444\n55555\n4444\n333\n22\n1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_004",
+      "latency_ms": 6375,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    // Print top border\n    for (int i = 0; i < n; i++) {\n        printf(\"*\");\n    }\n    printf(\"\\n\");\n\n    // Print middle rows\n    for (int i = 1; i < n - 1; i++) {\n        printf(\"*\");\n        for (int j = 0; j < n - 2; j++) {\n            printf(\" \");\n        }\n        printf(\"*\\n\");\n    }\n\n    // Print bottom border\n    for (int i = 0; i < n; i++) {\n        printf(\"*\");\n    }\n    printf(\"\\n\");\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "***",
+            "*    *"
+          ],
+          "missing": [],
+          "output_head": "******\n*    *\n*    *\n*    *\n*    *\n******"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_005",
+      "latency_ms": 3172,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_006",
+      "latency_ms": 3312,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i > 0; i--) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "4444",
+            "333",
+            "22"
+          ],
+          "missing": [],
+          "output_head": "4444\n333\n22\n1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_007",
+      "latency_ms": 6046,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    // Print upper half of the diamond\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    // Print lower half of the diamond\n    for (int i = n - 1; i >= 1; i--) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333\n4444\n55555\n4444\n333\n22\n1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_008",
+      "latency_ms": 6438,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    // Print top border\n    for (int i = 0; i < n; i++) {\n        printf(\"*\");\n    }\n    printf(\"\\n\");\n\n    // Print middle rows\n    for (int i = 1; i < n - 1; i++) {\n        printf(\"*\");\n        for (int j = 0; j < n - 2; j++) {\n            printf(\" \");\n        }\n        printf(\"*\\n\");\n    }\n\n    // Print bottom border\n    for (int i = 0; i < n; i++) {\n        printf(\"*\");\n    }\n    printf(\"\\n\");\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "***",
+            "*    *"
+          ],
+          "missing": [],
+          "output_head": "******\n*    *\n*    *\n*    *\n*    *\n******"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_009",
+      "latency_ms": 3312,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_010",
+      "latency_ms": 4531,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i > 0; i--) {\n        for (int j = 0; j < n - i; j++) {\n            printf(\" \");\n        }\n        for (int k = 0; k < 2 * i - 1; k++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "4444",
+            "333",
+            "22"
+          ],
+          "missing": [],
+          "output_head": "4444444\n 33333\n  222\n   1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "base"
+    }
+  ],
+  "lora_results": [
+    {
+      "id": "synthetic_v3_pattern_generation_001",
+      "latency_ms": 3281,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_002",
+      "latency_ms": 3047,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i > 0; i--) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "4444",
+            "333",
+            "22"
+          ],
+          "missing": [],
+          "output_head": "4444\n333\n22\n1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_003",
+      "latency_ms": 6266,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    // Print upper half of the diamond\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    // Print lower half of the diamond\n    for (int i = n - 1; i >= 1; i--) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333\n4444\n55555\n4444\n333\n22\n1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_004",
+      "latency_ms": 6203,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    // Print top border\n    for (int i = 0; i < n; i++) {\n        printf(\"*\");\n    }\n    printf(\"\\n\");\n\n    // Print middle rows\n    for (int i = 1; i < n - 1; i++) {\n        printf(\"*\");\n        for (int j = 0; j < n - 2; j++) {\n            printf(\" \");\n        }\n        printf(\"*\\n\");\n    }\n\n    // Print bottom border\n    for (int i = 0; i < n; i++) {\n        printf(\"*\");\n    }\n    printf(\"\\n\");\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "***",
+            "*    *"
+          ],
+          "missing": [],
+          "output_head": "******\n*    *\n*    *\n*    *\n*    *\n******"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_005",
+      "latency_ms": 3016,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_006",
+      "latency_ms": 3093,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i > 0; i--) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "4444",
+            "333",
+            "22"
+          ],
+          "missing": [],
+          "output_head": "4444\n333\n22\n1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_007",
+      "latency_ms": 5781,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    // Print upper half of the diamond\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    // Print lower half of the diamond\n    for (int i = n - 1; i >= 1; i--) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333\n4444\n55555\n4444\n333\n22\n1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_008",
+      "latency_ms": 6171,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    // Print top border\n    for (int i = 0; i < n; i++) {\n        printf(\"*\");\n    }\n    printf(\"\\n\");\n\n    // Print middle rows\n    for (int i = 1; i < n - 1; i++) {\n        printf(\"*\");\n        for (int j = 0; j < n - 2; j++) {\n            printf(\" \");\n        }\n        printf(\"*\\n\");\n    }\n\n    // Print bottom border\n    for (int i = 0; i < n; i++) {\n        printf(\"*\");\n    }\n    printf(\"\\n\");\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "***",
+            "*    *"
+          ],
+          "missing": [],
+          "output_head": "******\n*    *\n*    *\n*    *\n*    *\n******"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_009",
+      "latency_ms": 3062,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n22\n333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_010",
+      "latency_ms": 4265,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i > 0; i--) {\n        for (int j = 0; j < n - i; j++) {\n            printf(\" \");\n        }\n        for (int k = 0; k < 2 * i - 1; k++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "direct-inference"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "complete"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "4444",
+            "333",
+            "22"
+          ],
+          "missing": [],
+          "output_head": "4444444\n 33333\n  222\n   1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": false,
+          "score": 0.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 85,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 0,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "model_label": "lora"
+    }
+  ]
+}

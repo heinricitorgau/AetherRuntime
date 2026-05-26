@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-05-25T18:41:27+00:00",
+  "timestamp": "2026-05-26T10:35:53+00:00",
   "success": true,
   "status": "success",
   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
-  "dataset": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_sft_chatml.jsonl",
+  "dataset": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\topics\\pattern_only_candidate_v1\\sft_chatml.jsonl",
   "limit": null,
   "epochs": 1,
-  "learning_rate": 2e-05,
-  "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\generated_candidate_v1",
+  "learning_rate": 1e-05,
+  "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\pattern_only_candidate_v1",
   "device": "cuda",
   "dtype": "torch.bfloat16",
-  "examples": 40,
+  "examples": 10,
   "lora_r": 4,
   "lora_alpha": 8,
   "lora_dropout": 0.05,
@@ -23,6 +23,6 @@
     "up_proj",
     "down_proj"
   ],
-  "train_loss": 2.120832,
-  "elapsed_s": 32.3
+  "train_loss": 2.206504,
+  "elapsed_s": 32.1
 }

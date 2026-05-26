@@ -1,0 +1,12 @@
+{
+  "name": "pattern_only_candidate_v1",
+  "topic": "pattern_generation",
+  "record_count": 10,
+  "benchmark_count": 10,
+  "source_dataset": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_sft_chatml.jsonl",
+  "source_benchmark": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_benchmark_cases.jsonl",
+  "sft_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\topics\\pattern_only_candidate_v1\\sft_chatml.jsonl",
+  "benchmark_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\topics\\pattern_only_candidate_v1\\benchmark_cases.jsonl",
+  "generated_at": "2026-05-26T10:29:44+00:00",
+  "isolation": true
+}

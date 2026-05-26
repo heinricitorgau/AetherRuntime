@@ -1,0 +1,562 @@
+{
+  "timestamp": "2026-05-26T11:03:18+00:00",
+  "status": "synthetic_training_route_frozen",
+  "route_frozen": true,
+  "synthetic_experiments_summary": {
+    "generated_corpus_records": 40,
+    "generated_benchmark": {
+      "run_id": "strict_20260523_205251",
+      "tasks": 40,
+      "accepted": 34,
+      "rejected": 6,
+      "avg_score": 82.5
+    },
+    "promotion_gate_decision": "promote_to_candidate_training",
+    "promotion_gate_note": "Candidate-training-ready was a permission to run guarded experiments, not evidence that synthetic SFT would improve LoRA behavior."
+  },
+  "adapters": [
+    {
+      "adapter": "generated_candidate_v1",
+      "status": "reject",
+      "decision": "regression",
+      "strict": {
+        "accepted_delta": 0,
+        "avg_delta": -3.7,
+        "runtime_delta": -0.25,
+        "largest_drop": {
+          "id": "2025_midterm_004",
+          "delta": -15.0
+        }
+      },
+      "generated": {
+        "accepted_delta": -1,
+        "avg_delta": -1.7,
+        "runtime_delta": -0.025,
+        "largest_drop": {
+          "id": "synthetic_v3_game_simulation_010",
+          "delta": -70.0
+        }
+      },
+      "pattern": "full generated corpus regressed strict and generated benchmarks; game_simulation dominated the damage"
+    },
+    {
+      "adapter": "pattern_only_candidate_v1",
+      "status": "reject",
+      "decision": "regression",
+      "strict": {
+        "accepted_delta": -1,
+        "avg_delta": -13.7,
+        "runtime_delta": -0.25,
+        "compile_delta": -0.25
+      },
+      "generated": {
+        "accepted_delta": -1,
+        "avg_delta": -1.7,
+        "runtime_delta": -0.025,
+        "compile_delta": -0.025
+      },
+      "pattern_only": {
+        "state": "no_change",
+        "accepted_delta": 0,
+        "avg_delta": 0.0,
+        "runtime_delta": 0.0
+      },
+      "pattern": "pattern-only target benchmark did not improve, while strict and generated benchmarks regressed"
+    }
+  ],
+  "regression_patterns": [
+    "generated_candidate_v1: strict regression and generated regression",
+    "pattern_only_candidate_v1: pattern_only benchmark no_change, but strict and generated benchmarks regress",
+    "Synthetic training signal did not transfer safely even when reference solutions were compile/runtime/semantic validated"
+  ],
+  "conclusion": {
+    "do_not_continue_synthetic_lora_training_for_now": true,
+    "keep_datasets_as_isolated_evaluation_assets": true,
+    "use_generated_benchmark_for_stress_testing_not_training": true,
+    "lesson": "validated synthetic solutions do not guarantee useful SFT signal"
+  },
+  "recommended_next_path": [
+    "Run a dataset audit before any further synthetic training.",
+    "Prioritize human-curated goldens for repair targets.",
+    "Explore task-specific adapter routing instead of one synthetic LoRA.",
+    "Improve prompt/profile behavior before more LoRA experiments.",
+    "Expand real exam-style verified corpus rather than synthetic-only corpus."
+  ],
+  "experiment_registry_matches": {
+    "generated_candidate_v1": [
+      {
+        "run_id": "compare_lora_generated_candidate_v1_20260526_025531",
+        "timestamp": "2026-05-25T18:55:31+00:00",
+        "run_type": "compare_lora",
+        "model_profile": "qwen3b_local",
+        "benchmark_profile": "generated_c_tasks_v1",
+        "training_job": null,
+        "adapter_path": "local_ai\\sft\\artifacts\\generated_candidate_v1",
+        "accepted": 32,
+        "avg_score": 69.5,
+        "compile_rate": 0.8,
+        "runtime_rate": 0.8,
+        "semantic_rate": 1.0,
+        "timeout_rate": 0.0,
+        "git_commit": "4d76aff",
+        "python_version": "3.12.10",
+        "cuda_available": true,
+        "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+        "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+        "dataset_profile": "generated_benchmark_v1",
+        "cases_run": 40,
+        "keyword_rate": 0.0,
+        "verdict": "regression",
+        "base": {
+          "accepted": 33,
+          "avg_score": 71.2,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 0.825,
+            "runtime_pass_rate": 0.825,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 0.0,
+            "accepted_rate": 0.825
+          }
+        },
+        "lora": {
+          "accepted": 32,
+          "avg_score": 69.5,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 0.8,
+            "runtime_pass_rate": 0.8,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 0.0,
+            "accepted_rate": 0.8
+          }
+        },
+        "deltas": {
+          "accepted": -1,
+          "avg_score": -1.7,
+          "compile_pass_rate": -0.025,
+          "runtime_pass_rate": -0.025,
+          "semantic_pass_rate": 0.0,
+          "keyword_pass_rate": 0.0
+        },
+        "linked_reports": {
+          "comparison_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_report.json",
+          "comparison_report_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_report.md",
+          "timestamped_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_20260526_025531.json",
+          "timestamped_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_20260526_025531.md"
+        },
+        "config_profiles": {
+          "benchmark": "generated_c_tasks_v1",
+          "model": "qwen3b_local",
+          "dataset": "generated_benchmark_v1"
+        },
+        "_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\compare_lora_generated_candidate_v1_20260526_025531.json"
+      },
+      {
+        "run_id": "compare_lora_generated_candidate_v1_20260526_024455",
+        "timestamp": "2026-05-25T18:44:55+00:00",
+        "run_type": "compare_lora",
+        "model_profile": "qwen3b_local",
+        "benchmark_profile": "c_exam_2025_strict_seeded",
+        "training_job": null,
+        "adapter_path": "local_ai\\sft\\artifacts\\generated_candidate_v1",
+        "accepted": 4,
+        "avg_score": 74.8,
+        "compile_rate": 1.0,
+        "runtime_rate": 0.5,
+        "semantic_rate": 1.0,
+        "timeout_rate": 0.25,
+        "git_commit": "4d76aff",
+        "python_version": "3.12.10",
+        "cuda_available": true,
+        "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+        "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+        "dataset_profile": "c_exam_test_2025",
+        "cases_run": 4,
+        "keyword_rate": 1.0,
+        "verdict": "regression",
+        "base": {
+          "accepted": 4,
+          "avg_score": 78.5,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 1.0,
+            "runtime_pass_rate": 0.75,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 1.0,
+            "accepted_rate": 1.0
+          }
+        },
+        "lora": {
+          "accepted": 4,
+          "avg_score": 74.8,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 1.0,
+            "runtime_pass_rate": 0.5,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 1.0,
+            "accepted_rate": 1.0
+          }
+        },
+        "deltas": {
+          "accepted": 0,
+          "avg_score": -3.7,
+          "compile_pass_rate": 0.0,
+          "runtime_pass_rate": -0.25,
+          "semantic_pass_rate": 0.0,
+          "keyword_pass_rate": 0.0
+        },
+        "linked_reports": {
+          "comparison_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_report.json",
+          "comparison_report_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_report.md",
+          "timestamped_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_20260526_024455.json",
+          "timestamped_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_20260526_024455.md"
+        },
+        "config_profiles": {
+          "benchmark": "c_exam_2025_strict_seeded",
+          "model": "qwen3b_local",
+          "dataset": "c_exam_test_2025"
+        },
+        "_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\compare_lora_generated_candidate_v1_20260526_024455.json"
+      },
+      {
+        "run_id": "train_generated_candidate_v1_20260525_184159",
+        "timestamp": "2026-05-25T18:41:59+00:00",
+        "run_type": "train",
+        "model_profile": "qwen3b_local",
+        "benchmark_profile": null,
+        "training_job": "generated_candidate_v1",
+        "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\generated_candidate_v1",
+        "accepted": null,
+        "avg_score": null,
+        "compile_rate": null,
+        "runtime_rate": null,
+        "semantic_rate": null,
+        "timeout_rate": null,
+        "git_commit": "4d76aff",
+        "python_version": "3.12.10",
+        "cuda_available": true,
+        "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+        "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+        "dataset_profile": "generated_sft_candidate_v1",
+        "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_sft_chatml.jsonl",
+        "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\generated_candidate_v1",
+        "epochs": 1,
+        "learning_rate": 2e-05,
+        "limit": null,
+        "train_loss": 2.120832,
+        "elapsed_s": 32.3,
+        "success": true,
+        "linked_reports": {
+          "train_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\train_report.json",
+          "adapter_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\generated_candidate_v1"
+        },
+        "config_profiles": {
+          "training_job": "generated_candidate_v1",
+          "model": "qwen3b_local",
+          "dataset": "generated_sft_candidate_v1"
+        },
+        "_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\train_generated_candidate_v1_20260525_184159.json"
+      }
+    ],
+    "pattern_only_candidate_v1": [
+      {
+        "run_id": "compare_lora_pattern_only_candidate_v1_20260526_185825",
+        "timestamp": "2026-05-26T10:58:25+00:00",
+        "run_type": "compare_lora",
+        "model_profile": "qwen3b_local",
+        "benchmark_profile": "pattern_only_benchmark_v1",
+        "training_job": null,
+        "adapter_path": "local_ai\\sft\\artifacts\\pattern_only_candidate_v1",
+        "accepted": 10,
+        "avg_score": 85.0,
+        "compile_rate": 1.0,
+        "runtime_rate": 1.0,
+        "semantic_rate": 1.0,
+        "timeout_rate": 0.0,
+        "git_commit": "106e393",
+        "python_version": "3.12.10",
+        "cuda_available": true,
+        "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+        "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+        "dataset_profile": "pattern_only_benchmark_v1",
+        "cases_run": 10,
+        "keyword_rate": 0.0,
+        "verdict": "no_change",
+        "base": {
+          "accepted": 10,
+          "avg_score": 85.0,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 1.0,
+            "runtime_pass_rate": 1.0,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 0.0,
+            "accepted_rate": 1.0
+          }
+        },
+        "lora": {
+          "accepted": 10,
+          "avg_score": 85.0,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 1.0,
+            "runtime_pass_rate": 1.0,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 0.0,
+            "accepted_rate": 1.0
+          }
+        },
+        "deltas": {
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_pass_rate": 0.0,
+          "runtime_pass_rate": 0.0,
+          "semantic_pass_rate": 0.0,
+          "keyword_pass_rate": 0.0
+        },
+        "linked_reports": {
+          "comparison_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\pattern_only_benchmark_v1\\comparison_report.json",
+          "comparison_report_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\pattern_only_benchmark_v1\\comparison_report.md",
+          "timestamped_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\pattern_only_benchmark_v1\\comparison_20260526_185825.json",
+          "timestamped_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\pattern_only_benchmark_v1\\comparison_20260526_185825.md"
+        },
+        "config_profiles": {
+          "benchmark": "pattern_only_benchmark_v1",
+          "model": "qwen3b_local",
+          "dataset": "pattern_only_benchmark_v1"
+        },
+        "_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\compare_lora_pattern_only_candidate_v1_20260526_185825.json"
+      },
+      {
+        "run_id": "compare_lora_pattern_only_candidate_v1_20260526_185624",
+        "timestamp": "2026-05-26T10:56:24+00:00",
+        "run_type": "compare_lora",
+        "model_profile": "qwen3b_local",
+        "benchmark_profile": "generated_c_tasks_v1",
+        "training_job": null,
+        "adapter_path": "local_ai\\sft\\artifacts\\pattern_only_candidate_v1",
+        "accepted": 32,
+        "avg_score": 69.5,
+        "compile_rate": 0.8,
+        "runtime_rate": 0.8,
+        "semantic_rate": 1.0,
+        "timeout_rate": 0.0,
+        "git_commit": "106e393",
+        "python_version": "3.12.10",
+        "cuda_available": true,
+        "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+        "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+        "dataset_profile": "generated_benchmark_v1",
+        "cases_run": 40,
+        "keyword_rate": 0.0,
+        "verdict": "regression",
+        "base": {
+          "accepted": 33,
+          "avg_score": 71.2,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 0.825,
+            "runtime_pass_rate": 0.825,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 0.0,
+            "accepted_rate": 0.825
+          }
+        },
+        "lora": {
+          "accepted": 32,
+          "avg_score": 69.5,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 0.8,
+            "runtime_pass_rate": 0.8,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 0.0,
+            "accepted_rate": 0.8
+          }
+        },
+        "deltas": {
+          "accepted": -1,
+          "avg_score": -1.7,
+          "compile_pass_rate": -0.025,
+          "runtime_pass_rate": -0.025,
+          "semantic_pass_rate": 0.0,
+          "keyword_pass_rate": 0.0
+        },
+        "linked_reports": {
+          "comparison_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_report.json",
+          "comparison_report_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_report.md",
+          "timestamped_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_20260526_185624.json",
+          "timestamped_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_20260526_185624.md"
+        },
+        "config_profiles": {
+          "benchmark": "generated_c_tasks_v1",
+          "model": "qwen3b_local",
+          "dataset": "generated_benchmark_v1"
+        },
+        "_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\compare_lora_pattern_only_candidate_v1_20260526_185624.json"
+      },
+      {
+        "run_id": "compare_lora_pattern_only_candidate_v1_20260526_184132",
+        "timestamp": "2026-05-26T10:41:32+00:00",
+        "run_type": "compare_lora",
+        "model_profile": "qwen3b_local",
+        "benchmark_profile": "c_exam_2025_strict_seeded",
+        "training_job": null,
+        "adapter_path": "local_ai\\sft\\artifacts\\pattern_only_candidate_v1",
+        "accepted": 3,
+        "avg_score": 64.8,
+        "compile_rate": 0.75,
+        "runtime_rate": 0.5,
+        "semantic_rate": 1.0,
+        "timeout_rate": 0.0,
+        "git_commit": "106e393",
+        "python_version": "3.12.10",
+        "cuda_available": true,
+        "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+        "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+        "dataset_profile": "c_exam_test_2025",
+        "cases_run": 4,
+        "keyword_rate": 1.0,
+        "verdict": "regression",
+        "base": {
+          "accepted": 4,
+          "avg_score": 78.5,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 1.0,
+            "runtime_pass_rate": 0.75,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 1.0,
+            "accepted_rate": 1.0
+          }
+        },
+        "lora": {
+          "accepted": 3,
+          "avg_score": 64.8,
+          "rates": {
+            "proxy_pass_rate": 1.0,
+            "truncation_pass_rate": 1.0,
+            "compile_pass_rate": 0.75,
+            "runtime_pass_rate": 0.5,
+            "semantic_pass_rate": 1.0,
+            "keyword_pass_rate": 1.0,
+            "accepted_rate": 0.75
+          }
+        },
+        "deltas": {
+          "accepted": -1,
+          "avg_score": -13.7,
+          "compile_pass_rate": -0.25,
+          "runtime_pass_rate": -0.25,
+          "semantic_pass_rate": 0.0,
+          "keyword_pass_rate": 0.0
+        },
+        "linked_reports": {
+          "comparison_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_report.json",
+          "comparison_report_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_report.md",
+          "timestamped_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_20260526_184132.json",
+          "timestamped_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_20260526_184132.md"
+        },
+        "config_profiles": {
+          "benchmark": "c_exam_2025_strict_seeded",
+          "model": "qwen3b_local",
+          "dataset": "c_exam_test_2025"
+        },
+        "_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\compare_lora_pattern_only_candidate_v1_20260526_184132.json"
+      },
+      {
+        "run_id": "train_pattern_only_candidate_v1_20260526_103625",
+        "timestamp": "2026-05-26T10:36:25+00:00",
+        "run_type": "train",
+        "model_profile": "qwen3b_local",
+        "benchmark_profile": null,
+        "training_job": "pattern_only_candidate_v1",
+        "adapter_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\pattern_only_candidate_v1",
+        "accepted": null,
+        "avg_score": null,
+        "compile_rate": null,
+        "runtime_rate": null,
+        "semantic_rate": null,
+        "timeout_rate": null,
+        "git_commit": "106e393",
+        "python_version": "3.12.10",
+        "cuda_available": true,
+        "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+        "python_executable": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\.venv-sft\\Scripts\\python.exe",
+        "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+        "dataset_profile": "pattern_only_candidate_v1",
+        "dataset_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\topics\\pattern_only_candidate_v1\\sft_chatml.jsonl",
+        "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\pattern_only_candidate_v1",
+        "epochs": 1,
+        "learning_rate": 1e-05,
+        "limit": null,
+        "train_loss": 2.206504,
+        "elapsed_s": 32.1,
+        "success": true,
+        "linked_reports": {
+          "train_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\train_report.json",
+          "adapter_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\artifacts\\pattern_only_candidate_v1"
+        },
+        "config_profiles": {
+          "training_job": "pattern_only_candidate_v1",
+          "model": "qwen3b_local",
+          "dataset": "pattern_only_candidate_v1"
+        },
+        "_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\experiments\\registry\\train_pattern_only_candidate_v1_20260526_103625.json"
+      }
+    ]
+  },
+  "adapter_registry_snapshot": {
+    "default_adapter.json": {
+      "missing": true
+    },
+    "promoted_adapters.json": {
+      "missing": true
+    },
+    "safe_adapters.json": {
+      "adapters": [
+        {
+          "adapter_path": "local_ai/sft/artifacts/retry_geometry_v3_guarded",
+          "status": "safe_no_change",
+          "comparison_run_id": "compare_lora_retry_geometry_v3_guarded_20260524_021509",
+          "avg_delta": 0.0,
+          "accepted_delta": 0,
+          "runtime_delta": 0.0,
+          "notes": "no material aggregate change and all guardrails held",
+          "timestamp": "2026-05-23T18:25:57+00:00"
+        }
+      ],
+      "updated_at": "2026-05-23T18:25:57+00:00"
+    },
+    "ablation_adapters.json": {
+      "missing": true
+    },
+    "rejected_adapters.json": {
+      "missing": true
+    }
+  },
+  "inputs": {
+    "multi_benchmark_report": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_report.json",
+    "generated_candidate_regression_analysis": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\generated_candidate_regression_analysis.json",
+    "generated_benchmark_analysis": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_benchmark_analysis.json",
+    "promotion_gate": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_dataset_promotion_report.json"
+  },
+  "side_effects": "reports_and_docs_only"
+}

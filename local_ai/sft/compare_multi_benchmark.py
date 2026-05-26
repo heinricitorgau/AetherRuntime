@@ -4,6 +4,7 @@
 This wrapper compares the same adapter on:
 1. c_exam_2025_strict_seeded
 2. generated_c_tasks_v1
+3. optional --extra-benchmark profiles
 
 It writes an aggregate report only. It does not promote adapters, modify the
 production SFT corpus, change benchmark scoring, or overwrite adapter artifacts.
@@ -150,7 +151,29 @@ def _decision(strict_state: str, generated_state: str) -> tuple[str, list[str]]:
     return "no_effect", ["no regression detected, but generated benchmark did not improve"]
 
 
-def compare_multi(adapter: Path, strict_benchmark: str, generated_benchmark: str) -> dict[str, Any]:
+def _apply_extra_guardrail(
+    status: str,
+    reasons: list[str],
+    extra_states: dict[str, str],
+) -> tuple[str, list[str]]:
+    regressions = sorted(name for name, state in extra_states.items() if state == "regression")
+    if regressions:
+        return "regression", reasons + [
+            "extra benchmark regression: " + ", ".join(regressions)
+        ]
+    if extra_states:
+        return status, reasons + [
+            "extra benchmarks have no regression: " + ", ".join(sorted(extra_states))
+        ]
+    return status, reasons
+
+
+def compare_multi(
+    adapter: Path,
+    strict_benchmark: str,
+    generated_benchmark: str,
+    extra_benchmarks: list[str] | None = None,
+) -> dict[str, Any]:
     if not adapter.exists():
         raise FileNotFoundError(f"adapter not found: {adapter}")
 
@@ -168,13 +191,34 @@ def compare_multi(adapter: Path, strict_benchmark: str, generated_benchmark: str
     generated_state = _benchmark_state(generated)
     status, reasons = _decision(strict_state, generated_state)
 
+    extra_summaries: list[dict[str, Any]] = []
+    extra_states: dict[str, str] = {}
+    raw_report_paths = {
+        strict_benchmark: strict.get("report_path"),
+        generated_benchmark: generated.get("report_path"),
+    }
+    for benchmark in extra_benchmarks or []:
+        extra_out = _RUN_DIR / benchmark
+        extra_comparison = _run_compare(adapter, benchmark, extra_out)
+        summary = _metric_summary(extra_comparison)
+        summary["benchmark"] = benchmark
+        state = _benchmark_state(summary)
+        summary["state"] = state
+        extra_summaries.append(summary)
+        extra_states[benchmark] = state
+        raw_report_paths[benchmark] = summary.get("report_path")
+
+    status, reasons = _apply_extra_guardrail(status, reasons, extra_states)
+
     return {
         "timestamp": _now(),
         "adapter": str(adapter),
         "strict_benchmark": strict,
         "generated_benchmark": generated,
+        "extra_benchmarks": extra_summaries,
         "strict_state": strict_state,
         "generated_state": generated_state,
+        "extra_states": extra_states,
         "decision": status,
         "reasons": reasons,
         "guardrails": {
@@ -184,10 +228,7 @@ def compare_multi(adapter: Path, strict_benchmark: str, generated_benchmark: str
             "auto_promotes_adapter": False,
             "overwrites_existing_adapters": False,
         },
-        "raw_report_paths": {
-            strict_benchmark: strict.get("report_path"),
-            generated_benchmark: generated.get("report_path"),
-        },
+        "raw_report_paths": raw_report_paths,
     }
 
 
@@ -219,12 +260,17 @@ def _markdown(report: dict[str, Any]) -> str:
         f"| {generated['benchmark']} | {report['generated_state']} | {generated['accepted_delta']} | "
         f"{generated['avg_delta']} | {generated['runtime_delta']} | {generated['compile_delta']} | {generated['semantic_delta']} |"
     )
+    for row in report.get("extra_benchmarks", []):
+        a(
+            f"| {row['benchmark']} | {row['state']} | {row['accepted_delta']} | "
+            f"{row['avg_delta']} | {row['runtime_delta']} | {row['compile_delta']} | {row['semantic_delta']} |"
+        )
     a("")
     a("## Absolute Metrics")
     a("")
     a("| Benchmark | Base Accepted | LoRA Accepted | Base Avg | LoRA Avg | Base Runtime | LoRA Runtime |")
     a("|-----------|--------------:|--------------:|---------:|---------:|-------------:|-------------:|")
-    for row in (strict, generated):
+    for row in [strict, generated, *report.get("extra_benchmarks", [])]:
         a(
             f"| {row['benchmark']} | {row['accepted_base']}/{row['tasks']} | "
             f"{row['accepted_lora']}/{row['tasks']} | {row['avg_base']} | {row['avg_lora']} | "
@@ -257,13 +303,24 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--adapter", required=True, help="Path to LoRA adapter directory")
     parser.add_argument("--strict-benchmark", default=_STRICT_BENCHMARK)
     parser.add_argument("--generated-benchmark", default=_GENERATED_BENCHMARK)
+    parser.add_argument(
+        "--extra-benchmark",
+        action="append",
+        default=[],
+        help="Additional benchmark profile to compare; may be supplied multiple times",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = _parse_args()
     try:
-        report = compare_multi(Path(args.adapter), args.strict_benchmark, args.generated_benchmark)
+        report = compare_multi(
+            Path(args.adapter),
+            args.strict_benchmark,
+            args.generated_benchmark,
+            args.extra_benchmark,
+        )
     except Exception as exc:
         print(f"[multi-benchmark] ERROR: {exc}", file=sys.stderr)
         sys.exit(1)
@@ -272,7 +329,8 @@ def main() -> None:
     print(
         "[multi-benchmark] "
         f"decision={report['decision']} "
-        f"strict={report['strict_state']} generated={report['generated_state']}"
+        f"strict={report['strict_state']} generated={report['generated_state']} "
+        f"extra={report.get('extra_states', {})}"
     )
     print(f"[multi-benchmark] report >> {_REPORT_MD}")
 

@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-25T18:55:31+00:00",
-  "adapter": "local_ai\\sft\\artifacts\\generated_candidate_v1",
+  "timestamp": "2026-05-26T10:58:25+00:00",
+  "adapter": "local_ai\\sft\\artifacts\\pattern_only_candidate_v1",
   "strict_benchmark": {
     "benchmark": "c_exam_2025_strict_seeded",
     "tasks": 4,
     "verdict": "regression",
     "accepted_base": 4,
-    "accepted_lora": 4,
-    "accepted_delta": 0,
+    "accepted_lora": 3,
+    "accepted_delta": -1,
     "avg_base": 78.5,
-    "avg_lora": 74.8,
-    "avg_delta": -3.7,
+    "avg_lora": 64.8,
+    "avg_delta": -13.7,
     "runtime_base": 0.75,
     "runtime_lora": 0.5,
     "runtime_delta": -0.25,
-    "compile_delta": 0.0,
+    "compile_delta": -0.25,
     "semantic_delta": 0.0,
     "keyword_delta": 0.0,
     "report_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_report.json"
@@ -37,11 +37,36 @@
     "keyword_delta": 0.0,
     "report_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_report.json"
   },
+  "extra_benchmarks": [
+    {
+      "benchmark": "pattern_only_benchmark_v1",
+      "tasks": 10,
+      "verdict": "no_change",
+      "accepted_base": 10,
+      "accepted_lora": 10,
+      "accepted_delta": 0,
+      "avg_base": 85.0,
+      "avg_lora": 85.0,
+      "avg_delta": 0.0,
+      "runtime_base": 1.0,
+      "runtime_lora": 1.0,
+      "runtime_delta": 0.0,
+      "compile_delta": 0.0,
+      "semantic_delta": 0.0,
+      "keyword_delta": 0.0,
+      "report_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\pattern_only_benchmark_v1\\comparison_report.json",
+      "state": "no_change"
+    }
+  ],
   "strict_state": "regression",
   "generated_state": "regression",
+  "extra_states": {
+    "pattern_only_benchmark_v1": "no_change"
+  },
   "decision": "regression",
   "reasons": [
-    "both strict and generated benchmarks regress"
+    "both strict and generated benchmarks regress",
+    "extra benchmarks have no regression: pattern_only_benchmark_v1"
   ],
   "guardrails": {
     "promotion_to_default": false,
@@ -52,6 +77,7 @@
   },
   "raw_report_paths": {
     "c_exam_2025_strict_seeded": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\c_exam_2025_strict_seeded\\comparison_report.json",
-    "generated_c_tasks_v1": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_report.json"
+    "generated_c_tasks_v1": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\generated_c_tasks_v1\\comparison_report.json",
+    "pattern_only_benchmark_v1": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\multi_benchmark_runs\\pattern_only_benchmark_v1\\comparison_report.json"
   }
 }

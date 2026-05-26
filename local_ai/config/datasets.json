@@ -50,5 +50,17 @@
     "type": "benchmark",
     "isolated": true,
     "note": "Isolated generated benchmark — use only with generated_c_tasks_v1 benchmark profile"
+  },
+  "pattern_only_candidate_v1": {
+    "path": "local_ai/dataset_scaling/topics/pattern_only_candidate_v1/sft_chatml.jsonl",
+    "format": "chatml",
+    "type": "sft",
+    "isolated": true
+  },
+  "pattern_only_benchmark_v1": {
+    "path": "local_ai/dataset_scaling/topics/pattern_only_candidate_v1/benchmark_cases.jsonl",
+    "format": "jsonl",
+    "type": "benchmark",
+    "isolated": true
   }
 }
