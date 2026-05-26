@@ -7,13 +7,29 @@ python local_ai/cli.py smoke
 python local_ai/cli.py system
 python local_ai/cli.py adapters
 python local_ai/cli.py routing --benchmark c_exam_2025_strict_seeded
+python local_ai/demo/demo_walkthrough.py
 ```
 
 Key docs:
 
 - `local_ai/docs/DEMO_WALKTHROUGH.md`
 - `local_ai/docs/PORTFOLIO_SUMMARY.md`
+- `local_ai/demo/reports/demo_index.md`
+- `local_ai/demo/reports/demo_summary.md`
 - `local_ai/system/reports/architecture_map.md`
+
+## Demo Walkthrough
+
+Use the V8 demo platform to present the project without running models:
+
+```bash
+python local_ai/demo/build_demo_index.py
+python local_ai/demo/generate_demo_summary.py
+python local_ai/demo/demo_walkthrough.py
+```
+
+The demo flow highlights smoke validation, adapter governance, task-specific
+routing, release snapshots, benchmark reports, and the architecture map.
 
 ## Current Status
 
