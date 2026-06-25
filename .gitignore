@@ -25,3 +25,4 @@ local_ai/sft/artifacts/
 *.gguf
 *.safetensors
 *.bin
+.claude/worktrees/
