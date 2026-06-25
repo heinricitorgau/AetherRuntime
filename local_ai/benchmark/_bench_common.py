@@ -91,7 +91,8 @@ def call_proxy(
     timeout: int,
     temperature: float = 0.0,
     skip_repair: bool = False,
-) -> tuple[str, str | None, int]:
+    return_metadata: bool = False,
+) -> tuple[str, str | None, int] | tuple[str, str | None, int, dict]:
     """Return (text, error_message, latency_ms). error_message is None on success."""
     payload = json.dumps({
         "model":       model,
@@ -100,6 +101,7 @@ def call_proxy(
         "system":      system,
         "messages":    [{"role": "user", "content": user}],
         "claw_skip_repair": skip_repair,
+        "claw_return_model_metadata": return_metadata,
     }).encode("utf-8")
 
     req = urllib.request.Request(
@@ -115,12 +117,44 @@ def call_proxy(
         latency_ms = int((time.monotonic() - t0) * 1000)
         parts = body.get("content", [])
         text = "".join(b.get("text", "") for b in parts if b.get("type") == "text")
+        metadata = {
+            "requested_model": body.get("requested_model") or model,
+            "effective_model": body.get("effective_model") or body.get("model"),
+            "response_model": body.get("model"),
+            "configured_model": body.get("configured_model"),
+        }
+        if return_metadata:
+            return text.strip(), None, latency_ms, metadata
         return text.strip(), None, latency_ms
     except urllib.error.HTTPError as exc:
+        metadata = {
+            "requested_model": model,
+            "effective_model": None,
+            "response_model": None,
+            "configured_model": None,
+        }
+        if return_metadata:
+            return "", f"proxy HTTP error: HTTP {exc.code} {exc.reason}", 0, metadata
         return "", f"proxy HTTP error: HTTP {exc.code} {exc.reason}", 0
     except urllib.error.URLError as exc:
+        metadata = {
+            "requested_model": model,
+            "effective_model": None,
+            "response_model": None,
+            "configured_model": None,
+        }
+        if return_metadata:
+            return "", f"proxy unreachable: {exc}", 0, metadata
         return "", f"proxy unreachable: {exc}", 0
     except Exception as exc:
+        metadata = {
+            "requested_model": model,
+            "effective_model": None,
+            "response_model": None,
+            "configured_model": None,
+        }
+        if return_metadata:
+            return "", str(exc)[:200], 0, metadata
         return "", str(exc)[:200], 0
 
 

@@ -1187,6 +1187,8 @@ class ProxyHandler(BaseHTTPRequestHandler):
             body = json.dumps(
                 {
                     "model": self.local_model,
+                    "configured_model": self.local_model,
+                    "configured_ollama_model": self.ollama_model,
                     "full_timeout": self.ollama_timeout,
                     "first_token_timeout": self.first_token_timeout,
                     "configured_full_timeout": self.ollama_timeout,
@@ -1219,6 +1221,11 @@ class ProxyHandler(BaseHTTPRequestHandler):
             self._send_json_error(404, f"未知的端點：{self.path}")
 
     def _handle_messages(self, body: dict) -> None:
+        configured_model = self.ollama_model
+        requested_model = str(body.get("model") or "").strip()
+        effective_model = requested_model or configured_model
+        body["model"] = effective_model
+
         if os.environ.get("CLAW_DISABLE_TOOLS", "") == "1":
             body.pop("tools", None)
             body.pop("tool_choice", None)
@@ -1254,7 +1261,7 @@ class ProxyHandler(BaseHTTPRequestHandler):
             if _smoke_mode:
                 effective_max_tokens = min(requested_max_tokens, _SMOKE_MAX_TOKENS)
             else:
-                size_class = _model_size_class(self.ollama_model)
+                size_class = _model_size_class(effective_model)
                 effective_max_tokens = _get_effective_max_tokens(size_class, requested_max_tokens)
             if effective_max_tokens < requested_max_tokens:
                 sys.stderr.write(
@@ -1277,8 +1284,14 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 f" first_user={_first_user!r}"
                 f" ollama_url={self.ollama_url} ollama_model={self.ollama_model}\n"
             )
+        sys.stderr.write(
+            "[proxy-model] "
+            f"configured_model={configured_model} "
+            f"requested_model={requested_model or '(none)'} "
+            f"effective_model={effective_model}\n"
+        )
         latest_user_text = _latest_user_text(body)
-        oai_payload = anthropic_to_openai(body, self.ollama_model, self.default_system_prompt)
+        oai_payload = anthropic_to_openai(body, effective_model, self.default_system_prompt)
         requested_language = _detect_programming_language(latest_user_text)
         skip_repair = bool(body.get("claw_skip_repair", False))
         needs_c_repair = (requested_language == "c") and not self.smoke_test and not skip_repair
@@ -1288,17 +1301,19 @@ class ProxyHandler(BaseHTTPRequestHandler):
         try:
             if streaming:
                 self._stream_response(
-                    body.get("model", self.local_model),
+                    effective_model,
                     oai_payload,
                     needs_c_repair,
                     latest_user_text,
                 )
             else:
                 self._sync_response(
-                    body.get("model", self.local_model),
+                    effective_model,
                     oai_payload,
                     needs_c_repair,
                     latest_user_text,
+                    configured_model,
+                    requested_model or effective_model,
                 )
         except URLError as exc:
             reason = getattr(exc, "reason", exc)
@@ -1351,11 +1366,16 @@ class ProxyHandler(BaseHTTPRequestHandler):
         oai_payload: dict,
         needs_c_repair: bool,
         user_text: str,
+        configured_model: str | None = None,
+        requested_model: str | None = None,
     ) -> None:
         oai_data = _request_ollama_completion(oai_payload, self.ollama_url, self.ollama_timeout)
         if needs_c_repair:
             oai_data = _repair_c_response(user_text, oai_payload, oai_data, self.ollama_url, self.ollama_timeout)
         result = openai_to_anthropic(oai_data, model)
+        result["configured_model"] = configured_model or self.ollama_model
+        result["requested_model"] = requested_model or model
+        result["effective_model"] = model
         content_text = (result.get("content") or [{}])[0].get("text", "")
         if _DEBUG:
             sys.stderr.write(f"[proxy:debug] final Anthropic response (first 500): {json.dumps(result)[:500]}\n")

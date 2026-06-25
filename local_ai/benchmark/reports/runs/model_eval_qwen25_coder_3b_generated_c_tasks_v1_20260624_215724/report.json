@@ -1,0 +1,2962 @@
+{
+  "cases_run": 40,
+  "accepted": 38,
+  "average_score": 95.2,
+  "min_score": 30,
+  "max_score": 100,
+  "rates": {
+    "proxy_pass_rate": 1.0,
+    "truncation_pass_rate": 1.0,
+    "compile_pass_rate": 0.95,
+    "runtime_pass_rate": 0.925,
+    "semantic_pass_rate": 1.0,
+    "keyword_pass_rate": 1.0,
+    "accepted_rate": 0.95
+  },
+  "score_distribution": {
+    "90-100": 37,
+    "70-89": 1,
+    "60-69": 0,
+    "0-59": 2
+  },
+  "by_topic": {
+    "game_simulation": {
+      "count": 10,
+      "accepted": 8,
+      "avg_score": 81.0
+    },
+    "geometry": {
+      "count": 10,
+      "accepted": 10,
+      "avg_score": 100.0
+    },
+    "pattern_generation": {
+      "count": 10,
+      "accepted": 10,
+      "avg_score": 100.0
+    },
+    "series_calculation": {
+      "count": 10,
+      "accepted": 10,
+      "avg_score": 100.0
+    }
+  },
+  "by_difficulty": {
+    "easy": {
+      "count": 17,
+      "accepted": 15,
+      "avg_score": 90.0
+    },
+    "hard": {
+      "count": 13,
+      "accepted": 13,
+      "avg_score": 99.2
+    },
+    "medium": {
+      "count": 10,
+      "accepted": 10,
+      "avg_score": 99.0
+    }
+  },
+  "latency_ms": {
+    "avg": 56740,
+    "min": 28891,
+    "max": 101485
+  },
+  "run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-06-24T14:35:35+00:00",
+  "proxy_timeout_full": 660,
+  "proxy_timeout_first_token": 180,
+  "meta": {
+    "run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724",
+    "model": "qwen2.5-coder:3b",
+    "proxy_url": "http://127.0.0.1:8082",
+    "max_tokens": 512,
+    "temperature": 0.1,
+    "strict_code_only": true,
+    "prompt_profile": "strict_code_only",
+    "strict_prompt_version": "v2",
+    "geometry_seed_applied": true,
+    "geometry_seed_version": "v2",
+    "timeout": 660,
+    "proxy_timeout_full": 660,
+    "proxy_timeout_first_token": 180,
+    "run_timeout": 8,
+    "system_prompt": "You are a competitive programming code generator.\n\nRules:\n* Output exactly ONE complete compilable C99 program.\n* Do not explain.\n* Do not add markdown headings.\n* Do not add Chinese text.\n* Do not ad",
+    "compiler": "C:\\msys64\\ucrt64\\bin\\cc.EXE",
+    "tasks_total": 40,
+    "skip_compile": false
+  },
+  "results": [
+    {
+      "id": "synthetic_v3_game_simulation_001",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T13:58:36+00:00",
+      "latency_ms": 71686,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\n#define MAX_ROUNDS 10\n\nint main(void) {\n    int rounds;\n    scanf(\"%d\", &rounds);\n\n    char guesses[MAX_ROUNDS];\n    int numbers[MAX_ROUNDS];\n    int points = 0;\n\n    for (int i = 0; i < rounds; i++) {\n        scanf(\" %c %d\", &guesses[i], &numbers[i]);\n\n        if ((guesses[i] == 'E' && numbers[i] % 2 == 0) || \n            (guesses[i] == 'O' && numbers[i] % 2 != 0)) {\n            points++;\n        }\n    }\n\n    printf(\"Numbers: \");\n    for (int i = 0; i < rounds; i++) {\n        printf(\"%d \", numbers[i]);\n    }\n    printf(\"\\n\");\n\n    printf(\"Pick: \");\n    for (int i = 0; i < rounds; i++) {\n        printf(\"%c \", guesses[i]);\n    }\n    printf(\"\\n\");\n\n    printf(\"points: %d\\n\", points);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "Numbers",
+            "Pick",
+            "points"
+          ],
+          "missing": [],
+          "output_head": "Numbers: 5 32764 \nPick: O E \npoints: 2"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_002",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:00:18+00:00",
+      "latency_ms": 101485,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\n#define MAX_GUESSES 3\n#define SECRET_NUMBER 7\n\nint main(void) {\n    int guess;\n    char response;\n    int score = 100;\n    int guesses[MAX_GUESSES];\n    int num_guesses = 0;\n\n    printf(\"Welcome to the Number Guessing Game!\\n\");\n    printf(\"Guess a number between 1 and 10.\\n\");\n\n    while (num_guesses < MAX_GUESSES) {\n        printf(\"Enter your guess: \");\n        scanf(\"%d\", &guess);\n\n        if (guess < 1 || guess > 10) {\n            printf(\"Invalid guess. Please enter a number between 1 and 10.\\n\");\n            continue;\n        }\n\n        guesses[num_guesses++] = guess;\n\n        if (guess == SECRET_NUMBER) {\n            printf(\"Correct! You guessed the number %d.\\n\", SECRET_NUMBER);\n            break;\n        } else {\n            score -= 20;\n            printf(\"Incorrect. Your current score is %d.\\n\", score);\n\n            if (score <= 0) {\n                printf(\"Game Over! You have no points left.\\n\");\n                break;\n            }\n\n            printf(\"Do you want to continue? (Y/N): \");\n            scanf(\" %c\", &response);\n\n            if (response == 'N' || response == 'n') {\n                printf(\"You chose to quit. The secret number was %d.\\n\", SECRET_NUMBER);\n                break;\n            }\n        }\n    }\n\n    printf(\"Game Over! Your final score is %d.\\n\", score);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": [
+            "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_49gbteiq\\synthetic_v3_game_simulation_002.c:11:9: warning: variable 'guesses' set but not used [-Wunused-but-set-variable]"
+          ]
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 0.667,
+          "found": [
+            "Guess",
+            "number"
+          ],
+          "missing": [
+            "points"
+          ],
+          "output_head": "Welcome to the Number Guessing Game!\nGuess a number between 1 and 10.\nEnter your guess: Incorrect. Your current score is 80.\nDo you want to continue? (Y/N): You chose to quit. The secret number was 7.\nGame Over! Your final score is 80."
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 90,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 20
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_003",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:01:50+00:00",
+      "latency_ms": 91171,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int rounds;\n    scanf(\"%d\", &rounds);\n\n    int playerScore = 0;\n    int computerScore = 0;\n\n    for (int i = 0; i < rounds; i++) {\n        int playerChoice, computerChoice;\n        scanf(\"%d\", &playerChoice);\n\n        // Randomize computer choice\n        computerChoice = rand() % 3 + 1;\n\n        printf(\"Player chose: %d\\n\", playerChoice);\n        printf(\"Computer chose: %d\\n\", computerChoice);\n\n        if (playerChoice == computerChoice) {\n            printf(\"It's a tie!\\n\");\n        } else if ((playerChoice == 1 && computerChoice == 3) ||\n                   (playerChoice == 2 && computerChoice == 1) ||\n                   (playerChoice == 3 && computerChoice == 2)) {\n            playerScore++;\n            printf(\"Player wins this round!\\n\");\n        } else {\n            computerScore++;\n            printf(\"Computer wins this round!\\n\");\n        }\n\n        printf(\"Current score: Player %d, Computer %d\\n\", playerScore, computerScore);\n    }\n\n    if (playerScore > computerScore) {\n        printf(\"Final result: Player wins!\\n\");\n    } else if (computerScore > playerScore) {\n        printf(\"Final result: Computer wins!\\n\");\n    } else {\n        printf(\"Final result: It's a tie!\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": false,
+          "message": "compile error (1 errors)",
+          "errors": [
+            "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_49gbteiq\\synthetic_v3_game_simulation_003.c:15:26: error: implicit declaration of function 'rand' [-Wimplicit-function-declaration]"
+          ],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": false,
+          "timed_out": false,
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "choice",
+            "score",
+            "winner"
+          ],
+          "output_head": "",
+          "note": "not run (compile failed or no compiler)"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [
+            "rand() used without srand() — results will not be random",
+            "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
+          ],
+          "errors": [],
+          "risk_score": 0.16
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 30,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 0,
+        "runtime": 0
+      },
+      "accepted": false,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_004",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:03:30+00:00",
+      "latency_ms": 100093,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\n#define MAX_PLAYERS 10\n\nint main(void) {\n    int num_players;\n    scanf(\"%d\", &num_players);\n\n    if (num_players < 2 || num_players > MAX_PLAYERS) {\n        printf(\"Invalid number of players\\n\");\n        return 1;\n    }\n\n    int *choices = (int *)malloc(num_players * sizeof(int));\n    if (!choices) {\n        printf(\"Memory allocation failed\\n\");\n        return 1;\n    }\n\n    for (int i = 0; i < num_players; i++) {\n        scanf(\"%d\", &choices[i]);\n    }\n\n    int tug_count = 0;\n    int winner = -1;\n\n    while (winner == -1) {\n        printf(\"Tug\\n\");\n\n        int enter_count = 0;\n        for (int i = 0; i < num_players; i++) {\n            if (choices[i] == 1) {\n                enter_count++;\n            }\n        }\n\n        printf(\"Enter\\n\");\n\n        if (enter_count > num_players / 2) {\n            winner = 1;\n        } else if (enter_count < num_players / 2) {\n            winner = 0;\n        } else {\n            tug_count++;\n            if (tug_count >= 3) {\n                winner = -1; // Draw\n            }\n        }\n    }\n\n    if (winner == 1) {\n        printf(\"Winner\\n\");\n    } else if (winner == 0) {\n        printf(\"Loser\\n\");\n    } else {\n        printf(\"Draw\\n\");\n    }\n\n    free(choices);\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "Tug",
+            "Enter",
+            "winner"
+          ],
+          "missing": [],
+          "output_head": "Tug\nEnter\nWinner"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_005",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:04:42+00:00",
+      "latency_ms": 71593,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\n#define MAX_ROUNDS 10\n\nint main(void) {\n    int rounds;\n    scanf(\"%d\", &rounds);\n\n    char guesses[MAX_ROUNDS];\n    int numbers[MAX_ROUNDS];\n    int points = 0;\n\n    for (int i = 0; i < rounds; i++) {\n        scanf(\" %c\", &guesses[i]);\n        scanf(\"%d\", &numbers[i]);\n\n        if ((guesses[i] == 'E' && numbers[i] % 2 == 0) || \n            (guesses[i] == 'O' && numbers[i] % 2 != 0)) {\n            points++;\n        }\n    }\n\n    printf(\"Numbers: \");\n    for (int i = 0; i < rounds; i++) {\n        printf(\"%d \", numbers[i]);\n    }\n    printf(\"\\n\");\n\n    printf(\"Pick: \");\n    for (int i = 0; i < rounds; i++) {\n        printf(\"%c \", guesses[i]);\n    }\n    printf(\"\\n\");\n\n    printf(\"points: %d\\n\", points);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "Numbers",
+            "Pick",
+            "points"
+          ],
+          "missing": [],
+          "output_head": "Numbers: 5 32764 \nPick: O E \npoints: 2"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_006",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:06:14+00:00",
+      "latency_ms": 91656,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\n#define MAX_GUESSES 10\n#define SECRET_NUMBER 7\n\nint main(void) {\n    int guess;\n    char response;\n    int score = 0;\n    int guesses[MAX_GUESSES];\n    int num_guesses = 0;\n\n    printf(\"Welcome to the Number Guessing Game!\\n\");\n    printf(\"Guess a number between 1 and 10.\\n\");\n\n    while (num_guesses < MAX_GUESSES) {\n        printf(\"Enter your guess: \");\n        scanf(\"%d\", &guess);\n\n        if (guess < 1 || guess > 10) {\n            printf(\"Invalid guess. Please enter a number between 1 and 10.\\n\");\n            continue;\n        }\n\n        guesses[num_guesses++] = guess;\n\n        if (guess == SECRET_NUMBER) {\n            score += 10 - num_guesses + 1;\n            printf(\"Correct! You guessed the number %d in %d attempts. Your score is %d.\\n\", SECRET_NUMBER, num_guesses, score);\n            break;\n        } else {\n            printf(\"Incorrect guess. Try again.\\n\");\n        }\n    }\n\n    if (num_guesses == MAX_GUESSES && guesses[num_guesses - 1] != SECRET_NUMBER) {\n        printf(\"Sorry, you have reached the maximum number of attempts. The secret number was %d.\\n\", SECRET_NUMBER);\n    }\n\n    printf(\"Game Over!\\n\");\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": [
+            "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_49gbteiq\\synthetic_v3_game_simulation_006.c:9:10: warning: unused variable 'response' [-Wunused-variable]"
+          ]
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 0.667,
+          "found": [
+            "Guess",
+            "number"
+          ],
+          "missing": [
+            "points"
+          ],
+          "output_head": "Welcome to the Number Guessing Game!\nGuess a number between 1 and 10.\nEnter your guess: Incorrect guess. Try again.\nEnter your guess: Incorrect guess. Try again.\nEnter your guess: Incorrect guess. Try again.\nEnter your guess: Incorrect guess. Try again.\nEnter your guess: Incorrect guess. Try again.\nEnter your guess: Incorrect guess. Try again.\nEnter your guess: Incorrect guess. Try again.\nEnter yo"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 90,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 20
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_007",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:07:46+00:00",
+      "latency_ms": 91500,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int rounds;\n    scanf(\"%d\", &rounds);\n\n    int playerScore = 0;\n    int computerScore = 0;\n\n    for (int i = 0; i < rounds; i++) {\n        int playerChoice, computerChoice;\n        scanf(\"%d\", &playerChoice);\n\n        // Randomize computer choice\n        computerChoice = rand() % 3 + 1;\n\n        printf(\"Player chose: %d\\n\", playerChoice);\n        printf(\"Computer chose: %d\\n\", computerChoice);\n\n        if (playerChoice == computerChoice) {\n            printf(\"It's a tie!\\n\");\n        } else if ((playerChoice == 1 && computerChoice == 3) ||\n                   (playerChoice == 2 && computerChoice == 1) ||\n                   (playerChoice == 3 && computerChoice == 2)) {\n            playerScore++;\n            printf(\"Player wins this round!\\n\");\n        } else {\n            computerScore++;\n            printf(\"Computer wins this round!\\n\");\n        }\n\n        printf(\"Current score - Player: %d, Computer: %d\\n\", playerScore, computerScore);\n    }\n\n    if (playerScore > computerScore) {\n        printf(\"Final result - Player wins!\\n\");\n    } else if (computerScore > playerScore) {\n        printf(\"Final result - Computer wins!\\n\");\n    } else {\n        printf(\"Final result - It's a tie!\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": false,
+          "message": "compile error (1 errors)",
+          "errors": [
+            "C:\\Users\\User\\AppData\\Local\\Temp\\bench_build_49gbteiq\\synthetic_v3_game_simulation_007.c:15:26: error: implicit declaration of function 'rand' [-Wimplicit-function-declaration]"
+          ],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": false,
+          "timed_out": false,
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "choice",
+            "score",
+            "winner"
+          ],
+          "output_head": "",
+          "note": "not run (compile failed or no compiler)"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [
+            "rand() used without srand() — results will not be random",
+            "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
+          ],
+          "errors": [],
+          "risk_score": 0.16
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 30,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 0,
+        "runtime": 0
+      },
+      "accepted": false,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_008",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:09:36+00:00",
+      "latency_ms": 100796,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\n#define MAX_PLAYERS 10\n\nint main(void) {\n    int num_players;\n    scanf(\"%d\", &num_players);\n\n    if (num_players < 2 || num_players > MAX_PLAYERS) {\n        printf(\"Invalid number of players\\n\");\n        return 1;\n    }\n\n    int *choices = (int *)malloc(num_players * sizeof(int));\n    if (!choices) {\n        printf(\"Memory allocation failed\\n\");\n        return 1;\n    }\n\n    for (int i = 0; i < num_players; i++) {\n        scanf(\"%d\", &choices[i]);\n    }\n\n    int tug_count = 0;\n    int winner = -1;\n\n    while (winner == -1) {\n        printf(\"Tug\\n\");\n\n        int max_choice = choices[0];\n        for (int i = 1; i < num_players; i++) {\n            if (choices[i] > max_choice) {\n                max_choice = choices[i];\n            }\n        }\n\n        int winners_count = 0;\n        for (int i = 0; i < num_players; i++) {\n            if (choices[i] == max_choice) {\n                winners_count++;\n            }\n        }\n\n        if (winners_count == 1) {\n            for (int i = 0; i < num_players; i++) {\n                if (choices[i] == max_choice) {\n                    winner = i + 1;\n                    break;\n                }\n            }\n        } else {\n            tug_count++;\n            printf(\"Enter\\n\");\n        }\n    }\n\n    printf(\"winner %d\\n\", winner);\n\n    free(choices);\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": false,
+          "timed_out": true,
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "Tug",
+            "Enter",
+            "winner"
+          ],
+          "output_head": "timeout after 8s"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 70,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 0
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_009",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:10:46+00:00",
+      "latency_ms": 69546,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\n#define MAX_ROUNDS 10\n\nint main(void) {\n    int rounds;\n    scanf(\"%d\", &rounds);\n\n    char guesses[MAX_ROUNDS];\n    int numbers[MAX_ROUNDS];\n    int points = 0;\n\n    for (int i = 0; i < rounds; i++) {\n        scanf(\" %c %d\", &guesses[i], &numbers[i]);\n\n        if ((guesses[i] == 'E' && numbers[i] % 2 == 0) || \n            (guesses[i] == 'O' && numbers[i] % 2 != 0)) {\n            points++;\n        }\n    }\n\n    printf(\"Numbers: \");\n    for (int i = 0; i < rounds; i++) {\n        printf(\"%d \", numbers[i]);\n    }\n    printf(\"\\n\");\n\n    printf(\"Pick: \");\n    for (int i = 0; i < rounds; i++) {\n        printf(\"%c \", guesses[i]);\n    }\n    printf(\"\\n\");\n\n    printf(\"points: %d\\n\", points);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "Numbers",
+            "Pick",
+            "points"
+          ],
+          "missing": [],
+          "output_head": "Numbers: 5 32764 \nPick: O E \npoints: 2"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_game_simulation_010",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:11:54+00:00",
+      "latency_ms": 67937,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n\nint main(void) {\n    int target = rand() % 10 + 1;\n    int guess;\n    char response;\n    int score = 10;\n\n    printf(\"Guess a number between 1 and 10: \");\n    scanf(\"%d\", &guess);\n\n    if (guess == target) {\n        printf(\"Guess: %d, Number: %d, Points: %d\\n\", guess, target, score);\n        return 0;\n    }\n\n    printf(\"Was your guess too high (Y/N)? \");\n    scanf(\" %c\", &response);\n\n    if ((response == 'Y' || response == 'y') && guess > target) {\n        score -= 2;\n    } else if ((response == 'N' || response == 'n') && guess < target) {\n        score -= 2;\n    } else {\n        score = 0;\n    }\n\n    printf(\"Guess: %d, Number: %d, Points: %d\\n\", guess, target, score);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "Guess",
+            "number",
+            "points"
+          ],
+          "missing": [],
+          "output_head": "Guess a number between 1 and 10: Was your guess too high (Y/N)? Guess: 5, Number: 2, Points: 0"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [
+            "rand() used without srand() — results will not be random",
+            "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
+          ],
+          "errors": [],
+          "risk_score": 0.16
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "game_simulation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_geometry_001",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:12:55+00:00",
+      "latency_ms": 60828,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x1, y1, x2, y2;\n    scanf(\"%lf %lf %lf %lf\", &x1, &y1, &x2, &y2);\n\n    // calculate distance\n    double distance = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));\n\n    // calculate midpoint\n    double midpoint_x = (x1 + x2) / 2.0;\n    double midpoint_y = (y1 + y2) / 2.0;\n\n    printf(\"distance %.3f\\n\", distance);\n    printf(\"midpoint (%.3f, %.3f)\\n\", midpoint_x, midpoint_y);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "distance",
+            "5.000"
+          ],
+          "missing": [],
+          "output_head": "distance 5.000\nmidpoint (1.500, 2.000)"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_geometry_002",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:14:25+00:00",
+      "latency_ms": 89968,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x[4], y[4];\n    for (int i = 0; i < 3; i++) scanf(\"%lf %lf\", &x[i], &y[i]);\n\n    // calculate side lengths\n    double a = sqrt((x[1] - x[0]) * (x[1] - x[0]) + (y[1] - y[0]) * (y[1] - y[0]));\n    double b = sqrt((x[2] - x[1]) * (x[2] - x[1]) + (y[2] - y[1]) * (y[2] - y[1]));\n    double c = sqrt((x[0] - x[2]) * (x[0] - x[2]) + (y[0] - y[2]) * (y[0] - y[2]));\n\n    // calculate semi-perimeter\n    double s = (a + b + c) / 2.0;\n\n    // calculate area using Heron's formula\n    double area = sqrt(s * (s - a) * (s - b) * (s - c));\n\n    printf(\"area %.3f\\n\", area);\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "area",
+            "6.000"
+          ],
+          "missing": [],
+          "output_head": "area 6.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_geometry_003",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:15:29+00:00",
+      "latency_ms": 63375,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x1, y1, x2, y2;\n    scanf(\"%lf %lf %lf %lf\", &x1, &y1, &x2, &y2);\n\n    // Calculate the slope (m) and y-intercept (c) of the line\n    double m = (y2 - y1) / (x2 - x1);\n    double c = y1 - m * x1;\n\n    printf(\"line: y = %.3fx + %.3f\\n\", m, c);\n\n    // Calculate a point on the line using one of the original points\n    double x = x1;\n    double y = m * x + c;\n\n    printf(\"x: %.3f\\n\", x);\n    printf(\"y: %.3f\\n\", y);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "line",
+            "x",
+            "y"
+          ],
+          "missing": [],
+          "output_head": "line: y = 0.750x + 0.000\nx: 0.000\ny: 0.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_geometry_004",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:16:24+00:00",
+      "latency_ms": 55046,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x[3], y[3];\n    for (int i = 0; i < 3; i++) scanf(\"%lf %lf\", &x[i], &y[i]);\n\n    // Calculate the area of the triangle formed by the three points\n    double area = 0.5 * fabs(x[0]*(y[1] - y[2]) + x[1]*(y[2] - y[0]) + x[2]*(y[0] - y[1]));\n\n    if (area == 0) {\n        printf(\"collinear\\n\");\n    } else {\n        printf(\"not collinear\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "collinear"
+          ],
+          "missing": [],
+          "output_head": "collinear"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_geometry_005",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:17:25+00:00",
+      "latency_ms": 60219,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x1, y1, x2, y2;\n    scanf(\"%lf %lf %lf %lf\", &x1, &y1, &x2, &y2);\n\n    // calculate distance\n    double distance = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));\n\n    // calculate midpoint\n    double midpoint_x = (x1 + x2) / 2.0;\n    double midpoint_y = (y1 + y2) / 2.0;\n\n    printf(\"distance %.3f\\n\", distance);\n    printf(\"midpoint (%.3f, %.3f)\\n\", midpoint_x, midpoint_y);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "distance",
+            "5.000"
+          ],
+          "missing": [],
+          "output_head": "distance 5.000\nmidpoint (1.500, 2.000)"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_geometry_006",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:18:41+00:00",
+      "latency_ms": 76188,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x[4], y[4];\n    for (int i = 0; i < 3; i++) scanf(\"%lf %lf\", &x[i], &y[i]);\n\n    // calculate side lengths\n    double a = sqrt(pow(x[1] - x[0], 2) + pow(y[1] - y[0], 2));\n    double b = sqrt(pow(x[2] - x[1], 2) + pow(y[2] - y[1], 2));\n    double c = sqrt(pow(x[2] - x[0], 2) + pow(y[2] - y[0], 2));\n\n    // calculate semi-perimeter\n    double s = (a + b + c) / 2.0;\n\n    // calculate area using Heron's formula\n    double area = sqrt(s * (s - a) * (s - b) * (s - c));\n\n    printf(\"area %.3f\\n\", area);\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "area",
+            "6.000"
+          ],
+          "missing": [],
+          "output_head": "area 6.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_geometry_007",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:19:45+00:00",
+      "latency_ms": 63421,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x1, y1, x2, y2;\n    scanf(\"%lf %lf %lf %lf\", &x1, &y1, &x2, &y2);\n\n    // Calculate the slope (m) and y-intercept (c) of the line\n    double m = (y2 - y1) / (x2 - x1);\n    double c = y1 - m * x1;\n\n    printf(\"line: y = %.3fx + %.3f\\n\", m, c);\n\n    // Calculate a point on the line using one of the original points\n    double x = x1;\n    double y = m * x + c;\n\n    printf(\"x: %.3f\\n\", x);\n    printf(\"y: %.3f\\n\", y);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "line",
+            "x",
+            "y"
+          ],
+          "missing": [],
+          "output_head": "line: y = 0.750x + 0.000\nx: 0.000\ny: 0.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_geometry_008",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:20:42+00:00",
+      "latency_ms": 56031,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x[3], y[3];\n    for (int i = 0; i < 3; i++) scanf(\"%lf %lf\", &x[i], &y[i]);\n    \n    // calculate the area of the triangle formed by the three points\n    double area = 0.5 * fabs(x[0]*(y[1] - y[2]) + x[1]*(y[2] - y[0]) + x[2]*(y[0] - y[1]));\n    \n    if (area == 0) {\n        printf(\"collinear\\n\");\n    } else {\n        printf(\"not collinear\\n\");\n    }\n    \n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "collinear"
+          ],
+          "missing": [],
+          "output_head": "collinear"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_geometry_009",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:21:42+00:00",
+      "latency_ms": 60250,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x1, y1, x2, y2;\n    scanf(\"%lf %lf %lf %lf\", &x1, &y1, &x2, &y2);\n\n    // calculate distance\n    double distance = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));\n\n    // calculate midpoint\n    double midX = (x1 + x2) / 2.0;\n    double midY = (y1 + y2) / 2.0;\n\n    printf(\"distance %.3f\\n\", distance);\n    printf(\"midpoint (%.3f, %.3f)\\n\", midX, midY);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "distance",
+            "5.000"
+          ],
+          "missing": [],
+          "output_head": "distance 5.000\nmidpoint (1.500, 2.000)"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_geometry_010",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:23:12+00:00",
+      "latency_ms": 90031,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\nint main(void) {\n    double x[4], y[4];\n    for (int i = 0; i < 3; i++) scanf(\"%lf %lf\", &x[i], &y[i]);\n\n    // calculate side lengths\n    double a = sqrt((x[1] - x[0]) * (x[1] - x[0]) + (y[1] - y[0]) * (y[1] - y[0]));\n    double b = sqrt((x[2] - x[1]) * (x[2] - x[1]) + (y[2] - y[1]) * (y[2] - y[1]));\n    double c = sqrt((x[0] - x[2]) * (x[0] - x[2]) + (y[0] - y[2]) * (y[0] - y[2]));\n\n    // calculate semi-perimeter\n    double s = (a + b + c) / 2.0;\n\n    // calculate area using Heron's formula\n    double area = sqrt(s * (s - a) * (s - b) * (s - c));\n\n    printf(\"area %.3f\\n\", area);\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "area",
+            "6.000"
+          ],
+          "missing": [],
+          "output_head": "area 6.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "geometry",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_001",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:23:42+00:00",
+      "latency_ms": 29264,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 0; j < i; j++) {\n            printf(\"%d\", i);\n        }\n        if (i < n) {\n            printf(\", \");\n        }\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1, 22, 333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_002",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:24:21+00:00",
+      "latency_ms": 38515,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i > 0; i--) {\n        // Print leading spaces\n        for (int j = 0; j < n - i; j++) {\n            printf(\" \");\n        }\n        // Print digits\n        for (int k = 0; k < 2 * i - 1; k++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "4444",
+            "333",
+            "22"
+          ],
+          "missing": [],
+          "output_head": "4444444\n 33333\n  222\n   1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_003",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:25:15+00:00",
+      "latency_ms": 53312,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 0; j < n - i; j++) {\n            printf(\" \");\n        }\n        for (int k = 0; k < i; k++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    for (int i = n - 1; i >= 1; i--) {\n        for (int j = 0; j < n - i; j++) {\n            printf(\" \");\n        }\n        for (int k = 0; k < i; k++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n   22\n  333\n 4444\n55555\n 4444\n  333\n   22\n    1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_004",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:25:51+00:00",
+      "latency_ms": 35531,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            if (i == 0 || i == n - 1 || j == 0 || j == n - 1) {\n                printf(\"*\");\n            } else {\n                printf(\" \");\n            }\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "***",
+            "*    *"
+          ],
+          "missing": [],
+          "output_head": "******\n*    *\n*    *\n*    *\n*    *\n******"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_005",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:26:20+00:00",
+      "latency_ms": 29000,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 1; j <= i; j++) {\n            printf(\"%d\", i);\n        }\n        if (i < n) {\n            printf(\", \");\n        }\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1, 22, 333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_006",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:26:57+00:00",
+      "latency_ms": 37062,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i > 0; i--) {\n        // Print leading spaces\n        for (int j = 0; j < n - i; j++) {\n            printf(\" \");\n        }\n        // Print digits\n        for (int k = 0; k < 2 * i - 1; k++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "4444",
+            "333",
+            "22"
+          ],
+          "missing": [],
+          "output_head": "4444444\n 33333\n  222\n   1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_007",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:27:51+00:00",
+      "latency_ms": 53186,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 0; j < n - i; j++) {\n            printf(\" \");\n        }\n        for (int k = 0; k < i; k++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    for (int i = n - 1; i >= 1; i--) {\n        for (int j = 0; j < n - i; j++) {\n            printf(\" \");\n        }\n        for (int k = 0; k < i; k++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1\n   22\n  333\n 4444\n55555\n 4444\n  333\n   22\n    1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_008",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:28:27+00:00",
+      "latency_ms": 35405,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            if (i == 0 || i == n - 1 || j == 0 || j == n - 1) {\n                printf(\"*\");\n            } else {\n                printf(\" \");\n            }\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "***",
+            "*    *"
+          ],
+          "missing": [],
+          "output_head": "******\n*    *\n*    *\n*    *\n*    *\n******"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_009",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:28:56+00:00",
+      "latency_ms": 28891,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = 1; i <= n; i++) {\n        for (int j = 0; j < i; j++) {\n            printf(\"%d\", i);\n        }\n        if (i < n) {\n            printf(\", \");\n        }\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "1",
+            "22",
+            "333"
+          ],
+          "missing": [],
+          "output_head": "1, 22, 333"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_010",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:29:34+00:00",
+      "latency_ms": 37593,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i > 0; i--) {\n        // Print leading spaces\n        for (int j = 0; j < n - i; j++) {\n            printf(\" \");\n        }\n        // Print digits\n        for (int k = 0; k < 2 * i - 1; k++) {\n            printf(\"%d\", i);\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "4444",
+            "333",
+            "22"
+          ],
+          "missing": [],
+          "output_head": "4444444\n 33333\n  222\n   1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "pattern_generation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_001",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:30:12+00:00",
+      "latency_ms": 37813,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; i++) {\n        double term = ((i + 1) % 2 == 0 ? -1 : 1) * (2 * i + 1) / (i * i + 1);\n        sum += term;\n    }\n\n    printf(\"result: %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "result"
+          ],
+          "missing": [],
+          "output_head": "result: 0.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_002",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:30:49+00:00",
+      "latency_ms": 36780,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; i++) {\n        long long factorial = 1;\n        for (int j = 1; j <= i; j++) {\n            factorial *= j;\n        }\n        sum += (double)factorial / (i + 1);\n    }\n\n    printf(\"sum = %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "sum"
+          ],
+          "missing": [],
+          "output_head": "sum = 130.324"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_003",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:31:22+00:00",
+      "latency_ms": 32764,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; i++) {\n        double term_i = (3 * i - 1) / (i * i + i + 1);\n        sum += term_i;\n    }\n\n    printf(\"result: %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "result"
+          ],
+          "missing": [],
+          "output_head": "result: 0.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_004",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:31:57+00:00",
+      "latency_ms": 35156,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; i++) {\n        double term = ((i % 2 == 0) ? -1 : 1) * (double)i / (2 * i + 1);\n        sum += term;\n    }\n\n    printf(\"result %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "result"
+          ],
+          "missing": [],
+          "output_head": "result -0.093"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_005",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:32:35+00:00",
+      "latency_ms": 37436,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; i++) {\n        double term = (-1) * (i % 2 == 0 ? -1 : 1) * (2 * i + 1) / (i * i + 1);\n        sum += term;\n    }\n\n    printf(\"result %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "result"
+          ],
+          "missing": [],
+          "output_head": "result 0.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_006",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:33:12+00:00",
+      "latency_ms": 37250,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; i++) {\n        long long factorial = 1;\n        for (int j = 1; j <= i; j++) {\n            factorial *= j;\n        }\n        sum += (double)factorial / (i + 1);\n    }\n\n    printf(\"sum = %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "sum"
+          ],
+          "missing": [],
+          "output_head": "sum = 371419.233"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "hard",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_007",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:33:45+00:00",
+      "latency_ms": 32655,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; i++) {\n        double term_i = (3 * i - 1) / (i * i + i + 1);\n        sum += term_i;\n    }\n\n    printf(\"result: %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "result"
+          ],
+          "missing": [],
+          "output_head": "result: 0.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_008",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:34:20+00:00",
+      "latency_ms": 34827,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; i++) {\n        double term = ((i % 2 == 0) ? -1 : 1) * (double)i / (2 * i + 1);\n        sum += term;\n    }\n\n    printf(\"result %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "result"
+          ],
+          "missing": [],
+          "output_head": "result -0.098"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_009",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:34:58+00:00",
+      "latency_ms": 37078,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; i++) {\n        double term = ((i + 1) % 2 == 0 ? -1 : 1) * (2 * i + 1) / (i * i + 1);\n        sum += term;\n    }\n\n    printf(\"result %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "result"
+          ],
+          "missing": [],
+          "output_head": "result 0.000"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "medium",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "synthetic_v3_series_calculation_010",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T14:35:35+00:00",
+      "latency_ms": 37250,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 0.0;\n    for (int i = 1; i <= n; ++i) {\n        long long factorial = 1;\n        for (int j = 1; j <= i; ++j) {\n            factorial *= j;\n        }\n        sum += (double)factorial / (i + 1);\n    }\n\n    printf(\"sum = %.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "sum"
+          ],
+          "missing": [],
+          "output_head": "sum = 6297217376.156"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [],
+          "missing": []
+        }
+      },
+      "score": 100,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "series_calculation",
+        "difficulty": "easy",
+        "points": 0,
+        "year": 0,
+        "exam": ""
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    }
+  ]
+}

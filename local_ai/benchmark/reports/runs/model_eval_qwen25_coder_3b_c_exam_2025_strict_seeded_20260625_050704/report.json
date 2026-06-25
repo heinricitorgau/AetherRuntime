@@ -1,0 +1,401 @@
+{
+  "cases_run": 4,
+  "accepted": 3,
+  "average_score": 66.5,
+  "min_score": 22,
+  "max_score": 97,
+  "rates": {
+    "proxy_pass_rate": 1.0,
+    "truncation_pass_rate": 1.0,
+    "compile_pass_rate": 0.75,
+    "runtime_pass_rate": 0.5,
+    "semantic_pass_rate": 1.0,
+    "keyword_pass_rate": 1.0,
+    "accepted_rate": 0.75
+  },
+  "score_distribution": {
+    "90-100": 1,
+    "70-89": 2,
+    "60-69": 0,
+    "0-59": 1
+  },
+  "by_topic": {
+    "Game Simulation - Even/Odd Guessing": {
+      "count": 1,
+      "accepted": 1,
+      "avg_score": 97.0
+    },
+    "Geometry - Triangle Enumeration": {
+      "count": 1,
+      "accepted": 0,
+      "avg_score": 22.0
+    },
+    "Pattern Generation": {
+      "count": 1,
+      "accepted": 1,
+      "avg_score": 77.0
+    },
+    "Series Calculation": {
+      "count": 1,
+      "accepted": 1,
+      "avg_score": 70.0
+    }
+  },
+  "by_difficulty": {
+    "medium": {
+      "count": 4,
+      "accepted": 3,
+      "avg_score": 66.5
+    }
+  },
+  "latency_ms": {
+    "avg": 92484,
+    "min": 36500,
+    "max": 162733
+  },
+  "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704",
+  "model": "qwen2.5-coder:3b",
+  "timestamp": "2026-06-24T21:13:18+00:00",
+  "proxy_timeout_full": 660,
+  "proxy_timeout_first_token": 180,
+  "meta": {
+    "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704",
+    "model": "qwen2.5-coder:3b",
+    "proxy_url": "http://127.0.0.1:8082",
+    "max_tokens": 512,
+    "temperature": 0.1,
+    "strict_code_only": true,
+    "prompt_profile": "strict_code_only",
+    "strict_prompt_version": "v2",
+    "geometry_seed_applied": true,
+    "geometry_seed_version": "v2",
+    "timeout": 660,
+    "proxy_timeout_full": 660,
+    "proxy_timeout_first_token": 180,
+    "run_timeout": 8,
+    "system_prompt": "You are a competitive programming code generator.\n\nRules:\n* Output exactly ONE complete compilable C99 program.\n* Do not explain.\n* Do not add markdown headings.\n* Do not add Chinese text.\n* Do not ad",
+    "compiler": "C:\\msys64\\ucrt64\\bin\\cc.EXE",
+    "tasks_total": 4,
+    "skip_compile": false
+  },
+  "results": [
+    {
+      "id": "2025_midterm_001",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T21:08:47+00:00",
+      "latency_ms": 99671,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    double sum = 1.0; // Start with the first term 1\n\n    for (int i = 2; i <= n; i++) {\n        int numerator = 2 * i + 1;\n        int denominator = i * i - 1;\n        double term = ((i % 2 == 0) ? -1 : 1) * (double)numerator / denominator;\n        sum += term;\n    }\n\n    printf(\"%.3f\\n\", sum);\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": false,
+          "timed_out": false,
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "0.607"
+          ],
+          "output_head": "-0.237"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 1.0,
+          "found": [
+            "for",
+            "printf",
+            "double"
+          ],
+          "missing": []
+        }
+      },
+      "score": 70,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 15,
+        "compile": 40,
+        "runtime": 0
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Series Calculation",
+        "difficulty": "medium",
+        "points": 12,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "2025_midterm_002",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T21:09:24+00:00",
+      "latency_ms": 36500,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    scanf(\"%d\", &n);\n\n    for (int i = n; i >= 1; i--) {\n        if (i == n || i == 1) {\n            printf(\"%d\\n\", i);\n        } else {\n            for (int j = 0; j < i; j++) {\n                printf(\"%d\", i);\n            }\n            printf(\"\\n\");\n        }\n    }\n\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 0.4,
+          "found": [
+            "3",
+            "3"
+          ],
+          "missing": [
+            "2 2",
+            "11111",
+            "222"
+          ],
+          "output_head": "3\n22\n1"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 0.667,
+          "found": [
+            "for",
+            "printf"
+          ],
+          "missing": [
+            "nested loop"
+          ]
+        }
+      },
+      "score": 77,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 10,
+        "compile": 40,
+        "runtime": 12
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Pattern Generation",
+        "difficulty": "medium",
+        "points": 13,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    },
+    {
+      "id": "2025_midterm_003",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T21:12:07+00:00",
+      "latency_ms": 162733,
+      "extract_method": "heuristic",
+      "extracted_code": "#include <stdio.h>\n#include <math.h>\n\n// Function to calculate the distance between two points\ndouble distance(double x1, double y1, double x2, double y2) {\n    return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));\n}\n\n// Function to check if three points are collinear\nint are_collinear(double x1, double y1, double x2, double y2, double x3, double y3) {\n    return (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) == 0;\n}\n\n// Function to calculate the area of a triangle using Heron's formula\ndouble herons_formula(double a, double b, double c) {\n    double s = (a + b + c) / 2.0;\n    return sqrt(s * (s - a) * (s - b) * (s - c));\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 0.75,
+          "issues": [
+            "missing int main"
+          ]
+        },
+        "compile": {
+          "passed": false,
+          "message": "compile error (1 errors)",
+          "errors": [
+            "collect2.exe: error: ld returned 1 exit status"
+          ],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": false,
+          "timed_out": false,
+          "match_ratio": 0.0,
+          "found": [],
+          "missing": [
+            "area",
+            "6.000"
+          ],
+          "output_head": "",
+          "note": "not run (compile failed or no compiler)"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [],
+          "errors": [],
+          "risk_score": 0.0
+        },
+        "keyword": {
+          "passed": true,
+          "score": 0.75,
+          "found": [
+            "sqrt",
+            "area",
+            "triangle"
+          ],
+          "missing": [
+            "printf"
+          ]
+        }
+      },
+      "score": 22,
+      "score_breakdown": {
+        "structure": 11,
+        "keyword": 11,
+        "compile": 0,
+        "runtime": 0
+      },
+      "accepted": false,
+      "task_meta": {
+        "topic": "Geometry - Triangle Enumeration",
+        "difficulty": "medium",
+        "points": 17,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": true,
+      "geometry_seed_version": "v2"
+    },
+    {
+      "id": "2025_midterm_004",
+      "model": "qwen2.5-coder:3b",
+      "timestamp": "2026-06-24T21:13:18+00:00",
+      "latency_ms": 71031,
+      "extract_method": "fence",
+      "extracted_code": "#include <stdio.h>\n#include <stdlib.h>\n#include <time.h>\n\nint main(void) {\n    int numbers[5], position, score = 0;\n    char guess;\n    srand(time(NULL));\n\n    for (int i = 0; i < 5; i++) numbers[i] = rand() % 10 + 1;\n\n    printf(\"Numbers: \");\n    for (int i = 0; i < 5; i++) {\n        if (i > 0) printf(\" \");\n        printf(\"%d\", numbers[i]);\n    }\n    printf(\"\\nPick \");\n\n    if (scanf(\"%d %c\", &position, &guess) == 2) {\n        position--; // Convert to zero-based index\n        if ((numbers[position] % 2 == 0 && guess == 'E') || \n            (numbers[position] % 2 != 0 && guess == 'O')) {\n            score += 5;\n        }\n    }\n\n    printf(\"win %d points\\n\", score);\n    return 0;\n}",
+      "checks": {
+        "proxy": {
+          "passed": true,
+          "timed_out": false,
+          "note": "ok"
+        },
+        "truncation": {
+          "passed": true,
+          "note": "ok"
+        },
+        "structure": {
+          "passed": true,
+          "score": 1.0,
+          "issues": []
+        },
+        "compile": {
+          "passed": true,
+          "message": "ok",
+          "errors": [],
+          "warnings": []
+        },
+        "runtime": {
+          "passed": true,
+          "timed_out": false,
+          "match_ratio": 1.0,
+          "found": [
+            "Numbers",
+            "win",
+            "points",
+            "Pick"
+          ],
+          "missing": [],
+          "output_head": "Numbers: 3 1 8 9 5\nPick win 5 points"
+        },
+        "semantic": {
+          "passed": true,
+          "warnings": [
+            "rand()% used but no 'seen[]' uniqueness tracking found — may generate duplicates"
+          ],
+          "errors": [],
+          "risk_score": 0.08
+        },
+        "keyword": {
+          "passed": true,
+          "score": 0.8,
+          "found": [
+            "rand",
+            "srand",
+            "scanf",
+            "printf"
+          ],
+          "missing": [
+            "array"
+          ]
+        }
+      },
+      "score": 97,
+      "score_breakdown": {
+        "structure": 15,
+        "keyword": 12,
+        "compile": 40,
+        "runtime": 30
+      },
+      "accepted": true,
+      "task_meta": {
+        "topic": "Game Simulation - Even/Odd Guessing",
+        "difficulty": "medium",
+        "points": 23,
+        "year": 2025,
+        "exam": "midterm"
+      },
+      "strict_code_only": true,
+      "geometry_seed_applied": false,
+      "geometry_seed_version": null
+    }
+  ]
+}

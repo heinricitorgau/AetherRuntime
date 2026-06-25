@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-05-26T12:43:26+00:00",
+  "timestamp": "2026-06-22T04:22:40+00:00",
   "count": 513,
   "reports": [
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T12:43:26+00:00",
+      "latest_modified": "2026-06-22T04:22:40+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.json",
       "tags": [
         "system"
@@ -13,12 +13,61 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T12:43:26+00:00",
+      "latest_modified": "2026-06-22T04:22:40+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.md",
       "tags": [
         "system"
       ],
       "size_bytes": 774
+    },
+    {
+      "report_type": "sft",
+      "latest_modified": "2026-05-26T12:43:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.json",
+      "tags": [
+        "adapter",
+        "sft",
+        "summary"
+      ],
+      "size_bytes": 608
+    },
+    {
+      "report_type": "sft",
+      "latest_modified": "2026-05-26T12:43:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.md",
+      "tags": [
+        "adapter",
+        "sft",
+        "summary"
+      ],
+      "size_bytes": 444
+    },
+    {
+      "report_type": "system",
+      "latest_modified": "2026-05-26T12:43:26+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\architecture_map.md",
+      "tags": [
+        "system"
+      ],
+      "size_bytes": 2956
+    },
+    {
+      "report_type": "system",
+      "latest_modified": "2026-05-26T12:43:26+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.json",
+      "tags": [
+        "system"
+      ],
+      "size_bytes": 170049
+    },
+    {
+      "report_type": "system",
+      "latest_modified": "2026-05-26T12:43:26+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.md",
+      "tags": [
+        "system"
+      ],
+      "size_bytes": 92247
     },
     {
       "report_type": "routing",
@@ -73,55 +122,6 @@
         "system"
       ],
       "size_bytes": 1969
-    },
-    {
-      "report_type": "sft",
-      "latest_modified": "2026-05-26T12:42:01+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.json",
-      "tags": [
-        "adapter",
-        "sft",
-        "summary"
-      ],
-      "size_bytes": 608
-    },
-    {
-      "report_type": "sft",
-      "latest_modified": "2026-05-26T12:42:01+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.md",
-      "tags": [
-        "adapter",
-        "sft",
-        "summary"
-      ],
-      "size_bytes": 444
-    },
-    {
-      "report_type": "system",
-      "latest_modified": "2026-05-26T12:42:01+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\architecture_map.md",
-      "tags": [
-        "system"
-      ],
-      "size_bytes": 2956
-    },
-    {
-      "report_type": "system",
-      "latest_modified": "2026-05-26T12:42:01+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.json",
-      "tags": [
-        "system"
-      ],
-      "size_bytes": 170049
-    },
-    {
-      "report_type": "system",
-      "latest_modified": "2026-05-26T12:42:01+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.md",
-      "tags": [
-        "system"
-      ],
-      "size_bytes": 92247
     },
     {
       "report_type": "release_snapshot",

@@ -324,6 +324,7 @@ def evaluate_case(
     task: dict,
     proxy_url: str,
     model: str,
+    proxy_config_model: str | None,
     system_prompt: str,
     max_tokens: int,
     timeout: int,
@@ -338,7 +339,7 @@ def evaluate_case(
     case_id = task["id"]
 
     # ── 1. Proxy call ─────────────────────────────────────────────────────
-    raw_response, proxy_error, latency_ms = call_proxy(
+    raw_response, proxy_error, latency_ms, proxy_meta = call_proxy(
         proxy_url=proxy_url,
         model=model,
         system=system_prompt,
@@ -347,7 +348,11 @@ def evaluate_case(
         timeout=timeout,
         temperature=temperature,
         skip_repair=skip_repair,
+        return_metadata=True,
     )
+    requested_model = str(proxy_meta.get("requested_model") or model)
+    effective_model = proxy_meta.get("effective_model")
+    model_override_valid = bool(effective_model) and requested_model == effective_model
 
     proxy_timed_out = proxy_error is not None and (
         "timeout" in proxy_error.lower() or "timed out" in proxy_error.lower()
@@ -356,6 +361,10 @@ def evaluate_case(
     raw_record = {
         "id":          case_id,
         "model":       model,
+        "requested_model": requested_model,
+        "effective_model": effective_model,
+        "proxy_config_model": proxy_config_model,
+        "model_override_valid": model_override_valid,
         "timestamp":   now_iso(),
         "latency_ms":  latency_ms,
         "raw_response": raw_response,
@@ -457,6 +466,10 @@ def evaluate_case(
     result = {
         "id":              case_id,
         "model":           model,
+        "requested_model": requested_model,
+        "effective_model": effective_model,
+        "proxy_config_model": proxy_config_model,
+        "model_override_valid": model_override_valid,
         "timestamp":       now_iso(),
         "latency_ms":      latency_ms,
         "extract_method":  extract_method,
@@ -501,6 +514,14 @@ def run_benchmark(
 
     results:     list[dict] = []
     raw_outputs: list[dict] = []
+    if proxy_config:
+        proxy_config_model = (
+            proxy_config.get("configured_ollama_model")
+            or proxy_config.get("configured_model")
+            or proxy_config.get("model")
+        )
+    else:
+        proxy_config_model = None
 
     total = len(tasks)
     mode_tag = "STRICT" if strict_code_only else "standard"
@@ -531,6 +552,7 @@ def run_benchmark(
             task=task,
             proxy_url=proxy_url,
             model=model,
+            proxy_config_model=proxy_config_model,
             system_prompt=system_prompt,
             max_tokens=max_tokens,
             timeout=timeout,
@@ -582,9 +604,26 @@ def run_benchmark(
 
     # ── Inline scoring ────────────────────────────────────────────────────
     import scoring as _scoring
+    effective_models = sorted(
+        {str(r.get("effective_model")) for r in raw_outputs if r.get("effective_model")}
+    )
+    effective_model = (
+        effective_models[0]
+        if len(effective_models) == 1
+        else ("mixed:" + ",".join(effective_models) if effective_models else None)
+    )
+    model_override_valid = bool(raw_outputs) and all(
+        r.get("requested_model") == r.get("effective_model") for r in raw_outputs
+    )
+    benchmark_status = "completed" if model_override_valid else "invalid_model_override"
     meta = {
         "run_id":           out_dir.name,
         "model":            model,
+        "requested_model":  model,
+        "effective_model":  effective_model,
+        "proxy_config_model": proxy_config_model,
+        "model_override_valid": model_override_valid,
+        "benchmark_status": benchmark_status,
         "proxy_url":        proxy_url,
         "max_tokens":       max_tokens,
         "temperature":      temperature,
@@ -605,6 +644,25 @@ def run_benchmark(
         "skip_compile":     skip_compile,
     }
     report = _scoring.score_run(results=results, meta=meta, out_dir=out_dir)
+    report.update(
+        {
+            "status": benchmark_status,
+            "requested_model": model,
+            "effective_model": effective_model,
+            "proxy_config_model": proxy_config_model,
+            "model_override_valid": model_override_valid,
+        }
+    )
+    write_json(report, out_dir / "report.json")
+    report_md = out_dir / "report.md"
+    if report_md.exists():
+        with report_md.open("a", encoding="utf-8") as fh:
+            fh.write("\n## Model Override\n\n")
+            fh.write(f"- requested_model: `{model}`\n")
+            fh.write(f"- effective_model: `{effective_model}`\n")
+            fh.write(f"- proxy_config_model: `{proxy_config_model}`\n")
+            fh.write(f"- model_override_valid: `{model_override_valid}`\n")
+            fh.write(f"- benchmark_status: `{benchmark_status}`\n")
 
     # ── Regression guard (strict mode only) ──────────────────────────────────
     # Thresholds from best known baseline strict_20260514_224452
@@ -716,6 +774,14 @@ def main() -> None:
         default=os.environ.get("CLAW_MODEL", "").strip() or _DEFAULT_MODEL,
     )
     parser.add_argument(
+        "--model-override",
+        default=None,
+        help=(
+            "Override only the runtime Ollama model while preserving the selected "
+            "benchmark profile's dataset, prompt, and scoring."
+        ),
+    )
+    parser.add_argument(
         "--max-tokens", type=int,
         default=int(os.environ.get("CLAW_BENCHMARK_MAX_TOKENS", _DEFAULT_MAX_TOKENS)),
     )
@@ -790,6 +856,10 @@ def main() -> None:
         except ConfigError as exc:
             print(format_config_error(exc), file=sys.stderr)
             sys.exit(2)
+
+    if args.model_override:
+        args.model = str(args.model_override)
+        model_profile_name = f"override:{args.model_override}"
 
     # ── Resolve strict-mode overrides ────────────────────────────────────
     strict = args.strict_code_only
