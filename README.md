@@ -89,6 +89,10 @@ routing, release snapshots, benchmark reports, and the architecture map.
   import surfaces (corpus import and ingest training prep) via a dedicated
   local model, with originals preserved and a JSON+MD audit report
   (`--translate` on `corpus/import_exam.py` and `ingest/prepare_training.py`).
+- **Problem RAG Export**: imported problem prompts (English natively or after
+  translation) are automatically written as plain `.md` files into
+  `local_ai/rag/docs/problems/` with the RAG index rebuilt, so the local model
+  can retrieve problem text via `--rag` (disable with `--no-rag-md`).
 - **Retry Loop**: failure mining, curated repair targets, golden examples, and
   guarded retry datasets.
 - **Dataset Scaling**: isolated generated task assets, validation reports, and
@@ -528,6 +532,10 @@ python local_ai/ingest/prepare_training.py --translate
   `local_ai/corpus/reports/`，ingest 在 training 輸出目錄）。
 - 翻譯失敗不會弄丟或改壞資料：保留原文並在報告中標記錯誤。
 - 離線自我測試（不需模型）：`python local_ai/shared/translator.py --self-test`。
+
+匯入的題目（原生英文或翻譯後的英文）預設會同時輸出純題目 `.md` 到
+`local_ai/rag/docs/problems/` 並自動重建 RAG 索引，讓模型解題時可以用
+`--rag` 檢索到題目內容；不需要時加 `--no-rag-md` 關閉。
 
 ## 重新開始一輪 Benchmark 實驗
 

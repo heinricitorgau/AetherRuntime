@@ -16,6 +16,11 @@ logged to the audit trail, and a translation report is written to
 reports/translation_report.{json,md}. A failed translation keeps the original
 prompt and is surfaced in the report.
 
+RAG export (default on, disable with --no-rag-md): every newly imported
+prompt (English natively or after --translate) is also written as a plain
+problem .md into local_ai/rag/docs/problems/ and the RAG index is rebuilt,
+so the local model can retrieve the problem text via --rag.
+
 Usage:
   python local_ai/corpus/import_exam.py --file exam.json
   python local_ai/corpus/import_exam.py --file exam.json --translate
@@ -38,7 +43,7 @@ if str(_REPO_ROOT) not in sys.path:
 
 import corpus_lib as cl  # noqa: E402
 
-from local_ai.shared import translator  # noqa: E402
+from local_ai.shared import rag_export, translator  # noqa: E402
 from local_ai.shared.report_utils import write_json_report, write_text_report  # noqa: E402
 
 
@@ -148,6 +153,7 @@ def import_file(
     difficulty: str = "",
     translate: bool = False,
     translate_model: str | None = None,
+    rag_md: bool = True,
 ) -> int:
     cl.ensure_dirs()
     suffix = path.suffix.lower()
@@ -168,6 +174,7 @@ def import_file(
               f"-> {report_path}")
 
     written = 0
+    imported_items: list[dict] = []
     for item in items:
         if cl.find_item(item["task_id"]):
             print(f"[import-exam] skip existing: {item['task_id']}")
@@ -178,7 +185,21 @@ def import_file(
             audit["translated"] = True
             audit["translation_model"] = item["translation"]["model"]
         cl.append_audit(audit)
+        imported_items.append(item)
         written += 1
+
+    exportable = [it for it in imported_items if (it.get("prompt") or "").strip()]
+    if rag_md and exportable:
+        md_paths = rag_export.export_problems(
+            [(item["task_id"], item["prompt"]) for item in exportable]
+        )
+        for item, md_path in zip(exportable, md_paths):
+            cl.append_audit({
+                "action": "rag_md_export",
+                "task_id": item["task_id"],
+                "path": str(md_path),
+            })
+        print(f"[import-exam] rag docs: {len(md_paths)} problem .md exported, index rebuilt")
     return written
 
 
@@ -225,6 +246,10 @@ def main() -> None:
         help=f"Translation model (default: env CLAW_TRANSLATE_MODEL or "
              f"{translator.DEFAULT_TRANSLATE_MODEL})",
     )
+    parser.add_argument(
+        "--no-rag-md", action="store_true",
+        help="Skip exporting imported prompts as .md files into local_ai/rag/docs/problems/",
+    )
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
 
@@ -236,6 +261,7 @@ def main() -> None:
     n = import_file(
         Path(args.file), args.task_id, args.topic, args.difficulty,
         translate=args.translate, translate_model=args.translate_model,
+        rag_md=not args.no_rag_md,
     )
     print(f"[import-exam] imported {n} item(s) into raw/ (require curation + review before verified)")
 

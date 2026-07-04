@@ -24,6 +24,11 @@ the record's user message is updated to match, and a translation report is
 written next to the output files (translation_report.{json,md}). A failed
 translation keeps the original instruction and is surfaced in the report.
 
+RAG export (default on, disable with --no-rag-md): every code_generation
+instruction (English natively or after --translate) is also written as a plain
+problem .md into local_ai/rag/docs/problems/ and the RAG index is rebuilt,
+so the local model can retrieve the problem text via --rag.
+
 Usage:
     python local_ai/ingest/prepare_training.py
     python local_ai/ingest/prepare_training.py --fill-answers path/to/answers/
@@ -43,7 +48,7 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from local_ai.shared import translator
+from local_ai.shared import rag_export, translator
 from local_ai.shared.report_utils import write_json_report, write_text_report
 
 
@@ -340,6 +345,7 @@ def prepare_training(
     stats_only: bool = False,
     translate: bool = False,
     translate_model: str | None = None,
+    rag_md: bool = True,
 ) -> dict[str, Any]:
     print("Loading eval cases...", file=sys.stderr)
     eval_records = load_eval_cases(answers_dir, eval_cases_dir)
@@ -401,6 +407,20 @@ def prepare_training(
             "records_failed": sum(1 for e in translation_entries if e["error"]),
             "report": str(out_dir / "translation_report.json"),
         }
+
+    if rag_md:
+        problems = [
+            (r["id"], r.get("instruction", ""))
+            for r in eval_records + chunk_records
+            if r.get("type") == "code_generation"
+        ]
+        md_paths = rag_export.export_problems(problems)
+        print(f"  rag docs: {len(md_paths)} problem .md exported, index rebuilt",
+              file=sys.stderr)
+        summary["rag_md"] = {
+            "exported": len(md_paths),
+            "docs_dir": str(rag_export.DEFAULT_PROBLEMS_DIR),
+        }
     (out_dir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
     )
@@ -445,6 +465,11 @@ def main() -> None:
         help=f"Translation model (default: env CLAW_TRANSLATE_MODEL or "
              f"{translator.DEFAULT_TRANSLATE_MODEL})",
     )
+    parser.add_argument(
+        "--no-rag-md",
+        action="store_true",
+        help="Skip exporting problem instructions as .md files into local_ai/rag/docs/problems/",
+    )
     args = parser.parse_args()
 
     answers_dir = Path(args.fill_answers) if args.fill_answers else None
@@ -456,6 +481,7 @@ def main() -> None:
         stats_only=args.stats,
         translate=args.translate,
         translate_model=args.translate_model,
+        rag_md=not args.no_rag_md,
     )
     if not args.stats:
         print(json.dumps(result, ensure_ascii=False, indent=2))

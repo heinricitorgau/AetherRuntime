@@ -43,3 +43,7 @@
 {"at": "2026-07-04T04:57:03+00:00", "action": "import", "task_id": "2026_exam1_series_product", "source": "import_json:d_exam_2026.json", "translated": true, "translation_model": "qwen2.5:7b-instruct"}
 {"at": "2026-07-04T04:57:03+00:00", "action": "import", "task_id": "2026_exam1_geometry_line_parabola", "source": "import_json:d_exam_2026.json", "translated": true, "translation_model": "qwen2.5:7b-instruct"}
 {"at": "2026-07-04T04:57:03+00:00", "action": "import", "task_id": "2026_exam1_poker_match", "source": "import_json:d_exam_2026.json", "translated": true, "translation_model": "qwen2.5:7b-instruct"}
+{"at": "2026-07-04T05:50:33+00:00", "action": "rag_md_export", "task_id": "2026_exam1_pattern_diamond", "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\rag\\docs\\problems\\2026_exam1_pattern_diamond.md"}
+{"at": "2026-07-04T05:50:33+00:00", "action": "rag_md_export", "task_id": "2026_exam1_series_product", "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\rag\\docs\\problems\\2026_exam1_series_product.md"}
+{"at": "2026-07-04T05:50:33+00:00", "action": "rag_md_export", "task_id": "2026_exam1_geometry_line_parabola", "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\rag\\docs\\problems\\2026_exam1_geometry_line_parabola.md"}
+{"at": "2026-07-04T05:50:33+00:00", "action": "rag_md_export", "task_id": "2026_exam1_poker_match", "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\rag\\docs\\problems\\2026_exam1_poker_match.md"}
