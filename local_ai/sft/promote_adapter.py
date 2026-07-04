@@ -10,13 +10,17 @@ from pathlib import Path
 from typing import Any
 
 _HERE = Path(__file__).resolve().parent
+_REPO_ROOT = _HERE.parent.parent
 _REPORT_DIR = _HERE / "reports"
 _ADAPTER_DIR = _HERE / "adapters"
 
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 from promotion_policy import evaluate_file  # noqa: E402
+from local_ai.shared.regression_policy import regression_verdict  # noqa: E402
 
 
 def _now() -> str:
@@ -144,6 +148,17 @@ def _build_report_md(adapter_path: str, decision: dict[str, Any], target: Path) 
     else:
         a("- No task deltas found.")
     a("")
+    guard = decision.get("regression_guard") or {}
+    if guard:
+        a("## Regression Guard")
+        a("")
+        a(f"- Verdict: `{guard.get('verdict')}`")
+        if guard.get("override"):
+            a(f"- Override: **{guard.get('override')}** (regression guard blocked promotion)")
+        if guard.get("regression_reasons"):
+            for r in guard["regression_reasons"]:
+                a(f"- {r}")
+        a("")
     a("## Promotion Decision")
     a("")
     if decision.get("status") == "promote":
@@ -157,9 +172,45 @@ def _build_report_md(adapter_path: str, decision: dict[str, Any], target: Path) 
     return "\n".join(lines)
 
 
+def _apply_regression_guard(decision: dict[str, Any]) -> dict[str, Any]:
+    """Monotonic safety overlay: the regression guard can only BLOCK a promotion.
+
+    It runs the canonical regression policy on the adapter's own comparison deltas
+    and, if a hard regression is detected, downgrades `promote`/`safe_no_change`
+    to `reject`. It never upgrades a decision. The guard record is attached for
+    auditability regardless of outcome.
+    """
+    metrics = decision.get("metrics") or {}
+    guard = regression_verdict(
+        {
+            "accepted_delta": metrics.get("accepted_delta", 0),
+            "avg_score_delta": metrics.get("avg_score_delta", 0.0),
+            "compile_delta": metrics.get("compile_delta", 0.0),
+            "runtime_delta": metrics.get("runtime_delta", 0.0),
+            "newly_broken_count": 0,
+        },
+        task_deltas=decision.get("task_deltas"),
+    )
+    decision["regression_guard"] = guard
+    status = decision.get("status")
+    verdict = guard["verdict"]
+    # Block on a hard regression (-> reject) or conflicting evidence (-> ablation_only).
+    # Conflicting evidence is not safe to auto-promote, but is not a clean regression.
+    if verdict in ("regression", "manual_review") and status in ("promote", "safe_no_change"):
+        new_status = "reject" if verdict == "regression" else "ablation_only"
+        guard["override"] = f"{status} -> {new_status}"
+        decision["status"] = new_status
+        base_reason = (decision.get("reason") or "").strip()
+        reasons = guard["regression_reasons"] or ["conflicting regression/improvement signals"]
+        guard_reason = "regression guard: " + "; ".join(reasons)
+        decision["reason"] = f"{base_reason}; {guard_reason}".lstrip("; ").strip()
+    return decision
+
+
 def promote(adapter_path: str, comparison_path: Path) -> dict[str, Any]:
     decision = evaluate_file(comparison_path)
     decision["adapter_path"] = adapter_path
+    decision = _apply_regression_guard(decision)
     target = _apply_registry_update(adapter_path, decision)
 
     report = {
@@ -169,6 +220,7 @@ def promote(adapter_path: str, comparison_path: Path) -> dict[str, Any]:
         "reason": decision.get("reason"),
         "metrics": decision.get("metrics"),
         "largest_drop": decision.get("largest_drop"),
+        "regression_guard": decision.get("regression_guard"),
         "comparison_run_id": decision.get("comparison_run_id"),
         "comparison_path": str(comparison_path),
         "registry_updated": str(target),

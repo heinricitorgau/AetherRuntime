@@ -1,0 +1,48 @@
+{
+  "baseline": "qwen25_coder_3b",
+  "default_model": null,
+  "models": [
+    {
+      "model_alias": "qwen25_coder_14b",
+      "ollama_model": "qwen2.5-coder:14b",
+      "decision": "manual_review",
+      "promotion_level": "off_ladder",
+      "weighted_score_delta": -4.26,
+      "override_valid": true,
+      "strict": {
+        "benchmark": "c_exam_2025_strict_seeded",
+        "candidate_avg_score": 66.5,
+        "baseline_avg_score": 83.2,
+        "accepted_delta": -1,
+        "avg_score_delta": -16.7,
+        "compile_delta": -0.25,
+        "runtime_delta": -0.25,
+        "semantic_delta": 0.0
+      },
+      "generated": {
+        "benchmark": "generated_c_tasks_v1",
+        "candidate_avg_score": 93.8,
+        "baseline_avg_score": 79.4,
+        "accepted_delta": 4,
+        "avg_score_delta": 14.4,
+        "compile_delta": 0.1,
+        "runtime_delta": 0.3,
+        "semantic_delta": 0.0
+      },
+      "reasons": [
+        "strict benchmark regressed (-16.7 avg) while generated benchmark materially improved (+14.4 avg)",
+        "conflicting evidence requires human decision"
+      ],
+      "regression_guard": {
+        "per_benchmark": {
+          "strict": "regression",
+          "generated": "improvement"
+        },
+        "verdict": "regression"
+      },
+      "comparison_timestamp": "2026-06-25T04:31:37+00:00",
+      "timestamp": "2026-06-25T05:51:49+00:00"
+    }
+  ],
+  "updated_at": "2026-06-25T05:51:49+00:00"
+}

@@ -69,6 +69,17 @@ def run_smoke() -> dict[str, Any]:
     steps.append(_run_step("architecture map", ["local_ai/system/build_architecture_map.py"]))
     steps.append(_run_step("adapter registry summary", ["local_ai/sft/list_adapters.py"]))
     steps.append(_run_step("routing classifier self-test", ["local_ai/routing/task_classifier.py", "--self-test"]))
+    steps.append(_run_step("regression detector self-test", ["local_ai/benchmark/detect_regression.py", "--self-test"]))
+    steps.append(_run_step("benchmark trend self-test", ["local_ai/benchmark/benchmark_trend.py", "--self-test"]))
+    steps.append(_run_step("eval reliability self-test", ["local_ai/benchmark/eval_reliability.py", "--self-test"]))
+    steps.append(_run_step("profile governance self-test", ["local_ai/config/govern_profiles.py", "--self-test"]))
+    steps.append(_run_step("goldens governance self-test", ["local_ai/goldens/promote_goldens.py", "--self-test"]))
+    steps.append(_run_step("routing governance self-test", ["local_ai/routing/audit_routing.py", "--self-test"]))
+    steps.append(_run_step("deploy gate self-test", ["local_ai/release/deploy_gate.py", "--self-test"]))
+    steps.append(_run_step("corpus import self-test", ["local_ai/corpus/import_exam.py", "--self-test"]))
+    steps.append(_run_step("corpus review-workflow self-test", ["local_ai/corpus/review_workflow.py", "--self-test"]))
+    steps.append(_run_step("corpus integrity validation", ["local_ai/corpus/validate_corpus.py"]))
+    steps.append(_run_step("governance status self-test", ["local_ai/system/governance_status.py", "--self-test"]))
     steps.append(
         _run_step(
             "routing plan dry evaluation",

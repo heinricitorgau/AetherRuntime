@@ -1,0 +1,39 @@
+{
+  "task_id": "synthetic_v3_geometry_003",
+  "source": "generated_synthetic_v3",
+  "topic": "geometry",
+  "difficulty": "medium",
+  "prompt": "Task G3: Write a complete C99 program for a geometry task: line equation through two points. The validator sample input is '0 0 4 3'. Read coordinates from stdin and print labeled numeric results.",
+  "reference_solution": "#include <stdio.h>\n\nint main(void) {\n    double x1, y1, x2, y2;\n    if (scanf(\"%lf %lf %lf %lf\", &x1, &y1, &x2, &y2) != 4) return 0;\n    double a = y1 - y2;\n    double b = x2 - x1;\n    double c = a * x1 + b * y1;\n    printf(\"line: %.3fx + %.3fy = %.3f\\n\", a, b, c);\n    return 0;\n}\n",
+  "sample_input": "0 0 4 3\n",
+  "expected_output_contains": [
+    "line",
+    "x",
+    "y"
+  ],
+  "compile_verified": true,
+  "runtime_verified": true,
+  "semantic_verified": true,
+  "review_status": "candidate",
+  "reviewer": null,
+  "review_timestamp": null,
+  "verification_level": "agent_verified",
+  "created_at": "2026-06-25T06:39:09+00:00",
+  "history": [
+    {
+      "action": "import",
+      "to_status": "raw",
+      "at": "2026-06-25T06:39:09+00:00",
+      "by": "generated_synthetic_v3"
+    },
+    {
+      "action": "agent_verify",
+      "from_status": "raw",
+      "to_status": "candidate",
+      "to_level": "agent_verified",
+      "by": "agent",
+      "note": "",
+      "at": "2026-06-25T06:39:09+00:00"
+    }
+  ]
+}

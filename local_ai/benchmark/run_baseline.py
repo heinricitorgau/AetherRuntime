@@ -48,6 +48,7 @@ import os
 import re
 import sys
 import tempfile
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -88,6 +89,15 @@ from local_ai.shared.config_loader import (
     load_model_profile,
 )
 from local_ai.experiments.register_run import register_run
+from local_ai.shared.progress import (
+    ThinkingSpinner,
+    print_final_summary,
+    print_model_info,
+    print_question_done,
+    print_question_start,
+    print_stage,
+    symbols,
+)
 
 # ── Defaults (match env var names in spec) ───────────────────────────────────
 
@@ -334,22 +344,31 @@ def evaluate_case(
     temperature: float = _DEFAULT_TEMPERATURE,
     user_prompt: str | None = None,
     skip_repair: bool = False,
+    show_progress: bool = True,
 ) -> tuple[dict, dict]:
     """Evaluate one task.  Returns (result_record, raw_output_record)."""
     case_id = task["id"]
 
     # ── 1. Proxy call ─────────────────────────────────────────────────────
-    raw_response, proxy_error, latency_ms, proxy_meta = call_proxy(
-        proxy_url=proxy_url,
-        model=model,
-        system=system_prompt,
-        user=user_prompt if user_prompt is not None else task["instruction"],
-        max_tokens=max_tokens,
-        timeout=timeout,
-        temperature=temperature,
-        skip_repair=skip_repair,
-        return_metadata=True,
-    )
+    if show_progress:
+        print_stage(2, 5, "Send Request")
+    call_kwargs = {
+        "proxy_url": proxy_url,
+        "model": model,
+        "system": system_prompt,
+        "user": user_prompt if user_prompt is not None else task["instruction"],
+        "max_tokens": max_tokens,
+        "timeout": timeout,
+        "temperature": temperature,
+        "skip_repair": skip_repair,
+        "return_metadata": True,
+    }
+    if show_progress:
+        print_stage(3, 5, "Waiting Model")
+        with ThinkingSpinner(model=model, stage="Model Inference", timeout=timeout):
+            raw_response, proxy_error, latency_ms, proxy_meta = call_proxy(**call_kwargs)
+    else:
+        raw_response, proxy_error, latency_ms, proxy_meta = call_proxy(**call_kwargs)
     requested_model = str(proxy_meta.get("requested_model") or model)
     effective_model = proxy_meta.get("effective_model")
     model_override_valid = bool(effective_model) and requested_model == effective_model
@@ -381,6 +400,8 @@ def evaluate_case(
     }
 
     # ── 3. Extraction ─────────────────────────────────────────────────────
+    if show_progress:
+        print_stage(4, 5, "Extract Code")
     if proxy_error:
         extracted_code, extract_method = "", "none"
     else:
@@ -405,6 +426,8 @@ def evaluate_case(
     }
 
     # ── 6. Compile ────────────────────────────────────────────────────────
+    if show_progress:
+        print_stage(5, 5, "Compile & Validate")
     if compiler and extracted_code:
         comp = compile_code(extracted_code, case_id, work_dir, compiler)
     else:
@@ -416,6 +439,8 @@ def evaluate_case(
         "errors":   comp.get("errors", [])[:5],
         "warnings": comp.get("warnings", [])[:3],
     }
+    if show_progress and not comp["ok"]:
+        print(f"{symbols()['fail']} Compile Failed", flush=True)
 
     # ── 7. Runtime ────────────────────────────────────────────────────────
     if comp.get("exe"):
@@ -506,8 +531,10 @@ def run_benchmark(
     skip_compile: bool = False,
     proxy_config: dict | None = None,
     verbose: bool = False,
+    model_override_requested: str | None = None,
 ) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
+    benchmark_started = time.monotonic()
 
     compiler = None if skip_compile else find_compiler()
     work_dir = Path(tempfile.mkdtemp(prefix="bench_build_"))
@@ -525,6 +552,12 @@ def run_benchmark(
 
     total = len(tasks)
     mode_tag = "STRICT" if strict_code_only else "standard"
+    print_model_info(
+        configured_model=proxy_config_model,
+        requested_model=model_override_requested,
+        effective_model=model,
+        override_valid=(model_override_requested == model) if model_override_requested else None,
+    )
     print(f"[benchmark] model={model} tasks={total} mode={mode_tag}")
     if verbose:
         print(f"[benchmark] proxy={proxy_url}  max_tokens={max_tokens}  timeout={timeout}s  temp={temperature}")
@@ -541,7 +574,10 @@ def run_benchmark(
             print(f"{prefix}  [dry-run]")
             continue
 
-        print(f"{prefix}  ...", end="", flush=True)
+        case_started = time.monotonic()
+        task_label = task.get("title") or task.get("name") or task.get("id", case_id)
+        print_question_start(i, total, str(task_label), "Generating solution...")
+        print_stage(1, 5, "Build Prompt")
 
         if strict_code_only:
             user_prompt, geom_seed = _build_strict_user_prompt(task)
@@ -587,6 +623,13 @@ def run_benchmark(
             print(f"\r{prefix}  [{p}{c}{r}{s}{k}{t}] score={score:3d}  {lat}ms")
         else:
             print(f"\r{prefix}  [{p}{c}{r}{s}{k}{t}] score={score:3d}")
+        print_question_done(
+            index=i,
+            compile_ok=bool(chk.get("compile", {}).get("passed")),
+            runtime_ok=bool(chk.get("runtime", {}).get("passed")),
+            semantic_ok=bool(chk.get("semantic", {}).get("passed")),
+            elapsed=time.monotonic() - case_started,
+        )
 
     if dry_run:
         print(f"\n[benchmark] dry-run: {total} tasks listed, no API calls made")
@@ -663,6 +706,17 @@ def run_benchmark(
             fh.write(f"- proxy_config_model: `{proxy_config_model}`\n")
             fh.write(f"- model_override_valid: `{model_override_valid}`\n")
             fh.write(f"- benchmark_status: `{benchmark_status}`\n")
+
+    print_final_summary(
+        questions_done=len(results),
+        questions_total=len(tasks),
+        compile_pass=sum(1 for r in results if r.get("checks", {}).get("compile", {}).get("passed")),
+        runtime_pass=sum(1 for r in results if r.get("checks", {}).get("runtime", {}).get("passed")),
+        semantic_pass=sum(1 for r in results if r.get("checks", {}).get("semantic", {}).get("passed")),
+        average_score=float(report.get("average_score", 0.0) or 0.0),
+        elapsed=time.monotonic() - benchmark_started,
+        output_path=str(out_dir / "report.md"),
+    )
 
     # ── Regression guard (strict mode only) ──────────────────────────────────
     # Thresholds from best known baseline strict_20260514_224452
@@ -927,6 +981,7 @@ def main() -> None:
         skip_compile=args.no_compile,
         proxy_config=proxy_config,
         verbose=args.verbose,
+        model_override_requested=str(args.model_override) if args.model_override else None,
     )
 
     if report:

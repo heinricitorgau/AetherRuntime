@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-23T18:25:57+00:00",
+  "timestamp": "2026-06-25T05:58:17+00:00",
   "adapter_path": "local_ai/sft/artifacts/retry_geometry_v3_guarded",
   "status": "safe_no_change",
   "reason": "no material aggregate change and all guardrails held",
@@ -19,6 +19,22 @@
     "delta": 0.0,
     "base_runtime_pass": false,
     "lora_runtime_pass": false
+  },
+  "regression_guard": {
+    "verdict": "pass",
+    "regressed": false,
+    "improved": false,
+    "regression_reasons": [],
+    "improvement_reasons": [],
+    "largest_drop": {
+      "id": "2025_midterm_001",
+      "base_score": 70.0,
+      "lora_score": 70.0,
+      "delta": 0.0,
+      "base_runtime_pass": false,
+      "lora_runtime_pass": false
+    },
+    "big_task_drops": []
   },
   "comparison_run_id": "compare_lora_retry_geometry_v3_guarded_20260524_021509",
   "comparison_path": "local_ai\\sft\\reports\\comparison_report.json",

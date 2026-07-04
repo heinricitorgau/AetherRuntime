@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-06-25T06:18:28+00:00",
+  "verdict": "blocked",
+  "policy": {
+    "block_on": [
+      "smoke",
+      "config",
+      "profile_governance",
+      "routing_governance",
+      "regression"
+    ],
+    "warn_on": [
+      "reliability",
+      "awaiting_review",
+      "human_goldens"
+    ]
+  },
+  "blocked_by": [
+    "regression: latest verdict=regression"
+  ],
+  "warnings": [
+    "reliability: verdict=flaky stamp_rate=0.141",
+    "awaiting_review: 1 awaiting manual review",
+    "human_goldens: human_verified=0"
+  ],
+  "checks": [
+    {
+      "id": "smoke",
+      "ok": true,
+      "detail": "status=PASS"
+    },
+    {
+      "id": "config",
+      "ok": true,
+      "detail": "issues=0"
+    },
+    {
+      "id": "profile_governance",
+      "ok": true,
+      "detail": "decision=pass"
+    },
+    {
+      "id": "routing_governance",
+      "ok": true,
+      "detail": "verdict=pass"
+    },
+    {
+      "id": "regression",
+      "ok": false,
+      "detail": "latest verdict=regression"
+    },
+    {
+      "id": "reliability",
+      "ok": false,
+      "detail": "verdict=flaky stamp_rate=0.141"
+    },
+    {
+      "id": "awaiting_review",
+      "ok": false,
+      "detail": "1 awaiting manual review"
+    },
+    {
+      "id": "human_goldens",
+      "ok": false,
+      "detail": "human_verified=0"
+    }
+  ]
+}

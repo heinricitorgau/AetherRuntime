@@ -5,7 +5,7 @@
 **Decision**: no material aggregate change and all guardrails held  
 **Comparison run**: `compare_lora_retry_geometry_v3_guarded_20260524_021509`  
 **Registry updated**: `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\adapters\safe_adapters.json`  
-**Generated**: 2026-05-23T18:25:58+00:00
+**Generated**: 2026-06-25T05:58:17+00:00
 
 ## Metrics
 
@@ -25,6 +25,10 @@
 - Base score: 70.0
 - LoRA score: 70.0
 - Delta: 0.0
+
+## Regression Guard
+
+- Verdict: `pass`
 
 ## Promotion Decision
 

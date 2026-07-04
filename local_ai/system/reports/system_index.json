@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-06-22T04:22:40+00:00",
+  "timestamp": "2026-06-25T08:25:42+00:00",
   "config_status": "PASS",
   "doctor_status": "available",
   "benchmark_status": "available",
-  "experiment_count": 95,
+  "experiment_count": 124,
   "adapter_count": 1,
   "safe_adapters": [
     "local_ai/sft/artifacts/retry_geometry_v3_guarded"
@@ -21,10 +21,10 @@
     "rejected_adapters": [],
     "default_selected": false
   },
-  "snapshots_count": 5,
+  "snapshots_count": 14,
   "routing_enabled": true,
   "synthetic_training_status": "synthetic_training_route_frozen",
-  "latest_release_snapshot": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_cli_v7",
-  "latest_benchmark": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\baseline_report.json",
+  "latest_release_snapshot": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\corpus_platform_v10",
+  "latest_benchmark": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\reliability\\eval_reliability.json",
   "latest_routing_report": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.md"
 }

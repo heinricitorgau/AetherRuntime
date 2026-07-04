@@ -1,0 +1,112 @@
+{
+  "experiment_count": 123,
+  "by_type": {
+    "regression_detection": 3,
+    "benchmark": 83,
+    "compare_lora": 19,
+    "train": 17,
+    "golden_comparison": 1
+  },
+  "latest_runs": [
+    {
+      "run_id": "regression_strict_20260514_222958",
+      "timestamp": "2026-06-25T05:25:21+00:00",
+      "run_type": "regression_detection",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": null,
+      "adapter_path": null
+    },
+    {
+      "run_id": "regression_strict_20260514_223526_2",
+      "timestamp": "2026-06-25T05:25:04+00:00",
+      "run_type": "regression_detection",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": null,
+      "adapter_path": null
+    },
+    {
+      "run_id": "regression_strict_20260514_223526",
+      "timestamp": "2026-06-25T05:25:00+00:00",
+      "run_type": "regression_detection",
+      "avg_score": null,
+      "accepted": null,
+      "benchmark_profile": null,
+      "model_profile": null,
+      "adapter_path": null
+    },
+    {
+      "run_id": "model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605",
+      "timestamp": "2026-06-25T04:31:27+00:00",
+      "run_type": "benchmark",
+      "avg_score": 93.8,
+      "accepted": 37,
+      "benchmark_profile": "generated_c_tasks_v1",
+      "model_profile": "override:qwen2.5-coder:14b",
+      "adapter_path": null
+    },
+    {
+      "run_id": "model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958",
+      "timestamp": "2026-06-25T03:56:01+00:00",
+      "run_type": "benchmark",
+      "avg_score": 66.5,
+      "accepted": 3,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "override:qwen2.5-coder:14b",
+      "adapter_path": null
+    },
+    {
+      "run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845",
+      "timestamp": "2026-06-25T03:49:57+00:00",
+      "run_type": "benchmark",
+      "avg_score": 79.4,
+      "accepted": 33,
+      "benchmark_profile": "generated_c_tasks_v1",
+      "model_profile": "override:qwen2.5-coder:3b",
+      "adapter_path": null
+    },
+    {
+      "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719",
+      "timestamp": "2026-06-25T03:38:43+00:00",
+      "run_type": "benchmark",
+      "avg_score": 83.2,
+      "accepted": 4,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "override:qwen2.5-coder:3b",
+      "adapter_path": null
+    },
+    {
+      "run_id": "model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158",
+      "timestamp": "2026-06-25T02:39:03+00:00",
+      "run_type": "benchmark",
+      "avg_score": 95.8,
+      "accepted": 38,
+      "benchmark_profile": "generated_c_tasks_v1",
+      "model_profile": "override:qwen2.5-coder:14b",
+      "adapter_path": null
+    },
+    {
+      "run_id": "model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548",
+      "timestamp": "2026-06-25T02:01:54+00:00",
+      "run_type": "benchmark",
+      "avg_score": 66.5,
+      "accepted": 3,
+      "benchmark_profile": "c_exam_2025_strict_seeded",
+      "model_profile": "override:qwen2.5-coder:14b",
+      "adapter_path": null
+    },
+    {
+      "run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524",
+      "timestamp": "2026-06-25T01:55:46+00:00",
+      "run_type": "benchmark",
+      "avg_score": 83.0,
+      "accepted": 34,
+      "benchmark_profile": "generated_c_tasks_v1",
+      "model_profile": "override:qwen2.5-coder:3b",
+      "adapter_path": null
+    }
+  ]
+}

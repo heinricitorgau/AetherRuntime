@@ -1,0 +1,38 @@
+{
+  "task_id": "synthetic_v3_geometry_006",
+  "source": "generated_synthetic_v3",
+  "topic": "geometry",
+  "difficulty": "hard",
+  "prompt": "Task G6: Write a complete C99 program for a geometry task: triangle perimeter and area using Heron's formula. The validator sample input is '0 0 0 3 4 0'. Read coordinates from stdin and print labeled numeric results.",
+  "reference_solution": "#include <stdio.h>\n#include <math.h>\n\ndouble dist(double x1, double y1, double x2, double y2) {\n    double dx = x2 - x1, dy = y2 - y1;\n    return sqrt(dx * dx + dy * dy);\n}\n\nint main(void) {\n    double x1, y1, x2, y2, x3, y3;\n    if (scanf(\"%lf %lf %lf %lf %lf %lf\", &x1, &y1, &x2, &y2, &x3, &y3) != 6) return 0;\n    double a = dist(x1, y1, x2, y2);\n    double b = dist(x2, y2, x3, y3);\n    double c = dist(x3, y3, x1, y1);\n    double s = (a + b + c) / 2.0;\n    double area = sqrt(s * (s - a) * (s - b) * (s - c));\n    printf(\"perimeter = %.3f\\n\", a + b + c);\n    printf(\"area = %.3f\\n\", area);\n    return 0;\n}\n",
+  "sample_input": "0 0 0 3 4 0\n",
+  "expected_output_contains": [
+    "area",
+    "6.000"
+  ],
+  "compile_verified": true,
+  "runtime_verified": true,
+  "semantic_verified": true,
+  "review_status": "candidate",
+  "reviewer": null,
+  "review_timestamp": null,
+  "verification_level": "agent_verified",
+  "created_at": "2026-06-25T06:39:10+00:00",
+  "history": [
+    {
+      "action": "import",
+      "to_status": "raw",
+      "at": "2026-06-25T06:39:10+00:00",
+      "by": "generated_synthetic_v3"
+    },
+    {
+      "action": "agent_verify",
+      "from_status": "raw",
+      "to_status": "candidate",
+      "to_level": "agent_verified",
+      "by": "agent",
+      "note": "",
+      "at": "2026-06-25T06:39:10+00:00"
+    }
+  ]
+}

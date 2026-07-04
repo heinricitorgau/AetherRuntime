@@ -1,0 +1,39 @@
+{
+  "task_id": "synthetic_v3_pattern_generation_009",
+  "source": "generated_synthetic_v3",
+  "topic": "pattern_generation",
+  "difficulty": "hard",
+  "prompt": "Task P9: Write a complete C99 program that reads integer n and prints a left aligned increasing number triangle. The sample uses n=3. Use nested loops rather than hard-coded output.",
+  "reference_solution": "#include <stdio.h>\n\nint main(void) {\n    int n;\n    if (scanf(\"%d\", &n) != 1) return 0;\n    for (int i = 1; i <= n; i++) {\n        for (int j = 0; j < i; j++) printf(\"%d\", i);\n        printf(\"\\n\");\n    }\n    return 0;\n}\n",
+  "sample_input": "3\n",
+  "expected_output_contains": [
+    "1",
+    "22",
+    "333"
+  ],
+  "compile_verified": true,
+  "runtime_verified": true,
+  "semantic_verified": true,
+  "review_status": "candidate",
+  "reviewer": null,
+  "review_timestamp": null,
+  "verification_level": "agent_verified",
+  "created_at": "2026-06-25T06:39:07+00:00",
+  "history": [
+    {
+      "action": "import",
+      "to_status": "raw",
+      "at": "2026-06-25T06:39:07+00:00",
+      "by": "generated_synthetic_v3"
+    },
+    {
+      "action": "agent_verify",
+      "from_status": "raw",
+      "to_status": "candidate",
+      "to_level": "agent_verified",
+      "by": "agent",
+      "note": "",
+      "at": "2026-06-25T06:39:08+00:00"
+    }
+  ]
+}

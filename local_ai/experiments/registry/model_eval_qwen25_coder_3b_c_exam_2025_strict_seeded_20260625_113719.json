@@ -1,0 +1,39 @@
+{
+  "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719",
+  "timestamp": "2026-06-25T03:38:43+00:00",
+  "run_type": "benchmark",
+  "model_profile": "override:qwen2.5-coder:3b",
+  "benchmark_profile": "c_exam_2025_strict_seeded",
+  "training_job": null,
+  "adapter_path": null,
+  "accepted": 4,
+  "avg_score": 83.2,
+  "compile_rate": 1.0,
+  "runtime_rate": 0.75,
+  "semantic_rate": 1.0,
+  "timeout_rate": 0.0,
+  "git_commit": "9a95950",
+  "python_version": "3.12.10",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "python_executable": "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+  "model": "qwen2.5-coder:3b",
+  "dataset_profile": "c_exam_test_2025",
+  "cases_run": 4,
+  "keyword_rate": 1.0,
+  "linked_reports": {
+    "run_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\report.json",
+    "run_report_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\report.md",
+    "baseline_report_json": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\baseline_report.json",
+    "baseline_report_md": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\baseline_report.md",
+    "results_jsonl": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\results.jsonl",
+    "raw_outputs_jsonl": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\raw_outputs.jsonl"
+  },
+  "config_profiles": {
+    "benchmark": "c_exam_2025_strict_seeded",
+    "model": "override:qwen2.5-coder:3b",
+    "dataset": "c_exam_test_2025",
+    "prompt": "strict_code_only",
+    "strict_prompt_version": "v2"
+  }
+}

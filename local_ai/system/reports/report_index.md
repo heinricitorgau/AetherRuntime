@@ -1,23 +1,243 @@
 # Report Index
 
-Generated: `2026-06-22T04:22:40+00:00`
-Reports indexed: 513
+Generated: `2026-06-25T08:25:42+00:00`
+Reports indexed: 727
 
 | Type | Modified | Path | Tags |
 |------|----------|------|------|
-| system | 2026-06-22T04:22:40+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\system_index.json` | system |
-| system | 2026-06-22T04:22:40+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\system_index.md` | system |
-| sft | 2026-05-26T12:43:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_registry_summary.json` | adapter, sft, summary |
-| sft | 2026-05-26T12:43:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_registry_summary.md` | adapter, sft, summary |
-| system | 2026-05-26T12:43:26+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\architecture_map.md` | system |
-| system | 2026-05-26T12:43:26+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\report_index.json` | system |
-| system | 2026-05-26T12:43:26+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\report_index.md` | system |
-| routing | 2026-05-26T12:42:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\c_exam_2025_strict_seeded_routing_plan.json` | routing |
-| routing | 2026-05-26T12:42:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\c_exam_2025_strict_seeded_routing_plan.md` | routing |
-| routing | 2026-05-26T12:42:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_plan.json` | routing |
-| routing | 2026-05-26T12:42:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_plan.md` | routing |
-| system | 2026-05-26T12:42:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\smoke_test_report.json` | system |
-| system | 2026-05-26T12:42:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\smoke_test_report.md` | system |
+| system | 2026-06-25T08:25:42+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\system_index.json` | system |
+| system | 2026-06-25T08:25:42+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\system_index.md` | system |
+| routing | 2026-06-25T08:22:04+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\c_exam_2025_strict_seeded_routing_plan.json` | routing |
+| routing | 2026-06-25T08:22:04+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\c_exam_2025_strict_seeded_routing_plan.md` | routing |
+| routing | 2026-06-25T08:22:04+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_plan.json` | routing |
+| routing | 2026-06-25T08:22:04+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_plan.md` | routing |
+| system | 2026-06-25T08:22:04+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\smoke_test_report.json` | system |
+| system | 2026-06-25T08:22:04+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\smoke_test_report.md` | system |
+| sft | 2026-06-25T08:22:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_registry_summary.json` | adapter, sft, summary |
+| sft | 2026-06-25T08:22:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_registry_summary.md` | adapter, sft, summary |
+| system | 2026-06-25T08:22:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\architecture_map.md` | system |
+| system | 2026-06-25T08:22:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\report_index.json` | system |
+| system | 2026-06-25T08:22:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\report_index.md` | system |
+| release_snapshot | 2026-06-25T06:41:25+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\corpus_platform_v10\benchmark_summary.json` | benchmark, release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:41:25+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\corpus_platform_v10\config_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:41:25+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\corpus_platform_v10\experiment_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:41:25+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\corpus_platform_v10\sft_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:41:25+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\corpus_platform_v10\snapshot.json` | release, snapshot |
+| release_snapshot | 2026-06-25T06:41:25+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\corpus_platform_v10\snapshot.md` | release, snapshot |
+| release_snapshot | 2026-06-25T06:25:32+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_signoff_mechanism_v1\benchmark_summary.json` | benchmark, release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:25:32+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_signoff_mechanism_v1\config_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:25:32+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_signoff_mechanism_v1\experiment_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:25:32+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_signoff_mechanism_v1\sft_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:25:32+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_signoff_mechanism_v1\snapshot.json` | release, snapshot |
+| release_snapshot | 2026-06-25T06:25:32+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_signoff_mechanism_v1\snapshot.md` | release, snapshot |
+| system | 2026-06-25T06:25:28+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\governance_status.json` | system |
+| system | 2026-06-25T06:25:28+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\system\reports\governance_status.md` | system |
+| release_snapshot | 2026-06-25T06:18:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_harvest_v1\benchmark_summary.json` | benchmark, release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:18:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_harvest_v1\config_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:18:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_harvest_v1\experiment_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:18:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_harvest_v1\sft_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:18:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_harvest_v1\snapshot.json` | release, snapshot |
+| release_snapshot | 2026-06-25T06:18:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_harvest_v1\snapshot.md` | release, snapshot |
+| release_snapshot | 2026-06-25T06:14:19+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_routing_deploy_v1\benchmark_summary.json` | benchmark, release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:14:19+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_routing_deploy_v1\config_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:14:19+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_routing_deploy_v1\experiment_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:14:19+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_routing_deploy_v1\sft_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:14:19+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_routing_deploy_v1\snapshot.json` | release, snapshot |
+| release_snapshot | 2026-06-25T06:14:19+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\goldens_routing_deploy_v1\snapshot.md` | release, snapshot |
+| routing | 2026-06-25T06:13:14+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_governance_report.json` | routing |
+| routing | 2026-06-25T06:13:14+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\routing\reports\routing_governance_report.md` | routing |
+| release_snapshot | 2026-06-25T06:05:11+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\eval_reliability_profile_gov_v1\benchmark_summary.json` | benchmark, release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:05:11+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\eval_reliability_profile_gov_v1\config_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:05:11+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\eval_reliability_profile_gov_v1\experiment_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:05:11+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\eval_reliability_profile_gov_v1\sft_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T06:05:11+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\eval_reliability_profile_gov_v1\snapshot.json` | release, snapshot |
+| release_snapshot | 2026-06-25T06:05:11+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\eval_reliability_profile_gov_v1\snapshot.md` | release, snapshot |
+| benchmark | 2026-06-25T06:04:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\reliability\eval_reliability.json` | benchmark |
+| benchmark | 2026-06-25T06:04:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\reliability\eval_reliability.md` | benchmark |
+| release_snapshot | 2026-06-25T05:58:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\continuous_governance_v1\benchmark_summary.json` | benchmark, release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:58:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\continuous_governance_v1\config_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:58:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\continuous_governance_v1\experiment_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:58:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\continuous_governance_v1\sft_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:58:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\continuous_governance_v1\snapshot.json` | release, snapshot |
+| release_snapshot | 2026-06-25T05:58:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\continuous_governance_v1\snapshot.md` | release, snapshot |
+| benchmark | 2026-06-25T05:58:53+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\trend\benchmark_trend.json` | benchmark |
+| benchmark | 2026-06-25T05:58:53+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\trend\benchmark_trend.md` | benchmark |
+| sft | 2026-06-25T05:58:17+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_promotion_report.json` | adapter, promotion, sft |
+| sft | 2026-06-25T05:58:17+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_promotion_report.md` | adapter, promotion, sft |
+| release_snapshot | 2026-06-25T05:52:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_guard_v1\benchmark_summary.json` | benchmark, release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:52:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_guard_v1\config_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:52:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_guard_v1\experiment_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:52:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_guard_v1\sft_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:52:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_guard_v1\snapshot.json` | release, snapshot |
+| release_snapshot | 2026-06-25T05:52:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_guard_v1\snapshot.md` | release, snapshot |
+| benchmark | 2026-06-25T05:47:48+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\regression\regression_report.json` | benchmark, regression |
+| benchmark | 2026-06-25T05:47:48+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\regression\regression_report.md` | benchmark, regression |
+| release_snapshot | 2026-06-25T05:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_detection_v1\benchmark_summary.json` | benchmark, release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_detection_v1\config_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_detection_v1\experiment_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_detection_v1\sft_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_detection_v1\snapshot.json` | release, snapshot |
+| release_snapshot | 2026-06-25T05:27:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\regression_detection_v1\snapshot.md` | release, snapshot |
+| release_snapshot | 2026-06-25T05:04:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_model_governance_v9\benchmark_summary.json` | benchmark, release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:04:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_model_governance_v9\config_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:04:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_model_governance_v9\experiment_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:04:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_model_governance_v9\sft_summary.json` | release, snapshot, summary |
+| release_snapshot | 2026-06-25T05:04:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_model_governance_v9\snapshot.json` | release, snapshot |
+| release_snapshot | 2026-06-25T05:04:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_model_governance_v9\snapshot.md` | release, snapshot |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\baseline_report.json` | benchmark |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\baseline_report.md` | benchmark |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\report.json` | benchmark |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\report.md` | benchmark |
+| benchmark | 2026-06-25T04:31:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:56:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:56:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:56:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:56:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\report.json` | benchmark |
+| benchmark | 2026-06-25T03:56:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\report.md` | benchmark |
+| benchmark | 2026-06-25T03:56:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:49:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:49:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:49:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:49:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\report.json` | benchmark |
+| benchmark | 2026-06-25T03:49:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\report.md` | benchmark |
+| benchmark | 2026-06-25T03:49:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:38:43+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:38:43+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:38:43+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T03:38:43+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\report.json` | benchmark |
+| benchmark | 2026-06-25T03:38:43+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\report.md` | benchmark |
+| benchmark | 2026-06-25T03:38:43+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T02:39:03+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T02:39:03+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T02:39:03+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T02:39:03+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\report.json` | benchmark |
+| benchmark | 2026-06-25T02:39:03+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\report.md` | benchmark |
+| benchmark | 2026-06-25T02:39:03+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T02:01:54+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T02:01:54+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T02:01:54+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T02:01:54+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\report.json` | benchmark |
+| benchmark | 2026-06-25T02:01:54+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\report.md` | benchmark |
+| benchmark | 2026-06-25T02:01:54+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:55:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:55:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:55:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:55:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\report.json` | benchmark |
+| benchmark | 2026-06-25T01:55:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\report.md` | benchmark |
+| benchmark | 2026-06-25T01:55:46+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:45:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:45:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:45:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:45:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\report.json` | benchmark |
+| benchmark | 2026-06-25T01:45:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\report.md` | benchmark |
+| benchmark | 2026-06-25T01:45:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:37:30+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:37:30+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:37:30+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:37:30+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\report.json` | benchmark |
+| benchmark | 2026-06-25T01:37:30+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\report.md` | benchmark |
+| benchmark | 2026-06-25T01:37:30+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:31:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:31:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:31:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:31:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\report.json` | benchmark |
+| benchmark | 2026-06-25T01:31:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\report.md` | benchmark |
+| benchmark | 2026-06-25T01:31:21+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:29:10+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b_fixed\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:29:10+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b_fixed\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:29:10+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b_fixed\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:29:10+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b_fixed\report.json` | benchmark |
+| benchmark | 2026-06-25T01:29:10+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b_fixed\report.md` | benchmark |
+| benchmark | 2026-06-25T01:29:10+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b_fixed\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:22:05+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b_fixed\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:22:05+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b_fixed\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:22:05+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b_fixed\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:22:05+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b_fixed\report.json` | benchmark |
+| benchmark | 2026-06-25T01:22:05+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b_fixed\report.md` | benchmark |
+| benchmark | 2026-06-25T01:22:05+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b_fixed\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:04:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:04:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:04:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T01:04:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b\report.json` | benchmark |
+| benchmark | 2026-06-25T01:04:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b\report.md` | benchmark |
+| benchmark | 2026-06-25T01:04:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_14b\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:57:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:57:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:57:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:57:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b\report.json` | benchmark |
+| benchmark | 2026-06-25T00:57:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b\report.md` | benchmark |
+| benchmark | 2026-06-25T00:57:27+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\override_probe_3b\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:29:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:29:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:29:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:29:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\report.json` | benchmark |
+| benchmark | 2026-06-25T00:29:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\report.md` | benchmark |
+| benchmark | 2026-06-25T00:29:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:23:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:23:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:23:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:23:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\report.json` | benchmark |
+| benchmark | 2026-06-25T00:23:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\report.md` | benchmark |
+| benchmark | 2026-06-25T00:23:02+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:07:36+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:07:36+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:07:36+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:07:36+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\report.json` | benchmark |
+| benchmark | 2026-06-25T00:07:36+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\report.md` | benchmark |
+| benchmark | 2026-06-25T00:07:36+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\results.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:01:16+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:01:16+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:01:16+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-25T00:01:16+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\report.json` | benchmark |
+| benchmark | 2026-06-25T00:01:16+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\report.md` | benchmark |
+| benchmark | 2026-06-25T00:01:16+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\results.jsonl` | benchmark |
+| benchmark | 2026-06-24T23:21:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T23:21:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T23:21:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-24T23:21:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\report.json` | benchmark |
+| benchmark | 2026-06-24T23:21:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\report.md` | benchmark |
+| benchmark | 2026-06-24T23:21:50+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\results.jsonl` | benchmark |
+| benchmark | 2026-06-24T23:07:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\test_compare\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T23:07:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\test_compare\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T23:07:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\test_compare\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-24T23:07:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\test_compare\report.json` | benchmark |
+| benchmark | 2026-06-24T23:07:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\test_compare\report.md` | benchmark |
+| benchmark | 2026-06-24T23:07:37+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\test_compare\results.jsonl` | benchmark |
+| benchmark | 2026-06-24T22:44:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T22:44:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T22:44:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-24T22:44:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\report.json` | benchmark |
+| benchmark | 2026-06-24T22:44:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\report.md` | benchmark |
+| benchmark | 2026-06-24T22:44:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\results.jsonl` | benchmark |
+| benchmark | 2026-06-24T21:13:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T21:13:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T21:13:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-24T21:13:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\report.json` | benchmark |
+| benchmark | 2026-06-24T21:13:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\report.md` | benchmark |
+| benchmark | 2026-06-24T21:13:18+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\results.jsonl` | benchmark |
+| benchmark | 2026-06-24T14:35:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T14:35:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T14:35:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-24T14:35:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\report.json` | benchmark |
+| benchmark | 2026-06-24T14:35:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\report.md` | benchmark |
+| benchmark | 2026-06-24T14:35:35+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\results.jsonl` | benchmark |
+| benchmark | 2026-06-24T13:57:13+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T13:57:13+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T13:57:13+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-24T13:57:13+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\report.json` | benchmark |
+| benchmark | 2026-06-24T13:57:13+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\report.md` | benchmark |
+| benchmark | 2026-06-24T13:57:13+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\results.jsonl` | benchmark |
+| benchmark | 2026-06-24T13:42:48+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\strict_20260624_133625\failed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T13:42:48+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\strict_20260624_133625\passed_cases.jsonl` | benchmark |
+| benchmark | 2026-06-24T13:42:48+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\strict_20260624_133625\raw_outputs.jsonl` | benchmark |
+| benchmark | 2026-06-24T13:42:48+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\strict_20260624_133625\report.json` | benchmark |
+| benchmark | 2026-06-24T13:42:48+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\strict_20260624_133625\report.md` | benchmark |
+| benchmark | 2026-06-24T13:42:48+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\strict_20260624_133625\results.jsonl` | benchmark |
 | release_snapshot | 2026-05-26T11:49:47+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_cli_v7\benchmark_summary.json` | benchmark, release, snapshot, summary |
 | release_snapshot | 2026-05-26T11:49:47+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_cli_v7\config_summary.json` | release, snapshot, summary |
 | release_snapshot | 2026-05-26T11:49:47+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_cli_v7\experiment_summary.json` | release, snapshot, summary |
@@ -59,10 +279,6 @@ Reports indexed: 513
 | dataset_scaling | 2026-05-25T17:25:23+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\dataset_scaling\reports\generated_dataset_promotion_report.md` | dataset_scaling, promotion, synthetic |
 | dataset_scaling | 2026-05-25T17:17:07+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\dataset_scaling\reports\generated_benchmark_analysis.json` | benchmark, dataset_scaling, synthetic |
 | dataset_scaling | 2026-05-25T17:17:07+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\dataset_scaling\reports\generated_benchmark_analysis.md` | benchmark, dataset_scaling, synthetic |
-| benchmark | 2026-05-23T21:32:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\baseline_report.json` | benchmark |
-| benchmark | 2026-05-23T21:32:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\baseline_report.md` | benchmark |
-| benchmark | 2026-05-23T21:32:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\failed_cases.jsonl` | benchmark |
-| benchmark | 2026-05-23T21:32:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\passed_cases.jsonl` | benchmark |
 | benchmark | 2026-05-23T21:32:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\strict_20260523_205251\failed_cases.jsonl` | benchmark |
 | benchmark | 2026-05-23T21:32:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\strict_20260523_205251\passed_cases.jsonl` | benchmark |
 | benchmark | 2026-05-23T21:32:57+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\benchmark\reports\runs\strict_20260523_205251\raw_outputs.jsonl` | benchmark |
@@ -89,8 +305,6 @@ Reports indexed: 513
 | release_snapshot | 2026-05-23T18:58:22+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\release\snapshots\local_ai_retry_loop_v2\snapshot.md` | release, snapshot |
 | experiment | 2026-05-23T18:58:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\experiments\reports\leaderboard.json` | experiment |
 | experiment | 2026-05-23T18:58:01+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\experiments\reports\leaderboard.md` | experiment |
-| sft | 2026-05-23T18:25:58+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_promotion_report.json` | adapter, promotion, sft |
-| sft | 2026-05-23T18:25:58+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\adapter_promotion_report.md` | adapter, promotion, sft |
 | sft | 2026-05-23T18:15:20+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\lora_regression_analysis.json` | adapter, regression, sft |
 | sft | 2026-05-23T18:15:20+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\lora_regression_analysis.md` | adapter, regression, sft |
 | sft | 2026-05-23T18:15:09+00:00 | `C:\Users\User\OneDrive\Desktop\research-claw-code\local_ai\sft\reports\comparison_20260524_021509.json` | adapter, sft |

@@ -22,6 +22,11 @@ _HERE = Path(__file__).resolve().parent
 _LOCAL_AI = _HERE.parent
 _REPO_ROOT = _LOCAL_AI.parent
 _REPORT_DIR = _HERE / "reports"
+
+if str(_HERE) not in sys.path:
+    sys.path.insert(0, str(_HERE))
+
+from promotion_policy import evaluate_comparison  # noqa: E402
 _OUT_JSON = _REPORT_DIR / "model_comparison.json"
 _OUT_MD = _REPORT_DIR / "model_comparison.md"
 _RUNS_DIR = _LOCAL_AI / "benchmark" / "reports" / "runs"
@@ -351,30 +356,6 @@ def _comparison_answer(
     )
 
 
-def _no_benchmark_regression(
-    alias: str,
-    results: list[dict[str, Any]],
-    baseline_results: list[dict[str, Any]],
-) -> bool:
-    base_by_benchmark = {row["benchmark"]: row for row in baseline_results if row.get("status") == "completed"}
-    candidate = [row for row in results if row.get("model_alias") == alias and row.get("status") == "completed"]
-    if len(candidate) != len(base_by_benchmark):
-        return False
-    for row in candidate:
-        base = base_by_benchmark.get(row["benchmark"])
-        if not base:
-            return False
-        if row["accepted"] < base["accepted"]:
-            return False
-        if row["avg_score"] < base["avg_score"] - 1.0:
-            return False
-        if row["runtime_rate"] < base["runtime_rate"]:
-            return False
-        if row["compile_rate"] < base["compile_rate"]:
-            return False
-    return True
-
-
 def _conclusions(
     aggregates: list[dict[str, Any]],
     results: list[dict[str, Any]],
@@ -383,7 +364,6 @@ def _conclusions(
     baseline = by_alias.get(BASELINE_ALIAS)
     model14 = by_alias.get("qwen25_coder_14b")
     model30 = by_alias.get("qwen3_coder_30b")
-    baseline_results = [row for row in results if row.get("model_alias") == BASELINE_ALIAS]
 
     q1 = _comparison_answer(model14, baseline, "14B vs 3B")
     q2 = _comparison_answer(model30, model14, "30B vs 14B")
@@ -411,27 +391,34 @@ def _conclusions(
         else:
             q3 = "Mixed evidence: both model capability and benchmark/infrastructure effects contribute."
 
-    recommendation = "stay on 3B"
-    reason = "No larger model completed all guarded benchmarks with a material, regression-free gain."
-    if model30 and model30.get("status") == "completed":
-        reference = model14 if model14 and model14.get("status") == "completed" else baseline
-        gain = _delta(model30.get("avg_score"), reference.get("avg_score") if reference else None)
-        if gain is not None and gain >= 3.0 and _no_benchmark_regression("qwen3_coder_30b", results, baseline_results):
-            recommendation = "move to 30B"
-            reason = "30B provides a material score gain and holds compile/runtime guardrails on both benchmarks."
-    if recommendation == "stay on 3B" and model14 and model14.get("status") == "completed":
-        gain = _delta(model14.get("avg_score"), baseline.get("avg_score") if baseline else None)
-        if gain is not None and gain >= 3.0 and _no_benchmark_regression("qwen25_coder_14b", results, baseline_results):
-            recommendation = "move to 14B"
-            reason = "14B provides a material score gain and holds compile/runtime guardrails on both benchmarks."
+    # Recommendation is NOT hard-coded here. It is derived from the model
+    # promotion policy (promotion_policy.evaluate_comparison), which weighs the
+    # strict AND generated benchmarks together. A strict regression combined
+    # with a material generated gain resolves to manual_review, not "stay on 3B".
+    policy_decision = evaluate_comparison(
+        {
+            "baseline_model": BASELINE_ALIAS,
+            "results": results,
+            "models": aggregates,
+        }
+    )
+    recommendation = policy_decision["recommendation"]
+    reason = policy_decision["recommendation_reason"]
+    promotion_decision = policy_decision["decision"]
+
+    if promotion_decision == "promote_default":
+        q4 = "Yes."
+    elif promotion_decision == "manual_review":
+        q4 = "Manual review."
+    else:
+        q4 = "Not yet."
 
     return {
         "q1_14b_vs_3b": q1,
         "q2_30b_vs_14b": q2,
         "q3_model_or_infrastructure": q3,
-        "q4_upgrade_3b_to_14b": (
-            "Yes." if recommendation in {"move to 14B", "move to 30B"} else "Not yet."
-        ),
+        "q4_upgrade_3b_to_14b": q4,
+        "promotion_decision": promotion_decision,
         "recommendation": recommendation,
         "recommendation_reason": reason,
     }

@@ -59,6 +59,36 @@ routing, release snapshots, benchmark reports, and the architecture map.
   runtime, semantic, and keyword validation for coding tasks.
 - **Adapter Governance**: promotion policy, adapter registries, regression
   analysis, and safe/no-change tracking for LoRA adapters.
+- **Model Governance**: model-replacement benchmarking, weighted promotion
+  policy across strict and generated benchmarks, and an approved-models registry.
+- **Regression Detection**: policy-driven detector that compares benchmark runs
+  over time, auto-resolves a reference run, and emits a governed verdict
+  (`pass` / `improvement` / `regression` / `manual_review`) that gates promotion.
+- **Continuous Benchmark Trend**: read-only aggregator over run history that
+  tracks score trends per model and auto-runs the regression detector on the
+  latest run pair (`python local_ai/cli.py trend`).
+- **Governance Observability**: a single cross-layer status view of what is
+  promoted / safe / rejected / awaiting review across adapters, models,
+  datasets, regression, reliability, and profiles (`python local_ai/cli.py governance`).
+- **Evaluation Reliability**: read-only audit of run history for reproducibility
+  stamps and per-task determinism (flaky-task detection)
+  (`python local_ai/cli.py reliability`).
+- **Prompt/Profile Governance**: validates that prompt profiles reference real,
+  non-empty prompt files and flags non-deterministic temperatures; records an
+  approved-profiles registry (`python local_ai/cli.py profiles`).
+- **Goldens Governance**: validate + promote human-verified golden cases (drop
+  candidates in `local_ai/goldens/candidates/`, compile/runtime verified, tiered
+  by provenance) into an approved registry (`python local_ai/cli.py goldens`).
+- **Routing Governance**: audits the routing policy and plan so routing can only
+  select governance-approved adapters (`python local_ai/cli.py route-audit`).
+- **Deployment Readiness Gate**: a single ready/blocked verdict aggregating
+  smoke, config, profile, routing, regression, reliability, review-backlog, and
+  goldens — blocks release while any blocking check fails or has never run
+  (`python local_ai/cli.py deploy`).
+- **Import Translation**: opt-in zh→en problem translation at the two data
+  import surfaces (corpus import and ingest training prep) via a dedicated
+  local model, with originals preserved and a JSON+MD audit report
+  (`--translate` on `corpus/import_exam.py` and `ingest/prepare_training.py`).
 - **Retry Loop**: failure mining, curated repair targets, golden examples, and
   guarded retry datasets.
 - **Dataset Scaling**: isolated generated task assets, validation reports, and
@@ -70,6 +100,95 @@ routing, release snapshots, benchmark reports, and the architecture map.
 - **Demo Platform**: portfolio-ready demo index, summary, and walkthrough.
 - **Prompt Architecture**: agent prompts and guardrail state summaries for
   stable future automation.
+
+## Model Governance
+
+Model-replacement decisions go through the same governance discipline as adapter
+promotion and dataset promotion: benchmark first, then a policy decides — nothing
+is hard-coded.
+
+**1. Benchmark** — compare candidate models against the baseline on stable
+profiles (a strict exam benchmark and a generated-task benchmark):
+
+```bash
+python local_ai/model_eval/compare_models.py \
+    --models qwen25_coder_3b qwen25_coder_14b
+```
+
+This writes `local_ai/model_eval/reports/model_comparison.json` / `.md`. The
+recommendation in that report is produced by the promotion policy, not by
+hand-written rules inside `compare_models.py`.
+
+**2. Comparison** — each candidate is measured per benchmark for accepted,
+average score, compile, runtime, and semantic deltas versus the baseline, plus a
+`model_override_valid` check that the requested model was actually served.
+
+**3. Promotion** — the policy weighs both benchmarks together:
+
+```bash
+python local_ai/model_eval/promote_model.py \
+    --comparison local_ai/model_eval/reports/model_comparison.json
+```
+
+- `promotion_policy.py` holds the tunable policy: `strict_weight` (0.6),
+  `generated_weight` (0.4), `require_override_valid`, and the
+  `reject < candidate < safe < default` ladder.
+- Decisions: `reject`, `candidate`, `safe_no_change`, `promote_default`,
+  `manual_review`, and `invalid_model_override`.
+- A strict-benchmark regression combined with a material generated-benchmark
+  gain is a **conflict** and resolves to `manual_review` — never an automatic
+  "stay on baseline".
+- If `model_override_valid` is false, the decision is `invalid_model_override`
+  and promotion is blocked.
+
+Reports land at `local_ai/model_eval/reports/model_promotion_report.json` / `.md`.
+
+**4. Approved models** — `local_ai/model_eval/models/approved_models.json` records
+every evaluated candidate by decision; `default_model` is only set by a clean
+`promote_default` and is never demoted as a side effect.
+
+## Automatic Regression Detection
+
+Detect regressions between benchmark runs without re-running models or touching
+scoring. The detector reuses `compare_runs.compare()` and applies a tunable
+regression policy (thresholds are data, not code), then emits a governed verdict.
+
+```bash
+# Compare two explicit runs
+python local_ai/cli.py regression --base <prev_run_id> --new <run_id>
+
+# Auto-resolve the previous run of the same model
+python local_ai/cli.py regression --new <run_id>
+
+# Model-free verdict self-test (also run by the smoke test)
+python local_ai/cli.py regression --self-test
+```
+
+- Verdicts: `pass`, `improvement`, `regression`, `manual_review`
+  (regression + improvement signals conflict), `no_reference` (nothing to
+  compare against).
+- A `regression` verdict exits non-zero so promotion gates and CI can block.
+- Signals: accepted delta, average-score delta, compile/runtime pass-rate
+  deltas, newly-broken tasks, and any single task dropping beyond the policy
+  threshold. The canonical, tunable policy lives in
+  `local_ai/shared/regression_policy.py` (or pass `--policy <file.json>`).
+- Reports: `local_ai/benchmark/reports/regression/regression_report.{json,md}`.
+
+### Regression guard on promotion gates
+
+The same canonical policy is wired into the **adapter** and **model** promotion
+executors as a *monotonic safety overlay* — it can only ever **block** a
+promotion, never grant one:
+
+- Adapter (`sft/promote_adapter.py`): a `regression` verdict downgrades
+  `promote`/`safe_no_change` → `reject`; a conflicting `manual_review` verdict
+  downgrades → `ablation_only`.
+- Model (`model_eval/promote_model.py`): a `regression` or `manual_review`
+  verdict on either benchmark downgrades `promote_default` → `manual_review`,
+  and the headline recommendation is recomputed.
+- The guard record (`regression_guard`) is attached to every promotion report and
+  registry entry for audit. On current data, all decisions are unchanged —
+  the guard only adds a safety net and an audit trail.
 
 ## Quick Smoke Test
 
@@ -92,6 +211,14 @@ python local_ai/cli.py smoke
 python local_ai/cli.py validate-config
 python local_ai/cli.py adapters
 python local_ai/cli.py routing --benchmark c_exam_2025_strict_seeded
+python local_ai/cli.py regression --new <run_id>
+python local_ai/cli.py trend
+python local_ai/cli.py reliability
+python local_ai/cli.py profiles
+python local_ai/cli.py goldens
+python local_ai/cli.py route-audit
+python local_ai/cli.py deploy
+python local_ai/cli.py governance
 python local_ai/cli.py system
 python local_ai/cli.py snapshot --name local_ai_routing_v4
 ```
@@ -376,6 +503,31 @@ powershell -ExecutionPolicy Bypass -File .\local_ai\run_eval.ps1 --answers-dir C
 ```
 
 `--use-proxy-ai` 直接呼叫 proxy `/v1/messages`（stream=false），不依賴 claw 串流，Windows 下更穩定。`--use-ai` 透過 `run.sh` 呼叫 claw，Windows 上串流輸出相容性目前不穩定。報告包含 `answer_source`、`used_fallback`、`model_score`、`pipeline_score`、`compile_pass`、`model_compile_pass`、`run_pass`、`keyword_pass`、`structure_pass`。`model_score` 只衡量模型實際輸出的 C code；`pipeline_score` 則包含 fallback scaffold 後的 pipeline 韌性，目前定位是 smoke test，不取代人工閱卷。
+
+## 題目中翻英（匯入時翻譯）
+
+中文題目在進入系統時可以先翻成英文再交給解題模型。翻譯接在兩條資料匯入路徑上，
+由 `--translate` 旗標啟用（預設關閉），使用獨立的本地翻譯模型
+`qwen2.5:7b-instruct`（可用 `--translate-model` 或環境變數
+`CLAW_TRANSLATE_MODEL` 更換），直接呼叫本機 Ollama，不需先啟動 proxy：
+
+```powershell
+# corpus 匯入：翻譯後落入 raw/，之後照 V10 流程人工策展與審核
+python local_ai/corpus/import_exam.py --file exam.json --translate
+
+# ingest 訓練資料準備：翻譯後寫入 training 輸出
+python local_ai/ingest/prepare_training.py --translate
+```
+
+治理與稽核行為：
+
+- 只有偵測到中文的題目才會送翻譯，英文題目原樣通過。
+- 原文永遠保留：corpus 紀錄存於 `prompt_original`，ingest 紀錄存於
+  `instruction_original`；翻譯模型與時間也寫入紀錄與 audit log。
+- 每次匯入輸出翻譯報告（`translation_report.json` / `.md`；corpus 在
+  `local_ai/corpus/reports/`，ingest 在 training 輸出目錄）。
+- 翻譯失敗不會弄丟或改壞資料：保留原文並在報告中標記錯誤。
+- 離線自我測試（不需模型）：`python local_ai/shared/translator.py --self-test`。
 
 ## 重新開始一輪 Benchmark 實驗
 

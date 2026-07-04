@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-06-25T06:13:14+00:00",
+  "verdict": "pass",
+  "policy_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\routing_policy.json",
+  "plan_path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.json",
+  "usable_adapters": [
+    "retry_geometry_v3_guarded"
+  ],
+  "blocked_adapters": [],
+  "plan_adapter_decisions_checked": 1,
+  "violations": [],
+  "warnings": []
+}

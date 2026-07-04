@@ -1,0 +1,44 @@
+{
+  "task_id": "2026_exam1_geometry_line_parabola",
+  "source": "import_json:d_exam_2026.json",
+  "topic": "geometry",
+  "difficulty": "hard",
+  "prompt": "4. Consider the following Point structure: \n```typedef struct { double x, y;} Point;```\n\nConsider the LineEq structure for a linear equation ax + by = c:\n```typedef struct { double a, b, c; } LineEq;```\n\nAnd consider the Parabola structure for a parabolic equation y = ax^2 + bx + c:\n```{ double a, b, c; } Parabola;```\n\nWrite a function that takes two points and returns a linear equation. The function should print the linear equation in the format `ax + by = c`. Write another function that takes a parabolic equation and prints it in the format `y = ax^2 + bx + c`. Write a third function that takes a line equation and a parabola, and returns their intersection point(s). Read from a file containing multiple pairs of points and parabolic equations (coefficients a, b, c), and use the above functions to process each pair. The file format for input data is as follows:\n```\n0 0 2 2 1 0 0\n0 -1 2 -1 1 0 0\n```\n\nHint: The equation of the line passing through points (x1, y1) and (x2, y2) can be represented as {(y1 - y2)*x + (x2 - x1)*y = x2*y1 - x1*y2}. Substitute the parabolic equation into the linear equation, and solve the resulting quadratic equation.\n\nPossible output:\n```\nThe line equation is -2.0000x + 2.0000y = 0.0000.\nThe parabola equation is y = 1.0000x^2 + 0.0000x + 0.0000.\nThe intersection point(s) of the line and the parabola are (0.0000, 0.0000) and (1.0000, 1.0000).\nThe line equation is 0.0000x + 2.0000y = -2.0000.\nThe parabola equation is y = 1.0000x^2 + 0.0000x + 0.0000.\nThe line and the parabola have no intersection point.\n```",
+  "reference_solution": "",
+  "sample_input": "0 0 2 2 1 0 0\n0 -1 2 -1 1 0 0",
+  "expected_output_contains": [
+    "The line equation is",
+    "The parabola equation is",
+    "no intersection point"
+  ],
+  "compile_verified": false,
+  "runtime_verified": false,
+  "semantic_verified": false,
+  "review_status": "raw",
+  "reviewer": null,
+  "review_timestamp": null,
+  "verification_level": null,
+  "created_at": "2026-07-04T04:56:22+00:00",
+  "history": [
+    {
+      "action": "import",
+      "to_status": "raw",
+      "at": "2026-07-04T04:56:22+00:00",
+      "by": "import_json:d_exam_2026.json"
+    },
+    {
+      "action": "translate",
+      "to_status": "raw",
+      "at": "2026-07-04T04:56:37+00:00",
+      "by": "translator:qwen2.5:7b-instruct",
+      "note": "prompt translated zh->en; original kept in prompt_original"
+    }
+  ],
+  "prompt_original": "4.考慮下列點(Point)的結構: typedef struct { double x, y;} Point; 直線方程式 ax + by = c 的結構: typedef struct { double a, b, c; } LineEq; 以及拋物線方程式 y = ax^2 + bx + c 的結構: { double a, b, c; } Parabola;\n撰寫一個函式,需要傳入兩點並回傳直線方程式,需要傳入直線方程式並以 ax + by =c 的格式印出,需要傳入拋物線並以y = ax^2 + bx + c的格式印出拋物線方程式,需要傳入一條直線與一個拋物線,並回傳其交點,需要讀取一個包含多組兩點與拋物線資料 (係數 a, b, c) 的檔案,並使用上述函式,兩組資料的檔案格式範圍如下:\n0 0 2 2 1 0 0\n0 -1 2 -1 1 0 0\n提示:通過 (x1, y1) 與 (x2, y2)的方程式為 {( y1 - y2 )*x + ( x2 - x1 )*y = x2y1 -x1y2 },將拋物線方程式代入直線方程式,並解出結果的一元二次方程式\n可能的執行結果如下:\nThe line equation is -2.0000x + 2.0000y = 0.0000.\nThe parabola equation is y = 1.0000x^2 + 0.0000x + 0.0000.\nThe intersection point of the line and the parabola are (0.0000, 0.0000 and (1.0000, 1.0000).\nThe line equation is 0.0000x + 2.0000y = -2.0000.\nThe parabola equation is y = 1.0000x^2 + 0.0000x + 0.0000.\nThe line and the parabola have no intersection point.",
+  "translation": {
+    "model": "qwen2.5:7b-instruct",
+    "at": "2026-07-04T04:56:37+00:00",
+    "latency_ms": 13547,
+    "output_contains_chinese": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-06-25T06:41:07+00:00",
+  "corpus_size": 39,
+  "stage_counts": {
+    "raw": 0,
+    "verified": 39,
+    "review": 1,
+    "archive": 0
+  },
+  "by_topic": {
+    "game_simulation": 10,
+    "geometry": 10,
+    "pattern_generation": 10,
+    "series_calculation": 9
+  },
+  "by_difficulty": {
+    "easy": 17,
+    "hard": 12,
+    "medium": 10
+  },
+  "by_verification_level": {
+    "agent_verified": 39
+  },
+  "human_verified_ratio": 0.0,
+  "golden_ratio": 0.0,
+  "agent_verified_ratio": 1.0,
+  "compile_pass_rate": 1.0,
+  "runtime_pass_rate": 1.0,
+  "semantic_pass_rate": 1.0,
+  "topic_coverage": [
+    "game_simulation",
+    "geometry",
+    "pattern_generation",
+    "series_calculation"
+  ],
+  "difficulty_coverage": [
+    "easy",
+    "hard",
+    "medium"
+  ]
+}

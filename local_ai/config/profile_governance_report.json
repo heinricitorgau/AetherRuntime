@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-06-25T06:04:35+00:00",
+  "decision": "pass",
+  "profiles_total": 1,
+  "profiles_approved": 1,
+  "issues": [],
+  "warnings": [
+    "strict_code_only_v2_seeded: temperature=0.1 is non-deterministic"
+  ],
+  "profiles": [
+    {
+      "name": "strict_code_only_v2_seeded",
+      "prompt_file": "code_gen_strict_v2.txt",
+      "prompt_file_exists": true,
+      "non_empty": true,
+      "deterministic": false,
+      "temperature": 0.1,
+      "max_tokens": 768,
+      "status": "approved"
+    }
+  ]
+}

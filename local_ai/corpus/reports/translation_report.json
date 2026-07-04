@@ -1,0 +1,52 @@
+{
+  "surface": "corpus_import",
+  "model": "qwen2.5:7b-instruct",
+  "generated_at": "2026-07-04T04:57:03+00:00",
+  "records_seen": 4,
+  "records_with_chinese": 4,
+  "records_translated": 4,
+  "records_failed": 0,
+  "records_output_still_chinese": 0,
+  "entries": [
+    {
+      "id": "2026_exam1_pattern_diamond",
+      "detected_chinese": true,
+      "translated": true,
+      "latency_ms": 8155,
+      "error": null,
+      "output_contains_chinese": false,
+      "original_head": "1.撰寫一個程式,讀取n並產生如下所示的菱形,可能的執行結果如下:\n\nenter n: 3\n  1\n 2 2\n3 1 3\n 212\n  1\nenter n: 4\n   1\n  2 2\n 3 1 3\n4 2 2 4\n 32123\n  212\n",
+      "translated_head": "1. Write a program that reads an integer \\( n \\) and generates the diamond pattern shown below, with possible outputs as"
+    },
+    {
+      "id": "2026_exam1_series_product",
+      "detected_chinese": true,
+      "translated": true,
+      "latency_ms": 6984,
+      "error": null,
+      "output_contains_chinese": false,
+      "original_head": "2.撰寫一個函式,需要傳入整數n並回傳下列1到n的類幾何數列乘積:((1+1/1)*(1+1/2)*(1+1/3)*...*(1+1/n),需要傳入一個陣列與n,並呼叫上述函式來產生一個大小為n的陣列,其中索引i-1的元素儲存計算至i的乘積",
+      "translated_head": "2. Write a function that takes an integer `n` and returns the product of the following geometric sequence: ((1+1/1)*(1+1"
+    },
+    {
+      "id": "2026_exam1_geometry_line_parabola",
+      "detected_chinese": true,
+      "translated": true,
+      "latency_ms": 13547,
+      "error": null,
+      "output_contains_chinese": false,
+      "original_head": "4.考慮下列點(Point)的結構: typedef struct { double x, y;} Point; 直線方程式 ax + by = c 的結構: typedef struct { double a, b, c; } LineE",
+      "translated_head": "4. Consider the following Point structure: \n```typedef struct { double x, y;} Point;```\n\nConsider the LineEq structure f"
+    },
+    {
+      "id": "2026_exam1_poker_match",
+      "detected_chinese": true,
+      "translated": true,
+      "latency_ms": 11609,
+      "error": null,
+      "output_contains_chinese": false,
+      "original_head": "5.建立一個{撲克牌配對(Poker Match)} 猜測遊戲類別,規則與需求如下\n1.撰寫一個函式,傳入n ( n < 6 )並從標準52張撲克牌中抽出不同的牌,隨機填入 2n^2 個元素的網格中,撲克牌花色分別以黑桃(S)與紅心(H)與",
+      "translated_head": "5. Establish a Poker Match guessing game class with the following rules and requirements:\n1. Write a function that takes"
+    }
+  ]
+}

@@ -1,0 +1,724 @@
+{
+  "timestamp": "2026-06-25T06:25:28+00:00",
+  "policy": {
+    "require_verified_by": true,
+    "require_compile": true,
+    "require_runtime_match": true,
+    "human_verified_tokens": [
+      "human",
+      "reviewer",
+      "instructor"
+    ]
+  },
+  "candidates_total": 41,
+  "approved_count": 41,
+  "human_verified_count": 0,
+  "decision": "pass",
+  "results": [
+    {
+      "id": "2025_midterm_003",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "area",
+          "6.000"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_001",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "result"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_002",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "sum"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_003",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "result"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_004",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "result"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_005",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "result"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_006",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "sum"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_007",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "result"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_008",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "result"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_009",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "result"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_series_calculation_010",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "sum"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_001",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_002",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "4444",
+          "333",
+          "22"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_003",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_004",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "***",
+          "*    *"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_005",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_006",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "4444",
+          "333",
+          "22"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_007",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_008",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "***",
+          "*    *"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_009",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "1",
+          "22",
+          "333"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_010",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "4444",
+          "333",
+          "22"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_001",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "distance",
+          "5.000"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_002",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "area",
+          "6.000"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_003",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "line",
+          "x",
+          "y"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_004",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "collinear"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_005",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "distance",
+          "5.000"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_006",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "area",
+          "6.000"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_007",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "line",
+          "x",
+          "y"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_008",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "collinear"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_009",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "distance",
+          "5.000"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_geometry_010",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "area",
+          "6.000"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_001",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_002",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_003",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "choice",
+          "score",
+          "winner"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_004",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "Tug",
+          "Enter",
+          "winner"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_005",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_006",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_007",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "choice",
+          "score",
+          "winner"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_008",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "Tug",
+          "Enter",
+          "winner"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_009",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "Numbers",
+          "Pick",
+          "points"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    },
+    {
+      "id": "synthetic_v3_game_simulation_010",
+      "status": "approved",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified",
+      "exec": {
+        "checked": true,
+        "compile_ok": true,
+        "runtime_ok": true,
+        "found": [
+          "Guess",
+          "number",
+          "points"
+        ],
+        "missing": []
+      },
+      "reasons": []
+    }
+  ]
+}

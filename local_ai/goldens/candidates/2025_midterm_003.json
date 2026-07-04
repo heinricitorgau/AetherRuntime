@@ -1,0 +1,11 @@
+{
+  "id": "2025_midterm_003",
+  "topic": "geometry",
+  "prompt": "Read coordinates of 4 points and list all triangles. For each combination of 3 points, calculate area using Heron's formula, display area if a triangle can be formed, show a message if the points are collinear. C(4,3)=4 combinations.",
+  "verified_solution": "#include <stdio.h>\n#include <math.h>\n\ndouble dist(double x1, double y1, double x2, double y2) {\n    double dx = x2 - x1, dy = y2 - y1;\n    return sqrt(dx * dx + dy * dy);\n}\n\ndouble heron_area(double a, double b, double c) {\n    double s = (a + b + c) / 2.0;\n    return sqrt(s * (s - a) * (s - b) * (s - c));\n}\n\nint is_collinear(double x1, double y1, double x2, double y2, double x3, double y3) {\n    return fabs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1)) < 1e-9;\n}\n\nint main(void) {\n    double x[4], y[4];\n    for (int i = 0; i < 4; i++) scanf(\"%lf %lf\", &x[i], &y[i]);\n    for (int i = 0; i < 4; i++) {\n        for (int j = i + 1; j < 4; j++) {\n            for (int k = j + 1; k < 4; k++) {\n                if (is_collinear(x[i], y[i], x[j], y[j], x[k], y[k])) {\n                    printf(\"collinear\\n\");\n                } else {\n                    double a = dist(x[i], y[i], x[j], y[j]);\n                    double b = dist(x[j], y[j], x[k], y[k]);\n                    double c = dist(x[k], y[k], x[i], y[i]);\n                    printf(\"area %.3f\\n\", heron_area(a, b, c));\n                }\n            }\n        }\n    }\n    return 0;\n}",
+  "sample_input": "0 0 0 3 4 0 4 3",
+  "expected_output_contains": ["area", "6.000"],
+  "verified_by": "agent_compile_runtime_verified",
+  "source": "local_ai/eval_cases/c_exam/2025_midterm_triangles.json",
+  "notes": "Reference solution compiled with gcc -std=c99 and produced 'area 6.000' x4 for the sample input. Provenance is agent compile+runtime verification, not human review — promote to human-verified tier after manual sign-off."
+}

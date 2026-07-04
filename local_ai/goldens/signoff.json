@@ -1,0 +1,8 @@
+{
+  "signed_off_by": null,
+  "signed_off_at": null,
+  "nature": "owner_review",
+  "scope": "all",
+  "scope_ids": [],
+  "_instructions": "UNSIGNED TEMPLATE. To grant the human_verified tier, set 'signed_off_by' to your real reviewer name/identity and 'signed_off_at' to the review date. Use scope='all' to sign off every approved golden, or scope='ids' with 'scope_ids':[...] to sign off specific ones. While 'signed_off_by' is null or a placeholder, promote_goldens.py leaves all goldens at the agent_verified tier. This file is the audit record of who accepted these goldens — it must be filled in by a human, never by the agent."
+}

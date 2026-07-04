@@ -1,28 +1,82 @@
 {
-  "timestamp": "2026-06-22T04:22:40+00:00",
-  "count": 513,
+  "timestamp": "2026-06-25T08:25:42+00:00",
+  "count": 727,
   "reports": [
     {
       "report_type": "system",
-      "latest_modified": "2026-06-22T04:22:40+00:00",
+      "latest_modified": "2026-06-25T08:25:42+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.json",
       "tags": [
         "system"
       ],
-      "size_bytes": 1153
+      "size_bytes": 1173
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-06-22T04:22:40+00:00",
+      "latest_modified": "2026-06-25T08:25:42+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.md",
       "tags": [
         "system"
       ],
-      "size_bytes": 774
+      "size_bytes": 793
+    },
+    {
+      "report_type": "routing",
+      "latest_modified": "2026-06-25T08:22:04+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.json",
+      "tags": [
+        "routing"
+      ],
+      "size_bytes": 2955
+    },
+    {
+      "report_type": "routing",
+      "latest_modified": "2026-06-25T08:22:04+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.md",
+      "tags": [
+        "routing"
+      ],
+      "size_bytes": 1215
+    },
+    {
+      "report_type": "routing",
+      "latest_modified": "2026-06-25T08:22:04+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.json",
+      "tags": [
+        "routing"
+      ],
+      "size_bytes": 2955
+    },
+    {
+      "report_type": "routing",
+      "latest_modified": "2026-06-25T08:22:04+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.md",
+      "tags": [
+        "routing"
+      ],
+      "size_bytes": 1215
+    },
+    {
+      "report_type": "system",
+      "latest_modified": "2026-06-25T08:22:04+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\smoke_test_report.json",
+      "tags": [
+        "system"
+      ],
+      "size_bytes": 13446
+    },
+    {
+      "report_type": "system",
+      "latest_modified": "2026-06-25T08:22:04+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\smoke_test_report.md",
+      "tags": [
+        "system"
+      ],
+      "size_bytes": 4021
     },
     {
       "report_type": "sft",
-      "latest_modified": "2026-05-26T12:43:35+00:00",
+      "latest_modified": "2026-06-25T08:22:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.json",
       "tags": [
         "adapter",
@@ -33,7 +87,7 @@
     },
     {
       "report_type": "sft",
-      "latest_modified": "2026-05-26T12:43:35+00:00",
+      "latest_modified": "2026-06-25T08:22:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.md",
       "tags": [
         "adapter",
@@ -44,7 +98,7 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T12:43:26+00:00",
+      "latest_modified": "2026-06-25T08:22:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\architecture_map.md",
       "tags": [
         "system"
@@ -53,75 +107,2106 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T12:43:26+00:00",
+      "latest_modified": "2026-06-25T08:22:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.json",
       "tags": [
         "system"
       ],
-      "size_bytes": 170049
+      "size_bytes": 247461
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T12:43:26+00:00",
+      "latest_modified": "2026-06-25T08:22:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.md",
       "tags": [
         "system"
       ],
-      "size_bytes": 92247
+      "size_bytes": 136710
     },
     {
-      "report_type": "routing",
-      "latest_modified": "2026-05-26T12:42:02+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.json",
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:41:25+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\corpus_platform_v10\\benchmark_summary.json",
       "tags": [
-        "routing"
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
       ],
-      "size_bytes": 2955
+      "size_bytes": 1002
     },
     {
-      "report_type": "routing",
-      "latest_modified": "2026-05-26T12:42:02+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.md",
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:41:25+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\corpus_platform_v10\\config_summary.json",
       "tags": [
-        "routing"
+        "release",
+        "snapshot",
+        "summary"
       ],
-      "size_bytes": 1215
+      "size_bytes": 242
     },
     {
-      "report_type": "routing",
-      "latest_modified": "2026-05-26T12:42:02+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.json",
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:41:25+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\corpus_platform_v10\\experiment_summary.json",
       "tags": [
-        "routing"
+        "release",
+        "snapshot",
+        "summary"
       ],
-      "size_bytes": 2955
+      "size_bytes": 3630
     },
     {
-      "report_type": "routing",
-      "latest_modified": "2026-05-26T12:42:02+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.md",
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:41:25+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\corpus_platform_v10\\sft_summary.json",
       "tags": [
-        "routing"
+        "release",
+        "snapshot",
+        "summary"
       ],
-      "size_bytes": 1215
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:41:25+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\corpus_platform_v10\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1345
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:41:25+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\corpus_platform_v10\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2208
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:25:32+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_signoff_mechanism_v1\\benchmark_summary.json",
+      "tags": [
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 1002
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:25:32+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_signoff_mechanism_v1\\config_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 242
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:25:32+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_signoff_mechanism_v1\\experiment_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 3630
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:25:32+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_signoff_mechanism_v1\\sft_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:25:32+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_signoff_mechanism_v1\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1354
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:25:32+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_signoff_mechanism_v1\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2226
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T12:42:02+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\smoke_test_report.json",
+      "latest_modified": "2026-06-25T06:25:28+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\governance_status.json",
       "tags": [
         "system"
       ],
-      "size_bytes": 6368
+      "size_bytes": 1713
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-05-26T12:42:02+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\smoke_test_report.md",
+      "latest_modified": "2026-06-25T06:25:28+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\governance_status.md",
       "tags": [
         "system"
       ],
-      "size_bytes": 1969
+      "size_bytes": 1403
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:18:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_harvest_v1\\benchmark_summary.json",
+      "tags": [
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 1002
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:18:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_harvest_v1\\config_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 242
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:18:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_harvest_v1\\experiment_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 3630
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:18:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_harvest_v1\\sft_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:18:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_harvest_v1\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1344
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:18:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_harvest_v1\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2206
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:14:19+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_routing_deploy_v1\\benchmark_summary.json",
+      "tags": [
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 1002
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:14:19+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_routing_deploy_v1\\config_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 242
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:14:19+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_routing_deploy_v1\\experiment_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 3630
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:14:19+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_routing_deploy_v1\\sft_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:14:19+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_routing_deploy_v1\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1351
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:14:19+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\goldens_routing_deploy_v1\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2220
+    },
+    {
+      "report_type": "routing",
+      "latest_modified": "2026-06-25T06:13:14+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_governance_report.json",
+      "tags": [
+        "routing"
+      ],
+      "size_bytes": 479
+    },
+    {
+      "report_type": "routing",
+      "latest_modified": "2026-06-25T06:13:14+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_governance_report.md",
+      "tags": [
+        "routing"
+      ],
+      "size_bytes": 483
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:05:11+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\eval_reliability_profile_gov_v1\\benchmark_summary.json",
+      "tags": [
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 1002
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:05:11+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\eval_reliability_profile_gov_v1\\config_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 242
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:05:11+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\eval_reliability_profile_gov_v1\\experiment_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 3630
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:05:11+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\eval_reliability_profile_gov_v1\\sft_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:05:11+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\eval_reliability_profile_gov_v1\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1357
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T06:05:11+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\eval_reliability_profile_gov_v1\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2232
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T06:04:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\reliability\\eval_reliability.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 19131
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T06:04:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\reliability\\eval_reliability.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 3605
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:58:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\continuous_governance_v1\\benchmark_summary.json",
+      "tags": [
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 1002
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:58:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\continuous_governance_v1\\config_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 242
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:58:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\continuous_governance_v1\\experiment_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 3630
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:58:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\continuous_governance_v1\\sft_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:58:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\continuous_governance_v1\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1350
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:58:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\continuous_governance_v1\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2218
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T05:58:53+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\trend\\benchmark_trend.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 29377
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T05:58:53+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\trend\\benchmark_trend.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 3164
+    },
+    {
+      "report_type": "sft",
+      "latest_modified": "2026-06-25T05:58:17+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_promotion_report.json",
+      "tags": [
+        "adapter",
+        "promotion",
+        "sft"
+      ],
+      "size_bytes": 1359
+    },
+    {
+      "report_type": "sft",
+      "latest_modified": "2026-06-25T05:58:17+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_promotion_report.md",
+      "tags": [
+        "adapter",
+        "promotion",
+        "sft"
+      ],
+      "size_bytes": 911
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:52:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_guard_v1\\benchmark_summary.json",
+      "tags": [
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 1002
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:52:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_guard_v1\\config_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 242
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:52:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_guard_v1\\experiment_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 3630
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:52:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_guard_v1\\sft_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:52:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_guard_v1\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1345
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:52:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_guard_v1\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2208
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T05:47:48+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\regression\\regression_report.json",
+      "tags": [
+        "benchmark",
+        "regression"
+      ],
+      "size_bytes": 2092
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T05:47:48+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\regression\\regression_report.md",
+      "tags": [
+        "benchmark",
+        "regression"
+      ],
+      "size_bytes": 1343
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:27:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_detection_v1\\benchmark_summary.json",
+      "tags": [
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 1002
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:27:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_detection_v1\\config_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 242
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:27:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_detection_v1\\experiment_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 3686
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:27:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_detection_v1\\sft_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:27:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_detection_v1\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1349
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:27:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\regression_detection_v1\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2216
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:04:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_model_governance_v9\\benchmark_summary.json",
+      "tags": [
+        "benchmark",
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 1002
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:04:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_model_governance_v9\\config_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 242
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:04:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_model_governance_v9\\experiment_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 3855
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:04:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_model_governance_v9\\sft_summary.json",
+      "tags": [
+        "release",
+        "snapshot",
+        "summary"
+      ],
+      "size_bytes": 226
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:04:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_model_governance_v9\\snapshot.json",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 1354
+    },
+    {
+      "report_type": "release_snapshot",
+      "latest_modified": "2026-06-25T05:04:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\release\\snapshots\\local_ai_model_governance_v9\\snapshot.md",
+      "tags": [
+        "release",
+        "snapshot"
+      ],
+      "size_bytes": 2226
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\baseline_report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 104793
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\baseline_report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4976
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7903
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 65213
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7903
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 65213
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 39785
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 104793
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5187
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T04:31:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 73116
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:56:01+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2029
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:56:01+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5434
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:56:01+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4693
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:56:01+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 13386
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:56:01+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2152
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:56:01+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7463
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:49:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 17378
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:49:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 61642
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:49:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 45859
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:49:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 110909
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:49:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5158
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:49:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 79020
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:38:43+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 0
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:38:43+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 8481
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:38:43+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4877
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:38:43+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 14346
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:38:43+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2153
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T03:38:43+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 8481
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:39:03+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5860
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:39:03+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 68099
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:39:03+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 41070
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:39:03+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 105506
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:39:03+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5190
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:39:03+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 73959
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:01:54+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2029
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:01:54+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5468
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:01:54+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4716
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:01:54+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 13420
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:01:54+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2152
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T02:01:54+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7497
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:55:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 13747
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:55:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 64164
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:55:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 44066
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:55:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 109695
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:55:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5163
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:55:46+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 77911
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:45:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 0
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:45:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 8528
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:45:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4767
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:45:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 14419
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:45:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2153
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:45:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 8528
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:37:30+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2029
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:37:30+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5370
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:37:30+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4724
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:37:30+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 13309
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:37:30+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2152
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:37:30+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7399
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:31:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 0
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:31:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 8355
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:31:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4751
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:31:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 14220
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:31:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2153
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:31:21+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 8355
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:29:10+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b_fixed\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2029
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:29:10+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b_fixed\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5505
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:29:10+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b_fixed\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4755
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:29:10+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b_fixed\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 13368
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:29:10+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b_fixed\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2108
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:29:10+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b_fixed\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7534
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:22:05+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b_fixed\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 0
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:22:05+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b_fixed\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 8543
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:22:05+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b_fixed\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4778
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:22:05+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b_fixed\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 14331
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:22:05+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b_fixed\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 2108
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:22:05+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b_fixed\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 8543
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:04:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1876
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:04:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5046
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:04:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4142
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:04:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 12229
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:04:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1890
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T01:04:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_14b\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 6922
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:57:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1875
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:57:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5967
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:57:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4697
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:57:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 13145
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:57:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1888
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:57:27+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\override_probe_3b\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7842
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:29:22+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1876
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:29:22+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5980
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:29:22+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4712
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:29:22+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 13265
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:29:22+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1941
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:29:22+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7856
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:23:02+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1875
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:23:02+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4989
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:23:02+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4094
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:23:02+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 12269
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:23:02+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1939
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:23:02+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 6864
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:07:36+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1876
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:07:36+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5918
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:07:36+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4657
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:07:36+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 13203
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:07:36+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1941
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:07:36+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7794
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:01:16+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5552
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:01:16+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 60983
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:01:16+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 33837
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:01:16+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 96582
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:01:16+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4977
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-25T00:01:16+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 66535
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:21:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1875
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:21:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5067
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:21:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4170
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:21:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 12347
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:21:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1939
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:21:50+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 6942
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:07:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\test_compare\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1876
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:07:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\test_compare\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5242
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:07:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\test_compare\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4348
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:07:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\test_compare\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 12413
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:07:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\test_compare\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1884
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T23:07:37+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\test_compare\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7118
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T22:44:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1875
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T22:44:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5408
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T22:44:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4516
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T22:44:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 12702
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T22:44:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1940
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T22:44:57+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7283
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T21:13:18+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1875
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T21:13:18+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4844
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T21:13:18+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4046
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T21:13:18+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 12111
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T21:13:18+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1939
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T21:13:18+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 6719
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T14:35:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5558
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T14:35:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 62229
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T14:35:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 34904
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T14:35:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 97848
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T14:35:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4977
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T14:35:35+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 67787
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:57:13+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 0
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:57:13+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7806
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:57:13+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4293
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:57:13+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 13149
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:57:13+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1945
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:57:13+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7806
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:42:48+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\strict_20260624_133625\\failed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1876
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:42:48+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\strict_20260624_133625\\passed_cases.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 5290
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:42:48+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\strict_20260624_133625\\raw_outputs.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 4396
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:42:48+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\strict_20260624_133625\\report.json",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 12481
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:42:48+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\strict_20260624_133625\\report.md",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 1894
+    },
+    {
+      "report_type": "benchmark",
+      "latest_modified": "2026-06-24T13:42:48+00:00",
+      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\strict_20260624_133625\\results.jsonl",
+      "tags": [
+        "benchmark"
+      ],
+      "size_bytes": 7166
     },
     {
       "report_type": "release_snapshot",
@@ -554,42 +2639,6 @@
     {
       "report_type": "benchmark",
       "latest_modified": "2026-05-23T21:32:57+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\baseline_report.json",
-      "tags": [
-        "benchmark"
-      ],
-      "size_bytes": 99040
-    },
-    {
-      "report_type": "benchmark",
-      "latest_modified": "2026-05-23T21:32:57+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\baseline_report.md",
-      "tags": [
-        "benchmark"
-      ],
-      "size_bytes": 4910
-    },
-    {
-      "report_type": "benchmark",
-      "latest_modified": "2026-05-23T21:32:57+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\failed_cases.jsonl",
-      "tags": [
-        "benchmark"
-      ],
-      "size_bytes": 9943
-    },
-    {
-      "report_type": "benchmark",
-      "latest_modified": "2026-05-23T21:32:57+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\passed_cases.jsonl",
-      "tags": [
-        "benchmark"
-      ],
-      "size_bytes": 58925
-    },
-    {
-      "report_type": "benchmark",
-      "latest_modified": "2026-05-23T21:32:57+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\benchmark\\reports\\runs\\strict_20260523_205251\\failed_cases.jsonl",
       "tags": [
         "benchmark"
@@ -845,28 +2894,6 @@
         "experiment"
       ],
       "size_bytes": 1884
-    },
-    {
-      "report_type": "sft",
-      "latest_modified": "2026-05-23T18:25:58+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_promotion_report.json",
-      "tags": [
-        "adapter",
-        "promotion",
-        "sft"
-      ],
-      "size_bytes": 958
-    },
-    {
-      "report_type": "sft",
-      "latest_modified": "2026-05-23T18:25:58+00:00",
-      "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_promotion_report.md",
-      "tags": [
-        "adapter",
-        "promotion",
-        "sft"
-      ],
-      "size_bytes": 867
     },
     {
       "report_type": "sft",

@@ -17,9 +17,17 @@ chat/messages format so it works with any fine-tuning framework.
 The `output` field is empty by default.  Fill it with:
   --fill-answers DIR      reads DIR/<case_id>.c and inserts as output
 
+Translation (--translate): instructions containing Chinese are translated to
+English with the dedicated local translation model before the training files
+are written. The original instruction is preserved in `instruction_original`,
+the record's user message is updated to match, and a translation report is
+written next to the output files (translation_report.{json,md}). A failed
+translation keeps the original instruction and is surfaced in the report.
+
 Usage:
     python local_ai/ingest/prepare_training.py
     python local_ai/ingest/prepare_training.py --fill-answers path/to/answers/
+    python local_ai/ingest/prepare_training.py --translate
     python local_ai/ingest/prepare_training.py --stats
 """
 from __future__ import annotations
@@ -29,7 +37,14 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from local_ai.shared import translator
+from local_ai.shared.report_utils import write_json_report, write_text_report
 
 
 # ── Paths ──────────────────────────────────────────────────────────────────
@@ -233,6 +248,54 @@ def _sanitize_question(content: str) -> str:
     return content
 
 
+# ── Translation ────────────────────────────────────────────────────────────
+
+def translate_records(
+    records: list[dict[str, Any]],
+    model: str | None = None,
+    transport: Callable[..., str] | None = None,
+) -> list[dict[str, Any]]:
+    """Translate Chinese instructions in-place; return per-record audit entries."""
+    resolved_model = translator.resolve_model(model)
+    entries: list[dict[str, Any]] = []
+    for rec in records:
+        entry = translator.translate_if_chinese(
+            rec.get("instruction", ""), model=resolved_model, transport=transport
+        )
+        entry["id"] = rec.get("id", "?")
+        entries.append(entry)
+        if entry["error"]:
+            print(f"  WARNING: translation failed for {entry['id']}: {entry['error']} "
+                  f"(original instruction kept)", file=sys.stderr)
+            continue
+        if not entry["translated"]:
+            continue
+        rec["instruction_original"] = entry["original"]
+        rec["instruction"] = entry["text"]
+        for msg in rec.get("messages", []):
+            if msg.get("role") == "user" and msg.get("content") == entry["original"]:
+                msg["content"] = entry["text"]
+        rec["metadata"]["translated"] = True
+        rec["metadata"]["translation_model"] = resolved_model
+    return entries
+
+
+def _write_translation_report(
+    entries: list[dict[str, Any]],
+    out_dir: Path,
+    model: str | None = None,
+) -> Path:
+    report = translator.build_translation_report(
+        entries, surface="ingest_prepare_training", model=translator.resolve_model(model)
+    )
+    json_path = write_json_report(out_dir / "translation_report.json", report)
+    write_text_report(
+        out_dir / "translation_report.md",
+        translator.render_translation_report_md(report),
+    )
+    return json_path
+
+
 # ── Output ─────────────────────────────────────────────────────────────────
 
 def _write_jsonl(records: list[dict[str, Any]], path: Path) -> None:
@@ -275,6 +338,8 @@ def prepare_training(
     chunks_dir: Path | None = None,
     output_dir: Path | None = None,
     stats_only: bool = False,
+    translate: bool = False,
+    translate_model: str | None = None,
 ) -> dict[str, Any]:
     print("Loading eval cases...", file=sys.stderr)
     eval_records = load_eval_cases(answers_dir, eval_cases_dir)
@@ -291,6 +356,18 @@ def prepare_training(
 
     out_dir = output_dir or _training_dir()
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    translation_entries: list[dict[str, Any]] = []
+    if translate:
+        print("Translating Chinese instructions...", file=sys.stderr)
+        translation_entries = translate_records(
+            eval_records + chunk_records, model=translate_model
+        )
+        report_path = _write_translation_report(translation_entries, out_dir, translate_model)
+        translated = sum(1 for e in translation_entries if e["translated"])
+        failed = sum(1 for e in translation_entries if e["error"])
+        print(f"  translation: {translated} translated, {failed} failed -> {report_path}",
+              file=sys.stderr)
 
     code_gen_path = out_dir / "code_generation.jsonl"
     _write_jsonl(eval_records, code_gen_path)
@@ -317,6 +394,13 @@ def prepare_training(
             "combined": str(combined_path),
         },
     }
+    if translate:
+        summary["translation"] = {
+            "model": translator.resolve_model(translate_model),
+            "records_translated": sum(1 for e in translation_entries if e["translated"]),
+            "records_failed": sum(1 for e in translation_entries if e["error"]),
+            "report": str(out_dir / "translation_report.json"),
+        }
     (out_dir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
     )
@@ -350,6 +434,17 @@ def main() -> None:
         "--output-dir",
         help="Optional training output directory (default: ingest/output/training)",
     )
+    parser.add_argument(
+        "--translate",
+        action="store_true",
+        help="Translate Chinese instructions to English before writing (original kept)",
+    )
+    parser.add_argument(
+        "--translate-model",
+        default=None,
+        help=f"Translation model (default: env CLAW_TRANSLATE_MODEL or "
+             f"{translator.DEFAULT_TRANSLATE_MODEL})",
+    )
     args = parser.parse_args()
 
     answers_dir = Path(args.fill_answers) if args.fill_answers else None
@@ -359,6 +454,8 @@ def main() -> None:
         chunks_dir=Path(args.chunks_dir) if args.chunks_dir else None,
         output_dir=Path(args.output_dir) if args.output_dir else None,
         stats_only=args.stats,
+        translate=args.translate,
+        translate_model=args.translate_model,
     )
     if not args.stats:
         print(json.dumps(result, ensure_ascii=False, indent=2))

@@ -1,0 +1,20 @@
+{
+  "run_id": "regression_strict_20260514_222958",
+  "timestamp": "2026-06-25T05:25:21+00:00",
+  "run_type": "regression_detection",
+  "model_profile": null,
+  "benchmark_profile": null,
+  "training_job": null,
+  "adapter_path": null,
+  "accepted": null,
+  "avg_score": null,
+  "compile_rate": null,
+  "runtime_rate": null,
+  "semantic_rate": null,
+  "timeout_rate": null,
+  "git_commit": "9a95950",
+  "python_version": "3.12.10",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "python_executable": "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+}

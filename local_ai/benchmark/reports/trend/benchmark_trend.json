@@ -1,0 +1,908 @@
+{
+  "timestamp": "2026-06-25T05:58:53+00:00",
+  "total_runs": 85,
+  "models_tracked": 2,
+  "models": [
+    {
+      "model": "qwen2.5-coder:14b",
+      "run_count": 11,
+      "first": {
+        "run_id": "strict_20260624_133625",
+        "avg_score": 66.5
+      },
+      "latest": {
+        "run_id": "model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605",
+        "avg_score": 93.8
+      },
+      "trend": "improving",
+      "latest_regression": {
+        "base_run_id": "model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958",
+        "new_run_id": "model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605",
+        "verdict": "regression",
+        "regression_reasons": [
+          "3 task(s) newly broken"
+        ],
+        "improvement_reasons": []
+      },
+      "runs": [
+        {
+          "run_id": "strict_20260624_133625",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-24T13:42:48+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "test_compare",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-24T23:07:37+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_080117",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-25T00:07:36+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_082302",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-25T00:29:22+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "override_probe_14b",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-25T01:04:37+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "override_probe_14b_fixed",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-25T01:29:10+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_093121",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-25T01:37:30+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_095548",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-25T02:01:54+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_100158",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-25T02:39:03+00:00",
+          "accepted": 38,
+          "avg_score": 95.8,
+          "compile_rate": 0.95,
+          "runtime_rate": 0.95,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_14b_c_exam_2025_strict_seeded_20260625_114958",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-25T03:56:01+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_14b_generated_c_tasks_v1_20260625_115605",
+          "model": "qwen2.5-coder:14b",
+          "timestamp": "2026-06-25T04:31:27+00:00",
+          "accepted": 37,
+          "avg_score": 93.8,
+          "compile_rate": 0.925,
+          "runtime_rate": 0.925,
+          "has_results": true
+        }
+      ]
+    },
+    {
+      "model": "qwen2.5-coder:3b",
+      "run_count": 74,
+      "first": {
+        "run_id": "baseline_20260514_201413",
+        "avg_score": 0.0
+      },
+      "latest": {
+        "run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845",
+        "avg_score": 79.4
+      },
+      "trend": "improving",
+      "latest_regression": {
+        "base_run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719",
+        "new_run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845",
+        "verdict": "regression",
+        "regression_reasons": [
+          "avg score dropped by 3.9",
+          "compile pass-rate dropped by 0.175",
+          "runtime pass-rate dropped by 0.125",
+          "4 task(s) newly broken"
+        ],
+        "improvement_reasons": []
+      },
+      "runs": [
+        {
+          "run_id": "baseline_20260514_201413",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T20:18:14+00:00",
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "baseline_20260514_202204",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T20:23:04+00:00",
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "baseline_20260514_203145",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T20:35:25+00:00",
+          "accepted": 1,
+          "avg_score": 77.0,
+          "compile_rate": 1.0,
+          "runtime_rate": 1.0,
+          "has_results": true
+        },
+        {
+          "run_id": "baseline_20260514_204315",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T20:56:26+00:00",
+          "accepted": 2,
+          "avg_score": 36.8,
+          "compile_rate": 0.5,
+          "runtime_rate": 0.25,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_222050",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T22:21:10+00:00",
+          "accepted": 0,
+          "avg_score": 15.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_222153",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T22:22:47+00:00",
+          "accepted": 2,
+          "avg_score": 44.0,
+          "compile_rate": 0.5,
+          "runtime_rate": 0.25,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_222833",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T22:28:54+00:00",
+          "accepted": 0,
+          "avg_score": 15.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_222915",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T22:29:32+00:00",
+          "accepted": 1,
+          "avg_score": 72.0,
+          "compile_rate": 1.0,
+          "runtime_rate": 1.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_222958",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T22:31:07+00:00",
+          "accepted": 3,
+          "avg_score": 56.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.25,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_223526",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T22:36:26+00:00",
+          "accepted": 2,
+          "avg_score": 44.8,
+          "compile_rate": 0.5,
+          "runtime_rate": 0.25,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_224452",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T22:45:57+00:00",
+          "accepted": 3,
+          "avg_score": 62.0,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_224957",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T22:50:59+00:00",
+          "accepted": 3,
+          "avg_score": 64.0,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_230649",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:07:52+00:00",
+          "accepted": 3,
+          "avg_score": 64.0,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_231017",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:11:16+00:00",
+          "accepted": 3,
+          "avg_score": 60.2,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_231425",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:14:44+00:00",
+          "accepted": 0,
+          "avg_score": 15.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_231828",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:18:49+00:00",
+          "accepted": 0,
+          "avg_score": 15.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_232001",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:20:20+00:00",
+          "accepted": 0,
+          "avg_score": 30.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_232044",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:21:01+00:00",
+          "accepted": 1,
+          "avg_score": 100.0,
+          "compile_rate": 1.0,
+          "runtime_rate": 1.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_232106",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:22:08+00:00",
+          "accepted": 3,
+          "avg_score": 66.0,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_232232",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:23:39+00:00",
+          "accepted": 2,
+          "avg_score": 48.5,
+          "compile_rate": 0.5,
+          "runtime_rate": 0.25,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_232438",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:24:58+00:00",
+          "accepted": 1,
+          "avg_score": 72.0,
+          "compile_rate": 1.0,
+          "runtime_rate": 1.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_232518",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:25:37+00:00",
+          "accepted": 1,
+          "avg_score": 96.0,
+          "compile_rate": 1.0,
+          "runtime_rate": 1.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_232541",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:26:44+00:00",
+          "accepted": 3,
+          "avg_score": 65.0,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_232802",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:29:18+00:00",
+          "accepted": 4,
+          "avg_score": 76.8,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_233024",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:30:38+00:00",
+          "accepted": 1,
+          "avg_score": 86.0,
+          "compile_rate": 1.0,
+          "runtime_rate": 1.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260514_233044",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-14T23:31:45+00:00",
+          "accepted": 4,
+          "avg_score": 84.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "baseline_20260515_041608",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T04:17:18+00:00",
+          "accepted": 3,
+          "avg_score": 68.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_041812",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T04:18:27+00:00",
+          "accepted": 0,
+          "avg_score": 26.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_042607",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T04:26:32+00:00",
+          "accepted": 1,
+          "avg_score": 96.0,
+          "compile_rate": 1.0,
+          "runtime_rate": 1.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_043031",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T04:31:21+00:00",
+          "accepted": 4,
+          "avg_score": 82.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_044724",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T04:48:17+00:00",
+          "accepted": 4,
+          "avg_score": 82.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_044905",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T04:49:56+00:00",
+          "accepted": 4,
+          "avg_score": 82.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_045017",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T04:51:15+00:00",
+          "accepted": 4,
+          "avg_score": 84.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_045118",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T04:52:08+00:00",
+          "accepted": 3,
+          "avg_score": 66.8,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_045232",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T04:53:23+00:00",
+          "accepted": 4,
+          "avg_score": 84.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_051554",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T05:16:47+00:00",
+          "accepted": 4,
+          "avg_score": 84.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260515_052032",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-15T05:21:22+00:00",
+          "accepted": 4,
+          "avg_score": 84.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_031927",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T03:24:30+00:00",
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_051835",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T05:23:48+00:00",
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_053018",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T05:42:01+00:00",
+          "accepted": 1,
+          "avg_score": 19.2,
+          "compile_rate": 0.25,
+          "runtime_rate": 0.25,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_055333",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T05:58:24+00:00",
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_060028",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T06:06:10+00:00",
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_061316",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T06:25:16+00:00",
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_062902",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T06:41:02+00:00",
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_071651",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T07:28:51+00:00",
+          "accepted": 1,
+          "avg_score": 19.2,
+          "compile_rate": 0.25,
+          "runtime_rate": 0.25,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_074025",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T07:56:14+00:00",
+          "accepted": 3,
+          "avg_score": 60.2,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_075953",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T08:15:25+00:00",
+          "accepted": 4,
+          "avg_score": 84.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_081918",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T08:34:29+00:00",
+          "accepted": 4,
+          "avg_score": 82.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_083819",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T08:44:01+00:00",
+          "accepted": 3,
+          "avg_score": 66.8,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_084819",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T08:53:06+00:00",
+          "accepted": 4,
+          "avg_score": 85.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260516_090613",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-16T09:12:20+00:00",
+          "accepted": 4,
+          "avg_score": 83.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260517_183413",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-17T18:39:15+00:00",
+          "accepted": 4,
+          "avg_score": 85.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260517_184737",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-17T19:06:58+00:00",
+          "accepted": 1,
+          "avg_score": 17.5,
+          "compile_rate": 0.25,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260517_192837",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-17T19:32:56+00:00",
+          "accepted": 4,
+          "avg_score": 83.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "strict_20260517_201150",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-17T20:41:55+00:00",
+          "accepted": 8,
+          "avg_score": 48.9,
+          "compile_rate": 0.5,
+          "runtime_rate": 0.312,
+          "has_results": true
+        },
+        {
+          "run_id": "prompt_probe_exam2_v2",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-17T21:02:31+00:00",
+          "accepted": 1,
+          "avg_score": 48.3,
+          "compile_rate": 0.333,
+          "runtime_rate": 0.333,
+          "has_results": true
+        },
+        {
+          "run_id": "geometry_toolkit_probe_v1",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-17T21:14:33+00:00",
+          "accepted": 0,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": true
+        },
+        {
+          "run_id": "improve_20260521_182903",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-22T08:25:11+00:00",
+          "accepted": 3,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": false
+        },
+        {
+          "run_id": "improve_20260522_101826",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-22T13:45:23+00:00",
+          "accepted": 3,
+          "avg_score": 0.0,
+          "compile_rate": 0.0,
+          "runtime_rate": 0.0,
+          "has_results": false
+        },
+        {
+          "run_id": "strict_20260523_205251",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-05-23T21:32:57+00:00",
+          "accepted": 34,
+          "avg_score": 82.5,
+          "compile_rate": 0.85,
+          "runtime_rate": 0.7,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260624_215122",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-24T13:57:13+00:00",
+          "accepted": 4,
+          "avg_score": 82.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260624_215724",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-24T14:35:35+00:00",
+          "accepted": 38,
+          "avg_score": 95.2,
+          "compile_rate": 0.95,
+          "runtime_rate": 0.925,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_050704",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-24T21:13:18+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_063814",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-24T22:44:57+00:00",
+          "accepted": 3,
+          "avg_score": 62.8,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_071612",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-24T23:21:50+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_072150",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-25T00:01:16+00:00",
+          "accepted": 38,
+          "avg_score": 95.5,
+          "compile_rate": 0.95,
+          "runtime_rate": 0.95,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_081718",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-25T00:23:02+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "override_probe_3b",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-25T00:57:27+00:00",
+          "accepted": 3,
+          "avg_score": 66.5,
+          "compile_rate": 0.75,
+          "runtime_rate": 0.5,
+          "has_results": true
+        },
+        {
+          "run_id": "override_probe_3b_fixed",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-25T01:22:05+00:00",
+          "accepted": 4,
+          "avg_score": 85.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_092948",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-25T01:31:21+00:00",
+          "accepted": 4,
+          "avg_score": 83.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_094401",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-25T01:45:21+00:00",
+          "accepted": 4,
+          "avg_score": 83.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_094524",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-25T01:55:46+00:00",
+          "accepted": 34,
+          "avg_score": 83.0,
+          "compile_rate": 0.85,
+          "runtime_rate": 0.675,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_c_exam_2025_strict_seeded_20260625_113719",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-25T03:38:43+00:00",
+          "accepted": 4,
+          "avg_score": 83.2,
+          "compile_rate": 1.0,
+          "runtime_rate": 0.75,
+          "has_results": true
+        },
+        {
+          "run_id": "model_eval_qwen25_coder_3b_generated_c_tasks_v1_20260625_113845",
+          "model": "qwen2.5-coder:3b",
+          "timestamp": "2026-06-25T03:49:57+00:00",
+          "accepted": 33,
+          "avg_score": 79.4,
+          "compile_rate": 0.825,
+          "runtime_rate": 0.625,
+          "has_results": true
+        }
+      ]
+    }
+  ]
+}

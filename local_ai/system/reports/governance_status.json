@@ -1,0 +1,80 @@
+{
+  "timestamp": "2026-06-25T06:25:28+00:00",
+  "promoted_to_default": [],
+  "awaiting_manual_review": [
+    {
+      "layer": "model",
+      "resource": "qwen25_coder_14b"
+    }
+  ],
+  "adapters": {
+    "default_adapter": null,
+    "count": 1,
+    "entries": [
+      {
+        "adapter_path": "local_ai/sft/artifacts/retry_geometry_v3_guarded",
+        "status": "safe_no_change"
+      }
+    ]
+  },
+  "models": {
+    "baseline": "qwen25_coder_3b",
+    "default_model": null,
+    "count": 1,
+    "entries": [
+      {
+        "model_alias": "qwen25_coder_14b",
+        "decision": "manual_review"
+      }
+    ]
+  },
+  "datasets": {
+    "count": 1,
+    "entries": [
+      {
+        "dataset_id": "generated_sft_candidate_v1",
+        "decision": "promote_to_candidate_training",
+        "candidate_training_ready": true
+      }
+    ]
+  },
+  "regression": {
+    "latest_report": {
+      "base_run_id": "strict_20260514_222958",
+      "new_run_id": "strict_20260514_223526",
+      "verdict": "regression"
+    },
+    "trend": [
+      {
+        "model": "qwen2.5-coder:14b",
+        "trend": "improving",
+        "latest_regression": "regression"
+      },
+      {
+        "model": "qwen2.5-coder:3b",
+        "trend": "improving",
+        "latest_regression": "regression"
+      }
+    ]
+  },
+  "reliability": {
+    "verdict": "flaky",
+    "stamp_rate": 0.141,
+    "flaky_task_count": 35,
+    "total_runs": 85
+  },
+  "profiles": {
+    "decision": "pass",
+    "approved": 1,
+    "total": 1,
+    "warnings": 1
+  },
+  "goldens": {
+    "approved": 41,
+    "human_verified": 0
+  },
+  "routing": {
+    "verdict": "pass",
+    "violations": 0
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "updated_at": "2026-06-25T06:25:28+00:00",
+  "approved_count": 41,
+  "human_verified_count": 0,
+  "goldens": [
+    {
+      "id": "2025_midterm_003",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_001",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_002",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_003",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_004",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_005",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_006",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_007",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_008",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_009",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_series_calculation_010",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_001",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_002",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_003",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_004",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_005",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_006",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_007",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_008",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_009",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_pattern_generation_010",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_001",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_002",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_003",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_004",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_005",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_006",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_007",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_008",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_009",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_geometry_010",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_001",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_002",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_003",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_004",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_005",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_006",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_007",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_008",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_009",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    },
+    {
+      "id": "synthetic_v3_game_simulation_010",
+      "provenance_tier": "agent_verified",
+      "verified_by": "agent_compile_runtime_verified"
+    }
+  ]
+}
