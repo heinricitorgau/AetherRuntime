@@ -24,6 +24,7 @@
   - [4.1 RAG 本地文件庫](#41-rag-本地文件庫)
   - [4.2 題目匯入：中翻英](#42-題目匯入中翻英)
   - [4.3 題目 RAG 檔案（.md）](#43-題目-rag-檔案md)
+  - [4.4 從考題重建訓練資料骨架](#44-從考題重建訓練資料骨架)
 - [5. 評測](#5-評測)
   - [5.1 C Exam Offline Eval Pack](#51-c-exam-offline-eval-pack)
   - [5.2 重新開始一輪 Benchmark 實驗](#52-重新開始一輪-benchmark-實驗)
@@ -372,15 +373,57 @@ powershell -ExecutionPolicy Bypass -File .\local_ai\run.ps1 --rag "solve the pok
 - 檔案內容只有英文題目本文，沒有 metadata 區塊。
 - 離線自我測試：`python local_ai/shared/rag_export.py --self-test`。
 
----
+### 4.4 從考題重建訓練資料骨架
 
-## 5. 評測
+要把一份新的考卷（尤其是中文考卷）納入訓練/評測，流程是把每一題整理成
+`local_ai/eval_cases/c_exam/<id>.json` 結構檔，再由 `prepare_training.py`
+產出訓練資料集。訓練管線的資料流如下：
+
+```text
+eval_cases/c_exam/*.json   結構化題目（prompt、sample_input、預期輸出、關鍵字）
+        │  prepare_training.py
+        ▼
+ingest/output/training/    code_generation.jsonl / combined.jsonl / summary.json
+        │  package_sft_dataset.py（驗證後打包）
+        ▼
+training_quality/…/sft_chatml.jsonl   → sft/train_lora.py
+```
+
+每個 eval_case 至少包含：`id`、`prompt`（英文題目）、`required_features`、
+`sample_input`、`expected_behavior.output_contains`、`checker_rules.keywords`。
+中文題目請先用 4.2 的翻譯機制轉成英文再寫進 `prompt`。
+
+重新產生訓練資料集（會讀取 `eval_cases/c_exam/` 底下所有題目）：
+
+```powershell
+python local_ai/ingest/prepare_training.py
+```
+
+**重點：訓練資料需要「題目 + 正確解答」成對。** 剛整理好的 eval_case 其
+`output`（assistant 段）預設是空的——`summary.json` 會顯示 `answered: 0`，
+代表這是一份**只有題目、還沒有參考解答的骨架**。要補上參考解答，把每題的
+正確 C 程式放成 `<case_id>.c`，再用 `--fill-answers` 帶入：
+
+```powershell
+python local_ai/ingest/prepare_training.py --fill-answers C:\path\to\answers
+```
+
+治理提醒（見 CLAUDE.md guardrails）：
+
+- 目前專案的 LoRA 訓練是**凍結**狀態；`sft/train_lora.py` 只是端到端驗證用的
+  微型 overfit 測試，不是正式訓練。
+- 參考解答必須經編譯/執行驗證後才可作為訓練目標；**未驗證的資料不得併入正式
+  SFT**，也不可拿 benchmark 失敗輸出當訓練目標。
+- 讀檔案輸入（而非 stdin）的題目，現有 checker 走 stdin，驗證時需要另外準備
+  資料檔。
+
+
 
 ### 5.1 C Exam Offline Eval Pack
 
-`local_ai/eval_cases/c_exam/` 已整理 2021-2025 C programming PDF 題目為離線 eval
-cases。這不訓練模型、不增加模型大小；只用本地模型產生答案，再用 Python 標準庫和本機
-`cc/gcc/clang` 做 smoke test。
+`local_ai/eval_cases/c_exam/` 已整理 2021-2026 C programming 題目為離線 eval
+cases（含 2026 兩份考卷共 9 題，見 4.4）。這不訓練模型、不增加模型大小；只用本地
+模型產生答案，再用 Python 標準庫和本機 `cc/gcc/clang` 做 smoke test。
 
 ```bash
 # 產生報告骨架；沒有答案時 case 會標示 no answer
