@@ -1,6 +1,6 @@
 # Architecture Map
 
-Generated: `2026-06-25T08:25:42+00:00`
+Generated: `2026-07-06T03:54:50+00:00`
 
 ## Module Tree
 
