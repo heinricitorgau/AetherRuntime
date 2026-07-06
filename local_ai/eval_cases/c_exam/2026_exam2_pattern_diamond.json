@@ -1,0 +1,36 @@
+{
+  "id": "2026_exam2_pattern_diamond",
+  "year": 2026,
+  "exam": "exam2",
+  "points": 15,
+  "topic": "Pattern Generation - Diamond (odd rows)",
+  "difficulty": "medium",
+  "prompt": "Write a program to read n and generate a diamond shown as follows\n\nenter n: 3\n  3\n 2 2\n1 3 1\n 2 2\n  3\nenter n: 4\n   4\n  3 3\n 2 4 2\n1 3 3 1\n 2 4 2\n  3 3\n   4\nenter n: 5\n    5\n   4 4\n  3 5 3\n 2 4 4 2\n1 3 5 3 1\n 2 4 4 2\n  3 5 3\n   4 4\n    5",
+  "required_features": [
+    "Read integer n",
+    "Print diamond centered on n with odd number rows",
+    "Handle spacing and symmetry"
+  ],
+  "sample_input": "3",
+  "expected_behavior": {
+    "output_contains": [
+      "1 3 1"
+    ],
+    "output_format": "sample run",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": [
+      "scanf",
+      "printf",
+      "for",
+      "int"
+    ]
+  }
+}

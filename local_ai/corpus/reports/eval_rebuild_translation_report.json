@@ -1,0 +1,62 @@
+{
+  "surface": "eval_cases_rebuild",
+  "model": "qwen2.5:7b-instruct",
+  "generated_at": "2026-07-06T09:50:24+00:00",
+  "records_seen": 5,
+  "records_with_chinese": 4,
+  "records_translated": 4,
+  "records_failed": 0,
+  "records_output_still_chinese": 0,
+  "entries": [
+    {
+      "id": "2026_exam2_pattern_diamond",
+      "detected_chinese": false,
+      "translated": false,
+      "latency_ms": 0,
+      "error": null,
+      "output_contains_chinese": false,
+      "original_head": "Write a program to read n and generate a diamond shown as follows\n\nenter n: 3\n  3\n 2 2\n1 3 1\n 2 2\n  3\nenter n: 4\n   4\n  ",
+      "translated_head": ""
+    },
+    {
+      "id": "2026_exam2_letter_flip_game",
+      "detected_chinese": true,
+      "translated": true,
+      "latency_ms": 124811,
+      "error": null,
+      "output_contains_chinese": false,
+      "original_head": "5.撰寫一個翻牌猜測遊戲,規則如下:\n1.輸入n(n<=26)並產生一個n*2n的棋盤,隨機將不同字母配對(成對的字母)填入棋盤中,遊戲開始時這些字母皆為隱藏狀態\n2.電腦隨機挑選n個字母供玩家猜測\n3.使用者選擇2n個字母位置(輸入座標進",
+      "translated_head": "5. Write a card guessing game according to the following rules:\n1. Input `n` (`n <= 26`) and generate an `n * 2n` board,"
+    },
+    {
+      "id": "2026_exam2_series_alt_square",
+      "detected_chinese": true,
+      "translated": true,
+      "latency_ms": 7202,
+      "error": null,
+      "output_contains_chinese": false,
+      "original_head": "2.寫一個函式,傳入整數n並回傳下列1到n的交錯平方數合:[1/1^2-1/2^2+1/3^2-...+(-1)^(n+1)*1/n^2)],以下為被該程式的要求:需要傳入一個陣列與n,並呼叫上述函式來產生一個大小為n的陣列,其中索引i-1",
+      "translated_head": "2. Write a function that takes an integer n and returns the alternating sum of squares from 1 to n: [1/1^2 - 1/2^2 + 1/3"
+    },
+    {
+      "id": "2026_exam2_geometry_point_distance",
+      "detected_chinese": true,
+      "translated": true,
+      "latency_ms": 7875,
+      "error": null,
+      "output_contains_chinese": false,
+      "original_head": "3.參考點結構 typedef struct { double x, y; } Point;\n撰寫函式,從檔案中讀取一組陣列,需要印出該點陣列,需要傳入該點陣列,找出並顯示其中距離最遠與距離最近的兩組點對以及其對應的距離,需要有主函數(ma",
+      "translated_head": "3. Reference point structure: \n```typedef struct {\n    double x, y;\n} Point;```\n\nWrite a function to read an array of po"
+    },
+    {
+      "id": "2026_exam2_roots_cubic_dsin",
+      "detected_chinese": true,
+      "translated": true,
+      "latency_ms": 7765,
+      "error": null,
+      "output_contains_chinese": false,
+      "original_head": "4.建立一個函示,傳入 a,b,c,d,e 與x,並回傳 ax^3 + bx^2 + cx + dsin(x) + e and x: 1 0 1 -3 0 1的值,使用這個函示尋找方程式{ ax^3 + bx^2 + cx + dsin(x",
+      "translated_head": "4. Establish a function that takes parameters `a`, `b`, `c`, `d`, `e`, and `x`, and returns the value of \\( ax^3 + bx^2 "
+    }
+  ]
+}

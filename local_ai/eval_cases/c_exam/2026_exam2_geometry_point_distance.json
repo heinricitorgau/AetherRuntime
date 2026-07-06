@@ -1,0 +1,39 @@
+{
+  "id": "2026_exam2_geometry_point_distance",
+  "year": 2026,
+  "exam": "exam2",
+  "points": 26,
+  "topic": "Geometry - Farthest and Closest Point Pairs",
+  "difficulty": "hard",
+  "prompt": "3. Reference point structure: \n```typedef struct {\n    double x, y;\n} Point;```\n\nWrite a function to read an array of points from a file and print the array. The function should find and display the pair of points that are farthest apart and their corresponding distance, as well as the pair of points that are closest together and their corresponding distance. Include a main function to utilize all these functions. The format of the input file is as follows:\n\n```\n-1 2 3 6 -3 -5\n-1 0 10 -24\n```\n\nPossible execution result:\n\nEnter the file name: points.txt\nThe points are: (-1.00, 2.00), (3.00, 6.00), (-3.00, -5.00), (-1.00, 0.00), (10.00, -24.00), (3.00, 6.00) and (10.00, -24.00) have the largest distance 30.8058436, (-1.00, 2.00)and (-1.00, 0.00) has the shortest distance 2.00",
+  "required_features": [
+    "Point struct with x,y",
+    "Read point array from file",
+    "Print the point array",
+    "Find farthest and closest point pairs with distances",
+    "main uses all functions"
+  ],
+  "sample_input": "points.txt",
+  "expected_behavior": {
+    "output_contains": [
+      "largest distance",
+      "shortest distance"
+    ],
+    "output_format": "sample run",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": [
+      "struct",
+      "double",
+      "sqrt",
+      "printf"
+    ]
+  }
+}

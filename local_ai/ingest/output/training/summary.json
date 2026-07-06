@@ -1,12 +1,16 @@
 {
-  "total_records": 44,
-  "eval_cases": 19,
+  "total_records": 53,
+  "eval_cases": 28,
   "pdf_chunks": 25,
-  "answered": 19,
+  "answered": 0,
   "output_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training",
   "files": {
     "code_generation": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\code_generation.jsonl",
     "pdf_chunks": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\pdf_chunks.jsonl",
     "combined": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\ingest\\output\\training\\combined.jsonl"
+  },
+  "rag_md": {
+    "exported": 28,
+    "docs_dir": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\rag\\docs\\problems"
   }
 }

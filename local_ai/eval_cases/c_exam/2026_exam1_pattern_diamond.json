@@ -1,0 +1,37 @@
+{
+  "id": "2026_exam1_pattern_diamond",
+  "year": 2026,
+  "exam": "exam1",
+  "points": 15,
+  "topic": "Pattern Generation - Diamond",
+  "difficulty": "medium",
+  "prompt": "1. Write a program that reads an integer \\( n \\) and generates the diamond pattern shown below, with possible outputs as follows:\n\n```\nenter n: 3\n  1\n 2 2\n3 1 3\n 212\n  1\nenter n: 4\n   1\n  2 2\n 3 1 3\n4 2 2 4\n 32123\n  212\n   1\nenter n: 5\n    1\n   2 2\n  3 1 3\n 4 2 2 4\n5 3 1 3 5\n 4321234\n  32123\n   212\n    1\n```",
+  "required_features": [
+    "Read integer n",
+    "Print a symmetric number diamond",
+    "Handle row spacing"
+  ],
+  "sample_input": "3",
+  "expected_behavior": {
+    "output_contains": [
+      "3 1 3",
+      "212"
+    ],
+    "output_format": "sample run",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": [
+      "scanf",
+      "printf",
+      "for",
+      "int"
+    ]
+  }
+}

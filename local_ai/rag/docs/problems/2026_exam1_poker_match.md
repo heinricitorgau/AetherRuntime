@@ -22,3 +22,15 @@ Your picks : 1 3 1 4
 Your cards : 7C 9C Computer's cards : JD JH
 Your points: 30    Computer's points: 20
 You win the game
+
+Required features:
+  - Fill 2n^2 grid with distinct cards
+  - Turn-based coordinate picking
+  - Hidden cards revealed on pick
+  - Scoring by rank/suit match
+  - Announce winner
+
+Sample input:
+2\n1 1 1 2\n1 3 1 4
+
+Expected output contains: points, win

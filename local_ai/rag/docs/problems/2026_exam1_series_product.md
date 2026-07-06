@@ -5,3 +5,14 @@ Possible execution result:
 Enter n: 5
 The array elements are: 2.000000 3.000000 4.000000 5.000000 6.000000
 The maximum of the array elements is 6.000000
+
+Required features:
+  - Function returns product (1+1/1)*...*(1+1/n)
+  - Fill array with running products
+  - Return array maximum
+  - main reads n and prints elements + max
+
+Sample input:
+5
+
+Expected output contains: 6.000000, maximum

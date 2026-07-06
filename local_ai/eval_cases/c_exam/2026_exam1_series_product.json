@@ -1,0 +1,38 @@
+{
+  "id": "2026_exam1_series_product",
+  "year": 2026,
+  "exam": "exam1",
+  "points": 15,
+  "topic": "Series Calculation - Quasi-geometric Product",
+  "difficulty": "medium",
+  "prompt": "2. Write a function that takes an integer `n` and returns the product of the following geometric sequence: ((1+1/1)*(1+1/2)*(1+1/3)*...*(1+1/n)). The function should take an array and `n`, call the above function to generate an array of size `n`, where the element at index `i-1` stores the product calculated up to `i` (where `i=1,2,...,n`). Write a function that takes an array and its size, and returns the maximum value in the array. Include a main function that reads `n`, processes the array generation through the functions, and prints the array elements and the maximum value.\n\nPossible execution result:\n\nEnter n: 5\nThe array elements are: 2.000000 3.000000 4.000000 5.000000 6.000000\nThe maximum of the array elements is 6.000000",
+  "required_features": [
+    "Function returns product (1+1/1)*...*(1+1/n)",
+    "Fill array with running products",
+    "Return array maximum",
+    "main reads n and prints elements + max"
+  ],
+  "sample_input": "5",
+  "expected_behavior": {
+    "output_contains": [
+      "6.000000",
+      "maximum"
+    ],
+    "output_format": "sample run",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": [
+      "double",
+      "for",
+      "return",
+      "printf"
+    ]
+  }
+}

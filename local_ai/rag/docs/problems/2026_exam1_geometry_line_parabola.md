@@ -24,3 +24,15 @@ The line equation is 0.0000x + 2.0000y = -2.0000.
 The parabola equation is y = 1.0000x^2 + 0.0000x + 0.0000.
 The line and the parabola have no intersection point.
 ```
+
+Required features:
+  - Line equation from two points
+  - Print line ax+by=c
+  - Print parabola y=ax^2+bx+c
+  - Intersection of line and parabola
+  - Read multiple records from file
+
+Sample input:
+0 0 2 2 1 0 0\n0 -1 2 -1 1 0 0
+
+Expected output contains: The line equation is, The parabola equation is, no intersection point

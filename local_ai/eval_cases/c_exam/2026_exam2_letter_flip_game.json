@@ -1,0 +1,39 @@
+{
+  "id": "2026_exam2_letter_flip_game",
+  "year": 2026,
+  "exam": "exam2",
+  "points": 26,
+  "topic": "Game Simulation - Letter Flip Match",
+  "difficulty": "hard",
+  "prompt": "5. Write a card guessing game according to the following rules:\n1. Input `n` (`n <= 26`) and generate an `n * 2n` board, randomly pairing different letters (matching pairs) on the board, with all letters hidden when the game starts.\n2. The computer randomly selects `n` letters for the player to guess.\n3. The user chooses 2n letter positions (input coordinates to flip the cards).\n4. Each time the user picks n pairs of letters, if a correct match is made and the letter is one of the computer's designated target letters, the player earns corresponding points. The scoring method is: letters 'a' to 'z' correspond to 1 to 26 points respectively.\n5. Display the final result of the game.\n\nPossible execution results:\n\nEnter n: 3\n* * * * * *\n* * * * * *\n* * * * * *\nFind the number C, E, and H.\nSelect 6 alphabets: 1 2 2 4 3 2 2 3 3 6 1 4\n* C * G * *\n* * E F * *\n* D * * * E\nYou guess 1 pair (E, E) and get 10 points.",
+  "required_features": [
+    "Read n (n<=26) and build n x 2n board of paired letters",
+    "Computer picks n target letters",
+    "User flips 2n positions by coordinate",
+    "Score matched target letters by a=1..z=26",
+    "Show final result"
+  ],
+  "sample_input": "3\\n1 2 2 4 3 2 2 3 3 6 1 4",
+  "expected_behavior": {
+    "output_contains": [
+      "points",
+      "pairs"
+    ],
+    "output_format": "sample run",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": [
+      "rand",
+      "char",
+      "printf",
+      "scanf"
+    ]
+  }
+}

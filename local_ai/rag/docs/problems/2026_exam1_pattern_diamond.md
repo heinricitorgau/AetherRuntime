@@ -26,3 +26,13 @@ enter n: 5
    212
     1
 ```
+
+Required features:
+  - Read integer n
+  - Print a symmetric number diamond
+  - Handle row spacing
+
+Sample input:
+3
+
+Expected output contains: 3 1 3, 212

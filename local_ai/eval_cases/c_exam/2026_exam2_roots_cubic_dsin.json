@@ -1,0 +1,38 @@
+{
+  "id": "2026_exam2_roots_cubic_dsin",
+  "year": 2026,
+  "exam": "exam2",
+  "points": 20,
+  "topic": "Numerical Roots - Cubic plus d*sin(x)",
+  "difficulty": "hard",
+  "prompt": "4. Establish a function that takes parameters `a`, `b`, `c`, `d`, `e`, and `x`, and returns the value of \\( ax^3 + bx^2 + cx + d\\sin(x) + e \\). Use this function to find all real roots of the equation \\( ax^3 + bx^2 + cx + d\\sin(x) + e = 0 \\). Your program should have a main function that reads the coefficients `a`, `b`, `c`, `d`, `e` and the initial value of `x`. It should print the equation in the format \\( ax^3 + bx^2 + cx + d\\sin(x) + e \\), and display all real roots of the equation.\n\nPossible execution result:\n\n```\nRead ax^3 + bx^2 + cx + dsin(x) + e and x: 1 0 1 -3 0 1\nThe equation is y(x) = 1.0000x^3 + 1.0000x - 3.0000sin(x).\ny(1) = -0.52441295442\nThe roots are -1.167615, 0.0000, and 1.167615.\n```",
+  "required_features": [
+    "Function ax^3+bx^2+cx+d*sin(x)+e",
+    "Find all real roots of the equation",
+    "main reads coefficients and initial x",
+    "Print equation and all real roots"
+  ],
+  "sample_input": "1 0 1 -3 0 1",
+  "expected_behavior": {
+    "output_contains": [
+      "The equation is",
+      "roots"
+    ],
+    "output_format": "sample run",
+    "must_compile": true,
+    "must_run": true
+  },
+  "checker_rules": {
+    "compile_required": true,
+    "runtime_required": true,
+    "input_method": "stdin",
+    "output_method": "stdout",
+    "timeout_seconds": 5,
+    "keywords": [
+      "double",
+      "sin",
+      "printf",
+      "scanf"
+    ]
+  }
+}
