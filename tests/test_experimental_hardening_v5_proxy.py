@@ -39,6 +39,13 @@ import proxy  # noqa: E402
 # 共用：選空閒 port
 # ────────────────────────────────────────────────────────────────────────────
 
+def _effective_max_repair_retries() -> int:
+    """與 proxy._repair_c_response 相同的上限計算方式。"""
+    return int(
+        os.environ.get("CLAW_MAX_REPAIR_RETRIES", str(proxy.DEFAULT_MAX_REPAIR_RETRIES))
+    )
+
+
 def _pick_free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("127.0.0.1", 0))
@@ -249,7 +256,7 @@ class TestCRepairMaxRetries(unittest.TestCase):
         cls.ollama.server_close()
 
     def test_cpp_loop_bounded_to_max_plus_one(self):
-        """假 Ollama 永遠回 C++；proxy 必須在 1+MAX_C_REPAIR_ATTEMPTS 次呼叫後停手。"""
+        """假 Ollama 永遠回 C++；proxy 必須在 1+max_repair_retries 次呼叫後停手。"""
         AlwaysCppHandler.shared_state["count"] = 0
         req = urllib.request.Request(
             f"http://127.0.0.1:{self.proxy_port}/v1/messages",
@@ -270,8 +277,8 @@ class TestCRepairMaxRetries(unittest.TestCase):
         )
         resp = urllib.request.urlopen(req, timeout=10)
         data = json.loads(resp.read())
-        # 上限 = 初次 + MAX_C_REPAIR_ATTEMPTS 次修復
-        expected_cap = 1 + proxy.MAX_C_REPAIR_ATTEMPTS
+        # 上限 = 初次 + max_repair_retries 次修復
+        expected_cap = 1 + _effective_max_repair_retries()
         self.assertEqual(
             AlwaysCppHandler.shared_state["count"],
             expected_cap,
@@ -302,7 +309,7 @@ class TestCRepairMaxRetries(unittest.TestCase):
         urllib.request.urlopen(req, timeout=10).read()
         second_count = AlwaysCppHandler.shared_state["count"]
         delta = second_count - first_count
-        self.assertEqual(delta, 1 + proxy.MAX_C_REPAIR_ATTEMPTS)
+        self.assertEqual(delta, 1 + _effective_max_repair_retries())
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -511,8 +518,9 @@ class TestSystemPromptPropagation(unittest.TestCase):
                 "--ollama-url", f"http://127.0.0.1:{cls.ollama_port}",
                 "--system-prompt", cls.SENTINEL,
             ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            # 沒人讀這些 pipe；寫滿 Windows 匿名 pipe 緩衝區會讓 proxy 卡死。
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
         _wait_for_health(cls.proxy_port, timeout=10)
 

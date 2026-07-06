@@ -58,11 +58,14 @@ class BenchmarkTimeoutConfigTests(unittest.TestCase):
             "year": 2026,
             "exam": "x",
         }
-        with patch.object(run_baseline, "call_proxy", return_value=("", None, 1)) as mock_call:
+        with patch.object(
+            run_baseline, "call_proxy", return_value=("", None, 1, {})
+        ) as mock_call:
             run_baseline.evaluate_case(
                 task=task,
                 proxy_url="http://proxy",
                 model="m",
+                proxy_config_model=None,
                 system_prompt="s",
                 max_tokens=1,
                 timeout=1,

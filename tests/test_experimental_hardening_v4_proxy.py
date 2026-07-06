@@ -311,8 +311,10 @@ class EndToEndProxy(unittest.TestCase):
                 "--ollama-url", f"http://127.0.0.1:{cls.ollama_port}",
                 "--system-prompt", "請用繁體中文回答。",
             ],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            # 沒人讀這些 pipe；Windows 匿名 pipe 緩衝區小，proxy 的 stderr log
+            # 寫滿後整個行程會卡在 write，導致後續請求逾時。丟掉即可。
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
 
         deadline = time.time() + 10
@@ -427,10 +429,15 @@ class EndToEndProxy(unittest.TestCase):
         )
         events = []
         with urllib.request.urlopen(req, timeout=15) as resp:
+            # SSE 回應帶 Connection: keep-alive 且沒有 Content-Length，
+            # 伺服器不會在 message_stop 後關閉連線；跟真實 SSE 客戶端一樣，
+            # 讀到 message_stop 就收工，不能等 EOF。
             for raw in resp:
                 line = raw.decode("utf-8").strip()
                 if line.startswith("event: "):
                     events.append(line[len("event: "):])
+                    if events[-1] == "message_stop":
+                        break
         self.assertEqual(events[0], "message_start")
         self.assertEqual(events[-1], "message_stop")
         self.assertIn("content_block_delta", events)
