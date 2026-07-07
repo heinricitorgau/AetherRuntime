@@ -21,6 +21,17 @@
       "keyword": true
     }
   },
+  "c_exam_2026_strict_seeded": {
+    "dataset": "c_exam_2026",
+    "model": "qwen3b_local",
+    "prompt_profile": "strict_code_only_v2_seeded",
+    "scoring": {
+      "compile": true,
+      "runtime": true,
+      "semantic": true,
+      "keyword": true
+    }
+  },
   "generated_c_tasks_v1": {
     "dataset": "generated_benchmark_v1",
     "model": "qwen3b_local",

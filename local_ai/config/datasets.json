@@ -15,6 +15,13 @@
     "format": "jsonl",
     "type": "benchmark"
   },
+  "c_exam_2026": {
+    "path": "local_ai/ingest/output/training/splits/c_exam_2026_code_generation.jsonl",
+    "format": "jsonl",
+    "type": "benchmark",
+    "records": 9,
+    "note": "2026 exam1+exam2 problems (zh->en); no reference solutions — model-generated answers scored against expected_tokens"
+  },
   "retry_sft_v1": {
     "path": "local_ai/analysis/reports/retry_sft_chatml.jsonl",
     "format": "chatml",
