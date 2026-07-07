@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-06T03:55:01+00:00",
+  "timestamp": "2026-07-06T09:51:38+00:00",
   "status": "PASS",
   "passed": 21,
   "failed": 0,
@@ -13,8 +13,8 @@
         "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
         "local_ai/config/validate_profiles.py"
       ],
-      "started_at": "2026-07-06T03:54:49+00:00",
-      "finished_at": "2026-07-06T03:54:49+00:00",
+      "started_at": "2026-07-06T09:51:29+00:00",
+      "finished_at": "2026-07-06T09:51:30+00:00",
       "stdout_tail": "Config profile validation: PASS\nReport: C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\config\\profile_validation_report.md\n",
       "stderr_tail": ""
     },
@@ -28,8 +28,8 @@
         "local_ai/shared/config_loader.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:49+00:00",
-      "finished_at": "2026-07-06T03:54:49+00:00",
+      "started_at": "2026-07-06T09:51:30+00:00",
+      "finished_at": "2026-07-06T09:51:30+00:00",
       "stdout_tail": "config_loader self-test: PASS\n",
       "stderr_tail": ""
     },
@@ -42,8 +42,8 @@
         "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
         "local_ai/system/system_index.py"
       ],
-      "started_at": "2026-07-06T03:54:49+00:00",
-      "finished_at": "2026-07-06T03:54:50+00:00",
+      "started_at": "2026-07-06T09:51:30+00:00",
+      "finished_at": "2026-07-06T09:51:30+00:00",
       "stdout_tail": "[system-index] report >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.md\n",
       "stderr_tail": ""
     },
@@ -56,8 +56,8 @@
         "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
         "local_ai/system/build_report_index.py"
       ],
-      "started_at": "2026-07-06T03:54:50+00:00",
-      "finished_at": "2026-07-06T03:54:50+00:00",
+      "started_at": "2026-07-06T09:51:30+00:00",
+      "finished_at": "2026-07-06T09:51:30+00:00",
       "stdout_tail": "[report-index] reports=727 >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.md\n",
       "stderr_tail": ""
     },
@@ -70,8 +70,8 @@
         "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
         "local_ai/system/build_architecture_map.py"
       ],
-      "started_at": "2026-07-06T03:54:50+00:00",
-      "finished_at": "2026-07-06T03:54:50+00:00",
+      "started_at": "2026-07-06T09:51:30+00:00",
+      "finished_at": "2026-07-06T09:51:30+00:00",
       "stdout_tail": "[architecture-map] report >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\architecture_map.md\n",
       "stderr_tail": ""
     },
@@ -84,8 +84,8 @@
         "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
         "local_ai/sft/list_adapters.py"
       ],
-      "started_at": "2026-07-06T03:54:50+00:00",
-      "finished_at": "2026-07-06T03:54:50+00:00",
+      "started_at": "2026-07-06T09:51:30+00:00",
+      "finished_at": "2026-07-06T09:51:30+00:00",
       "stdout_tail": "No default adapter selected.\n\nStatus         | Adapter                   | Avg Δ | Runtime Δ | Accepted Δ | Comparison Run                                         | Notes                                               \n---------------+---------------------------+-------+-----------+------------+--------------------------------------------------------+-----------------------------------------------------\nsafe_no_change | retry_geometry_v3_guarded | +0    | +0        | +0         | compare_lora_retry_geometry_v3_guarded_20260524_021509 | no material aggregate change and all guardrails held\n",
       "stderr_tail": ""
     },
@@ -99,8 +99,8 @@
         "local_ai/routing/task_classifier.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:50+00:00",
-      "finished_at": "2026-07-06T03:54:50+00:00",
+      "started_at": "2026-07-06T09:51:30+00:00",
+      "finished_at": "2026-07-06T09:51:30+00:00",
       "stdout_tail": "[task-classifier] self-test PASS\n",
       "stderr_tail": ""
     },
@@ -114,8 +114,8 @@
         "local_ai/benchmark/detect_regression.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:50+00:00",
-      "finished_at": "2026-07-06T03:54:50+00:00",
+      "started_at": "2026-07-06T09:51:30+00:00",
+      "finished_at": "2026-07-06T09:51:30+00:00",
       "stdout_tail": "[detect-regression] self-test ok: expected=pass got=pass\n[detect-regression] self-test ok: expected=improvement got=improvement\n[detect-regression] self-test ok: expected=regression got=regression\n[detect-regression] self-test ok: expected=manual_review got=manual_review\n[detect-regression] self-test PASS\n",
       "stderr_tail": ""
     },
@@ -129,8 +129,8 @@
         "local_ai/benchmark/benchmark_trend.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:50+00:00",
-      "finished_at": "2026-07-06T03:54:50+00:00",
+      "started_at": "2026-07-06T09:51:30+00:00",
+      "finished_at": "2026-07-06T09:51:31+00:00",
       "stdout_tail": "[benchmark-trend] self-test ok: expected=insufficient_history got=insufficient_history\n[benchmark-trend] self-test ok: expected=improving got=improving\n[benchmark-trend] self-test ok: expected=declining got=declining\n[benchmark-trend] self-test ok: expected=flat got=flat\n[benchmark-trend] self-test PASS\n",
       "stderr_tail": ""
     },
@@ -144,8 +144,8 @@
         "local_ai/benchmark/eval_reliability.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:50+00:00",
-      "finished_at": "2026-07-06T03:54:57+00:00",
+      "started_at": "2026-07-06T09:51:31+00:00",
+      "finished_at": "2026-07-06T09:51:36+00:00",
       "stdout_tail": "[eval-reliability] self-test ok: t1 spread=0.0 flaky=False\n[eval-reliability] self-test ok: t2 spread=20.0 flaky=True\n[eval-reliability] self-test ok: analyze() verdict=flaky\n[eval-reliability] self-test PASS\n",
       "stderr_tail": ""
     },
@@ -159,8 +159,8 @@
         "local_ai/config/govern_profiles.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:57+00:00",
-      "finished_at": "2026-07-06T03:54:58+00:00",
+      "started_at": "2026-07-06T09:51:36+00:00",
+      "finished_at": "2026-07-06T09:51:37+00:00",
       "stdout_tail": "[govern-profiles] self-test ok: decision=pass approved=1/1\n[govern-profiles] self-test PASS\n",
       "stderr_tail": ""
     },
@@ -174,8 +174,8 @@
         "local_ai/goldens/promote_goldens.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:58+00:00",
-      "finished_at": "2026-07-06T03:54:58+00:00",
+      "started_at": "2026-07-06T09:51:37+00:00",
+      "finished_at": "2026-07-06T09:51:37+00:00",
       "stdout_tail": "[promote-goldens] self-test good=approved/human_verified bad=rejected\n[promote-goldens] self-test PASS\n",
       "stderr_tail": ""
     },
@@ -189,8 +189,8 @@
         "local_ai/routing/audit_routing.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:58+00:00",
-      "finished_at": "2026-07-06T03:54:58+00:00",
+      "started_at": "2026-07-06T09:51:37+00:00",
+      "finished_at": "2026-07-06T09:51:37+00:00",
       "stdout_tail": "[audit-routing] self-test ok: verdict=pass\n[audit-routing] self-test PASS\n",
       "stderr_tail": ""
     },
@@ -204,8 +204,8 @@
         "local_ai/release/deploy_gate.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:58+00:00",
-      "finished_at": "2026-07-06T03:54:58+00:00",
+      "started_at": "2026-07-06T09:51:37+00:00",
+      "finished_at": "2026-07-06T09:51:37+00:00",
       "stdout_tail": "[deploy-gate] self-test ok: verdict=blocked\n[deploy-gate] self-test PASS\n",
       "stderr_tail": ""
     },
@@ -219,8 +219,8 @@
         "local_ai/corpus/import_exam.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:58+00:00",
-      "finished_at": "2026-07-06T03:54:58+00:00",
+      "started_at": "2026-07-06T09:51:37+00:00",
+      "finished_at": "2026-07-06T09:51:37+00:00",
       "stdout_tail": "[import-exam] self-test ok: parsed=1\n[import-exam] translate self-test ok\n",
       "stderr_tail": ""
     },
@@ -234,8 +234,8 @@
         "local_ai/corpus/review_workflow.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:54:58+00:00",
-      "finished_at": "2026-07-06T03:54:59+00:00",
+      "started_at": "2026-07-06T09:51:37+00:00",
+      "finished_at": "2026-07-06T09:51:37+00:00",
       "stdout_tail": "[review] self-test ok: history_len=4 level=human_verified\n",
       "stderr_tail": ""
     },
@@ -248,8 +248,8 @@
         "C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
         "local_ai/corpus/validate_corpus.py"
       ],
-      "started_at": "2026-07-06T03:54:59+00:00",
-      "finished_at": "2026-07-06T03:55:00+00:00",
+      "started_at": "2026-07-06T09:51:37+00:00",
+      "finished_at": "2026-07-06T09:51:38+00:00",
       "stdout_tail": "[validate-corpus] decision=pass items=44 errors=0\n[validate-corpus] >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\corpus\\reports\\corpus_validation.md\n",
       "stderr_tail": ""
     },
@@ -263,8 +263,8 @@
         "local_ai/system/governance_status.py",
         "--self-test"
       ],
-      "started_at": "2026-07-06T03:55:00+00:00",
-      "finished_at": "2026-07-06T03:55:01+00:00",
+      "started_at": "2026-07-06T09:51:38+00:00",
+      "finished_at": "2026-07-06T09:51:38+00:00",
       "stdout_tail": "[governance-status] self-test ok: all sections present\n[governance-status] self-test PASS\n",
       "stderr_tail": ""
     },
@@ -279,8 +279,8 @@
         "--benchmark",
         "c_exam_2025_strict_seeded"
       ],
-      "started_at": "2026-07-06T03:55:01+00:00",
-      "finished_at": "2026-07-06T03:55:01+00:00",
+      "started_at": "2026-07-06T09:51:38+00:00",
+      "finished_at": "2026-07-06T09:51:38+00:00",
       "stdout_tail": "[evaluate-routing] benchmark=c_exam_2025_strict_seeded tasks=4 selected={'adapter': 1, 'base': 3}\n[evaluate-routing] report >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.md\n[evaluate-routing] latest >> C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.md\n",
       "stderr_tail": ""
     },
@@ -290,7 +290,7 @@
       "status": "PASS",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\dataset_scaling\\reports\\generated_dataset_promotion_report.json",
       "exists": true,
-      "checked_at": "2026-07-06T03:55:01+00:00"
+      "checked_at": "2026-07-06T09:51:38+00:00"
     },
     {
       "name": "synthetic training summary exists",
@@ -298,7 +298,7 @@
       "status": "PASS",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\synthetic_training_summary.json",
       "exists": true,
-      "checked_at": "2026-07-06T03:55:01+00:00"
+      "checked_at": "2026-07-06T09:51:38+00:00"
     }
   ],
   "guardrails": {

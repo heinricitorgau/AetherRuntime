@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-07-06T03:54:50+00:00",
+  "timestamp": "2026-07-06T09:51:30+00:00",
   "count": 727,
   "reports": [
     {
       "report_type": "system",
-      "latest_modified": "2026-07-06T03:54:50+00:00",
+      "latest_modified": "2026-07-06T09:51:30+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.json",
       "tags": [
         "system"
@@ -13,7 +13,7 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-07-06T03:54:50+00:00",
+      "latest_modified": "2026-07-06T09:51:30+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\system_index.md",
       "tags": [
         "system"
@@ -22,7 +22,7 @@
     },
     {
       "report_type": "routing",
-      "latest_modified": "2026-06-25T08:25:45+00:00",
+      "latest_modified": "2026-07-06T03:55:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.json",
       "tags": [
         "routing"
@@ -31,7 +31,7 @@
     },
     {
       "report_type": "routing",
-      "latest_modified": "2026-06-25T08:25:45+00:00",
+      "latest_modified": "2026-07-06T03:55:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\c_exam_2025_strict_seeded_routing_plan.md",
       "tags": [
         "routing"
@@ -40,7 +40,7 @@
     },
     {
       "report_type": "routing",
-      "latest_modified": "2026-06-25T08:25:45+00:00",
+      "latest_modified": "2026-07-06T03:55:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.json",
       "tags": [
         "routing"
@@ -49,7 +49,7 @@
     },
     {
       "report_type": "routing",
-      "latest_modified": "2026-06-25T08:25:45+00:00",
+      "latest_modified": "2026-07-06T03:55:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\routing\\reports\\routing_plan.md",
       "tags": [
         "routing"
@@ -58,25 +58,25 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-06-25T08:25:45+00:00",
+      "latest_modified": "2026-07-06T03:55:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\smoke_test_report.json",
       "tags": [
         "system"
       ],
-      "size_bytes": 13446
+      "size_bytes": 13028
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-06-25T08:25:45+00:00",
+      "latest_modified": "2026-07-06T03:55:01+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\smoke_test_report.md",
       "tags": [
         "system"
       ],
-      "size_bytes": 4021
+      "size_bytes": 3565
     },
     {
       "report_type": "sft",
-      "latest_modified": "2026-06-25T08:25:43+00:00",
+      "latest_modified": "2026-07-06T03:54:50+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.json",
       "tags": [
         "adapter",
@@ -87,7 +87,7 @@
     },
     {
       "report_type": "sft",
-      "latest_modified": "2026-06-25T08:25:43+00:00",
+      "latest_modified": "2026-07-06T03:54:50+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\sft\\reports\\adapter_registry_summary.md",
       "tags": [
         "adapter",
@@ -98,7 +98,7 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-06-25T08:25:42+00:00",
+      "latest_modified": "2026-07-06T03:54:50+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\architecture_map.md",
       "tags": [
         "system"
@@ -107,7 +107,7 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-06-25T08:25:42+00:00",
+      "latest_modified": "2026-07-06T03:54:50+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.json",
       "tags": [
         "system"
@@ -116,7 +116,7 @@
     },
     {
       "report_type": "system",
-      "latest_modified": "2026-06-25T08:25:42+00:00",
+      "latest_modified": "2026-07-06T03:54:50+00:00",
       "path": "C:\\Users\\User\\OneDrive\\Desktop\\research-claw-code\\local_ai\\system\\reports\\report_index.md",
       "tags": [
         "system"
