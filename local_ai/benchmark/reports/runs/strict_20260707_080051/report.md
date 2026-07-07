@@ -79,3 +79,10 @@ Score range: 19–100
 ---
 
 **Legend**: C=compile  R=runtime  S=semantic  K=keyword  T=not-truncated
+## Model Override
+
+- requested_model: `qwen2.5-coder:14b`
+- effective_model: `qwen2.5-coder:14b`
+- proxy_config_model: `qwen2.5-coder:3b`
+- model_override_valid: `True`
+- benchmark_status: `completed`
