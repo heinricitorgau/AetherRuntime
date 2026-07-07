@@ -5,7 +5,7 @@
   "points": 12,
   "topic": "Series Calculation",
   "difficulty": "medium",
-  "prompt": "Write a program that reads n and calculates the sum of the series:\n1 - 5/3 + 7/8 - ... + (2n+1)/(n²-1)\n\nFormula: Sum from i=1 to n of: (-1)^(i+1) * (2i+1) / (i²-1)\n\nExample: When n=10, sum = 0.607112",
+  "prompt": "Write a program that reads n and calculates the sum of the series:\n1 - 5/3 + 7/8 - ... + (2n+1)/(n²-1)\n\nFormula: Sum from i=1 to n of: (-1)^(i+1) * (2i+1) / (i²-1)\n(The i=1 term is defined as 1; start accumulating from i=2 to avoid dividing by zero.)\n\nExample: When n=10, sum = -0.236724",
   "required_features": [
     "Read integer n",
     "Calculate numerator: 2i+1",
@@ -16,10 +16,10 @@
   ],
   "sample_input": "10",
   "expected_behavior": {
-    "output_contains": ["0.607"],
+    "output_contains": ["-0.237"],
     "output_format": "decimal number",
-    "min_value": 0.6,
-    "max_value": 0.62
+    "min_value": -0.25,
+    "max_value": -0.22
   },
   "checker_rules": {
     "compile_required": true,
