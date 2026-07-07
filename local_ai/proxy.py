@@ -1356,7 +1356,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
                 504, f"Ollama request timed out directly (TimeoutError)"
             )
         except Exception as exc:
-            import traceback
             sys.stderr.write(f"[proxy] unknown exception in _handle_messages: {exc}\n{traceback.format_exc()}\n")
             self._send_json_error(500, "Internal proxy error")
 
