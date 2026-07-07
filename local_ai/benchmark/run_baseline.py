@@ -575,7 +575,7 @@ def run_benchmark(
             continue
 
         case_started = time.monotonic()
-        task_label = task.get("title") or task.get("name") or task.get("id", case_id)
+        task_label = task.get("title") or task.get("name") or task["id"]
         print_question_start(i, total, str(task_label), "Generating solution...")
         print_stage(1, 5, "Build Prompt")
 
