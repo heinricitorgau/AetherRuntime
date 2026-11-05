@@ -260,36 +260,36 @@ This project is a local-first coding LLM evaluation and LoRA experimentation
 framework. It focuses on compile/runtime validated benchmarks, failure mining,
 retry training, and adapter governance for offline coding models.
 
-## 使用手冊
+## User manual
 
-`research-claw-code` 是 `claw` CLI 的研究與本地化專案，主要有兩條使用路線：
-**離線 bundle**（在有網路的機器打包 `claw + Ollama + 模型`，搬到離線環境直接用）
-與 **Rust CLI 開發**（在 `rust/` workspace 內開發 `claw` 本體）。
+`research-claw-code` is a research and localisation project for the `claw` CLI, with two main ways to use it:
+the **offline bundle** (package `claw + Ollama + models` on a machine with internet access, then move it to an offline environment and use it directly)
+and **Rust CLI development** (developing `claw` itself in the `rust/` workspace).
 
-所有使用教學已整理成獨立的使用手冊：**[`docs/USER_MANUAL.md`](./docs/USER_MANUAL.md)**，
-內容包含：
+All the usage guides are collected in a separate user manual: **[`docs/USER_MANUAL.md`](./docs/USER_MANUAL.md)**,
+which covers:
 
-- 離線部署：Level 1 Windows air-gap 目標、bundle 準備/複製/啟動、USB workflow、清理
-- 日常使用：離線模式行為、多行輸入、硬體與模型推薦、常用環境變數、除錯與 smoke test
-- RAG 與題目資料：本地文件庫、題目中翻英匯入、題目 RAG `.md` 檔
-- 評測：C Exam Offline Eval Pack、benchmark 實驗流程
-- Rust CLI 開發入口與注意事項
+- Offline deployment: the Level 1 Windows air-gap target, preparing / copying / launching the bundle, the USB workflow, clean-up
+- Day-to-day use: offline-mode behaviour, multi-line input, hardware and model recommendations, common environment variables, debugging and smoke tests
+- RAG and question data: the local document library, importing questions with Chinese-to-English translation, question RAG `.md` files
+- Evaluation: the C Exam Offline Eval Pack and the benchmark experiment workflow
+- Where to start with Rust CLI development, and things to watch out for
 
-## 專案結構
+## Project structure
 
 ```text
 .
-├── local_ai/   # 離線 bundle、proxy、啟動與清理腳本
+├── local_ai/   # offline bundle, proxy, launch and clean-up scripts
 ├── rust/       # claw CLI Rust workspace
-├── src/        # 早期 Python port / 研究與對照工具
-├── tests/      # Python 端測試與加固驗證
-└── docs/       # 使用手冊與補充研究文件
+├── src/        # early Python port / research and comparison tools
+├── tests/      # Python-side tests and hardening checks
+└── docs/       # user manual and supplementary research docs
 ```
 
-## 文件導覽
+## Documentation guide
 
-- [`docs/USER_MANUAL.md`](./docs/USER_MANUAL.md)：完整使用手冊（部署、日常使用、題目匯入、評測）
-- [`usage.txt`](./usage.txt)：最短版離線使用說明
-- [`USAGE.md`](./USAGE.md)：`claw` CLI 與 Rust workspace 用法
-- [`local_ai/README.md`](./local_ai/README.md)：離線 bundle 細節、架構與疑難排解
-- [`rust/README.md`](./rust/README.md)：Rust workspace、crate 分工與開發入口
+- [`docs/USER_MANUAL.md`](./docs/USER_MANUAL.md): the full user manual (deployment, day-to-day use, importing questions, evaluation)
+- [`usage.txt`](./usage.txt): the shortest offline usage notes
+- [`USAGE.md`](./USAGE.md): using the `claw` CLI and the Rust workspace
+- [`local_ai/README.md`](./local_ai/README.md): offline bundle details, architecture and troubleshooting
+- [`rust/README.md`](./rust/README.md): the Rust workspace, how its crates divide the work, and where to start developing
