@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/aether-banner.svg" alt="AetherRuntime" width="100%">
+</p>
+
 # research-claw-code
 
 ## Quick Demo
