@@ -4,6 +4,8 @@
 
 # research-claw-code
 
+**English** · [繁體中文](README.zh-TW.md)
+
 ## Quick Demo
 
 ```bash
