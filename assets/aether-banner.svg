@@ -6,9 +6,7 @@
       <rect y="3" width="8" height="1" fill="#35283c" fill-opacity="0.05"/>
     </pattern>
   </defs>
-  <rect width="1280" height="320" fill="#ffffff"/>
-  <rect x="0.5" y="0.5" width="1279" height="319" fill="none" stroke="#e1dce4"/>
-    <g fill="#f92434" transform="translate(53.00 104.00) scale(0.05700 -0.05700)"><use href="#g0" x="0"/><use href="#g1" x="730"/><use href="#g2" x="1384"/><use href="#g3" x="2040"/><use href="#g1" x="2799"/><use href="#g4" x="3453"/><use href="#g4" x="4196"/><use href="#g5" x="4939"/><use href="#g6" x="5685"/><use href="#g2" x="6438"/><use href="#g7" x="7094"/><use href="#g8" x="7699"/><use href="#g1" x="8548"/></g>
+  <g fill="#f92434" transform="translate(53.00 104.00) scale(0.05700 -0.05700)"><use href="#g0" x="0"/><use href="#g1" x="730"/><use href="#g2" x="1384"/><use href="#g3" x="2040"/><use href="#g1" x="2799"/><use href="#g4" x="3453"/><use href="#g4" x="4196"/><use href="#g5" x="4939"/><use href="#g6" x="5685"/><use href="#g2" x="6438"/><use href="#g7" x="7094"/><use href="#g8" x="7699"/><use href="#g1" x="8548"/></g>
   <g fill="#00bfc9" transform="translate(59.00 104.00) scale(0.05700 -0.05700)"><use href="#g0" x="0"/><use href="#g1" x="730"/><use href="#g2" x="1384"/><use href="#g3" x="2040"/><use href="#g1" x="2799"/><use href="#g4" x="3453"/><use href="#g4" x="4196"/><use href="#g5" x="4939"/><use href="#g6" x="5685"/><use href="#g2" x="6438"/><use href="#g7" x="7094"/><use href="#g8" x="7699"/><use href="#g1" x="8548"/></g>
   <g fill="#180b20" transform="translate(56.00 104.00) scale(0.05700 -0.05700)"><use href="#g0" x="0"/><use href="#g1" x="730"/><use href="#g2" x="1384"/><use href="#g3" x="2040"/><use href="#g1" x="2799"/><use href="#g4" x="3453"/><use href="#g4" x="4196"/><use href="#g5" x="4939"/><use href="#g6" x="5685"/><use href="#g2" x="6438"/><use href="#g7" x="7094"/><use href="#g8" x="7699"/><use href="#g1" x="8548"/></g>
   <rect x="56" y="126" width="72" height="6" fill="#e94300"/>

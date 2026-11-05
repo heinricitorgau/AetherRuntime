@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/aether-banner.svg" alt="AetherRuntime" width="100%">
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/aether-banner-dark.svg"><img src="assets/aether-banner.svg" alt="AetherRuntime" width="100%"></picture>
 </p>
 
 # research-claw-code
