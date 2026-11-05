@@ -2,9 +2,11 @@
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/aether-banner-dark.svg"><img src="assets/aether-banner.svg" alt="AetherRuntime" width="100%"></picture>
 </p>
 
-# research-claw-code
+# AetherRuntime
 
 [English](README.md) · **繁體中文**
+
+> 用來評測本機程式碼模型的離線 benchmark 與 LoRA 訓練基礎設施（research-claw-code 專案）。
 
 ## 快速展示
 

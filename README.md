@@ -2,9 +2,11 @@
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/aether-banner-dark.svg"><img src="assets/aether-banner.svg" alt="AetherRuntime" width="100%"></picture>
 </p>
 
-# research-claw-code
+# AetherRuntime
 
 **English** · [繁體中文](README.zh-TW.md)
+
+> Offline benchmarking and LoRA training infrastructure for evaluating local coding models (the research-claw-code project).
 
 ## Quick Demo
 
