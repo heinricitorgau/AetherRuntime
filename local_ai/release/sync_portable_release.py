@@ -82,6 +82,9 @@ EXCLUDED_SUFFIXES = {
 PRESERVE_TARGET_PARTS = {
     ("local_ai", "runtime"),
     ("pdf_files",),
+    # Prebuilt claw.exe that run.ps1 launches; a source checkout without a
+    # Rust build (e.g. a fresh git worktree) must not wipe it from the bundle.
+    ("rust", "target"),
 }
 
 EXCLUDED_TARGET_DIRS = {
@@ -254,7 +257,6 @@ def iter_target_files(target: Path) -> dict[str, Path]:
         dirs[:] = kept_dirs
         for filename in filenames:
             path = current_path / filename
-            rel_path = rel(path, ROOT)
             files[rel(path, target)] = path
     return files
 
@@ -319,6 +321,13 @@ def build_plan(target: Path) -> dict[str, Any]:
     ignored.extend(
         {"path": path, "reason": "preserved portable runtime or unmanaged asset"}
         for path in preserved
+    )
+    # Preserved directories are pruned from the target walk, so list them
+    # explicitly to make it visible in the report that they are kept as-is.
+    ignored.extend(
+        {"path": "/".join(parts), "reason": "preserved directory in portable target (never deleted)"}
+        for parts in sorted(PRESERVE_TARGET_PARTS)
+        if target.joinpath(*parts).is_dir()
     )
 
     report = {
