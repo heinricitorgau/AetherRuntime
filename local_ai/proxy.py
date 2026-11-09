@@ -108,15 +108,23 @@ def _open_sse_log() -> None:
 
 class FirstTokenTimeoutError(Exception):
     pass
+
+
+# Language used when a programming request names none. Override with
+# CLAW_DEFAULT_LANGUAGE=c to restore the previous C-first behaviour.
+DEFAULT_PROGRAMMING_LANGUAGE = (
+    os.environ.get("CLAW_DEFAULT_LANGUAGE", "python").strip().lower() or "python"
+)
+
 DEFAULT_SYSTEM_PROMPT = (
     "你是離線終端機助理。"
     "請全程只使用繁體中文回答，不要混用英文、日文、韓文、越南文或其他語言。"
     "不要自己切換語言，也不要詢問是否要改用別的語言。"
     "請直接在對話中輸出答案，不要主動建立、修改或輸出成檔案，除非使用者明確要求你這樣做。"
     "如果使用者要求寫程式，請直接給正確答案。"
-    "如果使用者沒有明確指定程式語言，預設輸出 C 語言程式。"
+    "如果使用者沒有明確指定程式語言，預設輸出 Python 程式。"
     "如果使用者已經指定 Python、Java、C++ 或其他語言，就照使用者指定的語言回答。"
-    "如果題目很簡單，例如要求輸出 1，請直接提供最短、正確的 C 程式。"
+    "如果題目很簡單，例如要求輸出 1，請直接提供最短、正確的 Python 程式。"
     "不要離題，不要自我對話，不要補無關說明。"
     "如果使用者沒有特別指定格式，請優先用清楚、直接、適合終端機閱讀的方式回覆。"
 )
@@ -146,7 +154,7 @@ PROGRAMMING_KEYWORDS = (
 )
 
 LANGUAGE_PATTERNS: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("c", ("c語言", " c language", " in c", "write a c program", "language c")),
+    ("c", ("c語言", "c 語言", "c程式", "c 程式", " c language", " in c", "write a c program", "language c")),
     ("c++", ("c++", "cpp", "c plus plus")),
     ("python", ("python", "py ")),
     ("java", ("java",)),
@@ -344,6 +352,9 @@ def _detect_explicit_language(text: str) -> str | None:
     for language, patterns in LANGUAGE_PATTERNS:
         if any(pattern in lowered for pattern in patterns):
             return language
+    # "請用 C 寫…" / "用c寫" — bare "C" after 用 (but not C++ / C#).
+    if re.search(r"用\s*c(?![a-z0-9+#])", lowered):
+        return "c"
     return None
 
 
@@ -351,7 +362,14 @@ def _programming_mode_instruction(user_text: str) -> str | None:
     if not _looks_like_programming_request(user_text):
         return None
     explicit_language = _detect_explicit_language(user_text)
-    if explicit_language in (None, "c"):
+    if explicit_language is None and DEFAULT_PROGRAMMING_LANGUAGE == "python":
+        return (
+            "這是一題程式設計題。"
+            "請直接輸出一份完整、可執行的 Python 3 程式。"
+            "除非使用者明確要求說明，否則只輸出一個 ```python 程式碼區塊，不要加前言、結語、道歉或多餘解釋。"
+            "不要輸出偽代碼，不要輸出錯誤或未完成的程式。"
+        )
+    if (explicit_language or DEFAULT_PROGRAMMING_LANGUAGE) == "c":
         return (
             "這是一題程式設計題。"
             "請直接輸出一份完整、可編譯、可執行的 C 語言程式。"
@@ -389,7 +407,7 @@ def _detect_programming_language(user_text: str) -> str | None:
         return None
     explicit_language = _detect_explicit_language(user_text)
     if explicit_language is None:
-        return "c"
+        return DEFAULT_PROGRAMMING_LANGUAGE
     return explicit_language
 
 
