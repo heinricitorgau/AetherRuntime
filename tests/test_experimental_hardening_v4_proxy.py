@@ -55,10 +55,23 @@ class TestLanguageDetection(unittest.TestCase):
             proxy._detect_programming_language("write a c++ program"), "c++"
         )
 
-    def test_default_falls_back_to_c(self):
+    def test_default_falls_back_to_python(self):
         self.assertEqual(
-            proxy._detect_programming_language("請寫一個程式輸出 1"), "c"
+            proxy._detect_programming_language("請寫一個程式輸出 1"), "python"
         )
+
+    def test_explicit_c_still_detected(self):
+        self.assertEqual(
+            proxy._detect_programming_language("請用 C語言 寫一個程式輸出 1"), "c"
+        )
+
+    def test_default_instruction_requests_python_block(self):
+        instruction = proxy._programming_mode_instruction("請寫一個程式輸出 1")
+        self.assertIn("```python", instruction)
+
+    def test_explicit_c_instruction_requests_c_block(self):
+        instruction = proxy._programming_mode_instruction("請用 C語言 寫一個程式輸出 1")
+        self.assertIn("```c", instruction)
 
     def test_non_programming_returns_none(self):
         self.assertIsNone(proxy._detect_programming_language("今天天氣怎麼樣？"))
